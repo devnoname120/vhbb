@@ -27,25 +27,25 @@ vita2d_draw_texture( img_bg, originX, 0 );
 
 
 // SETTINGS
-if ( settingsDraw == 1 )
+if ( settingsDraw )
 	{
-	vita2d_draw_texture( img_settings_bg, 		(originX -207), 81 );
+	vita2d_draw_texture( img_settings_bg, (originX -207), 81 );
 	
-	if ( btnState_settingsSound   == 0 ) { vita2d_draw_texture( img_settings_snd,   			(originX -167), (settingsPosY +110) ); }
-	else						   { vita2d_draw_texture( img_settings_snd_pressed, 	(originX -167), (settingsPosY +110) ); }
-	if ( btnState_settingsCtrls	== 0 ) { vita2d_draw_texture( img_settings_ctrl,  			(originX -167), (settingsPosY +245) ); }
-	else						   { vita2d_draw_texture( img_settings_ctrl_pressed,	(originX -167), (settingsPosY +245) ); }
-	if ( btnState_settingsContact  == 0 ) { vita2d_draw_texture( img_settings_cont,  			(originX -167), (settingsPosY +380) ); }
-	else						   { vita2d_draw_texture( img_settings_cont_pressed,  	(originX -167), (settingsPosY +380) ); }
-	if ( btnState_settingsAbout == 0 ) { vita2d_draw_texture( img_settings_about,  			(originX -167), (settingsPosY +515) ); }
-	else						   { vita2d_draw_texture( img_settings_about_pressed,   (originX -167), (settingsPosY +515) ); }
+	if ( btnState_settingsSound 	== 0 ) 	{ vita2d_draw_texture( img_settings_snd,    		(originX -167), (settingsPosY +110) ); }
+	else						   			{ vita2d_draw_texture( img_settings_snd_pressed, 	(originX -167), (settingsPosY +110) ); }
+	if ( btnState_settingsCtrls		== 0 ) 	{ vita2d_draw_texture( img_settings_ctrl,  			(originX -167), (settingsPosY +245) ); }
+	else						   			{ vita2d_draw_texture( img_settings_ctrl_pressed,	(originX -167), (settingsPosY +245) ); }
+	if ( btnState_settingsContact  	== 0 ) 	{ vita2d_draw_texture( img_settings_cont,  			(originX -167), (settingsPosY +380) ); }
+	else						   			{ vita2d_draw_texture( img_settings_cont_pressed,  	(originX -167), (settingsPosY +380) ); }
+	if ( btnState_settingsAbout 	== 0 ) 	{ vita2d_draw_texture( img_settings_about,  		(originX -167), (settingsPosY +515) ); }
+	else						   			{ vita2d_draw_texture( img_settings_about_pressed,	(originX -167), (settingsPosY +515) ); }
 	
 	vita2d_draw_texture( img_settings_topbar, 	(originX -207),  0 );
 	}
 
 
 
-if ( previewActive == 1 )
+if ( previewActive )
 	{
 	// INFORMATION BACKGROUND
 	vita2d_draw_texture( img_preview_infobg, originX, 276 );
@@ -112,13 +112,21 @@ else
 						ground = 145 +(itemCount_new *90);
 						for ( i = 0; i < itemCount_new; i++ )
 							{
+							
 							vita2d_draw_texture( img_item_panel_new, (originX +62), (originY +115 +(i *90)) );
+							
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
+							
 							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListNew[i].name    	);
+							
 							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListNew[i].author  	);
+							
 							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListNew[i].version 	);
+							
 							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListNew[i].release 	);
-							vita2d_draw_texture( iconListNew[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
+							
+							//vita2d_draw_texture( iconListNew[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
+							
 							}
 						break;
 		case 1:			// APPS
@@ -131,7 +139,7 @@ else
 							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListApps[i].author  	);
 							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListApps[i].version 	);
 							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListApps[i].release 	);
-							vita2d_draw_texture( iconListApps[i],  (originX +62 +3), 	(originY +115 +3 +(i *itemPanelHeight)) );
+							vita2d_draw_texture( iconListApps[i],  (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
 							}
 						break;
 		case 2:			// GAMES

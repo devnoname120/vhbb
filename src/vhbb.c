@@ -288,7 +288,7 @@ int main()
 								if ( access( previewDir, F_OK ) == -1 ) { preview_isInstalled = 0; }
 								else
 									{
-									preview_isInstalled = 1;
+									preview_isInstalled 	= 1;
 									unsigned long localV	= file_size( string_join( 2, previewDir, "eboot.bin" ) );
 									if ( localV == (unsigned long)previewEbootSize )	{ preview_isCurrent = 1; }
 									else												{ preview_isCurrent = 0; }
@@ -330,6 +330,7 @@ int main()
 									}
 								else
 									{
+									// UPDATE ACTION BUTTON
 									if ( access( string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" ), F_OK ) == -1 ) { preview_isDownloaded = 0; }
 									else 																							   { preview_isDownloaded = 1; }
 									}

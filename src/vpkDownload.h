@@ -25,13 +25,13 @@ int download_file( const char *src, const char *dst )
 	vita2d_swap_buffers();
 	int ret;
 	int tpl 			= sceHttpCreateTemplate( "Vita HomeBrew Browser", 2, 1 );
-	if ( tpl  < 0 ) { httpTerm(); netTerm(); return tpl; }
+	if ( tpl  < 0 ) 	{ httpTerm(); netTerm(); return tpl; }
 	int conn 			= sceHttpCreateConnectionWithURL( tpl, src, 0 );
-	if ( conn < 0 ) { httpTerm(); netTerm(); return conn; }
+	if ( conn < 0 ) 	{ httpTerm(); netTerm(); return conn; }
 	int req 			= sceHttpCreateRequestWithURL( conn, 0, src, 0 );
-	if ( req  < 0 ) { httpTerm(); netTerm(); return req; }
+	if ( req  < 0 ) 	{ httpTerm(); netTerm(); return req; }
 	ret 				= sceHttpSendRequest( req, NULL, 0 );
-	if ( ret  < 0 ) { httpTerm(); netTerm(); return ret; }
+	if ( ret  < 0 ) 	{ httpTerm(); netTerm(); return ret; }
 	unsigned char buf[25600] = {0}; // 4096
 	long long length 	= 0;
 	ret 				= sceHttpGetResponseContentLength( req, &length );
@@ -60,20 +60,19 @@ int download_file( const char *src, const char *dst )
 			touch_check_pressed_prev 	= 0;
 			if ( touch_check_released_prev == 0 ) { touch_check_released_prev = 1; touch_check_released = 1; }
 			else 								  { touch_check_released = 0; }
-			btnState_search = 0;
 			}
 			
-		if ( touch_check_pressed == 1 )
+		if ( touch_check_pressed )
 			{	
-			if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) == 1 )
+			if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) )
 				{
 				btnState_dialogBtn2		= 1;
 				}
 			}
-		if ( touch_check_released == 1 )
+		if ( touch_check_released )
 			{
 			btnState_dialogBtn2	 		= 0;
-			if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) == 1 )
+			if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) )
 				{
 				httpTerm(); netTerm();
 				remove( dst );
@@ -94,7 +93,7 @@ int download_file( const char *src, const char *dst )
 		total_read += read;
 		vita2d_draw_texture( img_dialog_progress_bg, 228, 181 );
 		if ( btnState_dialogBtn2 == 0 ) { vita2d_draw_texture( img_dialog_btn_cancel, 287, 403 ); }
-		else						{ vita2d_draw_texture( img_dialog_btn_cancel_pressed, 287, 403 ); }
+		else							{ vita2d_draw_texture( img_dialog_btn_cancel_pressed, 287, 403 ); }
 		vita2d_font_draw_text( font_default, 310, 240, C_WHITE, 24, dialogMessage );
 		vita2d_draw_rectangle( 310, 325, ((PROGRESS_BAR_WIDTH * total_read) / length), PROGRESS_BAR_HEIGHT, C_BLUEGREY );
 		vita2d_end_drawing();
