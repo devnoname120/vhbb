@@ -77,7 +77,15 @@ int file_is_png( char *file )
 	if ( memcmp( pngSignature, pngHead, 8 ) == 0 ) 	{ fclose( dat ); return 1; }
 	else 									 		{ fclose( dat ); return 0; }
 	}
-	
+unsigned long file_size( char* file )
+	{
+    FILE * f = fopen( file, "r" );
+    fseek( f, 0, SEEK_END );
+    unsigned long len = (unsigned long)ftell(f);
+    fclose(f);
+    return len;
+	}
+
 	
 /* ||| LOGCAT ||| */
 void logcat_add( char *str1, char *str2, char *str3 )
