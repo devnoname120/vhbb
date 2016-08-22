@@ -304,8 +304,18 @@ int main()
 						// DOWNLOAD/INSTALL/UPDATE PRESSED
 						if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) )
 							{
-							/// CHECK WHICH BUTTON IS SHOWING
-							if ( !preview_isDownloaded )
+							// CHECK WHICH BUTTON IS SHOWING
+							/*
+								preview_isDownloaded
+								preview_isInstalled
+								preview_isCurrent
+							
+							*/
+							
+							
+							
+							
+							
 								// DOWNLOAD
 								strcpy( dialogMessage, string_join( 4, "Downloading\n", previewName, "\n", previewRelease ) );
 								char *fileVpkCloud;
