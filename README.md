@@ -1,6 +1,6 @@
 # Vita HomeBrew Browser
 
-![Alt text](http://www.playlight.com.au/vita/vhbb/info/icon.png "Optional title")
+![Alt text](http://www.playlight.com.au/vita/vhbb/info/icon.png "")
 
 ## Prerequisites
 

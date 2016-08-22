@@ -1,9 +1,52 @@
 TITLE_ID 	= 	VHBB00001
 TARGET   	= 	vhbb
 TITLE    	=  Vita HomeBrew Browser
-OBJS     	= 	src/vhbb.o 									\
-			src/font/fontDefault.o					 	
-			
+
+OBJS     = 	src/vhbb.o 									\
+			src/font/fontDefault.o					    \
+			assets/img_splash.o							\
+			assets/img_bg.o								\
+			assets/img_topbar_apps.o					\
+			assets/img_topbar_demos.o					\
+			assets/img_topbar_emu.o						\
+			assets/img_topbar_games.o					\
+			assets/img_topbar_new.o						\
+			assets/img_topbar_themes.o					\
+			assets/img_topbar_util.o					\
+			assets/img_btn_search.o						\
+			assets/img_item_panel_new.o					\
+			assets/img_item_panel_apps.o				\
+			assets/img_item_panel_games.o				\
+			assets/img_item_panel_emu.o					\
+			assets/img_item_panel_util.o				\
+			assets/img_item_panel_themes.o				\
+			assets/img_item_panel_demos.o				\
+			assets/img_preview_btn_download.o			\
+			assets/img_preview_btn_download_pressed.o	\
+			assets/img_preview_btn_install.o			\
+			assets/img_preview_btn_install_pressed.o	\
+			assets/img_preview_btn_install.o			\
+			assets/img_preview_btn_install_pressed.o	\
+			assets/img_preview_btn_update.o				\
+			assets/img_preview_btn_update_pressed.o		\
+			assets/img_preview_infobg.o					\
+			assets/img_preview_btn_back.o				\
+			assets/img_preview_btn_back_pressed.o		\
+			assets/img_icon_default.o					\
+			assets/img_preview_default.o				\
+			assets/img_settings_about.o					\
+			assets/img_settings_about_pressed.o			\
+			assets/img_settings_bg.o					\
+			assets/img_settings_cont.o					\
+			assets/img_settings_cont_pressed.o			\
+			assets/img_settings_ctrl.o					\
+			assets/img_settings_ctrl_pressed.o			\
+			assets/img_settings_snd.o					\
+			assets/img_settings_snd_pressed.o			\
+			assets/img_settings_topbar.o				\
+			assets/img_dialog_progress_bg.o				\
+			assets/img_dialog_btn_cancel.o				\
+			assets/img_dialog_btn_cancel_pressed.o
 			
 
 LIBS 		= 	-lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub 								\
