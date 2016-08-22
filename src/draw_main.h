@@ -58,16 +58,11 @@ if ( previewActive == 1 )
 	
 	// DOWNLOAD/INSTALL/UPDATE BUTTON
 	
-			/**** 	STILL NEED TO CONFIRM A WAY TO CHECK LATEST VERSION
-					so far the option is to have files eg name +version +.ver
-					to check which version has been downloaded.
-					This would only work with vpks installed via this app,
-					and it would also need install directory checking on booting
-					to determine if apps have been uninstalled since last use.
+			/**** 	
+			
+			
+			
 					******/
-	
-	
-	
 	
 	
 	

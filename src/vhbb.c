@@ -30,8 +30,6 @@
 #include "init_var.h"
 
 
-// MAIN -------------------------------------------------
-//-------------------------------------------------------
 
 int main()
 	{
@@ -47,7 +45,7 @@ int main()
 	vita2d_set_clear_color( RGBA8( 0x40, 0x40, 0x40, 0xFF ) );
 	
 	// LOAD DEFAULT FONT
-	vita2d_font *font_default 						= vita2d_load_font_mem( fontDefault, fontDefault_size );
+	vita2d_font *font_default 	= vita2d_load_font_mem( fontDefault, fontDefault_size );
 	
 	// SET TOUCH SAMPLING
 	sceTouchSetSamplingState( SCE_TOUCH_PORT_FRONT, 1 );
@@ -67,64 +65,61 @@ int main()
 	
 	// BOOT -------------------------------------------------
 	logcat_add( "booting...", "", "\n" );
-	// CHECK FOR FIRST LOAD
 	if ( access( VHBB_APP_FILE_SYSTEMFILE, F_OK ) == -1 )
 		{
-		// FIRST BOOT
+		// FIRST BOOT (ADD DEFAULT CONFIG HERE)
 		logcat_add( "-FIRST LOAD-\n", "creating system config file", "\n" );
 		FILE *fp 	= fopen( VHBB_APP_FILE_SYSTEMFILE, "ab+" );
-		fprintf( fp, "***********************************\n" );
-		fprintf( fp, "-Vita HomeBrew Browser-" );
-		fprintf( fp, " ver. " );
+		fprintf( fp, "***********************************\n-Vita HomeBrew Browser-\n ver. " );
 		fprintf( fp, VHBB_VERSION );
-		fprintf( fp, "\n Created By\n" );
-		fprintf( fp, "      Arkanite\n" );
-		fprintf( fp, "***********************************\n\n" );
+		fprintf( fp, "\n Created By\n      Arkanite\n***********************************\n\n" );
 		fprintf( fp, VHBB_VERSION );
 		fclose( fp );
-		logcat_add( "config file created", "\n", "" );
+		logcat_add( "default system config created", "\n", "" );
 		}
 	else
 		{
 		// LOAD USER SETTINGS
 		
 		}
+	
+	//  RETRIEVE AND LOAD DATABASE
 	#include "database_load.h"
 	
 ////MAIN LOOP
-	int i;
-	int dPadTimer	= 0;
 	#include "vpkDownload.h"
 	while ( 1 )
 		{
 		sceKernelPowerTick(0);
-		////////////////////////////////// controls
+		
+		// CONTROLS
 		#include "ctrls.h"
 		
-		// SETTINGS
+		// SETTINGS ANIMATION -----------------------------------------
 		if ( settingsOpen == 1 )
 			{
-			settingsDraw		= 1;
-			if ( originX < 192 ) 	{ originX += 15; }
-			else 				  	{ originX = 207; }
+			settingsDraw = 1;
+			if ( originX < 192 ) 	{ originX +=  15; }
+			else 				  	{ originX  = 207; }
 			}
 		else
 			{
-			if ( originX > 15 ) 	{ originX -= 15; }
+			if ( originX > 15 ) 	{ originX  -= 15; }
 			else 				 	{ originX	= 0; settingsDraw = 0; }
 			}
+		//-------------------------------------------------------------
 		
-		/// SCROLLING -------------------------------------------------
+		// SCROLLING --------------------------------------------------
 		#include "scroll.h"
-		///------------------------------------------------------------
+		//-------------------------------------------------------------
 		
 		
-		/// TOUCH CHECK PRESSED
-		if ( touch_check_pressed == 1 )
+		// TOUCH CHECK PRESSED ----------------------------------------
+		if ( touch_check_pressed )
 			{
-			if ( dialogOpen == 0 )
+			if ( !dialogOpen )
 				{
-				if ( settingsOpen == 0 )
+				if ( !settingsOpen )
 					{
 					if ( touch_y < 90 )
 						{
@@ -171,27 +166,29 @@ int main()
 					}
 				}
 			}
+		//-------------------------------------------------------------
 		
-		/// BUTTON CHECK
-		if ( touch_check == 1 && previewActive == 0 && settingsDraw == 0 )
+		// TOUCH CHECK HOLDING ----------------------------------------
+		if ( touch_check && !previewActive && !settingsDraw )
 			{
-			if ( touch_y > 90  && clickable == 1 ) 	{ itemPressed = floor((touch_y +abs(originY)) /itemPanelHeight) -1; }
-			else									{ itemPressed = -1; }
+			if ( touch_y > 90  && clickable ) 	{ itemPressed = floor((touch_y +abs(originY)) /itemPanelHeight) -1; }
+			else								{ itemPressed = -1; }
 			}
-		else { /*itemPressed = -1; */ }
-			
-		/// BUTTON CHECK RELEASE
-		if ( touch_check_released == 1 )
+		//-------------------------------------------------------------
+		
+		// TOUCH CHECK RELEASE ----------------------------------------
+		if ( touch_check_released )
 			{
-			if ( dialogOpen == 0 )
+			if ( !dialogOpen )
 				{
-				if ( settingsOpen == 0 )
+				if ( !settingsOpen )
 					{
-					if ( previewActive == 0 )
+					if ( !previewActive )
 						{
-						if ( itemPressed >= 0 && clickable == 1 )
+						if ( itemPressed >= 0 && clickable )
 							{
 							int previewReady	= 1;
+							// PREP FOR ITEM PREVIEW
 							switch ( screen )
 								{
 								case 0:			// NEW
@@ -286,7 +283,7 @@ int main()
 												previewEbootSize		= catListDemos[itemPressed].ebootSize;
 												break;
 								}
-							if ( previewReady == 1 )
+							if ( previewReady )
 								{
 								strtok_r( previewDescription, "|", &previewDesLine2 );
 								strtok_r( previewDesLine2, "|", &previewDesLine3 );
@@ -366,10 +363,11 @@ int main()
 			clickable = 1;
 			}
 		//-------------------------------------------------------------
-		//-------------------------------------------------------------
-		/// MAIN DRAW -------------------------------------------------
+		
+		
+		// MAIN DRAW --------------------------------------------------
 		#include "draw_main.h"
-		///------------------------------------------------------------
+		//-------------------------------------------------------------
 		
 			
 			
@@ -379,8 +377,8 @@ int main()
 		}
 		
 		
-	/// MAIN DRAW -------------------------------------------------
+	// CLEANUP/SHUTDOWN -------------------------------------------
 	#include "shutdown.h"
-	///------------------------------------------------------------
+	//-------------------------------------------------------------
 	return 0;
 	}

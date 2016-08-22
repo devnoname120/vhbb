@@ -21,6 +21,8 @@
 /// SYSTEM VARIABLES
 int screen						= 0;
 char databaseTS[15];
+int i;
+int dPadTimer					= 0;
 
 int itemCount_new				= 0;
 int itemCount_apps				= 0;
