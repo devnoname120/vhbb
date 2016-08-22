@@ -17,34 +17,5 @@
  *
  */
 
-#include "vhbb.h"
-#include "tools.h"
 
-
-
-
-
-
-
-int main()
-	{
-	init();
-	// SHOW SPLASH BACKGROUND
-	vita2d_start_drawing();
-	vita2d_clear_screen();
-	vita2d_draw_texture( img_splash, 0, 0 );
-	vita2d_end_drawing();
-	vita2d_swap_buffers();
-	boot();
-	
-	while(1)
-		{
-		
-		
-		
-		
-		}
-	
-	shutdown();
-	return 0;
-	}
+int init();

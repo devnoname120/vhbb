@@ -102,6 +102,7 @@ struct homeBrewItem
 	char dir[200];
 	int  ebootSize;
 	};
+
 /// CATEGORY LISTS (CURRENTLY SUPPORTS UP TO 501 ITEMS PER CATEGORY)
 struct vitaItem catListNew		[9];
 struct vitaItem catListApps		[MAX_ITEMS];
@@ -256,11 +257,3 @@ extern unsigned char _binary_assets_img_settings_topbar_png_start;
 extern unsigned char _binary_assets_img_dialog_progress_bg_png_start;
 extern unsigned char _binary_assets_img_dialog_btn_cancel_png_start;
 extern unsigned char _binary_assets_img_dialog_btn_cancel_pressed_png_start;
-
-
-
-
-
-
-
-

@@ -17,34 +17,15 @@
  *
  */
 
-#include "vhbb.h"
-#include "tools.h"
 
+char* string_join(int count, ...);
+void string_remove_newline( char *str );
 
+void dir_create( const char *dir );
 
+void file_delete( const char *path );
+int file_is_png( char *file );
 
+void logcat_add( char *str1, char *str2, char *str3 );
 
-
-
-int main()
-	{
-	init();
-	// SHOW SPLASH BACKGROUND
-	vita2d_start_drawing();
-	vita2d_clear_screen();
-	vita2d_draw_texture( img_splash, 0, 0 );
-	vita2d_end_drawing();
-	vita2d_swap_buffers();
-	boot();
-	
-	while(1)
-		{
-		
-		
-		
-		
-		}
-	
-	shutdown();
-	return 0;
-	}
+int point_in_rectangle( int px, int py, int x1, int y1, int x2, int y2 );
