@@ -1,4 +1,21 @@
-
+/*
+ * 	Copyright (c) 2016 Arkanite
+ *
+ *	 	-A Native HomeBrew Browser for the Playstation Vita-
+ *
+ *	This program is free software:
+ *		you can redistribute it and/or modify it under the terms of the
+ *		GNU General Public License as published by the Free Software Foundation,
+ *		either version 3 of the License, or (at your option) any later version.
+ *		
+ *		This program comes WITHOUT ANY WARRANTY; without even the implied warranty of
+ *		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ *		Public License for more details.
+ *		You should have received a copy of the GNU General Public License
+ *		along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ */
 
 
 
@@ -260,3 +277,24 @@ if ( pad.buttons )
 	}
 //-------------------------------------------------------
 //-------------------------------------------------------
+/// TOUCH CHECKS -----------------------------------
+sceTouchPeek( SCE_TOUCH_PORT_FRONT, &touch, 1 );
+if ( touch.reportNum > 0 )
+	{
+	touch_check 				= 1;
+	touch_x 					= (lerp(touch.report[0].x, 1919, 960));
+	touch_y 					= (lerp(touch.report[0].y, 1087, 544));
+	touch_check_released_prev 	= 0;
+	touch_check_released 		= 0;
+	if ( touch_check_pressed_prev == 0 ) { touch_check_pressed_prev = 1; touch_check_pressed = 1; }
+	else 								 { touch_check_pressed = 0; }
+	}
+else
+	{
+	touch_check 				= 0;
+	touch_check_pressed 		= 0;
+	touch_check_pressed_prev 	= 0;
+	if ( touch_check_released_prev == 0 ) { touch_check_released_prev = 1; touch_check_released = 1; }
+	else 								  { touch_check_released = 0; }
+	}
+///-------------------------------------------------
