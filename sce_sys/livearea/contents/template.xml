@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<livearea style="a1" format-ver="01.00" content-rev="1">
+	<livearea-background>
+		<image>bg.png</image>
+	</livearea-background>
+	
+	<gate>
+		<startup-image>startup.png</startup-image>
+	</gate>
+	
+	<frame id="frame3">
+		<liveitem default="on">   
+			<text>
+				<str><br /><br />rev 0.7.2</str>
+			</text>
+		</liveitem>
+   
+		
+	</frame>
+  
+</livearea>
