@@ -36,6 +36,6 @@
 #include <math.h>
 #include <stdarg.h>
 #include <sys/stat.h>
-#include <dirent.h>
+
 
 #include <vita2d.h>
