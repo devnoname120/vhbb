@@ -68,8 +68,6 @@ all: $(TARGET).vpk
 
 
 
-	
-	
 %.vpk: eboot.bin
 	vita-mksfoex -s TITLE_ID=$(TITLE_ID) "$(TITLE)" param.sfo
 	vita-pack-vpk -s param.sfo -b eboot.bin \
