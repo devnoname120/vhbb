@@ -42,11 +42,6 @@
 #define VHBB_APP_FILE_LOGCAT 		 		"ux0:/data/VitaHbBrowser/sys/vhbb.log"
 #define VHBB_APP_FILE_DLque				    "ux0:/data/VitaHbBrowser/sys/que.assets"
 
-// COLOURS
-#define C_WHITE   							RGBA8( 255, 255, 255, 255 )
-#define C_AQUA   							RGBA8( 168, 244, 253, 255 )
-#define C_BLUEGREY							RGBA8(  92, 108, 124, 255 )
-
 // MATH
 #define lerp(value, from_max, to_max) ((((value *10) *(to_max *10)) /(from_max *10)) /10)
 #define max(x, y) (((x) > (y)) ? (x) : (y))
