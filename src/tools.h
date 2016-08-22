@@ -24,13 +24,12 @@ char* string_join(int count, ...)
     {
     va_list ap; int i; int len = 1;
     va_start( ap, count );
-    for( i = 0 ; i < count ; i++ )
-        len += strlen( va_arg( ap, char* ) );
+    for ( i = 0 ; i < count; i++ ) { len += strlen( va_arg( ap, char* ) ); }
     va_end( ap );
     char *merged = calloc(sizeof(char),len);
     int null_pos = 0;
     va_start( ap, count );
-    for( i = 0 ; i < count ; i++ )
+    for( i = 0 ; i < count; i++ )
 		{
         char *s = va_arg( ap, char* );
         strcpy( merged +null_pos, s );
@@ -40,6 +39,7 @@ char* string_join(int count, ...)
     return merged;
     }
 void string_remove_newline( char *str ) { str[strcspn(str, "\r\n")] = 0; }
+
 
 /* ||| DIRECTORIES ||| */
 void dir_create( const char *dir )
@@ -53,6 +53,13 @@ void dir_create( const char *dir )
 		if (*c == '/') { *c = '\0'; sceIoMkdir( dir_copy, 0777 ); *c = '/'; }
 		}
 	}
+int dir_exists( char *path )
+	{
+	DIR  *dip;
+	if ( (dip = opendir(path) ) == NULL ) { return 0; }
+	else { closedir(dip); return 1;
+	}
+
 	
 /* ||| FILES ||| */
 void file_delete( const char *path )
@@ -71,6 +78,7 @@ int file_is_png( char *file )
 	else 									 		{ fclose( dat ); return 0; }
 	}
 	
+	
 /* ||| LOGCAT ||| */
 void logcat_add( char *str1, char *str2, char *str3 )
 	{
@@ -86,6 +94,7 @@ void logcat_add( char *str1, char *str2, char *str3 )
 		}
 	fclose( lf );
 	}
+	
 
 /* ||| POSITION CHECKING ||| */
 int point_in_rectangle( int px, int py, int x1, int y1, int x2, int y2 )
