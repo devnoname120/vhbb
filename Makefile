@@ -1,9 +1,8 @@
-TITLE_ID 	= 	VHBB00001
-TARGET   	= 	vhbb
-TITLE    	=  Vita HomeBrew Browser
-
+TITLE_ID = 	VHBB00001
+TARGET   = 	VitaHBBrowser
+TITLE    =  Vita HomeBrew Browser
 OBJS     = 	src/vhbb.o 									\
-			src/font/fontDefault.o					    \
+			src/fontDefault.o							\
 			assets/img_splash.o							\
 			assets/img_bg.o								\
 			assets/img_topbar_apps.o					\
@@ -49,22 +48,22 @@ OBJS     = 	src/vhbb.o 									\
 			assets/img_dialog_btn_cancel_pressed.o
 			
 
-LIBS 		= 	-lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub 								\
-				-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub 						\
-				-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc 								\
-				-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub -lftpvita -lSceAppMgr_stub 				\
-				-lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub
+LIBS = -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
+	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
+	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
+	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
+	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub
 
 	
 
 	   
 	   
 	
-PREFIX  	= arm-vita-eabi
-CC      	= $(PREFIX)-gcc
-CFLAGS  	= -Wl,-q -Wall -O3
-ASFLAGS 	= $(CFLAGS)
-PSVITAIP 	= 10.0.63
+PREFIX  = arm-vita-eabi
+CC      = $(PREFIX)-gcc
+CFLAGS  = -Wl,-q -Wall -O3
+ASFLAGS = $(CFLAGS)
+PSVITAIP = 10.0.63
 all: $(TARGET).vpk
 
 
