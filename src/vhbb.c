@@ -284,14 +284,17 @@ int main()
 								strtok_r( previewDesLine4,    "|", &previewDesLine5 );
 								previewActive		=  1;
 								previewListNumber	= itemPressed;
-								// CHECK IF INSTALLED
+								// CHECK DOWNLOADED, INSTALLED, CURRENT VERSION
 								if ( access( previewDir, F_OK ) == -1 ) { preview_isInstalled = 0; }
-								else  									{ preview_isInstalled = 1; }
-								// CHECK IF DOWNLOADED
+								else
+									{
+									preview_isInstalled = 1;
+									unsigned long localV	= file_size( string_join( 2, previewDir, "eboot.bin" ) );
+									if ( localV == (unsigned long)previewEbootSize )	{ preview_isCurrent = 1; }
+									else												{ preview_isCurrent = 0; }
+									}
 								if ( access( string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" ), F_OK ) == -1 ) { preview_isDownloaded = 0; }
 								else 																							   { preview_isDownloaded = 1; }
-								// CHECK IF LATEST VERSION
-								//preview_isCurrent
 								}
 							itemPressed 		= -1;
 							}
@@ -302,7 +305,7 @@ int main()
 						if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) )
 							{
 							/// CHECK WHICH BUTTON IS SHOWING
-								
+							if ( !preview_isDownloaded )
 								// DOWNLOAD
 								strcpy( dialogMessage, string_join( 4, "Downloading\n", previewName, "\n", previewRelease ) );
 								char *fileVpkCloud;
@@ -312,12 +315,13 @@ int main()
 								
 								if ( download_file( fileVpkCloud, fileVpkLocal ) < 0 )
 									{
-									// DOWNLOAD FAILED
+									// DOWNLOAD FAILED (clear temp file)
 									
 									}
 								else
 									{
-									
+									if ( access( string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" ), F_OK ) == -1 ) { preview_isDownloaded = 0; }
+									else 																							   { preview_isDownloaded = 1; }
 									}
 								
 								
