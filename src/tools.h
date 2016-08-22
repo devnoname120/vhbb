@@ -53,12 +53,7 @@ void dir_create( const char *dir )
 		if (*c == '/') { *c = '\0'; sceIoMkdir( dir_copy, 0777 ); *c = '/'; }
 		}
 	}
-int dir_exists( char *path )
-	{
-	DIR  *dip;
-	if ( (dip = opendir(path) ) == NULL ) { return 0; }
-	else { closedir(dip); return 1; }
-	}
+
 
 	
 /* ||| FILES ||| */
