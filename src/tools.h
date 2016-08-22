@@ -57,7 +57,7 @@ int dir_exists( char *path )
 	{
 	DIR  *dip;
 	if ( (dip = opendir(path) ) == NULL ) { return 0; }
-	else { closedir(dip); return 1;
+	else { closedir(dip); return 1; }
 	}
 
 	
