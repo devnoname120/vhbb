@@ -18,18 +18,11 @@
  */
  
 
-// LIBRARIES
 #include "vhbb.h"
-// DEFINE MACROS
 #include "macros.h"
-// INCLUDE NETWORK
 #include "network.h"
-// INCLUDE TOOLS
 #include "tools.h"
-// INITIALIZE VARIABLES
 #include "init_var.h"
-
-
 
 int main()
 	{
@@ -63,7 +56,7 @@ int main()
 	vita2d_end_drawing();
 	vita2d_swap_buffers();
 	
-	// BOOT -------------------------------------------------
+	// BOOT -------------------------------------------------------
 	logcat_add( "booting...", "", "\n" );
 	if ( access( VHBB_APP_FILE_SYSTEMFILE, F_OK ) == -1 )
 		{
@@ -75,28 +68,30 @@ int main()
 		fprintf( fp, "\n Created By\n      Arkanite\n***********************************\n\n" );
 		fprintf( fp, VHBB_VERSION );
 		fclose( fp );
-		logcat_add( "default system config created", "\n", "" );
+		logcat_add( "default system config created", "", "\n" );
 		}
 	else
 		{
 		// LOAD USER SETTINGS
 		
 		}
+	//-------------------------------------------------------------
 	
-	//  RETRIEVE AND LOAD DATABASE
+	// RETRIEVE AND LOAD DATABASE ---------------------------------
 	#include "database_load.h"
+	//-------------------------------------------------------------
 	
-////MAIN LOOP
+	/// MAIN LOOP -------------------------------------------------
 	#include "vpkDownload.h"
 	while ( 1 )
 		{
 		sceKernelPowerTick(0);
 		
-		// CONTROLS
+		// CONTROLS ---------------------------------------------------
 		#include "ctrls.h"
 		
 		// SETTINGS ANIMATION -----------------------------------------
-		if ( settingsOpen == 1 )
+		if ( settingsOpen )
 			{
 			settingsDraw = 1;
 			if ( originX < 192 ) 	{ originX +=  15; }
@@ -121,48 +116,46 @@ int main()
 				{
 				if ( !settingsOpen )
 					{
-					if ( touch_y < 90 )
+					if ( touch_y < itemPanelHeight )
 						{
 						// TOPBAR BUTTONS
-						if ( point_in_rectangle( touch_x, touch_y,   1, 1,  98, 90 ) == 1 && screen != 0 ) { screen = 0; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y,  99, 1, 204, 90 ) == 1 && screen != 1 ) { screen = 1; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 205, 1, 326, 90 ) == 1 && screen != 2 ) { screen = 2; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 327, 1, 427, 90 ) == 1 && screen != 3 ) { screen = 3; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 428, 1, 552, 90 ) == 1 && screen != 4 ) { screen = 4; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 553, 1, 674, 90 ) == 1 && screen != 5 ) { screen = 5; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 675, 1, 799, 90 ) == 1 && screen != 6 ) { screen = 6; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 800, 1, 960, 90 ) == 1 ) { btnState_search = 1; }
+						if ( point_in_rectangle( touch_x, touch_y,   1, 1,  98, 90 ) && screen != 0 ) { screen = 0; originY = 0; previewActive = 0; }
+						if ( point_in_rectangle( touch_x, touch_y,  99, 1, 204, 90 ) && screen != 1 ) { screen = 1; originY = 0; previewActive = 0; }
+						if ( point_in_rectangle( touch_x, touch_y, 205, 1, 326, 90 ) && screen != 2 ) { screen = 2; originY = 0; previewActive = 0; }
+						if ( point_in_rectangle( touch_x, touch_y, 327, 1, 427, 90 ) && screen != 3 ) { screen = 3; originY = 0; previewActive = 0; }
+						if ( point_in_rectangle( touch_x, touch_y, 428, 1, 552, 90 ) && screen != 4 ) { screen = 4; originY = 0; previewActive = 0; }
+						if ( point_in_rectangle( touch_x, touch_y, 553, 1, 674, 90 ) && screen != 5 ) { screen = 5; originY = 0; previewActive = 0; }
+						if ( point_in_rectangle( touch_x, touch_y, 675, 1, 799, 90 ) && screen != 6 ) { screen = 6; originY = 0; previewActive = 0; }
+						if ( point_in_rectangle( touch_x, touch_y, 800, 1, 960, 90 ) ) { btnState_search = 1; }
 						}
 					else
 						{
-						if ( previewActive == 1 )
+						if ( previewActive )
 							{
 							// DOWNLOAD/INSTALL/UPDATE PRESSED
-							if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) == 1 )
+							if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) )
 								{
-								btnState_previewAction		= 1;
+								btnState_previewAction = 1;
 								}
 							}
 						}
 					}
 				else
 					{
-					if ( settingsPosY >= 207 )
+					if ( settingsPosY >= 207 ) // wait for animation to complete
 						{
-						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +110), 60, (settingsPosY +222) ) == 1 ) { btnState_settingsSound   = 1; }
-						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +245), 60, (settingsPosY +357) ) == 1 ) { btnState_settingsCtrls  = 1; }
-						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +380), 60, (settingsPosY +492) ) == 1 ) { btnState_settingsContact  = 1; }
-						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +515), 60, (settingsPosY +627) ) == 1 ) { btnState_settingsAbout = 1; }
+						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +110), 60, (settingsPosY +222) ) ) { btnState_settingsSound   = 1; }
+						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +245), 60, (settingsPosY +357) ) ) { btnState_settingsCtrls   = 1; }
+						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +380), 60, (settingsPosY +492) ) ) { btnState_settingsContact = 1; }
+						if ( point_in_rectangle( touch_x, touch_y, 40, (settingsPosY +515), 60, (settingsPosY +627) ) ) { btnState_settingsAbout   = 1; }
 						}
-					
-					
 					}
 				}
 			else
 				{
-				if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) == 1 )
+				if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) )
 					{
-					btnState_dialogBtn2		= 1;
+					btnState_dialogBtn2	= 1;
 					}
 				}
 			}
@@ -193,7 +186,7 @@ int main()
 								{
 								case 0:			// NEW
 												if ( itemPressed < 0 || itemPressed > itemCount_new ) { previewReady = 0; break; }
-												previewCategory		= catListNew[itemPressed].cat;
+												previewCategory = catListNew[itemPressed].cat;
 												strcpy( previewName, 		catListNew[itemPressed].name 		);
 												strcpy( previewAuthor, 		catListNew[itemPressed].author 		);
 												strcpy( previewVersion, 	catListNew[itemPressed].version 	);
@@ -202,11 +195,11 @@ int main()
 												strcpy( previewDescription, catListNew[itemPressed].description );
 												strcpy( previewLink, 		catListNew[itemPressed].link 		);
 												strcpy( previewDir, 		catListNew[itemPressed].dir 		);
-												previewEbootSize		= catListNew[itemPressed].ebootSize;
+												previewEbootSize = catListNew[itemPressed].ebootSize;
 												break;
 								case 1:			// APPS
 												if ( itemPressed < 0 || itemPressed > itemCount_apps ) { previewReady = 0; break; }
-												previewCategory		= catListApps[itemPressed].cat;
+												previewCategory = catListApps[itemPressed].cat;
 												strcpy( previewName, 		catListApps[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListApps[itemPressed].author 		);
 												strcpy( previewVersion, 	catListApps[itemPressed].version 		);
@@ -215,11 +208,11 @@ int main()
 												strcpy( previewDescription, catListApps[itemPressed].description 	);
 												strcpy( previewLink, 		catListApps[itemPressed].link 			);
 												strcpy( previewDir, 		catListApps[itemPressed].dir 			);
-												previewEbootSize		= catListApps[itemPressed].ebootSize;
+												previewEbootSize = catListApps[itemPressed].ebootSize;
 												break;
 								case 2:			// GAMES
 												if ( itemPressed < 0 || itemPressed > itemCount_games ) { previewReady = 0; break; }
-												previewCategory		= catListGames[itemPressed].cat;
+												previewCategory	= catListGames[itemPressed].cat;
 												strcpy( previewName, 		catListGames[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListGames[itemPressed].author 		);
 												strcpy( previewVersion, 	catListGames[itemPressed].version 		);
@@ -228,11 +221,11 @@ int main()
 												strcpy( previewDescription, catListGames[itemPressed].description 	);
 												strcpy( previewLink, 		catListGames[itemPressed].link 			);
 												strcpy( previewDir, 		catListGames[itemPressed].dir 			);
-												previewEbootSize		= catListGames[itemPressed].ebootSize;
+												previewEbootSize = catListGames[itemPressed].ebootSize;
 												break;
 								case 3:			// EMULATORS
 												if ( itemPressed < 0 || itemPressed > itemCount_emu ) { previewReady = 0; break; }
-												previewCategory		= catListEmulators[itemPressed].cat;
+												previewCategory = catListEmulators[itemPressed].cat;
 												strcpy( previewName, 		catListEmulators[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListEmulators[itemPressed].author 		);
 												strcpy( previewVersion, 	catListEmulators[itemPressed].version 		);
@@ -241,11 +234,11 @@ int main()
 												strcpy( previewDescription, catListEmulators[itemPressed].description 	);
 												strcpy( previewLink, 		catListEmulators[itemPressed].link 			);
 												strcpy( previewDir, 		catListEmulators[itemPressed].dir 			);
-												previewEbootSize		= catListEmulators[itemPressed].ebootSize;
+												previewEbootSize = catListEmulators[itemPressed].ebootSize;
 												break;
 								case 4:			// UTILITIES
 												if ( itemPressed < 0 || itemPressed > itemCount_util ) { previewReady = 0; break; }
-												previewCategory		= catListUtilities[itemPressed].cat;
+												previewCategory	= catListUtilities[itemPressed].cat;
 												strcpy( previewName, 		catListUtilities[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListUtilities[itemPressed].author 		);
 												strcpy( previewVersion, 	catListUtilities[itemPressed].version 		);
@@ -254,11 +247,11 @@ int main()
 												strcpy( previewDescription, catListUtilities[itemPressed].description 	);
 												strcpy( previewLink, 		catListUtilities[itemPressed].link 			);
 												strcpy( previewDir, 		catListUtilities[itemPressed].dir 			);
-												previewEbootSize		= catListUtilities[itemPressed].ebootSize;
+												previewEbootSize = catListUtilities[itemPressed].ebootSize;
 												break;
 								case 5:			// THEMES
 												if ( itemPressed < 0 || itemPressed > itemCount_themes ) { previewReady = 0; break; }
-												previewCategory		= catListThemes[itemPressed].cat;
+												previewCategory = catListThemes[itemPressed].cat;
 												strcpy( previewName, 		catListThemes[itemPressed].name 		);
 												strcpy( previewAuthor, 		catListThemes[itemPressed].author 		);
 												strcpy( previewVersion, 	catListThemes[itemPressed].version 		);
@@ -267,11 +260,11 @@ int main()
 												strcpy( previewDescription, catListThemes[itemPressed].description 	);
 												strcpy( previewLink, 		catListThemes[itemPressed].link 		);
 												strcpy( previewDir, 		catListThemes[itemPressed].dir 			);
-												previewEbootSize		= catListThemes[itemPressed].ebootSize;
+												previewEbootSize = catListThemes[itemPressed].ebootSize;
 												break;
 								case 6:			// DEMOS
 												if ( itemPressed < 0 || itemPressed > itemCount_demos ) { previewReady = 0; break; }
-												previewCategory		= catListDemos[itemPressed].cat;
+												previewCategory	= catListDemos[itemPressed].cat;
 												strcpy( previewName, 		catListDemos[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListDemos[itemPressed].author 		);
 												strcpy( previewVersion, 	catListDemos[itemPressed].version 		);
@@ -280,15 +273,15 @@ int main()
 												strcpy( previewDescription, catListDemos[itemPressed].description 	);
 												strcpy( previewLink, 		catListDemos[itemPressed].link 			);
 												strcpy( previewDir, 		catListDemos[itemPressed].dir 			);
-												previewEbootSize		= catListDemos[itemPressed].ebootSize;
+												previewEbootSize = catListDemos[itemPressed].ebootSize;
 												break;
 								}
 							if ( previewReady )
 								{
 								strtok_r( previewDescription, "|", &previewDesLine2 );
-								strtok_r( previewDesLine2, "|", &previewDesLine3 );
-								strtok_r( previewDesLine3, "|", &previewDesLine4 );
-								strtok_r( previewDesLine4, "|", &previewDesLine5 );
+								strtok_r( previewDesLine2, 	  "|", &previewDesLine3 );
+								strtok_r( previewDesLine3,    "|", &previewDesLine4 );
+								strtok_r( previewDesLine4,    "|", &previewDesLine5 );
 								previewActive		=  1;
 								previewListNumber	= itemPressed;
 								// CHECK IF INSTALLED
@@ -306,7 +299,7 @@ int main()
 					else
 						{
 						// DOWNLOAD/INSTALL/UPDATE PRESSED
-						if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) == 1 )
+						if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) )
 							{
 							/// CHECK WHICH BUTTON IS SHOWING
 								
@@ -330,7 +323,7 @@ int main()
 								
 								
 							}
-						if ( point_in_rectangle( touch_x, touch_y, 0, 460, 90, 544 ) == 1 && settingsDraw == 0 )
+						if ( point_in_rectangle( touch_x, touch_y, 0, 460, 90, 544 ) && !settingsDraw )
 							{
 							previewActive	= 0;
 							itemPressed		= previewListNumber;
@@ -339,12 +332,14 @@ int main()
 					}
 				else
 					{
-					/// touch RELEASE FOR SETTINGS HERE
+					// TOUCH RELEASE FOR SETTINGS HERE (REDO)
+					
+					
 					}
 				}
 			else
 				{
-				if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) == 1 )
+				if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) )
 					{
 					dialogOpen		= 0;
 					}
