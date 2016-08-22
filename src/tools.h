@@ -20,7 +20,7 @@
 // TOOLS ------------------------------------------------
 
 /* |||| STRINGS ||| */
-char* string_join(int count, ...)
+char* string_join( int count, ... )
     {
     va_list ap; int i; int len = 1;
     va_start( ap, count );
