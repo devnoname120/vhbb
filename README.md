@@ -21,7 +21,6 @@ To run VHBB:
 - icon0.png, startup.png and bg.png must be using indexed palettes.
 - PNG files created in some image editors will cause the .vpk intallation to crash.
 	You may use PNGO to optimise addition PNG files (included under `/tools/`).
-- For some reasons, some PNG files created by GIMP makes the .vpk installation crash.
 
 ## License
 
