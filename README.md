@@ -8,7 +8,7 @@
 
 ## Building
 
-To build VHBB, place yourself in the directory containing `Makefile` and use the `make` command to build it.
+To build VHBB, navigate to the directory containing `Makefile` and use the `make` command to build.
 
 ## Running
 
@@ -22,7 +22,9 @@ To run VHBB:
 ## Notes
 - icon0.png, startup.png and bg.png must be using indexed palettes.
 - PNG files created in some image editors will cause the .vpk intallation to crash.
-	You may use PNGO to optimise addition PNG files (included under `/tools/`).
+	You may use PNGO to optimise addition PNG files (included under `/tools/`),
+	or [pngquant](https://pngquant.org/).
 
 ## License
 
+Code and scripts licensed under the terms of [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
