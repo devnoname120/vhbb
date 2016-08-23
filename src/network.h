@@ -62,7 +62,7 @@ void download( const char *url, const char *dest )
 	// open destination file
 	int fh 		= sceIoOpen( dest, SCE_O_WRONLY | SCE_O_CREAT, 0777 );
 	// create buffer and counter for read bytes.
-	unsigned char data[16*1024];
+	unsigned char data[25600] = { 0 }; // test with [16*1024]
 	int read 	= 0;
 	// read data until finished
 	while ( ( read = sceHttpReadData( request, &data, sizeof( data ) ) ) > 0 )
