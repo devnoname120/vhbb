@@ -27,8 +27,18 @@ if ( access( VHBB_APP_FILE_DATABASE, F_OK ) == -1 )
 	exit(1);
 	}
 logcat_add( "Database successfuly downloaded", "", "\n" );
-FILE *fp 	= fopen( VHBB_APP_FILE_DATABASE, "r" );
 char line[1028];
+int ch;
+long long lineC 	= 0;
+int curLine 		= 0;
+FILE *fpc 	= fopen( VHBB_APP_FILE_DATABASE, "r" );
+while ( !feof( fpc ) )
+	{
+	ch = fgetc( fpc );
+	if ( ch == '\n' ) { lineC++; }
+	}
+fclose( fpc );
+FILE *fp 	= fopen( VHBB_APP_FILE_DATABASE, "r" );
 // CHECK FIRST LINE
 fgets ( line, 1028, fp );
 string_remove_newline( line );
@@ -44,28 +54,30 @@ else
 	// GET DATABASE TIMESTAMP
 	int c 	= 0;
 	fgets ( line, 1028, fp ); string_remove_newline( line ); strcpy( databaseTS, line );
-	logcat_add( line, "\n", "" );
 	fgets ( line, 1028, fp ); string_remove_newline( line ); c = atoi( line ); itemCount_apps 	= c; // APPS
-	logcat_add( line, "\n", "" );
 	fgets ( line, 1028, fp ); string_remove_newline( line ); c = atoi( line ); itemCount_games 	= c; // GAMES
-	logcat_add( line, "\n", "" );
 	fgets ( line, 1028, fp ); string_remove_newline( line ); c = atoi( line ); itemCount_emu 	= c; // EMULATORS
-	logcat_add( line, "\n", "" );
 	fgets ( line, 1028, fp ); string_remove_newline( line ); c = atoi( line ); itemCount_util 	= c; // UTILITIES
-	logcat_add( line, "\n", "" );
 	fgets ( line, 1028, fp ); string_remove_newline( line ); c = atoi( line ); itemCount_themes	= c; // THEMES
-	logcat_add( line, "\n", "" );
 	fgets ( line, 1028, fp ); string_remove_newline( line ); c = atoi( line ); itemCount_demos 	= c; // DEMOS
-	logcat_add( line, "\n", "" );
-	
+	curLine += 8;
 	// BEGIN ITEM SCANNING
 	int posNew, posApp, posGames, posEmu, posUtil, posTheme, posDemo, catIndex, ebootSize;
 	posNew 				= posApp = posGames = posEmu = posUtil = posTheme = posDemo = 0;
 	char dataCat[10]; 		char dataName[30]; 	char dataVer[30]; 	char dataAuth[30]; 		char dataDls[30];
 	char dataRel[30]; 		char dataDes[500]; 	char dataLink[500]; char dataInstall[200];  char dataEboot[30];
 	char *targetFileCloud; 	char *targetFileStroage;
+	char *progBarInfo 	= "Loading database...";
 	while ( fgets ( line, 1028, fp ) != NULL )
 		{
+		curLine++;
+		vita2d_start_drawing();
+		vita2d_draw_texture( img_splash, 0, 0 );
+		vita2d_draw_rectangle( 444, 523, 230, 13, RGBA8(  34, 88, 151, 255 ) );
+		vita2d_draw_rectangle( 447, 526, ((224 * curLine) / lineC), 7, RGBA8(  77, 206, 177, 255 ) );
+		vita2d_font_draw_text( font_default, 447, 518, C_WHITE, 16, "Loading database..." );
+		vita2d_end_drawing();
+		vita2d_swap_buffers();
 		string_remove_newline( line ); strcpy( dataCat, 	line  ); 	fgets ( line, 1028, fp );
 		string_remove_newline( line ); strcpy( dataName, 	line  ); 	fgets ( line, 1028, fp );
 		string_remove_newline( line ); strcpy( dataVer, 	line  ); 	fgets ( line, 1028, fp );
@@ -77,6 +89,7 @@ else
 		string_remove_newline( line ); strcpy( dataInstall, line  ); 	fgets ( line, 1028, fp );
 		string_remove_newline( line ); strcpy( dataEboot,   line  ); 	catIndex = atoi( dataCat );
 		ebootSize	= atoi( dataEboot );
+		curLine += 9;
 		// ADD TO CATEGORY DATA LIST
 		switch ( catIndex )
 			{
@@ -94,6 +107,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
+							progBarInfo				= "Retrieving missing images...";
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -109,6 +123,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
+							progBarInfo				= "Retrieving missing images...";
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -134,10 +149,11 @@ else
 						strcpy( catListGames[posGames].link, 		dataLink 	);
 						strcpy( catListGames[posGames].dir, 		dataEboot 	);
 						catListGames[posGames].ebootSize 	= ebootSize;
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							targetFileCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
+							progBarInfo				= "Retrieving missing images...";
+							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
@@ -149,9 +165,10 @@ else
 							{
 							iconListGames[posGames] 	= vita2d_load_PNG_buffer( &_binary_assets_img_icon_default_png_start );
 							}
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
+							progBarInfo				= "Retrieving missing images...";
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -177,10 +194,11 @@ else
 						strcpy( catListEmulators[posEmu].link, 			dataLink 	);
 						strcpy( catListEmulators[posEmu].dir, 			dataEboot 	);
 						catListEmulators[posEmu].ebootSize 	= ebootSize;
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							targetFileCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
+							progBarInfo				= "Retrieving missing images...";
+							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
@@ -192,9 +210,10 @@ else
 							{
 							iconListEmulators[posEmu] 	= vita2d_load_PNG_buffer( &_binary_assets_img_icon_default_png_start );
 							}
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
+							progBarInfo				= "Retrieving missing images...";
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -220,10 +239,11 @@ else
 						strcpy( catListUtilities[posUtil].link, 		dataLink 	);
 						strcpy( catListUtilities[posUtil].dir, 			dataEboot 	);
 						catListUtilities[posUtil].ebootSize = ebootSize;
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							targetFileCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
+							progBarInfo				= "Retrieving missing images...";
+							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
@@ -235,9 +255,10 @@ else
 							{
 							iconListUtilities[posUtil] 	= vita2d_load_PNG_buffer( &_binary_assets_img_icon_default_png_start );
 							}
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
+							progBarInfo				= "Retrieving missing images...";
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -263,10 +284,11 @@ else
 						strcpy( catListThemes[posTheme].link, 			dataLink 	);
 						strcpy( catListThemes[posTheme].dir, 			dataEboot 	);
 						catListThemes[posTheme].ebootSize 	= ebootSize;
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							targetFileCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
+							progBarInfo				= "Retrieving missing images...";
+							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
@@ -278,9 +300,10 @@ else
 							{
 							iconListThemes[posTheme] 	= vita2d_load_PNG_buffer( &_binary_assets_img_icon_default_png_start );
 							}
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
+							progBarInfo				= "Retrieving missing images...";
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -306,10 +329,11 @@ else
 						strcpy( catListDemos[posDemo].link, 		dataLink 	);
 						strcpy( catListDemos[posDemo].dir, 			dataEboot 	);
 						catListDemos[posDemo].ebootSize 	= ebootSize;
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							targetFileCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
+							progBarInfo				= "Retrieving missing images...";
+							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
@@ -321,9 +345,10 @@ else
 							{
 							iconListDemos[posDemo] 	= vita2d_load_PNG_buffer( &_binary_assets_img_icon_default_png_start );
 							}
-						targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
+						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
+							progBarInfo				= "Retrieving missing images...";
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -352,10 +377,11 @@ else
 			strcpy( catListNew[posNew].link, 		dataLink 	);
 			strcpy( catListNew[posNew].dir, 	 	dataEboot 	);
 			catListNew[posNew].ebootSize 		= ebootSize;
-			targetFileStroage	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
+			targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 			if ( access( targetFileStroage, F_OK ) == -1 )
 				{
-				targetFileCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
+				progBarInfo				= "Retrieving missing images...";
+				targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 				download( targetFileCloud, targetFileStroage );
 				if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 				}
