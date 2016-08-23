@@ -38,7 +38,6 @@ int download_file( const char *src, const char *dst )
 	int fd 				= sceIoOpen( dst, SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 6 );
 	int total_read 		= 0;
 	if ( fd < 0 ) { httpTerm(); netTerm(); return fd; }
-	// draw progress bar background
 	while (1)
 		{
 		/// touch CHECKS -----------------------------------
@@ -61,7 +60,7 @@ int download_file( const char *src, const char *dst )
 			if ( touch_check_released_prev == 0 ) { touch_check_released_prev = 1; touch_check_released = 1; }
 			else 								  { touch_check_released = 0; }
 			}
-			
+		
 		if ( touch_check_pressed )
 			{	
 			if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) )
@@ -69,6 +68,7 @@ int download_file( const char *src, const char *dst )
 				btnState_dialogBtn2		= 1;
 				}
 			}
+		
 		if ( touch_check_released )
 			{
 			btnState_dialogBtn2	 		= 0;
@@ -79,7 +79,6 @@ int download_file( const char *src, const char *dst )
 				return -1;
 				}
 			}
-			
 		vita2d_start_drawing();
 		int read = sceHttpReadData( req, buf, sizeof(buf) );
 		if ( read  < 0 ) { httpTerm(); netTerm(); return read; }
