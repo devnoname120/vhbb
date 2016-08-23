@@ -23,15 +23,15 @@ download( VHBB_CLOUD_FILE_DATABASE, VHBB_APP_FILE_DATABASE );
 // BUILD DATABASE
 if ( access( VHBB_APP_FILE_DATABASE, F_OK ) == -1 )
 	{
-	/// ERROR
+	/// ERROR HANDLING HERE
+	logcat_add( "unable to retrieve database!!!", "", "\n" );
 	exit(1);
 	}
-logcat_add( "Database successfuly downloaded", "", "\n" );
+logcat_add( "Database retrieve successfuly", "", "\n" );
 char line[1028];
-int ch;
-int lineC 	= 0;
-int curLine = 0;
-FILE *fpc 	= fopen( VHBB_APP_FILE_DATABASE, "r" );
+int ch, lineC, curLine;
+ch = lineC = curLine = 0;
+FILE *fpc = fopen( VHBB_APP_FILE_DATABASE, "r" );
 while ( !feof( fpc ) )
 	{
 	ch = fgetc( fpc );
@@ -45,7 +45,7 @@ string_remove_newline( line );
 if ( strstr( line, "<VHBB DATABASE>" ) == NULL )
 	{
 	// CORRUPT DATABASE FILE
-	logcat_add( "database file corrupt!!!", "\n", "" );
+	logcat_add( "database file corrupt!!!", "", "\n" );
 	fclose( fp );
 	exit(1);
 	}
@@ -63,7 +63,7 @@ else
 	curLine += 8;
 	// BEGIN ITEM SCANNING
 	int posNew, posApp, posGames, posEmu, posUtil, posTheme, posDemo, catIndex, ebootSize;
-	posNew 					= posApp = posGames = posEmu = posUtil = posTheme = posDemo = 0;
+	posNew = posApp = posGames = posEmu = posUtil = posTheme = posDemo = 0;
 	char dataCat[10]; 		char dataName[30]; 	char dataVer[30]; 	char dataAuth[30]; 		char dataDls[30];
 	char dataRel[30]; 		char dataDes[500]; 	char dataLink[500]; char dataInstall[200];  char dataEboot[30];
 	char *targetFileCloud; 	char *targetFileStroage;
@@ -94,7 +94,7 @@ else
 		switch ( catIndex )
 			{
 			case 1:		// APPS
-						catListApps[posApp].cat 		= catIndex;
+						catListApps[posApp].cat = catIndex;
 						strcpy( catListApps[posApp].name, 			dataName   	);
 						strcpy( catListApps[posApp].version, 		dataVer 	);
 						strcpy( catListApps[posApp].author, 		dataAuth 	);
@@ -103,7 +103,7 @@ else
 						strcpy( catListApps[posApp].description, 	dataDes 	);
 						strcpy( catListApps[posApp].link, 			dataLink 	);
 						strcpy( catListApps[posApp].dir, 			dataEboot 	);
-						catListApps[posApp].ebootSize 		= ebootSize;
+						catListApps[posApp].ebootSize = ebootSize;
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
