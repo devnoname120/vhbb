@@ -172,7 +172,7 @@ struct vita2d_texture *iconListUtilities	[MAX_ITEMS];
 struct vita2d_texture *iconListThemes		[MAX_ITEMS];
 struct vita2d_texture *iconListDemos		[MAX_ITEMS];
 
-/// ICON LISTS
+/// PREVIEW LISTS
 struct vita2d_texture *previewListNew		[9];
 struct vita2d_texture *previewListApps		[MAX_ITEMS];
 struct vita2d_texture *previewListGames		[MAX_ITEMS];

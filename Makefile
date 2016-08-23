@@ -2,7 +2,7 @@ TITLE_ID = 	VHBB00001
 TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
 OBJS     = 	src/vhbb.o 									\
-			src/fontDefault.o							\
+			src/font.o									\
 			assets/img_splash.o							\
 			assets/img_bg.o								\
 			assets/img_topbar_apps.o					\
