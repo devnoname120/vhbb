@@ -110,20 +110,17 @@ char dialogMessage[200];
 // COLOURS
 enum
 	{
-	COLOR_CYAN 		= 0xFFFFFF00,
-	COLOR_WHITE 	= 0xFFFFFFFF,
-	COLOR_BLACK 	= 0xFF000000,
-	COLOR_RED 		= 0xFF0000FF,
-	COLOR_YELLOW 	= 0xFF00FFFF,
-	COLOR_GREY 		= 0xFF808080
+	COLOUR_WHITE 		= RGBA8( 255, 255, 255, 255 ),
+	COLOUR_BLACK 		= RGBA8(   0,   0,   0, 255 ),
+	COLOUR_AQUA			= RGBA8( 168, 244, 253, 255 ),
+	COLOUR_BLUEGREY 	= RGBA8(  92, 108, 124, 255 ),
+	COLOUR_RED 			= RGBA8( 255,   0,   0, 255 ),
+	COLOUR_YELLOW 		= RGBA8( 240, 255,   0, 255 )
+	
 	};
 
-#define C_WHITE   							RGBA8( 255, 255, 255, 255 )
-#define C_AQUA   							RGBA8( 168, 244, 253, 255 )
-#define C_BLUEGREY							RGBA8(  92, 108, 124, 255 )
-	
-	
-	
+
+
 /*
 
 	-SCREENS-

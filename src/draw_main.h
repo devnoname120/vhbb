@@ -49,12 +49,12 @@ if ( previewActive )
 	{
 	// INFORMATION BACKGROUND
 	vita2d_draw_texture( img_preview_infobg, originX, 276 );
-	vita2d_font_draw_text( font_default, (originX +203), 140, C_WHITE, 40, previewName 	 ); // NAME
-	vita2d_font_draw_text( font_default, (originX +203), 166, C_AQUA,  26, previewAuthor  ); // AUTHOR
-	vita2d_font_draw_text( font_default, (originX +203), 196, C_WHITE, 26, previewVersion ); // VERSION
-	vita2d_font_draw_text( font_default, (originX +100), 219, C_WHITE, 20, previewDlSize  ); // DOWNLOAD SIZE
-	vita2d_font_draw_text( font_default, (originX +850), 533, C_WHITE, 20, previewRelease ); // RELEASE DATE
-	vita2d_font_draw_textf(font_default, (originX +40), (349 +previewDescriptionHeight), C_WHITE, 26, "%s\n%s\n%s\n%s\n%s", previewDescription, previewDesLine2, previewDesLine3, previewDesLine4, previewDesLine5 );
+	vita2d_font_draw_text( font_default, (originX +203), 140, COLOUR_WHITE, 40, previewName    ); // NAME
+	vita2d_font_draw_text( font_default, (originX +203), 166, COLOUR_AQUA,  26, previewAuthor  ); // AUTHOR
+	vita2d_font_draw_text( font_default, (originX +203), 196, COLOUR_WHITE, 26, previewVersion ); // VERSION
+	vita2d_font_draw_text( font_default, (originX +100), 219, COLOUR_WHITE, 20, previewDlSize  ); // DOWNLOAD SIZE
+	vita2d_font_draw_text( font_default, (originX +850), 533, COLOUR_WHITE, 20, previewRelease ); // RELEASE DATE
+	vita2d_font_draw_textf(font_default, (originX +40), (349 +previewDescriptionHeight), COLOUR_WHITE, 26, "%s\n%s\n%s\n%s\n%s", previewDescription, previewDesLine2, previewDesLine3, previewDesLine4, previewDesLine5 );
 	
 	// DOWNLOAD/INSTALL/UPDATE BUTTON
 	
@@ -94,7 +94,7 @@ if ( previewActive )
 	else 								{ vita2d_draw_texture( img_preview_btn_back_pressed, originX, 470 ); }
 	switch ( screen )
 		{
-		case 0:		vita2d_draw_texture( iconListNew[previewListNumber], 		(originX +100), 112 ); vita2d_draw_texture( previewListNew[previewListNumber], 		(originX +566), 97 ); break;
+		case 0:		vita2d_draw_texture( iconListNew[previewListNumber], 		(originX +100), 112 ); vita2d_draw_texture( previewListNew[previewListNumber], 		    (originX +566), 97 ); break;
 		case 1:		vita2d_draw_texture( iconListApps[previewListNumber], 		(originX +100), 112 ); vita2d_draw_texture( previewListApps[previewListNumber], 		(originX +566), 97 ); break;
 		case 2:		vita2d_draw_texture( iconListGames[previewListNumber], 		(originX +100), 112 ); vita2d_draw_texture( previewListGames[previewListNumber], 	 	(originX +566), 97 ); break;
 		case 3:		vita2d_draw_texture( iconListEmulators[previewListNumber], 	(originX +100), 112 ); vita2d_draw_texture( previewListEmulators[previewListNumber], 	(originX +566), 97 ); break;
@@ -117,13 +117,13 @@ else
 							
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
 							
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListNew[i].name    	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListNew[i].name    	);
 							
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListNew[i].author  	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].author  	);
 							
-							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListNew[i].version 	);
+							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].version 	);
 							
-							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListNew[i].release 	);
+							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].release 	);
 							
 							//vita2d_draw_texture( iconListNew[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
 							/*
@@ -141,10 +141,10 @@ else
 							{
 							vita2d_draw_texture( img_item_panel_apps, (originX +62), (originY +115 +(i *90)) );
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListApps[i].name    	);
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListApps[i].author  	);
-							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListApps[i].version 	);
-							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListApps[i].release 	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListApps[i].name    	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListApps[i].author  	);
+							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListApps[i].version 	);
+							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListApps[i].release 	);
 							vita2d_draw_texture( iconListApps[i],  (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
 							}
 						break;
@@ -154,10 +154,10 @@ else
 							{
 							vita2d_draw_texture( img_item_panel_games, (originX +62), (originY +115 +(i *90)) );
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListGames[i].name    	);
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListGames[i].author  	);
-							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListGames[i].version 	);
-							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListGames[i].release 	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListGames[i].name    	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListGames[i].author  	);
+							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListGames[i].version 	);
+							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListGames[i].release 	);
 							vita2d_draw_texture( iconListGames[i], (originX +62 +3), 	(originY +115 +3 +(i *itemPanelHeight)) );
 							}
 						break;
@@ -167,10 +167,10 @@ else
 							{
 							vita2d_draw_texture( img_item_panel_emu, (originX +62), (originY +115 +(i *90)) );
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListEmulators[i].name    	);
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListEmulators[i].author  	);
-							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListEmulators[i].version 	);
-							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListEmulators[i].release 	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListEmulators[i].name    	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListEmulators[i].author  	);
+							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListEmulators[i].version 	);
+							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListEmulators[i].release 	);
 							vita2d_draw_texture( iconListEmulators[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
 							}
 						break;
@@ -180,10 +180,10 @@ else
 							{
 							vita2d_draw_texture( img_item_panel_util, (originX +62), (originY +115 +(i *90)) );
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListUtilities[i].name    	);
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListUtilities[i].author  	);
-							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListUtilities[i].version 	);
-							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListUtilities[i].release 	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListUtilities[i].name    	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListUtilities[i].author  	);
+							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListUtilities[i].version 	);
+							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListUtilities[i].release 	);
 							vita2d_draw_texture( iconListUtilities[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
 							}
 						break;
@@ -193,10 +193,10 @@ else
 							{
 							vita2d_draw_texture( img_item_panel_themes, (originX +62), (originY +115 +(i *90)) );
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListThemes[i].name    	);
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListThemes[i].author  	);
-							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListThemes[i].version 	);
-							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListThemes[i].release 	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListThemes[i].name    	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListThemes[i].author  	);
+							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListThemes[i].version 	);
+							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListThemes[i].release 	);
 							vita2d_draw_texture( iconListThemes[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
 							}
 						break;
@@ -206,10 +206,10 @@ else
 							{
 							vita2d_draw_texture( img_item_panel_demos, (originX +62), (originY +115 +(i *90)) );
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 35, catListDemos[i].name    	);
-							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListDemos[i].author  	);
-							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), C_WHITE, 25, catListDemos[i].version 	);
-							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListDemos[i].release 	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListDemos[i].name    	);
+							vita2d_font_draw_text( font_default, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListDemos[i].author  	);
+							vita2d_font_draw_text( font_default, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListDemos[i].version 	);
+							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListDemos[i].release 	);
 							vita2d_draw_texture( iconListDemos[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
 							}
 						break;

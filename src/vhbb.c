@@ -27,7 +27,7 @@
 int main()
 	{
 	// CREATE DIRECTORIES
-	dir_create( "ux0:/data/VitaHbBrowser/sys/" 		 );
+	dir_create( "ux0:/data/VitaHbBrowser/sys/" );
 	dir_create( "ux0:/data/VitaHbBrowser/sys/vers/"  );
 	dir_create( "ux0:/data/VitaHbBrowser/dta/icons/" );
 	dir_create( "ux0:/data/VitaHbBrowser/dta/prevs/" );
@@ -35,7 +35,7 @@ int main()
 	
 	// INITIALIZE VITA2D
 	vita2d_init();
-	vita2d_set_clear_color( RGBA8( 0x40, 0x40, 0x40, 0xFF ) );
+	vita2d_set_clear_color( COLOUR_BLACK );
 	
 	// LOAD DEFAULT FONT
 	vita2d_font *font_default 	= vita2d_load_font_mem( fontDefault, fontDefault_size );

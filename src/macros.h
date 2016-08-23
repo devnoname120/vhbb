@@ -51,5 +51,3 @@
 // DIALOGS
 #define PROGRESS_BAR_WIDTH					342
 #define PROGRESS_BAR_HEIGHT					36
-
-
