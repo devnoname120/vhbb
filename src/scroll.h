@@ -17,14 +17,13 @@
  *
  */
 
-// SCROLL
+// MAIN SCROLL
 if ( momentum < -1 || momentum > 1 )    { clickable = 0; }
-if ( previewActive == 0 && settingsOpen == 0 )
+if ( !previewActive && !settingsOpen )
 	{
-	if ( scroll == 1 && ground > 544 && touch_y > 90 )
+	if ( scroll && ground > 544 && touch_y > 90 )
 		{
-		// CHECK FOR TOUCH
-		if ( touch_check == 1 )
+		if ( touch_check )
 			{
 			newy	= 0; newy = originY + ( touch_y - prevy );
 			if ( usemomentum == 1 )
@@ -33,15 +32,15 @@ if ( previewActive == 0 && settingsOpen == 0 )
 				if ( touch_y - prevy > 0 ) 	{ scrolldir = 1; }
 				else 						{ scrolldir = 0; }
 				}
-			if ( newy > 0 ) { newy = 0; }
+			if ( newy > 0 ) 			  { newy = 0; }
 			if ( newy -544 < (-ground) )  { newy = (-ground) +544; }
 			originY = newy; prevy = touch_y;          
 			}
-		if ( touch_check_released == 1 ) { prevy = 0; scroll = 0; }
+		if ( touch_check_released ) { prevy = 0; scroll = 0; }
 		}
 	else
 		{
-		if ( touch_check_pressed == 1 ) { scroll = 1; prevy = touch_y; }
+		if ( touch_check_pressed ) { scroll = 1; prevy = touch_y; }
 		if ( usemomentum && momentum > 0 )
 			{
 			newy	= 0;
@@ -60,15 +59,15 @@ if ( previewActive == 0 && settingsOpen == 0 )
 			}    
 		}
 	}
-if ( settingsOpen == 1 )
+// SETTINGS SCROLL
+if ( settingsOpen )
 	{
-	if ( scroll == 1 && ground > settingsGround && touch_y > 90 )
+	if ( scroll && ground > settingsGround && touch_y > 90 )
 		{
-		// CHECK FOR TOUCH
-		if ( touch_check == 1 && touch_x < 207 )
+		if ( touch_check && touch_x < 207 )
 			{
 			newy	= 0; newy = settingsPosY + ( touch_y - prevy );
-			if ( usemomentum == 1 )
+			if ( usemomentum )
 				{
 				momentum = abs( round(( touch_y - prevy ) /2 ));
 				if ( touch_y - prevy > 0 ) 	{ scrolldir = 1; }
@@ -78,11 +77,11 @@ if ( settingsOpen == 1 )
 			if ( newy -544 < (-settingsGround) )  { newy = (-settingsGround) +544; }
 			settingsPosY = newy; prevy = touch_y;          
 			}
-		if ( touch_check_released == 1 ) { prevy = 0; scroll = 0; }
+		if ( touch_check_released ) { prevy = 0; scroll = 0; }
 		}
 	else
 		{
-		if ( touch_check_pressed == 1 && touch_x < 207 ) { scroll = 1; prevy = touch_y; }
+		if ( touch_check_pressed && touch_x < 207 ) { scroll = 1; prevy = touch_y; }
 		if ( usemomentum && momentum > 0 )
 			{
 			newy	= 0;
