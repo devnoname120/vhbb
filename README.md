@@ -17,7 +17,7 @@ To run VHBB:
 	- start an FTP server on your vita.
 	- upload the vpk to the vita using a FTP client.
 - install the .vpk on your vita using a vpk installer (eg. VitaShell)
-- a new folder will be created in under `ux0:/app/` named `/VHBB00001/`
+- a new folder will be created under `ux0:/app/` named `/VHBB00001/`.
 
 ## Notes
 - icon0.png, startup.png and bg.png must be using indexed palettes.
