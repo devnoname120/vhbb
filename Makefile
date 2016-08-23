@@ -24,8 +24,6 @@ OBJS     = 	src/vhbb.o 									\
 			assets/img_preview_btn_download_pressed.o	\
 			assets/img_preview_btn_install.o			\
 			assets/img_preview_btn_install_pressed.o	\
-			assets/img_preview_btn_install.o			\
-			assets/img_preview_btn_install_pressed.o	\
 			assets/img_preview_btn_update.o				\
 			assets/img_preview_btn_update_pressed.o		\
 			assets/img_preview_infobg.o					\
@@ -55,7 +53,7 @@ LIBS = -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
 	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub
 
 	
-
+BIN = bin
 	   
 	   
 	
@@ -64,42 +62,42 @@ CC      = $(PREFIX)-gcc
 CFLAGS  = -Wl,-q -Wall -O3
 ASFLAGS = $(CFLAGS)
 PSVITAIP = 10.0.63
-all: $(TARGET).vpk
 
+all: $(BIN)/$(TARGET).vpk
 
-
-%.vpk: eboot.bin
-	vita-mksfoex -s TITLE_ID=$(TITLE_ID) "$(TITLE)" param.sfo
-	vita-pack-vpk -s param.sfo -b eboot.bin \
+%.vpk: $(BIN)/eboot.bin
+	vita-mksfoex -s TITLE_ID=$(TITLE_ID) "$(TITLE)" $(BIN)/param.sfo
+	vita-pack-vpk -s $(BIN)/param.sfo -b $(BIN)/eboot.bin \
 		--add sce_sys/icon0.png=sce_sys/icon0.png \
 		--add sce_sys/livearea/contents/bg.png=sce_sys/livearea/contents/bg.png \
 		--add sce_sys/livearea/contents/startup.png=sce_sys/livearea/contents/startup.png \
 		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
-	$(TARGET).vpk
+	$(BIN)/$(TARGET).vpk
 	
 	
 
-eboot.bin: $(TARGET).velf
+$(BIN)/eboot.bin: $(BIN)/$(TARGET).velf
 	vita-make-fself $< $@
 
 %.velf: %.elf
 	vita-elf-create $< $@
 
-$(TARGET).elf: $(OBJS)
-	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
+$(BIN)/$(TARGET).elf: binfolder $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
 
 %.o: %.png
 	$(PREFIX)-ld -r -b binary -o $@ $^
 
 clean:
-	@rm -rf $(TARGET).vpk $(TARGET).velf $(TARGET).elf $(OBJS) \
-		eboot.bin param.sfo
+	@rm -rf $(BIN) $(OBJS)
 
-vpksend: $(TARGET).vpk
-	curl -T $(TARGET).vpk ftp://$(PSVITAIP):1337/ux0:/
+vpksend: $(BIN)/$(TARGET).vpk
+	curl -T $(BIN)/$(TARGET).vpk ftp://$(PSVITAIP):1337/ux0:/
 	@echo "Sent."
 
-send: eboot.bin
-	curl -T eboot.bin ftp://$(PSVITAIP):1337/ux0:/app/$(TITLE_ID)/
+send: $(BIN)/eboot.bin
+	curl -T $(BIN)/eboot.bin ftp://$(PSVITAIP):1337/ux0:/app/$(TITLE_ID)/
 	@echo "Sent."
-	
+
+binfolder:
+	@mkdir $(BIN) || true
