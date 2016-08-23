@@ -1,0 +1,178 @@
+<VHBB DATABASE>
+20160819231507
+0
+9
+3
+3
+0
+2
+3
+EasyRPG Player Vita
+ver. #16
+easyrpg.org
+3.62 MB
+17 Aug 2016
+EasyRPG Vita is a port of EasyRPG Player for PSVITA that allows you to play any|RPG Maker 2000/2003 game on your handheld.| | | 
+https://ci.easyrpg.org/job/player-vita/
+ux0:app/ERPG00001/
+8569062
+2
+BattleShipArena
+ver. 1.2
+DesiRED74
+356 KB
+17 Aug 2016
+Classic game -Sea battle/fight- for PS Vita.| | | | 
+https://github.com/DesiRED74/PSV-BattleShipArena
+ux0:app/BTLSHPARN/
+462372
+2
+Vita Doom
+ver. 1.0
+MrNetrix/xyzz
+694 KB
+14 Aug 2016
+This port only supports official Doom WADs and does not currently have audio.|In order to play Doom, you must add WAD files to:|      |cache0:/VitaDefilerClient/Documents/WADs| 
+https://github.com/xyzz/Vita_Doom/releases/
+ux0:app/DOOM00000/
+998275
+6
+Numpty Physics
+ver. 0.3
+meetpatty
+719 KB
+14 Aug 2016
+Vita Port of NumptyPhysicsPSP.| | | | 
+https://github.com/meetpatty/numpty-physics-for-vita/releases/
+ux0:app/NUMPTYPHY/
+2943579
+2
+vitaWolfen
+ver. 1.0
+Rinnegatamante
+2.18 MB
+11 Aug 2016
+vitaWolfen is a port of the classic old school FPS Wolfenstein 3D (formerly WOLF3D).|The port is still in a early stage so bugs can happen.|Download the game data files from our website and place them in:| |ux0:/data/Wolfenstein 3D/
+http://rinnegatamante.it/site/psv_hbs.php
+ux0:app/WOLF00001/
+158126
+2
+vitaQuake
+ver. 2.0
+Rinnegatamante
+1.68 MB
+11 Aug 2016
+vitaQuake is a port of Quake for PSVITA. It started as a direct port of winQuake|but now has a lot more advanced features.|vitaQuake features incl: dualshock rumbling, fps counter, internal render rescaler,|dual analog ctrl, online & local multiplayer, featured servers, soundtrack support,|sounds support and a loads more.
+http://rinnegatamante.it/site/psv_hbs.php
+ux0:app/QUAK00001/
+2678370
+2
+Hendoku
+ver. 0.1
+Kuni
+1.57 MB
+9 Aug 2016
+Hendoku 0.1 - A Sudoku for PS Vita.| | | | 
+https://gbatemp.net/threads/release-hendoku-sudoku-for-vita.437511/
+ux0:app/KUNI00002/
+1906334
+3
+DeSmuME-Vita
+ver. 0.2
+masterfeizz 
+1.34 MB
+9 Aug 2016
+Nintendo DS emulator for PS Vita|This version has SOUND support and you can now launch DS homebrews.|Configurations can be changed from the menu.||ROMS MUST BE PLACED IN ux0:/data/desmume/
+https://github.com/masterfeizz/DeSmuME-Vita/releases/
+ux0:app/DSEMU0000/
+5317259
+4
+AccountSwitcher
+ver. 1.1
+pendor
+416 KB
+9 Aug 2016
+Swap PSN accounts on a single SD card.| | | | 
+http://wololo.net/talk/viewtopic.php?f=116&t=46410
+ux0:app/PEND00000/
+1020410
+2
+VitaSudoku
+ver. 1.3
+Rinnegatamante
+1.57 MB
+3 Aug 2016
+VitaSudoku is a sudoku game for PSVITA allowing you to play infinite sudokus.|It also supports BGM audio playback during your gaming sessions.| | | 
+http://rinnegatamante.it/site/psv_hbs.php
+ux0:app/SUDO00001/
+3219386
+2
+psp2048
+ver. 0.2
+DOTS_TB
+336 KB
+3 Aug 2016
+2048 on PSP.|original clone & port by Anderain Ryu.|PORTED TO VITA BY DOTS_TB.||
+https://github.com/dots-tb/psp2048
+ux0:app/204800000/
+506433
+2
+Milie Tetris
+ver. 1.0
+Guidobot
+238 KB
+3 Aug 2016
+A Tetris clone, by Guidobot.| | | | 
+http://wololo.net/talk/viewtopic.php?p=407557
+ux0:app/GBOT00001/
+273406
+6
+BreakVeetOut
+ver. 0.2
+Ruben_Wolfe
+1.52 MB
+2 Aug 2016
+BreakVeetOut is an arcade game made for PS Vita.| | | | 
+https://github.com/InvalidExcepti0n/BreakVeetOut
+ux0:app/BREWW0001/
+2109798
+3
+SMSplusVITA
+ver. 1.3.1
+frangarcj
+1.34 MB
+27 Jul 2016
+Sega Master System & Game Gear emulator for PS Vita.|Notes for this version: * Lots of fixes|* Savestates|* Rewind|* New font. Readable text on PSTV
+http://wololo.net/downloads/index.php/download/8332
+ux0:app/FRAN00001/
+2289198
+2
+Flood-It
+ver. 7.30.2016
+Romain Graillot
+2.47 MB
+7 Jul 2016
+A little homebrew game for the PSVITA where you have to fill a grid of color.| | | | 
+https://github.com/notnotme/NotEngine_PSV/releases/
+ux0:app/FLDT00001/
+2594850
+4
+VitaToolbox
+ver. 0.1
+Orion90
+264 KB
+17 Mar 2016
+Functions: Swap X/O Button, swap memory card, delete history of started|programs and error log, display information about your Vita.| | | 
+http://www.psx-place.com/threads/vitatoolbox-v0-1-by-orion90.10294/
+ux0:app/VITATLBOX/
+179302
+4
+History Deleter
+ver. 1.1
+pendor
+20.5 KB
+6 Mar 2016
+Made this for the paranoid people under us, it deletes the vita game and|error history.| | | 
+https://twitter.com/KanadeEngel
+ux0:app/KANA00001/
+102110
