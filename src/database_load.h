@@ -29,8 +29,8 @@ if ( access( VHBB_APP_FILE_DATABASE, F_OK ) == -1 )
 logcat_add( "Database successfuly downloaded", "", "\n" );
 char line[1028];
 int ch;
-long long lineC 	= 0;
-int curLine 		= 0;
+int lineC 	= 0;
+int curLine = 0;
 FILE *fpc 	= fopen( VHBB_APP_FILE_DATABASE, "r" );
 while ( !feof( fpc ) )
 	{
@@ -63,11 +63,11 @@ else
 	curLine += 8;
 	// BEGIN ITEM SCANNING
 	int posNew, posApp, posGames, posEmu, posUtil, posTheme, posDemo, catIndex, ebootSize;
-	posNew 				= posApp = posGames = posEmu = posUtil = posTheme = posDemo = 0;
+	posNew 					= posApp = posGames = posEmu = posUtil = posTheme = posDemo = 0;
 	char dataCat[10]; 		char dataName[30]; 	char dataVer[30]; 	char dataAuth[30]; 		char dataDls[30];
 	char dataRel[30]; 		char dataDes[500]; 	char dataLink[500]; char dataInstall[200];  char dataEboot[30];
 	char *targetFileCloud; 	char *targetFileStroage;
-	char *progBarInfo 	= "Loading database...";
+	char progBarInfo[30] 	= "Loading database...";
 	while ( fgets ( line, 1028, fp ) != NULL )
 		{
 		curLine++;
@@ -75,7 +75,7 @@ else
 		vita2d_draw_texture( img_splash, 0, 0 );
 		vita2d_draw_rectangle( 444, 523, 230, 13, RGBA8(  34, 88, 151, 255 ) );
 		vita2d_draw_rectangle( 447, 526, ((224 * curLine) / lineC), 7, RGBA8(  77, 206, 177, 255 ) );
-		vita2d_font_draw_text( font_default, 447, 518, C_WHITE, 16, "Loading database..." );
+		vita2d_font_draw_text( font_default, 447, 518, C_WHITE, 16, progBarInfo );
 		vita2d_end_drawing();
 		vita2d_swap_buffers();
 		string_remove_newline( line ); strcpy( dataCat, 	line  ); 	fgets ( line, 1028, fp );
@@ -107,7 +107,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -123,7 +123,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -152,7 +152,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -168,7 +168,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -197,7 +197,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -213,7 +213,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -242,7 +242,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -258,7 +258,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -287,7 +287,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -303,7 +303,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -332,7 +332,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -348,7 +348,7 @@ else
 						targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_PREVS, dataName, "_prev.png" );
 						if ( access( targetFileStroage, F_OK ) == -1 )
 							{
-							progBarInfo				= "Retrieving missing images...";
+							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
 							download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
@@ -380,7 +380,7 @@ else
 			targetFileStroage		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_ICONS, dataName, "_icon.png" );
 			if ( access( targetFileStroage, F_OK ) == -1 )
 				{
-				progBarInfo				= "Retrieving missing images...";
+				strcpy( progBarInfo, "Retrieving missing icons..." );
 				targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
 				download( targetFileCloud, targetFileStroage );
 				if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
