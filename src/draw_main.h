@@ -126,7 +126,13 @@ else
 							vita2d_font_draw_text( font_default, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), C_WHITE, 25, catListNew[i].release 	);
 							
 							//vita2d_draw_texture( iconListNew[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
-							
+							/*
+							 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+							 * 	application crash on icon draw after returning from download.
+							 *	see
+							 *
+							 *
+							 */
 							}
 						break;
 		case 1:			// APPS
