@@ -33,7 +33,15 @@ if ( pad.buttons )
 				{
 				dPadTimer = 9;
 				itemPressed--;
-				if ( itemPressed < 0 ) { itemPressed = 0; }
+				if ( itemPressed < 0 )
+					{
+					itemPressed = 0;
+					}
+				int dif		= (originY +115 +(itemPressed *90));
+				if ( dif < 115 ) 	{ originY += 90; }
+				if ( originY > 0 ) 	{ originY = 0; }
+				
+				
 				}
 			}
 		}
@@ -46,20 +54,22 @@ if ( pad.buttons )
 				{
 				dPadTimer = 9;
 				itemPressed++;
+				int adj = 0;
 				switch ( screen )
 					{
-					case 0:		if ( itemPressed > itemCount_new 	) { itemPressed = itemCount_new; 	} break;
-					case 1:		if ( itemPressed > itemCount_apps 	) { itemPressed = itemCount_apps; 	} break;
-					case 2:		if ( itemPressed > itemCount_games 	) { itemPressed = itemCount_games; 	} break;
-					case 3:		if ( itemPressed > itemCount_emu 	) { itemPressed = itemCount_emu; 	} break;
-					case 4:		if ( itemPressed > itemCount_util 	) { itemPressed = itemCount_util; 	} break;
-					case 5:		if ( itemPressed > itemCount_themes ) { itemPressed = itemCount_themes; } break;
-					case 6:		if ( itemPressed > itemCount_demos 	) { itemPressed = itemCount_demos; 	} break;
+					case 0:		if ( itemPressed > (itemCount_new 	 -1) ) { itemPressed = (itemCount_new 	 -1); adj = 1; } break;
+					case 1:		if ( itemPressed > (itemCount_apps 	 -1) ) { itemPressed = (itemCount_apps 	 -1); adj = 1; } break;
+					case 2:		if ( itemPressed > (itemCount_games  -1) ) { itemPressed = (itemCount_games  -1); adj = 1; } break;
+					case 3:		if ( itemPressed > (itemCount_emu 	 -1) ) { itemPressed = (itemCount_emu 	 -1); adj = 1; } break;
+					case 4:		if ( itemPressed > (itemCount_util 	 -1) ) { itemPressed = (itemCount_util 	 -1); adj = 1; } break;
+					case 5:		if ( itemPressed > (itemCount_themes -1) ) { itemPressed = (itemCount_themes -1); adj = 1; } break;
+					case 6:		if ( itemPressed > (itemCount_demos  -1) ) { itemPressed = (itemCount_demos  -1); adj = 1; } break;
 					}
-				if ( itemPressed < 0 ) { itemPressed = 0; }
-				// MOVE ITEM ONTO SCREEN IF ABOVE OR BELOW SCREEN
-				//while ( (originY +115 +(itemPanelHeight *itemPressed))
-				
+				if ( !adj )
+					{
+					int dif		= (originY +115 +(itemPressed *90));
+					if ( dif > 454 ) { originY -= 90; }
+					}
 				}
 			}
 		}
