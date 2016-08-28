@@ -2,7 +2,6 @@ TITLE_ID = 	VHBB00001
 TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
 OBJS     = 	src/vhbb.o 									\
-			src/font.o									\
 			assets/img_splash.o							\
 			assets/img_bg.o								\
 			assets/img_topbar_apps.o					\
@@ -72,6 +71,8 @@ all: $(BIN)/$(TARGET).vpk
 		--add sce_sys/livearea/contents/bg.png=sce_sys/livearea/contents/bg.png \
 		--add sce_sys/livearea/contents/startup.png=sce_sys/livearea/contents/startup.png \
 		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
+		\
+		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
 	$(BIN)/$(TARGET).vpk
 	
 	
