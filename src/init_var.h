@@ -228,6 +228,3 @@ extern unsigned char _binary_assets_img_dialog_progress_bg_png_start;
 extern unsigned char _binary_assets_img_dialog_btn_cancel_png_start;
 extern unsigned char _binary_assets_img_dialog_btn_cancel_pressed_png_start;
 
-/// FONTS
-extern unsigned int  fontDefault_size;
-extern unsigned char fontDefault[];
