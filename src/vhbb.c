@@ -23,6 +23,7 @@
 #include "network.h"
 #include "tools.h"
 #include "init_var.h"
+#include "input.h"
 
 int main()
 	{
@@ -38,7 +39,11 @@ int main()
 	vita2d_set_clear_color( COLOUR_BLACK );
 	
 	// LOAD DEFAULT FONT
-	vita2d_font *font_default 	= vita2d_load_font_mem( fontDefault, fontDefault_size );
+	vita2d_font *font_segoeui 	= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	
+	// INPUT
+	sceAppUtilInit( &(SceAppUtilInitParam){}, &(SceAppUtilBootParam){} );
+    sceCommonDialogSetConfigParam( &(SceCommonDialogConfigParam){} );
 	
 	// SET TOUCH SAMPLING
 	sceTouchSetSamplingState( SCE_TOUCH_PORT_FRONT, 1 );
@@ -297,6 +302,11 @@ int main()
 								else 																							   { preview_isDownloaded = 1; }
 								}
 							itemPressed 		= -1;
+							}
+						if ( point_in_rectangle( touch_x, touch_y, 800, 1, 960, 90 ) )
+							{
+							// USER SEARCH
+							input_get( "Vita HomeBrew Search", "", SCE_IME_DIALOG_MAX_TEXT_LENGTH );
 							}
 						}
 					else
