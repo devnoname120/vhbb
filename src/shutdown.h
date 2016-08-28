@@ -66,7 +66,7 @@ vita2d_free_texture( img_dialog_btn_cancel_pressed		);
 
 
 // RELEASE FONT
-vita2d_free_font( font_default );
+vita2d_free_font( font_segoeui );
 // SHUTDOWN NETWORK
 //?????
 sceKernelExitProcess(0);

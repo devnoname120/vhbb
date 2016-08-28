@@ -93,7 +93,7 @@ int download_file( const char *src, const char *dst )
 		vita2d_draw_texture( img_dialog_progress_bg, 228, 181 );
 		if ( btnState_dialogBtn2 == 0 ) { vita2d_draw_texture( img_dialog_btn_cancel, 287, 403 ); }
 		else							{ vita2d_draw_texture( img_dialog_btn_cancel_pressed, 287, 403 ); }
-		vita2d_font_draw_text( font_default, 310, 240, COLOUR_WHITE, 24, dialogMessage );
+		vita2d_font_draw_text( font_segoeui, 310, 240, COLOUR_WHITE, 24, dialogMessage );
 		vita2d_draw_rectangle( 310, 325, ((PROGRESS_BAR_WIDTH * total_read) / length), PROGRESS_BAR_HEIGHT, COLOUR_BLUEGREY );
 		vita2d_end_drawing();
 		vita2d_swap_buffers();

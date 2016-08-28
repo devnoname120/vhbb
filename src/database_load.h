@@ -75,7 +75,7 @@ else
 		vita2d_draw_texture( img_splash, 0, 0 );
 		vita2d_draw_rectangle( 444, 523, 230, 13, RGBA8(  34, 88, 151, 255 ) );
 		vita2d_draw_rectangle( 447, 526, ((224 * curLine) / lineC), 7, RGBA8(  77, 206, 177, 255 ) );
-		vita2d_font_draw_text( font_default, 447, 518, COLOUR_WHITE, 16, progBarInfo );
+		vita2d_font_draw_text( font_segoeui, 447, 518, COLOUR_WHITE, 16, progBarInfo );
 		vita2d_end_drawing();
 		vita2d_swap_buffers();
 		string_remove_newline( line ); strcpy( dataCat, 	line  ); 	fgets ( line, 1028, fp );
