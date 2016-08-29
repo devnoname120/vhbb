@@ -22,14 +22,14 @@
 /* |||| STRINGS ||| */
 char* string_join( int count, ... )
     {
-    va_list ap; int i; int len = 1;
+    va_list ap; int si; int len = 1;
     va_start( ap, count );
-    for ( i = 0 ; i < count; i++ ) { len += strlen( va_arg( ap, char* ) ); }
+    for ( si = 0 ; si < count; si++ ) { len += strlen( va_arg( ap, char* ) ); }
     va_end( ap );
     char *merged = calloc(sizeof(char),len);
     int null_pos = 0;
     va_start( ap, count );
-    for( i = 0 ; i < count; i++ )
+    for( si = 0 ; si < count; si++ )
 		{
         char *s = va_arg( ap, char* );
         strcpy( merged +null_pos, s );
@@ -94,6 +94,20 @@ void logcat_add( char *str1, char *str2, char *str3 )
 		{
 		FILE *lf 	= fopen( VHBB_APP_FILE_LOGCAT, "ab+" );
 		fprintf( lf, "%s%s%s", str1, str2, str3 );
+		}
+	fclose( lf );
+	}
+void logcat_add_real( char *str1, int real1, char *str2 )
+	{
+	FILE *lf = fopen( VHBB_APP_FILE_LOGCAT, "a+" );
+	if ( lf != NULL )
+		{
+		fprintf( lf, "%s%d%s", str1, real1, str2 );
+		}
+	else
+		{
+		FILE *lf 	= fopen( VHBB_APP_FILE_LOGCAT, "ab+" );
+		fprintf( lf, "%s%d%s", str1, real1, str2 );
 		}
 	fclose( lf );
 	}
