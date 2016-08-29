@@ -225,6 +225,7 @@ if ( pad.buttons )
 		if ( dPadTimer == 0 )
 			{
 			dPadTimer = 9;
+			/* SETTINGS REMOVED
 			if ( settingsOpen != 1 )
 				{
 				settingsOpen	= 1;
@@ -233,6 +234,7 @@ if ( pad.buttons )
 				{
 				settingsOpen	= 0;
 				}
+			*/
 			}
 		
 		

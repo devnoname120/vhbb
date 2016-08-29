@@ -77,6 +77,8 @@ int touch_check_released_prev	= 0;
 
 // ITEM PRESSES
 int itemPressed					= -1;
+int itemHighlight				=  0;
+int itemHighlightDir			=  1;
 
 // PREVIEW VARIABLES
 int  previewActive				= 0;
@@ -200,6 +202,7 @@ extern unsigned char _binary_assets_img_item_panel_emu_png_start;
 extern unsigned char _binary_assets_img_item_panel_util_png_start;
 extern unsigned char _binary_assets_img_item_panel_themes_png_start;
 extern unsigned char _binary_assets_img_item_panel_demos_png_start;
+extern unsigned char _binary_assets_img_item_panel_highlight_png_start;
 extern unsigned char _binary_assets_img_preview_btn_download_png_start;
 extern unsigned char _binary_assets_img_preview_btn_download_pressed_png_start;
 extern unsigned char _binary_assets_img_preview_btn_install_png_start;

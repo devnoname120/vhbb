@@ -38,6 +38,7 @@ vita2d_texture *img_item_panel_emu 					= vita2d_load_PNG_buffer( &_binary_asset
 vita2d_texture *img_item_panel_util 				= vita2d_load_PNG_buffer( &_binary_assets_img_item_panel_util_png_start					);
 vita2d_texture *img_item_panel_themes 				= vita2d_load_PNG_buffer( &_binary_assets_img_item_panel_themes_png_start 				);
 vita2d_texture *img_item_panel_demos				= vita2d_load_PNG_buffer( &_binary_assets_img_item_panel_demos_png_start 				);
+vita2d_texture *img_item_panel_highlight	 		= vita2d_load_PNG_buffer( &_binary_assets_img_item_panel_highlight_png_start 			);
 
 vita2d_texture *img_preview_btn_download			= vita2d_load_PNG_buffer( &_binary_assets_img_preview_btn_download_png_start 			);
 vita2d_texture *img_preview_btn_download_pressed	= vita2d_load_PNG_buffer( &_binary_assets_img_preview_btn_download_pressed_png_start 	);

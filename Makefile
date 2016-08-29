@@ -25,6 +25,7 @@ OBJS     = 	src/vhbb.o 									\
 			assets/img_item_panel_util.o				\
 			assets/img_item_panel_themes.o				\
 			assets/img_item_panel_demos.o				\
+			assets/img_item_panel_highlight.o			\
 			assets/img_preview_btn_download.o			\
 			assets/img_preview_btn_download_pressed.o	\
 			assets/img_preview_btn_install.o			\
