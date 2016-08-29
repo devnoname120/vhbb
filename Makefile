@@ -2,6 +2,12 @@ TITLE_ID = 	VHBB00001
 TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
 OBJS     = 	src/vhbb.o 									\
+			src/vpk_install/vpk_install.o				\
+			src/vpk_install/archive.o					\
+			src/vpk_install/sha1/sha1.o					\
+			src/vpk_install/file.o						\
+			src/minizip/ioapi.o							\
+			src/minizip/unzip.o							\
 			assets/img_splash.o							\
 			assets/img_bg.o								\
 			assets/img_topbar_apps.o					\
@@ -50,8 +56,10 @@ LIBS = -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
 	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
 	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
 	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
-	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub
+	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub \
+	src/vpk_install/libpromoter/libScePromoterUtil_stub.a
 
+EXTRA_NIDS = src/vpk_install/libpromoter/promoterutil.json
 	
 BIN = bin
 	   
@@ -83,7 +91,7 @@ $(BIN)/eboot.bin: $(BIN)/$(TARGET).velf
 	vita-make-fself $< $@
 
 %.velf: %.elf
-	vita-elf-create $< $@
+	vita-elf-create $< $@ $(EXTRA_NIDS)
 
 $(BIN)/$(TARGET).elf: binfolder $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
