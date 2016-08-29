@@ -30,7 +30,9 @@ vita2d_free_texture( img_topbar3  );
 vita2d_free_texture( img_topbar4  );
 vita2d_free_texture( img_topbar5  );
 vita2d_free_texture( img_topbar6  );
+
 vita2d_free_texture( img_btn_search  	  				);
+
 vita2d_free_texture( img_item_panel_new  	  			);
 vita2d_free_texture( img_item_panel_apps  	  			);
 vita2d_free_texture( img_item_panel_games  	  			);
@@ -38,11 +40,18 @@ vita2d_free_texture( img_item_panel_emu  	  			);
 vita2d_free_texture( img_item_panel_util  	  			);
 vita2d_free_texture( img_item_panel_themes  	 	 	);
 vita2d_free_texture( img_item_panel_demos  	  			);
+
 vita2d_free_texture( img_preview_btn_download  	  		);
 vita2d_free_texture( img_preview_btn_download_pressed  	);
+vita2d_free_texture( img_preview_btn_install   			);
+vita2d_free_texture( img_preview_btn_install_pressed  	);
+vita2d_free_texture( img_preview_btn_update  			);
+vita2d_free_texture( img_preview_btn_update_pressed  	);
+
 vita2d_free_texture( img_preview_infobg  	  			);
 vita2d_free_texture( img_preview_btn_back  	  			);
 vita2d_free_texture( img_preview_btn_back_pressed  	  	);
+
 for ( i = 0; i < itemCount_new; 	i++ ) { vita2d_free_texture( iconListNew[i] );		 vita2d_free_texture( previewListNew[i] ); 		 }
 for ( i = 0; i < itemCount_apps; 	i++ ) { vita2d_free_texture( iconListApps[i] ); 	 vita2d_free_texture( previewListApps[i] ); 	 }
 for ( i = 0; i < itemCount_games; 	i++ ) { vita2d_free_texture( iconListGames[i] ); 	 vita2d_free_texture( previewListGames[i] ); 	 }
@@ -50,6 +59,7 @@ for ( i = 0; i < itemCount_emu; 	i++ ) { vita2d_free_texture( iconListEmulators[
 for ( i = 0; i < itemCount_util; 	i++ ) { vita2d_free_texture( iconListUtilities[i] ); vita2d_free_texture( previewListUtilities[i] ); }
 for ( i = 0; i < itemCount_themes; 	i++ ) { vita2d_free_texture( iconListThemes[i] ); 	 vita2d_free_texture( previewListThemes[i] ); 	 }
 for ( i = 0; i < itemCount_demos; 	i++ ) { vita2d_free_texture( iconListDemos[i] ); 	 vita2d_free_texture( previewListDemos[i] ); 	 }
+
 vita2d_free_texture( img_settings_about  	  			);
 vita2d_free_texture( img_settings_about_pressed  		);
 vita2d_free_texture( img_settings_bg  	  				);
@@ -60,13 +70,16 @@ vita2d_free_texture( img_settings_ctrl_pressed  		);
 vita2d_free_texture( img_settings_snd  	  				);
 vita2d_free_texture( img_settings_snd_pressed  	  		);
 vita2d_free_texture( img_settings_topbar  	  			);
+
 vita2d_free_texture( img_dialog_progress_bg  	  		);
 vita2d_free_texture( img_dialog_btn_cancel  	  		);
 vita2d_free_texture( img_dialog_btn_cancel_pressed		);
 
+vita2d_free_texture( img_statsbar_battery				);
 
 // RELEASE FONT
 vita2d_free_font( font_segoeui );
+vita2d_free_font( font_myriadpro );
 // SHUTDOWN NETWORK
 //?????
 sceKernelExitProcess(0);
