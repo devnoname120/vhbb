@@ -23,6 +23,7 @@ int screen						= 0;
 char databaseTS[15];
 int i;
 int dPadTimer					= 0;
+int date_format, time_format;
 
 int itemCount_new				= 0;
 int itemCount_apps				= 0;
@@ -227,4 +228,6 @@ extern unsigned char _binary_assets_img_settings_topbar_png_start;
 extern unsigned char _binary_assets_img_dialog_progress_bg_png_start;
 extern unsigned char _binary_assets_img_dialog_btn_cancel_png_start;
 extern unsigned char _binary_assets_img_dialog_btn_cancel_pressed_png_start;
+
+extern unsigned char _binary_assets_img_statsbar_battery_png_start;
 

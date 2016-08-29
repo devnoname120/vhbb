@@ -48,6 +48,9 @@
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 
+// ALIGNMENT
+#define ALIGN_CENTER(a, b) ((a - b) / 2)
+#define ALIGN_LEFT(x, w) (x - w)
 
 // DIALOGS
 #define PROGRESS_BAR_WIDTH					342

@@ -24,8 +24,7 @@ vita2d_clear_screen();
 
 // BACKGROUND
 vita2d_draw_texture( img_bg, originX, 0 );
-
-
+	
 // SETTINGS
 if ( settingsDraw )
 	{
@@ -230,6 +229,37 @@ switch ( screen )
 vita2d_draw_texture( img_btn_search, (originX +821), 37 );
 if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37, RGBA8( 255, 255, 255, 120 ) ); }
 
+
+// STATUS BAR
+	// Title
+	vita2d_font_draw_textf( font_segoeui, 15, 26, COLOUR_WHITE, 19, "VHBB ver %d", VHBB_VERSION );
+
+	// BATTERY
+	float battery_x = ALIGN_LEFT( 949, vita2d_texture_get_width(img_statsbar_battery) );
+	vita2d_draw_texture( img_statsbar_battery, battery_x, 5 );
+	float percent 	= scePowerGetBatteryLifePercent() / 100.0f;
+	float width 	= ((29 * percent) / 100);
+	if ( scePowerIsLowBattery() )
+		{
+		vita2d_draw_rectangle( 938, 9, -width, 14, RGBA8( 255, 48, 48, 255 ) );
+		}
+	else
+		{
+		vita2d_draw_rectangle( 938, 9, -width, 14, RGBA8( 91, 223, 38, 255 ) );
+		}
+
+	// DATE & TIME
+	SceDateTime time;
+	sceRtcGetCurrentClockLocalTime( &time );
+	char date_string[16];
+	getDateString( date_string, date_format, &time );
+	char time_string[24];
+	getTimeString( time_string, time_format, &time );
+	char string[64];
+	sprintf( string, "%s  %s", date_string, time_string );
+	vita2d_font_draw_text( font_segoeui, 640, 26, COLOUR_WHITE, 19, string );
+	
+	
 // KEYBOARD
 if ( show_input == 1 )
 	{
