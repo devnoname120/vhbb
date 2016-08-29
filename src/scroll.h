@@ -62,7 +62,7 @@ if ( !previewActive && !settingsOpen )
 // SETTINGS SCROLL
 if ( settingsOpen )
 	{
-	if ( scroll && ground > settingsGround && touch_y > 90 )
+	if ( scroll && settingsGround > 544 && touch_y > 90 )
 		{
 		if ( touch_check && touch_x < 207 )
 			{
