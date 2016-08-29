@@ -42,7 +42,8 @@ OBJS     = 	src/vhbb.o 									\
 			assets/img_settings_topbar.o				\
 			assets/img_dialog_progress_bg.o				\
 			assets/img_dialog_btn_cancel.o				\
-			assets/img_dialog_btn_cancel_pressed.o
+			assets/img_dialog_btn_cancel_pressed.o		\
+			assets/img_statsbar_battery.o	
 			
 
 LIBS = -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
