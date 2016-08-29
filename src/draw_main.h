@@ -261,7 +261,26 @@ if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37
 	sprintf( string, "%s  %s", date_string, time_string );
 	vita2d_font_draw_text( font_myriadpro, 670, 25, COLOUR_WHITE, 25, string );
 	
-	
+// INSTALL DIALOG
+if ( dialogInstall )
+	{
+	loadTimer++;
+	if ( loadTimer > 30 )  { loadAnim++; loadTimer = 0; }
+	if ( loadAnim >   4 )  { loadAnim = 0;}
+	if ( dialogInstallAlpha < 210 ) { dialogInstallAlpha += 15;  }
+	else 							{ dialogInstallAlpha  = 210; }
+	vita2d_draw_rectangle( 0, 0, 960, 544, RGBA8( 0, 0, 0, dialogInstallAlpha ) );
+	switch ( loadAnim )
+		{
+		case 0:		vita2d_font_draw_textf( font_myriadpro, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling" ); break;
+		case 1:		vita2d_font_draw_textf( font_myriadpro, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling." ); break;
+		case 2: 	vita2d_font_draw_textf( font_myriadpro, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling.." ); break;
+		case 3:		vita2d_font_draw_textf( font_myriadpro, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling..." ); break;
+		case 4: 	vita2d_font_draw_textf( font_myriadpro, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling...." ); break;
+		}
+	}
+
+
 // KEYBOARD
 if ( show_input == 1 )
 	{
