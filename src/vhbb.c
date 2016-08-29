@@ -16,14 +16,21 @@
  *
  *
  */
- 
 
+// DIALOG VARIABLES
+int  dialogOpen				= 0;
+int  dialogInstall			= 0;
+int	dialogInstallAlpha		= 0;
+
+#include "vpk_install/vpk_install.h"
 #include "vhbb.h"
 #include "macros.h"
 #include "network.h"
 #include "tools.h"
 #include "init_var.h"
 #include "input.h"
+
+
 
 int main()
 	{
@@ -343,9 +350,16 @@ int main()
 									}
 								else
 									{
+									dialogInstall		= 1;
+									dialogOpen			= 1;
+									InstallArguments args;
+									args.file = fileVpkLocal;
+									SceUID thid = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
+									if (thid >= 0)
+										sceKernelStartThread(thid, sizeof(InstallArguments), &args);
 									// UPDATE ACTION BUTTON
-									if ( access( string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" ), F_OK ) == -1 ) { preview_isDownloaded = 0; }
-									else 																							   { preview_isDownloaded = 1; }
+									//if ( access( string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" ), F_OK ) == -1 ) { preview_isDownloaded = 0; }
+									//else 																							   { preview_isDownloaded = 1; }
 									}
 								
 								

@@ -23,6 +23,8 @@ int screen						= 0;
 char databaseTS[15];
 int i;
 int dPadTimer					= 0;
+int loadAnim					= 0;
+int loadTimer					= 0;
 int date_format, time_format;
 
 int itemCount_new				= 0;
@@ -104,8 +106,7 @@ int settingsDraw				= 0;
 int settingsPosY				= 0;
 int settingsGround				= 679;
 
-// DIALOG VARIABLES
-int  dialogOpen					= 0;
+
 
 
 // COLOURS
