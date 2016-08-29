@@ -39,7 +39,8 @@ int main()
 	vita2d_set_clear_color( COLOUR_BLACK );
 	
 	// LOAD DEFAULT FONT
-	vita2d_font *font_segoeui 	= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	vita2d_font *font_segoeui 		= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	vita2d_font *font_myriadpro 	= vita2d_load_font_file( VHBB_RES_DIR_FONTS "MyriadPro.otf" );
 	
 	// INPUT
 	sceAppUtilInit( &(SceAppUtilInitParam){}, &(SceAppUtilBootParam){} );

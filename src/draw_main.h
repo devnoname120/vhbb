@@ -48,12 +48,12 @@ if ( previewActive )
 	{
 	// INFORMATION BACKGROUND
 	vita2d_draw_texture( img_preview_infobg, originX, 276 );
-	vita2d_font_draw_text( font_segoeui, (originX +203), 140, COLOUR_WHITE, 40, previewName    ); // NAME
+	vita2d_font_draw_text( font_myriadpro, (originX +203), 140, COLOUR_WHITE, 40, previewName    ); // NAME
 	vita2d_font_draw_text( font_segoeui, (originX +203), 166, COLOUR_AQUA,  26, previewAuthor  ); // AUTHOR
 	vita2d_font_draw_text( font_segoeui, (originX +203), 196, COLOUR_WHITE, 26, previewVersion ); // VERSION
 	vita2d_font_draw_text( font_segoeui, (originX +100), 219, COLOUR_WHITE, 20, previewDlSize  ); // DOWNLOAD SIZE
 	vita2d_font_draw_text( font_segoeui, (originX +850), 533, COLOUR_WHITE, 20, previewRelease ); // RELEASE DATE
-	vita2d_font_draw_textf(font_segoeui, (originX +40), (349 +previewDescriptionHeight), COLOUR_WHITE, 26, "%s\n%s\n%s\n%s\n%s", previewDescription, previewDesLine2, previewDesLine3, previewDesLine4, previewDesLine5 );
+	vita2d_font_draw_textf(font_myriadpro, (originX +40), (349 +previewDescriptionHeight), COLOUR_WHITE, 26, "%s\n%s\n%s\n%s\n%s", previewDescription, previewDesLine2, previewDesLine3, previewDesLine4, previewDesLine5 );
 	
 	// DOWNLOAD/INSTALL/UPDATE BUTTON
 	
@@ -115,13 +115,9 @@ else
 							vita2d_draw_texture( img_item_panel_new, (originX +62), (originY +115 +(i *90)) );
 							
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
-							
 							vita2d_font_draw_text( font_segoeui, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListNew[i].name    	);
-							
 							vita2d_font_draw_text( font_segoeui, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].author  	);
-							
 							vita2d_font_draw_text( font_segoeui, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].version 	);
-							
 							vita2d_font_draw_text( font_segoeui, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].release 	);
 							
 							//vita2d_draw_texture( iconListNew[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
@@ -232,7 +228,7 @@ if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37
 
 // STATUS BAR
 	// Title
-	vita2d_font_draw_textf( font_segoeui, 15, 26, COLOUR_WHITE, 19, "VHBB ver %d", VHBB_VERSION );
+	vita2d_font_draw_text( font_segoeui, 15, 25, COLOUR_WHITE, 25, "Vita HomeBrew Browser" );
 
 	// BATTERY
 	float battery_x = ALIGN_LEFT( 949, vita2d_texture_get_width(img_statsbar_battery) );
@@ -241,11 +237,11 @@ if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37
 	float width 	= ((29 * percent) / 100);
 	if ( scePowerIsLowBattery() )
 		{
-		vita2d_draw_rectangle( 938, 9, -width, 14, RGBA8( 255, 48, 48, 255 ) );
+		vita2d_draw_rectangle( 938, 9, (width *-1), 14, RGBA8( 255, 48, 48, 255 ) );
 		}
 	else
 		{
-		vita2d_draw_rectangle( 938, 9, -width, 14, RGBA8( 91, 223, 38, 255 ) );
+		vita2d_draw_rectangle( 938, 9, (width *-1), 14, RGBA8( 91, 223, 38, 255 ) );
 		}
 
 	// DATE & TIME
@@ -257,7 +253,7 @@ if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37
 	getTimeString( time_string, time_format, &time );
 	char string[64];
 	sprintf( string, "%s  %s", date_string, time_string );
-	vita2d_font_draw_text( font_segoeui, 640, 26, COLOUR_WHITE, 19, string );
+	vita2d_font_draw_text( font_myriadpro, 670, 25, COLOUR_WHITE, 25, string );
 	
 	
 // KEYBOARD
