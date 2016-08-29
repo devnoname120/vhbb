@@ -43,6 +43,18 @@
 #include <psp2/message_dialog.h>
 #include <psp2/ime_dialog.h>
 #include <psp2/display.h>
+#include <psp2/kernel/modulemgr.h>
+#include <psp2/moduleinfo.h>
+#include <psp2/pgf.h>
+#include <psp2/power.h>
+#include <psp2/rtc.h>
+#include <psp2/system_param.h>
+
+
+
+
+
+
 
 
 
