@@ -106,4 +106,37 @@ int point_in_rectangle( int px, int py, int x1, int y1, int x2, int y2 )
 	else { return 0; }
 	}
 	
+	
+/* ||| DATE/TIME ||| */
+void getDateString( char *string, int date_format, SceDateTime *time )
+	{
+	switch ( date_format )
+		{
+		case SCE_SYSTEM_PARAM_DATE_FORMAT_YYYYMMDD:
+			sprintf(string, "%04d/%02d/%02d", time->year, time->month, time->day);
+			break;
+
+		case SCE_SYSTEM_PARAM_DATE_FORMAT_DDMMYYYY:
+			sprintf(string, "%02d/%02d/%04d", time->day, time->month, time->year);
+			break;
+
+		case SCE_SYSTEM_PARAM_DATE_FORMAT_MMDDYYYY:
+			sprintf(string, "%02d/%02d/%04d", time->month, time->day, time->year);
+			break;
+		}
+	}
+	
+void getTimeString( char *string, int time_format, SceDateTime *time )
+	{
+	switch ( time_format )
+		{
+		case SCE_SYSTEM_PARAM_TIME_FORMAT_12HR:
+			sprintf(string, "%02d:%02d %s", (time->hour > 12) ? (time->hour - 12) : ((time->hour == 0) ? 12 : time->hour), time->minute, time->hour >= 12 ? "PM" : "AM");
+			break;
+
+		case SCE_SYSTEM_PARAM_TIME_FORMAT_24HR:
+			sprintf(string, "%02d:%02d", time->hour, time->minute);
+			break;
+		}
+	}
 //-------------------------------------------------------
