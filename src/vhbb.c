@@ -120,6 +120,7 @@ int main()
 			{
 			if ( !dialogOpen )
 				{
+				logcat_add( "dialog not open", "", "\n" );
 				if ( !settingsOpen )
 					{
 					if ( touch_y < itemPanelHeight )
@@ -290,6 +291,7 @@ int main()
 								strtok_r( previewDesLine4,    "|", &previewDesLine5 );
 								previewActive		=  1;
 								previewListNumber	= itemPressed;
+								logcat_add( "MARKER ------------------", "", "\n" );
 								// CHECK DOWNLOADED, INSTALLED, CURRENT VERSION
 								if ( access( previewDir, F_OK ) == -1 ) { preview_isInstalled = 0; }
 								else
@@ -328,7 +330,7 @@ int main()
 							
 							
 								// DOWNLOAD
-								strcpy( dialogMessage, string_join( 4, "Downloading\n", previewName, "\n", previewRelease ) );
+								//strcpy( dialogMessage, string_join( 4, "Downloading\n", previewName, "\n", previewRelease ) );
 								char *fileVpkCloud;
 								char *fileVpkLocal;
 								fileVpkCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_FILES, previewName, ".vpk" );
@@ -392,7 +394,7 @@ int main()
 		
 			
 			
-			
+		
 			
 		
 		}

@@ -111,16 +111,22 @@ else
 						ground = 145 +(itemCount_new *90);
 						for ( i = 0; i < itemCount_new; i++ )
 							{
-							
+							//logcat_add_real( " POSA", i, "\n" );
 							vita2d_draw_texture( img_item_panel_new, (originX +62), (originY +115 +(i *90)) );
-							
+							//logcat_add_real( " POSB", i, "\n" );
 							if ( i == itemPressed ) { vita2d_draw_rectangle( (originX +152), (originY +115 +(i *90)), 808, 90, RGBA8( 255, 255, 255, 120 ) ); }
+							//logcat_add_real( " POSC", i, "\n" );
 							vita2d_font_draw_text( font_segoeui, (originX +62 +120), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 35, catListNew[i].name    	);
+							//logcat_add_real( " POSD", i, "\n" );
 							vita2d_font_draw_text( font_segoeui, (originX +62 +120), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].author  	);
+							//logcat_add_real( " POSE", i, "\n" );
 							vita2d_font_draw_text( font_segoeui, (originX +62 +800), (originY +115 +33 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].version 	);
+							//logcat_add_real( " POSF", i, "\n" );
 							vita2d_font_draw_text( font_segoeui, (originX +62 +746), (originY +115 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, catListNew[i].release 	);
+							//logcat_add_real( " POSG", i, "\n" );
 							
-							//vita2d_draw_texture( iconListNew[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
+							vita2d_draw_texture( iconListNew[i], (originX +62 +3), (originY +115 +3 +(i *itemPanelHeight)) );
+							//logcat_add_real( " POSH", i, "\n" );
 							/*
 							 * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 							 * 	application crash on icon draw after returning from download.

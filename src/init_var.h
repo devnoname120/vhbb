@@ -106,7 +106,7 @@ int settingsGround				= 679;
 
 // DIALOG VARIABLES
 int  dialogOpen					= 0;
-char dialogMessage[200];
+
 
 // COLOURS
 enum
