@@ -83,7 +83,6 @@ all: $(BIN)/$(TARGET).vpk
 		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
 		\
 		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
-		--add assets/fonts/MyriadPro.otf=resources/fonts/MyriadPro.otf \
 	$(BIN)/$(TARGET).vpk
 	
 	
