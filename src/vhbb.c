@@ -51,8 +51,12 @@ int main()
 	vita2d_set_clear_color( COLOUR_BLACK );
 	
 	// LOAD DEFAULT FONT
-	vita2d_font *font_segoeui 		= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
-	vita2d_font *font_myriadpro 	= vita2d_load_font_file( VHBB_RES_DIR_FONTS "MyriadPro.otf" );
+	vita2d_font *font_16 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	vita2d_font *font_20 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	vita2d_font *font_25 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	vita2d_font *font_30 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	vita2d_font *font_35 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	vita2d_font *font_40 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
 	
 	// INPUT
 	sceAppUtilInit( &(SceAppUtilInitParam){}, &(SceAppUtilBootParam){} );
@@ -150,7 +154,7 @@ int main()
 						{
 						if ( previewActive )
 							{
-							// DOWNLOAD/INSTALL/UPDATE PRESSED
+							// INSTALL PRESSED
 							if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) )
 								{
 								btnState_previewAction = 1;

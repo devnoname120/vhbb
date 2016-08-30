@@ -78,8 +78,12 @@ vita2d_free_texture( img_dialog_btn_cancel_pressed		);
 vita2d_free_texture( img_statsbar_battery				);
 
 // RELEASE FONT
-vita2d_free_font( font_segoeui );
-vita2d_free_font( font_myriadpro );
+vita2d_free_font( font_16 );
+vita2d_free_font( font_20 );
+vita2d_free_font( font_25 );
+vita2d_free_font( font_30 );
+vita2d_free_font( font_35 );
+vita2d_free_font( font_40 );
 // SHUTDOWN NETWORK
 //?????
 sceKernelExitProcess(0);
