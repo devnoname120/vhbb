@@ -207,7 +207,7 @@ int main()
 							switch ( screen )
 								{
 								case 0:			// NEW
-												if ( itemPressed < 0 || itemPressed > itemCount_new ) { previewReady = 0; break; }
+												if ( itemPressed < 0 || itemPressed > (itemCount_new -1) ) { previewReady = 0; break; }
 												previewCategory = catListNew[itemPressed].cat;
 												strcpy( previewName, 		catListNew[itemPressed].name 		);
 												strcpy( previewAuthor, 		catListNew[itemPressed].author 		);
@@ -220,7 +220,7 @@ int main()
 												previewEbootSize = catListNew[itemPressed].ebootSize;
 												break;
 								case 1:			// APPS
-												if ( itemPressed < 0 || itemPressed > itemCount_apps ) { previewReady = 0; break; }
+												if ( itemPressed < 0 || itemPressed > (itemCount_apps -1) ) { previewReady = 0; break; }
 												previewCategory = catListApps[itemPressed].cat;
 												strcpy( previewName, 		catListApps[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListApps[itemPressed].author 		);
@@ -233,7 +233,7 @@ int main()
 												previewEbootSize = catListApps[itemPressed].ebootSize;
 												break;
 								case 2:			// GAMES
-												if ( itemPressed < 0 || itemPressed > itemCount_games ) { previewReady = 0; break; }
+												if ( itemPressed < 0 || itemPressed > (itemCount_games -1) ) { previewReady = 0; break; }
 												previewCategory	= catListGames[itemPressed].cat;
 												strcpy( previewName, 		catListGames[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListGames[itemPressed].author 		);
@@ -246,7 +246,7 @@ int main()
 												previewEbootSize = catListGames[itemPressed].ebootSize;
 												break;
 								case 3:			// EMULATORS
-												if ( itemPressed < 0 || itemPressed > itemCount_emu ) { previewReady = 0; break; }
+												if ( itemPressed < 0 || itemPressed > (itemCount_emu -1) ) { previewReady = 0; break; }
 												previewCategory = catListEmulators[itemPressed].cat;
 												strcpy( previewName, 		catListEmulators[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListEmulators[itemPressed].author 		);
@@ -259,7 +259,7 @@ int main()
 												previewEbootSize = catListEmulators[itemPressed].ebootSize;
 												break;
 								case 4:			// UTILITIES
-												if ( itemPressed < 0 || itemPressed > itemCount_util ) { previewReady = 0; break; }
+												if ( itemPressed < 0 || itemPressed > (itemCount_util -1) ) { previewReady = 0; break; }
 												previewCategory	= catListUtilities[itemPressed].cat;
 												strcpy( previewName, 		catListUtilities[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListUtilities[itemPressed].author 		);
@@ -272,7 +272,7 @@ int main()
 												previewEbootSize = catListUtilities[itemPressed].ebootSize;
 												break;
 								case 5:			// THEMES
-												if ( itemPressed < 0 || itemPressed > itemCount_themes ) { previewReady = 0; break; }
+												if ( itemPressed < 0 || itemPressed > (itemCount_themes -1) ) { previewReady = 0; break; }
 												previewCategory = catListThemes[itemPressed].cat;
 												strcpy( previewName, 		catListThemes[itemPressed].name 		);
 												strcpy( previewAuthor, 		catListThemes[itemPressed].author 		);
@@ -285,7 +285,7 @@ int main()
 												previewEbootSize = catListThemes[itemPressed].ebootSize;
 												break;
 								case 6:			// DEMOS
-												if ( itemPressed < 0 || itemPressed > itemCount_demos ) { previewReady = 0; break; }
+												if ( itemPressed < 0 || itemPressed > (itemCount_demos -1) ) { previewReady = 0; break; }
 												previewCategory	= catListDemos[itemPressed].cat;
 												strcpy( previewName, 		catListDemos[itemPressed].name 			);
 												strcpy( previewAuthor, 		catListDemos[itemPressed].author 		);
