@@ -18,16 +18,16 @@
  */
  
 // INFORMATION
-#define VHBB_VERSION					"0.7.4"
+#define VHBB_VERSION					"0.7.8"
 #define MAX_ITEMS						500
 
 // CLOUD ADDRESSES
-#define VHBB_CLOUD_ADDRESS_ROOT 			"http://www.playlight.com.au/vita/vhbb/"
-#define VHBB_CLOUD_ADDRESS_ASSETS 			"http://www.playlight.com.au/vita/vhbb/dta/assets/"
-#define VHBB_CLOUD_ADDRESS_FILES 			"http://www.playlight.com.au/vita/vhbb/dta/files/"
+#define VHBB_CLOUD_ADDRESS_ROOT 			"http://www.playlight.com.au/Dev/vhbb/"
+#define VHBB_CLOUD_ADDRESS_ASSETS 			"http://www.playlight.com.au/Dev/vhbb/dta/assets/"
+#define VHBB_CLOUD_ADDRESS_FILES 			"http://www.playlight.com.au/Dev/vhbb/dta/files/"
 
 // CLOUD FILES
-#define VHBB_CLOUD_FILE_DATABASE			"http://www.playlight.com.au/vita/vhbb/vhbb.db"
+#define VHBB_CLOUD_FILE_DATABASE			"http://www.playlight.com.au/Dev/vhbb/vhbb.db"
 
 // APPLICATION ADDRESSES
 #define VHBB_APP_ADDRESS_ROOT 				"ux0:/data/VitaHbBrowser/"
