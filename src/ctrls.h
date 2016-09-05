@@ -95,6 +95,7 @@ if ( pad.buttons )
 					{
 					case 0:			// NEW
 									if ( itemPressed < 0 || itemPressed > itemCount_new ) { previewReady = 0; break; }
+									vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 									previewCategory		= catListNew[itemPressed].cat;
 									strcpy( previewName, 		catListNew[itemPressed].name 		);
 									strcpy( previewAuthor, 		catListNew[itemPressed].author 		);
@@ -108,6 +109,7 @@ if ( pad.buttons )
 									break;
 					case 1:			// APPS
 									if ( itemPressed < 0 || itemPressed > itemCount_apps ) { previewReady = 0; break; }
+									vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 									previewCategory		= catListApps[itemPressed].cat;
 									strcpy( previewName, 		catListApps[itemPressed].name 			);
 									strcpy( previewAuthor, 		catListApps[itemPressed].author 		);
@@ -121,6 +123,7 @@ if ( pad.buttons )
 									break;
 					case 2:			// GAMES
 									if ( itemPressed < 0 || itemPressed > itemCount_games ) { previewReady = 0; break; }
+									vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 									previewCategory		= catListGames[itemPressed].cat;
 									strcpy( previewName, 		catListGames[itemPressed].name 			);
 									strcpy( previewAuthor, 		catListGames[itemPressed].author 		);
@@ -134,6 +137,7 @@ if ( pad.buttons )
 									break;
 					case 3:			// EMULATORS
 									if ( itemPressed < 0 || itemPressed > itemCount_emu ) { previewReady = 0; break; }
+									vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 									previewCategory		= catListEmulators[itemPressed].cat;
 									strcpy( previewName, 		catListEmulators[itemPressed].name 			);
 									strcpy( previewAuthor, 		catListEmulators[itemPressed].author 		);
@@ -147,6 +151,7 @@ if ( pad.buttons )
 									break;
 					case 4:			// UTILITIES
 									if ( itemPressed < 0 || itemPressed > itemCount_util ) { previewReady = 0; break; }
+									vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 									previewCategory		= catListUtilities[itemPressed].cat;
 									strcpy( previewName, 		catListUtilities[itemPressed].name 			);
 									strcpy( previewAuthor, 		catListUtilities[itemPressed].author 		);
@@ -160,6 +165,7 @@ if ( pad.buttons )
 									break;
 					case 5:			// THEMES
 									if ( itemPressed < 0 || itemPressed > itemCount_themes ) { previewReady = 0; break; }
+									vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 									previewCategory		= catListThemes[itemPressed].cat;
 									strcpy( previewName, 		catListThemes[itemPressed].name 		);
 									strcpy( previewAuthor, 		catListThemes[itemPressed].author 		);
@@ -173,6 +179,7 @@ if ( pad.buttons )
 									break;
 					case 6:			// DEMOS
 									if ( itemPressed < 0 || itemPressed > itemCount_demos ) { previewReady = 0; break; }
+									vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 									previewCategory		= catListDemos[itemPressed].cat;
 									strcpy( previewName, 		catListDemos[itemPressed].name 			);
 									strcpy( previewAuthor, 		catListDemos[itemPressed].author 		);
@@ -259,12 +266,12 @@ if ( pad.buttons )
 				dPadTimer = 9;
 				switch ( screen )
 					{
-					case 1:		screen = 0; originY = 0; break;
-					case 2:		screen = 1; originY = 0; break;
-					case 3:		screen = 2; originY = 0; break;
-					case 4:		screen = 3; originY = 0; break;
-					case 5:		screen = 4; originY = 0; break;
-					case 6:		screen = 5; originY = 0; break;
+					case 1:		screen = 0; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 2:		screen = 1; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 3:		screen = 2; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 4:		screen = 3; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 5:		screen = 4; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 6:		screen = 5; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
 					}
 				}
 			}
@@ -279,12 +286,12 @@ if ( pad.buttons )
 				dPadTimer = 9;
 				switch ( screen )
 					{
-					case 0:		screen = 1; originY = 0; break;
-					case 1:		screen = 2; originY = 0; break;
-					case 2:		screen = 3; originY = 0; break;
-					case 3:		screen = 4; originY = 0; break;
-					case 4:		screen = 5; originY = 0; break;
-					case 5:		screen = 6; originY = 0; break;
+					case 0:		screen = 1; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 1:		screen = 2; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 2:		screen = 3; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 3:		screen = 4; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 4:		screen = 5; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
+					case 5:		screen = 6; originY = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); break;
 					}
 				}
 			}
