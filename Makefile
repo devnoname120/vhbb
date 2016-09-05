@@ -50,7 +50,29 @@ OBJS     = 	src/vhbb.o 									\
 			assets/img_dialog_progress_bg.o				\
 			assets/img_dialog_btn_cancel.o				\
 			assets/img_dialog_btn_cancel_pressed.o		\
-			assets/img_statsbar_battery.o	
+			assets/img_statsbar_battery.o				\
+			src/vitaAudio/ogg/util/memory.o 		\
+			src/vitaAudio/ogg/util/float-to-int16.o 	\
+			src/vitaAudio/ogg/util/decode-frame.o 		\
+			src/vitaAudio/ogg/decode/stb_vorbis.o 		\
+			src/vitaAudio/ogg/decode/setup.o 			\
+			src/vitaAudio/ogg/decode/seek.o 			\
+			src/vitaAudio/ogg/decode/packet.o 			\
+			src/vitaAudio/ogg/decode/io.o 				\
+			src/vitaAudio/ogg/decode/decode.o 			\
+			src/vitaAudio/ogg/decode/crc32.o 			\
+			src/vitaAudio/ogg/api/version.o 			\
+			src/vitaAudio/ogg/api/seek-tell.o 			\
+			src/vitaAudio/ogg/api/read-int16.o 			\
+			src/vitaAudio/ogg/api/read-float.o 			\
+			src/vitaAudio/ogg/api/open-file.o 			\
+			src/vitaAudio/ogg/api/open-callbacks.o 		\
+			src/vitaAudio/ogg/api/open-buffer.o 		\
+			src/vitaAudio/ogg/api/info.o 				\
+			src/vitaAudio/ogg/api/close.o 				\
+			src/vitaAudio/wav/wav.o 				 	\
+			src/vitaAudio/buffer/buffer.o 			 	\
+			src/vitaAudio/vitaAudio.o					
 			
 
 LIBS = -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
@@ -68,7 +90,7 @@ BIN = bin
 	
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
-CFLAGS  = -Wl,-q -Wall -O3
+CFLAGS  = -Wl,-q -Wall -O3 -std=c99
 ASFLAGS = $(CFLAGS)
 PSVITAIP = 10.0.63
 
@@ -83,6 +105,8 @@ all: $(BIN)/$(TARGET).vpk
 		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
 		\
 		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
+		\
+		--add assets/snd/snd_tap.ogg=resources/snd/snd_tap.ogg \
 	$(BIN)/$(TARGET).vpk
 	
 	

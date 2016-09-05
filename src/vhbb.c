@@ -29,7 +29,7 @@ int	dialogInstallAlpha		= 0;
 #include "tools.h"
 #include "init_var.h"
 #include "input.h"
-
+#include "vitaAudio/vitaAudio.h"
 
 
 int main()
@@ -57,6 +57,9 @@ int main()
 	vita2d_font *font_30 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
 	vita2d_font *font_35 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
 	vita2d_font *font_40 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
+	
+	// LOAD AUDIO HANDLERS
+	vaudio snd_ui;
 	
 	// INPUT
 	sceAppUtilInit( &(SceAppUtilInitParam){}, &(SceAppUtilBootParam){} );
@@ -141,14 +144,14 @@ int main()
 					if ( touch_y < itemPanelHeight )
 						{
 						// TOPBAR BUTTONS
-						if ( point_in_rectangle( touch_x, touch_y,   1, 1,  98, 90 ) && screen != 0 ) { screen = 0; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y,  99, 1, 204, 90 ) && screen != 1 ) { screen = 1; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 205, 1, 326, 90 ) && screen != 2 ) { screen = 2; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 327, 1, 427, 90 ) && screen != 3 ) { screen = 3; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 428, 1, 552, 90 ) && screen != 4 ) { screen = 4; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 553, 1, 674, 90 ) && screen != 5 ) { screen = 5; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 675, 1, 799, 90 ) && screen != 6 ) { screen = 6; originY = 0; previewActive = 0; }
-						if ( point_in_rectangle( touch_x, touch_y, 800, 1, 960, 90 ) ) { btnState_search = 1; }
+						if ( point_in_rectangle( touch_x, touch_y,   1, 1,  98, 90 ) && screen != 0 ) { screen = 0; originY = 0; previewActive = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
+						if ( point_in_rectangle( touch_x, touch_y,  99, 1, 204, 90 ) && screen != 1 ) { screen = 1; originY = 0; previewActive = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
+						if ( point_in_rectangle( touch_x, touch_y, 205, 1, 326, 90 ) && screen != 2 ) { screen = 2; originY = 0; previewActive = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
+						if ( point_in_rectangle( touch_x, touch_y, 327, 1, 427, 90 ) && screen != 3 ) { screen = 3; originY = 0; previewActive = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
+						if ( point_in_rectangle( touch_x, touch_y, 428, 1, 552, 90 ) && screen != 4 ) { screen = 4; originY = 0; previewActive = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
+						if ( point_in_rectangle( touch_x, touch_y, 553, 1, 674, 90 ) && screen != 5 ) { screen = 5; originY = 0; previewActive = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
+						if ( point_in_rectangle( touch_x, touch_y, 675, 1, 799, 90 ) && screen != 6 ) { screen = 6; originY = 0; previewActive = 0; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
+						if ( point_in_rectangle( touch_x, touch_y, 800, 1, 960, 90 ) ) { btnState_search = 1; vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" ); }
 						}
 					else
 						{
@@ -157,6 +160,7 @@ int main()
 							// INSTALL PRESSED
 							if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) )
 								{
+								vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 								btnState_previewAction = 1;
 								}
 							}
@@ -178,6 +182,7 @@ int main()
 				if ( point_in_rectangle( touch_x, touch_y, 287, 403, 682, 448 ) )
 					{
 					btnState_dialogBtn2	= 1;
+					vaudio_play_sound_ogg( &snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg" );
 					}
 				}
 			}
