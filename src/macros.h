@@ -36,6 +36,7 @@
 #define VHBB_APP_ADDRESS_STORAGE_PREVS  	"ux0:/data/VitaHbBrowser/dta/prevs/"
 #define VHBB_APP_ADDRESS_STORAGE_FILES  	"ux0:/data/VitaHbBrowser/dta/files/"
 #define VHBB_RES_DIR_FONTS					"ux0:/app/VHBB00001/resources/fonts/"
+#define VHBB_RES_DIR_SOUND					"ux0:/app/VHBB00001/resources/snd/"
 
 // APPLICATION FILES
 #define VHBB_APP_FILE_DATABASE				"ux0:/data/VitaHbBrowser/dta/vhbb.db"
