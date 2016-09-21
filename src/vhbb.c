@@ -31,6 +31,8 @@ int	dialogInstallAlpha		= 0;
 #include "input.h"
 #include "vitaAudio/vitaAudio.h"
 
+#include "api/api.h"
+
 
 int main()
 	{

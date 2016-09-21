@@ -1,7 +1,11 @@
 TITLE_ID = 	VHBB00001
 TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
-OBJS     = 	src/vhbb.o 									\
+OBJS     = 	lib/cJSON/cJSON.o							\
+			src/network.o								\
+			src/api/api.o								\
+			src/api/json.o								\
+			src/vhbb.o									\
 			src/vpk_install/vpk_install.o				\
 			src/vpk_install/archive.o					\
 			src/vpk_install/sha1/sha1.o					\
@@ -51,31 +55,31 @@ OBJS     = 	src/vhbb.o 									\
 			assets/img_dialog_btn_cancel.o				\
 			assets/img_dialog_btn_cancel_pressed.o		\
 			assets/img_statsbar_battery.o				\
-			src/vitaAudio/ogg/util/memory.o 		\
-			src/vitaAudio/ogg/util/float-to-int16.o 	\
-			src/vitaAudio/ogg/util/decode-frame.o 		\
-			src/vitaAudio/ogg/decode/stb_vorbis.o 		\
-			src/vitaAudio/ogg/decode/setup.o 			\
-			src/vitaAudio/ogg/decode/seek.o 			\
-			src/vitaAudio/ogg/decode/packet.o 			\
-			src/vitaAudio/ogg/decode/io.o 				\
-			src/vitaAudio/ogg/decode/decode.o 			\
-			src/vitaAudio/ogg/decode/crc32.o 			\
-			src/vitaAudio/ogg/api/version.o 			\
-			src/vitaAudio/ogg/api/seek-tell.o 			\
-			src/vitaAudio/ogg/api/read-int16.o 			\
-			src/vitaAudio/ogg/api/read-float.o 			\
-			src/vitaAudio/ogg/api/open-file.o 			\
-			src/vitaAudio/ogg/api/open-callbacks.o 		\
-			src/vitaAudio/ogg/api/open-buffer.o 		\
-			src/vitaAudio/ogg/api/info.o 				\
-			src/vitaAudio/ogg/api/close.o 				\
-			src/vitaAudio/wav/wav.o 				 	\
-			src/vitaAudio/buffer/buffer.o 			 	\
+			src/vitaAudio/ogg/util/memory.o				\
+			src/vitaAudio/ogg/util/float-to-int16.o		\
+			src/vitaAudio/ogg/util/decode-frame.o		\
+			src/vitaAudio/ogg/decode/stb_vorbis.o		\
+			src/vitaAudio/ogg/decode/setup.o			\
+			src/vitaAudio/ogg/decode/seek.o				\
+			src/vitaAudio/ogg/decode/packet.o			\
+			src/vitaAudio/ogg/decode/io.o				\
+			src/vitaAudio/ogg/decode/decode.o			\
+			src/vitaAudio/ogg/decode/crc32.o			\
+			src/vitaAudio/ogg/api/version.o				\
+			src/vitaAudio/ogg/api/seek-tell.o			\
+			src/vitaAudio/ogg/api/read-int16.o			\
+			src/vitaAudio/ogg/api/read-float.o			\
+			src/vitaAudio/ogg/api/open-file.o			\
+			src/vitaAudio/ogg/api/open-callbacks.o		\
+			src/vitaAudio/ogg/api/open-buffer.o			\
+			src/vitaAudio/ogg/api/info.o				\
+			src/vitaAudio/ogg/api/close.o				\
+			src/vitaAudio/wav/wav.o						\
+			src/vitaAudio/buffer/buffer.o				\
 			src/vitaAudio/vitaAudio.o					
 			
 
-LIBS = -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
+LIBS = -lm -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
 	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
 	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
 	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
@@ -90,7 +94,7 @@ BIN = bin
 	
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
-CFLAGS  = -Wl,-q -Wall -O3 -std=c99
+CFLAGS  = -Wl,-q -Wall -O3 -std=c99 -Ilib/cJSON
 ASFLAGS = $(CFLAGS)
 PSVITAIP = 10.0.63
 
