@@ -6,6 +6,7 @@
 #include <psp2/io/stat.h>
 #include <psp2/io/fcntl.h>
 
+
 #include "libpromoter/promoterutil.h"
 #include "sha1/sha1.h"
 #include "sysmodule_internal.h"
@@ -18,17 +19,27 @@
 #define PACKAGE_DIR PACKAGE_PARENT "/pkg"
 #define HEAD_BIN PACKAGE_DIR "/sce_sys/package/head.bin"
 
+
 #define MAX_PATH_LENGTH 1024
 
 #define ntohl __builtin_bswap32
 
-static int lock_power = 0;
-static int lock_power_init = 0;
+static int lock_power 		= 0;
+static int lock_power_init 	= 0;
 
 // DIALOG VARIABLES
-extern int  dialogOpen;
-extern int  dialogInstall;
-extern int	dialogInstallAlpha;
+extern int dialogOpen;
+extern int install_completed;
+
+extern int download_que_running;
+extern int download_que_count;
+extern int install_dialog_show;
+extern int install_dialog_alpha;
+extern int install_dialog_timer;
+extern int install_dialog_screen;
+extern int install_dialog_pos;
+
+
 
 unsigned char base_head_bin[] = {
 	0x7f, 0x50, 0x4b, 0x47, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x02, 0x80,
@@ -391,14 +402,148 @@ int install_thread(SceSize args_size, InstallArguments *args) {
 		goto EXIT;
 	}
 
+	// INSTALL SUCCESSFULL
+	install_dialog_show 	= 1;
+	install_dialog_alpha	= 0;
+	install_dialog_timer	= 0;
+	install_dialog_screen	= downloadQue[0].screen;
+	install_dialog_pos		= downloadQue[0].pos;
+	download_que_remove();
+	install_completed 		= 1;
+	
+
 EXIT:
 	if (thid >= 0)
 		sceKernelWaitThreadEnd(thid, NULL, NULL);
-
+	
+	// CHECK DOWNLOAD QUE
+	if ( download_que_count > 0 )
+		{
+		DownloadArguments dArgs;
+		dArgs.fileCloud 		= downloadQue[0].fileCloud;
+		dArgs.fileLocal 		= downloadQue[0].fileLocal;
+		SceUID thid2 = sceKernelCreateThread("download_thread", (SceKernelThreadEntry)download_thread, 0x40, 0x10000, 0, 0, NULL);
+		if (thid2 >= 0)
+			sceKernelStartThread(thid2, sizeof(DownloadArguments), &dArgs);
+		}
+	else
+		{
+		download_que_running 	= 0;
+		}
+	
 	// Unlock power timers
 	powerUnlock();
-	dialogInstall		= 0;
-	dialogOpen			= 0;
-	dialogInstallAlpha	= 0;
 	return sceKernelExitDeleteThread(0);
 }
+
+
+int download_thread( SceSize args_size, DownloadArguments *arguments )
+	{
+	SceUID thid = -1;
+	
+	netInit();
+	httpInit();
+	int ret;
+	int tpl 			= sceHttpCreateTemplate( "Vita HomeBrew Browser", 2, 1 );
+	if ( tpl  < 0 ) 	{ httpTerm(); netTerm(); return tpl; }
+	int conn 			= sceHttpCreateConnectionWithURL( tpl, arguments->fileCloud, 0 );
+	if ( conn < 0 ) 	{ httpTerm(); netTerm(); return conn; }
+	int req 			= sceHttpCreateRequestWithURL( conn, 0, arguments->fileCloud, 0 );
+	if ( req  < 0 ) 	{ httpTerm(); netTerm(); return req; }
+	ret 				= sceHttpSendRequest( req, NULL, 0 );
+	if ( ret  < 0 ) 	{ httpTerm(); netTerm(); return ret; }
+	unsigned char buf[25600] = {0}; // 4096
+	long long length 	= 0;
+	ret 				= sceHttpGetResponseContentLength( req, &length );
+	int fd 				= sceIoOpen( arguments->fileLocal, SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 6 );
+	int total_read 		= 0;
+	if ( fd < 0 ) { httpTerm(); netTerm(); return fd; }
+	while (1)
+		{
+		int read = sceHttpReadData( req, buf, sizeof(buf) );
+		if ( read  < 0 ) { httpTerm(); netTerm(); return read; }
+		if ( read == 0 ) { break; }
+		ret 			= sceIoWrite(fd, buf, read);
+		if ( ret < 0 || ret != read )
+			{
+			if ( ret < 0 ) httpTerm(); netTerm(); return ret;
+			httpTerm(); netTerm(); return -1;
+			}
+		}
+	ret = sceIoClose(fd);
+	httpTerm(); netTerm();
+	
+	InstallArguments args;
+	args.file 		= arguments->fileLocal;
+	SceUID thid2 	= sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
+	if (thid2 >= 0)
+		sceKernelStartThread(thid2, sizeof(InstallArguments), &args);
+	
+	EXIT:
+	if (thid >= 0)
+		sceKernelWaitThreadEnd(thid, NULL, NULL);
+	
+	return sceKernelExitDeleteThread(0);
+	}
+	
+	
+	
+// QUE FUNCTIONS -------------------------------------------------------
+int download_que_add( char name, char *fileCloud, char *fileLocal, int screen, int pos )
+	{
+	if ( download_que_count <= MAX_QUE_SIZE )
+		{
+		downloadQue[download_que_count].name 		= name;
+		downloadQue[download_que_count].fileCloud 	= fileCloud;
+		downloadQue[download_que_count].fileLocal 	= fileLocal;
+		downloadQue[download_que_count].percent 	= 0;
+		downloadQue[download_que_count].screen 		= screen;
+		downloadQue[download_que_count].pos 		= pos;
+		if ( !download_que_running )
+			{
+			download_que_running	= 1;
+			DownloadArguments dArgs;
+			dArgs.fileCloud 		= downloadQue[0].fileCloud;
+			dArgs.fileLocal 		= downloadQue[0].fileLocal;
+			SceUID thid = sceKernelCreateThread("download_thread", (SceKernelThreadEntry)download_thread, 0x40, 0x10000, 0, 0, NULL);
+			if (thid >= 0)
+				sceKernelStartThread(thid, sizeof(DownloadArguments), &dArgs);
+			}
+		download_que_count++;
+		return 1;
+		}
+	return 0;
+	}
+	
+void download_que_remove()
+	{
+	int i;
+	for ( i = 0; i < download_que_count; i++ )
+		{
+		downloadQue[i +1].name					= downloadQue[i].name;
+		downloadQue[i +1].fileCloud				= downloadQue[i].fileCloud;
+		downloadQue[i +1].fileLocal				= downloadQue[i].fileLocal;
+		downloadQue[i +1].percent				= downloadQue[i].percent;
+		downloadQue[i +1].screen				= downloadQue[i].screen;
+		downloadQue[i +1].pos					= downloadQue[i].pos;
+		}
+	download_que_count--;
+	}
+	
+// ---------------------------------------------------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
