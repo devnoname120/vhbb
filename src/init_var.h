@@ -26,6 +26,30 @@ int dPadTimer					= 0;
 int loadAnim					= 0;
 int loadTimer					= 0;
 int date_format, time_format;
+int dialogOpen					= 0;
+
+int download_que_running 		= 0;
+int download_que_count			= 0;
+int install_completed			= 0;
+int install_que1_alpha			= 0;
+int install_que2_alpha			= 0;
+int install_que2_alpha_timer	= 0;
+int install_que_progress		= 0;
+int install_que_progress_timer  = 0;
+int install_animate				= 0;
+int install_animate_timer		= 0;
+int install_animate_x			= 438;
+int install_animate_y			= 230;
+float install_animate_scale		= 1;
+int install_animate_alpha		= 0;
+int install_animate_vs          = 30;
+int install_dialog_show			= 0;
+int install_dialog_alpha		= 0;
+int install_dialog_timer		= 0;
+int install_dialog_screen		= 0;
+int install_dialog_pos			= 0;
+float install_dialog_icon_scale = 0.60;
+
 
 int itemCount_new				= 0;
 int itemCount_apps				= 0;
@@ -94,6 +118,8 @@ char previewDir[200];
 int  previewEbootSize		 	= 0;
 int  previewDescriptionHeight 	= 0;
 int  previewListNumber			= 0;
+int  previewScreenNumber		= 0;
+vita2d_texture *previewIcon;
 char *previewDesLine2;
 char *previewDesLine3;
 char *previewDesLine4;
@@ -235,3 +261,6 @@ extern unsigned char _binary_assets_img_dialog_btn_cancel_pressed_png_start;
 
 extern unsigned char _binary_assets_img_statsbar_battery_png_start;
 
+extern unsigned char _binary_assets_img_inst_que1_png_start;
+extern unsigned char _binary_assets_img_inst_que2_png_start;
+extern unsigned char _binary_assets_img_inst_dialog_png_start;
