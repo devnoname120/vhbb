@@ -218,6 +218,8 @@ switch ( screen )
 	case 5:		vita2d_draw_texture( img_topbar5, originX, 0 ); break;
 	case 6:		vita2d_draw_texture( img_topbar6, originX, 0 ); break;
 	}
+
+
 // SEARCH BUTTON
 vita2d_draw_texture( img_btn_search, (originX +821), 37 );
 if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37, RGBA8( 255, 255, 255, 120 ) ); }
@@ -252,26 +254,116 @@ if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37
 	sprintf( string, "%s  %s", date_string, time_string );
 	vita2d_font_draw_text( font_25, 670, 25, COLOUR_WHITE, 25, string );
 	
-// INSTALL DIALOG
-if ( dialogInstall )
+// INSTALL ANIMATION
+if ( install_animate )
 	{
-	loadTimer++;
-	if ( loadTimer > 30 )  { loadAnim++; loadTimer = 0; }
-	if ( loadAnim >   4 )  { loadAnim = 0;}
-	if ( dialogInstallAlpha < 210 ) { dialogInstallAlpha += 15;  }
-	else 							{ dialogInstallAlpha  = 210; }
-	vita2d_draw_rectangle( 0, 0, 960, 544, RGBA8( 0, 0, 0, dialogInstallAlpha ) );
-	switch ( loadAnim )
+	install_animate_timer++;
+	if ( install_animate_timer > 100 )
 		{
-		case 0:		vita2d_font_draw_textf( font_25, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling" ); break;
-		case 1:		vita2d_font_draw_textf( font_25, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling." ); break;
-		case 2: 	vita2d_font_draw_textf( font_25, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling.." ); break;
-		case 3:		vita2d_font_draw_textf( font_25, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling..." ); break;
-		case 4: 	vita2d_font_draw_textf( font_25, 434, 285, RGBA8( 255, 255, 255, dialogInstallAlpha ), 25, "%s%s", previewName, "\nInstalling...." ); break;
+		install_animate_scale -= 0.02;
+		if ( install_animate_vs  < 0 ) { install_animate_vs = 0; } else { install_animate_vs -= 1;}
+		install_animate_x += 10;
+		install_animate_y = install_animate_y -install_animate_vs +15;
 		}
+	if ( install_animate_alpha < 235 ) { install_animate_alpha += 15; }
+	else							   { install_animate_alpha = 255; }
+	vita2d_draw_rectangle( install_animate_x -3, install_animate_y -3, (84 *install_animate_scale) +6, (84 *install_animate_scale) +6, RGBA8( 255, 255, 255, install_animate_alpha ) );
+	
+	switch ( screen )
+		{
+		case 0:		vita2d_draw_texture_tint_scale( iconListNew[previewListNumber], install_animate_x, install_animate_y, install_animate_scale, install_animate_scale, RGBA8( 255, 255, 255, install_animate_alpha ) ); break;
+		case 1:		vita2d_draw_texture_tint_scale( iconListApps[previewListNumber], install_animate_x, install_animate_y, install_animate_scale, install_animate_scale, RGBA8( 255, 255, 255, install_animate_alpha ) ); break;
+		case 2:		vita2d_draw_texture_tint_scale( iconListGames[previewListNumber], install_animate_x, install_animate_y, install_animate_scale, install_animate_scale, RGBA8( 255, 255, 255, install_animate_alpha ) ); break;
+		case 3:		vita2d_draw_texture_tint_scale( iconListEmulators[previewListNumber], install_animate_x, install_animate_y, install_animate_scale, install_animate_scale, RGBA8( 255, 255, 255, install_animate_alpha ) ); break;
+		case 4:		vita2d_draw_texture_tint_scale( iconListUtilities[previewListNumber], install_animate_x, install_animate_y, install_animate_scale, install_animate_scale, RGBA8( 255, 255, 255, install_animate_alpha ) ); break;
+		case 5:		vita2d_draw_texture_tint_scale( iconListThemes[previewListNumber], install_animate_x, install_animate_y, install_animate_scale, install_animate_scale, RGBA8( 255, 255, 255, install_animate_alpha ) ); break;
+		case 6:		vita2d_draw_texture_tint_scale( iconListDemos[previewListNumber], install_animate_x, install_animate_y, install_animate_scale, install_animate_scale, RGBA8( 255, 255, 255, install_animate_alpha ) ); break;
+		}
+	if ( install_animate_x > 960 || install_animate_y > 544 ) { install_animate = 0; install_animate_timer = 0; install_animate_x = 438; install_animate_y = 230; install_animate_alpha = 0; install_animate_scale = 1; install_animate_vs = 30; }
+	}
+
+// INSTALL QUE
+if ( download_que_count )
+	{
+	if ( install_que1_alpha < 235 ) { install_que1_alpha += 15; }
+	else
+		{
+		install_que1_alpha = 255;
+		install_que2_alpha_timer++;
+		if ( install_que2_alpha_timer > 120 )
+			{
+			install_que2_alpha_timer = 121;
+			if ( install_que2_alpha < 235 ) { install_que2_alpha += 50; }
+			else
+				{
+				install_que2_alpha = 255;
+				// PROGRESS ANIMATION
+				install_que_progress_timer++;
+				if ( install_que_progress_timer > 50 )
+					{
+					install_que_progress_timer = 0;
+					install_que_progress++;
+					if ( install_que_progress > 2 ) { install_que_progress = 0; }
+					}
+				}
+			}
+		}
+	}
+else
+	{
+	install_que1_alpha = 0;
+	if ( install_que2_alpha > 0 ) { install_que2_alpha -= 15; }
+	else
+		{
+		install_que1_alpha			= 0;
+		install_que2_alpha			= 0;
+		install_que2_alpha_timer	= 0;
+		}
+	}
+vita2d_draw_texture_tint( img_inst_que1, 873, 469, RGBA8( 255, 255, 255, install_que1_alpha ) );
+vita2d_draw_texture_tint( img_inst_que2, 873, 469, RGBA8( 255, 255, 255, install_que2_alpha ) );
+vita2d_font_draw_textf( font_25, 922, 508, RGBA8( 255, 255, 255, install_que2_alpha ), 25, "%d", download_que_count );
+switch ( install_que_progress )
+	{
+	case 0:		vita2d_draw_fill_circle( 912, 527, 4, RGBA8( 30, 255, 0, install_que2_alpha ) ); break;
+	case 1:		vita2d_draw_fill_circle( 927, 527, 4, RGBA8( 30, 255, 0, install_que2_alpha ) ); break;
+	case 2:		vita2d_draw_fill_circle( 942, 527, 4, RGBA8( 30, 255, 0, install_que2_alpha ) ); break;
 	}
 
 
+// INSTALL DIALOG
+if ( install_dialog_show )
+	{
+	install_dialog_timer++;
+	if ( install_dialog_alpha < 235 ) { install_dialog_alpha += 20; }
+	else
+		{
+		install_dialog_alpha = 255;
+		}
+	if ( install_dialog_timer > 250 ) { install_dialog_show = 0; }
+	}
+else
+	{
+	if ( install_dialog_alpha > 35 ) { install_dialog_alpha -= 20; }
+	else
+		{
+		install_dialog_alpha  =  0;
+		}
+	}
+vita2d_draw_texture_tint( img_inst_dialog, 344, 407, RGBA8( 255, 255, 255, install_dialog_alpha ) );
+if ( download_que_count <= 0 ) { vita2d_draw_texture_tint( img_inst_que1, 873, 469, RGBA8( 255, 255, 255, install_dialog_alpha ) ); }
+switch ( install_dialog_screen )
+	{
+	case 0:		vita2d_draw_texture_tint_scale( iconListNew[install_dialog_pos], 		371, 426, install_dialog_icon_scale, install_dialog_icon_scale, RGBA8( 255, 255, 255, install_dialog_alpha ) ); vita2d_font_draw_textf( font_25, 442, 445, RGBA8( 255, 255, 255, install_dialog_alpha ), 25, "%s\n%Intalled successfully!", catListNew[install_dialog_pos].name ); break;
+	case 1:		vita2d_draw_texture_tint_scale( iconListApps[install_dialog_pos], 		371, 426, install_dialog_icon_scale, install_dialog_icon_scale, RGBA8( 255, 255, 255, install_dialog_alpha ) ); vita2d_font_draw_textf( font_25, 442, 445, RGBA8( 255, 255, 255, install_dialog_alpha ), 25, "%s\n%Intalled successfully!", catListApps[install_dialog_pos].name ); break;
+	case 2:		vita2d_draw_texture_tint_scale( iconListGames[install_dialog_pos], 		371, 426, install_dialog_icon_scale, install_dialog_icon_scale, RGBA8( 255, 255, 255, install_dialog_alpha ) ); vita2d_font_draw_textf( font_25, 442, 445, RGBA8( 255, 255, 255, install_dialog_alpha ), 25, "%s\n%Intalled successfully!", catListGames[install_dialog_pos].name ); break;
+	case 3:		vita2d_draw_texture_tint_scale( iconListEmulators[install_dialog_pos], 	371, 426, install_dialog_icon_scale, install_dialog_icon_scale, RGBA8( 255, 255, 255, install_dialog_alpha ) ); vita2d_font_draw_textf( font_25, 442, 445, RGBA8( 255, 255, 255, install_dialog_alpha ), 25, "%s\n%Intalled successfully!", catListEmulators[install_dialog_pos].name ); break;
+	case 4:		vita2d_draw_texture_tint_scale( iconListUtilities[install_dialog_pos], 	371, 426, install_dialog_icon_scale, install_dialog_icon_scale, RGBA8( 255, 255, 255, install_dialog_alpha ) ); vita2d_font_draw_textf( font_25, 442, 445, RGBA8( 255, 255, 255, install_dialog_alpha ), 25, "%s\n%Intalled successfully!", catListUtilities[install_dialog_pos].name ); break;
+	case 5:		vita2d_draw_texture_tint_scale( iconListThemes[install_dialog_pos], 	371, 426, install_dialog_icon_scale, install_dialog_icon_scale, RGBA8( 255, 255, 255, install_dialog_alpha ) ); vita2d_font_draw_textf( font_25, 442, 445, RGBA8( 255, 255, 255, install_dialog_alpha ), 25, "%s\n%Intalled successfully!", catListThemes[install_dialog_pos].name ); break;
+	case 6:		vita2d_draw_texture_tint_scale( iconListDemos[install_dialog_pos], 		371, 426, install_dialog_icon_scale, install_dialog_icon_scale, RGBA8( 255, 255, 255, install_dialog_alpha ) ); vita2d_font_draw_textf( font_25, 442, 445, RGBA8( 255, 255, 255, install_dialog_alpha ), 25, "%s\n%Intalled successfully!", catListDemos[install_dialog_pos].name ); break;
+	}
+
+	
 // KEYBOARD
 if ( show_input == 1 )
 	{
@@ -338,7 +430,7 @@ vita2d_font_draw_text( font_segoeui, 10, 440, COLOUR_WHITE, 30, debug_info );
 
 	*/
 
-// HIGHLIGHT
+// HIGHLIGHT CALCULATION
 if ( itemHighlightDir )
 	{
 	if ( itemHighlight < 245 )  { itemHighlight += 8; }
@@ -351,6 +443,8 @@ else
 	}
 	
 	
+
+
 	
 vita2d_end_drawing();
 vita2d_common_dialog_update();
