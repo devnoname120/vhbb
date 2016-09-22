@@ -67,3 +67,8 @@ vita2d_texture *img_dialog_btn_cancel			 	= vita2d_load_PNG_buffer( &_binary_ass
 vita2d_texture *img_dialog_btn_cancel_pressed	 	= vita2d_load_PNG_buffer( &_binary_assets_img_dialog_btn_cancel_pressed_png_start 	);
 
 vita2d_texture *img_statsbar_battery	 			= vita2d_load_PNG_buffer( &_binary_assets_img_statsbar_battery_png_start 	);
+
+vita2d_texture *img_inst_que1	 					= vita2d_load_PNG_buffer( &_binary_assets_img_inst_que1_png_start 					);
+vita2d_texture *img_inst_que2	 					= vita2d_load_PNG_buffer( &_binary_assets_img_inst_que2_png_start 					);
+vita2d_texture *img_inst_dialog	 					= vita2d_load_PNG_buffer( &_binary_assets_img_inst_dialog_png_start 				);
+
