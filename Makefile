@@ -55,6 +55,9 @@ OBJS     = 	lib/cJSON/cJSON.o							\
 			assets/img_dialog_btn_cancel.o				\
 			assets/img_dialog_btn_cancel_pressed.o		\
 			assets/img_statsbar_battery.o				\
+			assets/img_inst_que1.o						\
+			assets/img_inst_que2.o						\
+			assets/img_inst_dialog.o					\
 			src/vitaAudio/ogg/util/memory.o				\
 			src/vitaAudio/ogg/util/float-to-int16.o		\
 			src/vitaAudio/ogg/util/decode-frame.o		\
@@ -111,6 +114,7 @@ all: $(BIN)/$(TARGET).vpk
 		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
 		\
 		--add assets/snd/snd_tap.ogg=resources/snd/snd_tap.ogg \
+		--add assets/snd/snd_installed.wav=resources/snd/snd_installed.wav \
 	$(BIN)/$(TARGET).vpk
 	
 	
