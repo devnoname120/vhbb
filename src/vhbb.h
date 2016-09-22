@@ -50,14 +50,4 @@
 #include <psp2/rtc.h>
 #include <psp2/system_param.h>
 
-
-
-
-
-
-
-
-
-
-
 #include <vita2d.h>

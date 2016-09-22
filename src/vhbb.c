@@ -17,10 +17,6 @@
  *
  */
 
-// DIALOG VARIABLES
-int  dialogOpen				= 0;
-int  dialogInstall			= 0;
-int	dialogInstallAlpha		= 0;
 
 #include "vpk_install/vpk_install.h"
 #include "vhbb.h"
@@ -33,6 +29,9 @@ int	dialogInstallAlpha		= 0;
 
 #include "api/api.h"
 
+// LOAD AUDIO HANDLERS
+vaudio snd_ui;
+vaudio snd_install;
 
 int main()
 	{
@@ -60,8 +59,7 @@ int main()
 	vita2d_font *font_35 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
 	vita2d_font *font_40 			= vita2d_load_font_file( VHBB_RES_DIR_FONTS "segoeui.ttf" );
 	
-	// LOAD AUDIO HANDLERS
-	vaudio snd_ui;
+	
 	
 	// INPUT
 	sceAppUtilInit( &(SceAppUtilInitParam){}, &(SceAppUtilBootParam){} );
@@ -109,7 +107,7 @@ int main()
 	//-------------------------------------------------------------
 	
 	/// MAIN LOOP -------------------------------------------------
-	#include "vpkDownload.h"
+	
 	while ( 1 )
 		{
 		sceKernelPowerTick(0);
@@ -311,8 +309,9 @@ int main()
 								strtok_r( previewDesLine2, 	  "|", &previewDesLine3 );
 								strtok_r( previewDesLine3,    "|", &previewDesLine4 );
 								strtok_r( previewDesLine4,    "|", &previewDesLine5 );
-								previewActive		=  1;
-								previewListNumber	= itemPressed;
+								previewActive			=  1;
+								previewListNumber		= itemPressed;
+								previewScreenNumber		= screen;
 								// CHECK DOWNLOADED, INSTALLED, CURRENT VERSION
 								if ( access( previewDir, F_OK ) == -1 ) { preview_isInstalled = 0; }
 								else
@@ -335,49 +334,20 @@ int main()
 						}
 					else
 						{
-						// DOWNLOAD/INSTALL/UPDATE PRESSED
+						// INSTALL/UPDATE PRESSED
 						if ( point_in_rectangle( touch_x, touch_y, 197, 213, 357, 266 ) )
 							{
-							// CHECK WHICH BUTTON IS SHOWING
-							/*
-								preview_isDownloaded
-								preview_isInstalled
-								preview_isCurrent
-							
-							*/
-							
-							
-							
-							
-							
-								// DOWNLOAD
-								//strcpy( dialogMessage, string_join( 4, "Downloading\n", previewName, "\n", previewRelease ) );
-								char *fileVpkCloud;
-								char *fileVpkLocal;
-								fileVpkCloud		= string_join( 3, VHBB_CLOUD_ADDRESS_FILES, previewName, ".vpk" );
-								fileVpkLocal		= string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" );
+							// INSTALL
+							char *fCloud;
+							char *fLocal;
+							fCloud	= string_join( 3, VHBB_CLOUD_ADDRESS_FILES, previewName, ".vpk" );
+							fLocal	= string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" );
+							if ( !download_que_add( previewName, fCloud, fLocal, previewScreenNumber, previewListNumber ) )
+								{
+								// QUE FULL (show que full dialog? if needed)
 								
-								if ( download_file( fileVpkCloud, fileVpkLocal ) < 0 )
-									{
-									// DOWNLOAD FAILED (clear temp file)
-									
-									}
-								else
-									{
-									dialogInstall		= 1;
-									dialogOpen			= 1;
-									InstallArguments args;
-									args.file = fileVpkLocal;
-									SceUID thid = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
-									if (thid >= 0)
-										sceKernelStartThread(thid, sizeof(InstallArguments), &args);
-									// UPDATE ACTION BUTTON
-									//if ( access( string_join( 3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk" ), F_OK ) == -1 ) { preview_isDownloaded = 0; }
-									//else 																							   { preview_isDownloaded = 1; }
-									}
-								
-								
-								
+								}
+							install_animate = 1;
 							}
 						if ( point_in_rectangle( touch_x, touch_y, 0, 460, 90, 544 ) && !settingsDraw )
 							{
@@ -420,10 +390,10 @@ int main()
 		#include "draw_main.h"
 		//-------------------------------------------------------------
 		
-			
-			
 		
-			
+		// SIMPLE CHECK FOR INSTALLATION COMPLETE SOUND EFFECT
+		if ( install_completed ) { install_completed = 0; vaudio_play_sound_wav( &snd_install, VHBB_RES_DIR_SOUND "snd_installed.wav" ); }	
+		
 		
 		}
 		
