@@ -29,6 +29,9 @@
 
 #include "api/api.h"
 
+// Init power tick thread
+initPowerTickThread();
+
 // LOAD AUDIO HANDLERS
 vaudio snd_ui;
 vaudio snd_install;

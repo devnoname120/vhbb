@@ -227,22 +227,28 @@ if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37
 
 // STATUS BAR
 	// Title
-	vita2d_font_draw_text( font_25, 15, 25, COLOUR_WHITE, 25, "Vita HomeBrew Browser" );
+	vita2d_font_draw_text( font_25, 12, 22, COLOUR_WHITE, 25, "Vita HomeBrew Browser" );
 
 	// BATTERY
 	float battery_x = ALIGN_LEFT( 949, vita2d_texture_get_width(img_statsbar_battery) );
-	vita2d_draw_texture( img_statsbar_battery, battery_x, 5 );
-	float percent 	= scePowerGetBatteryLifePercent() / 100.0f;
-	float width 	= ((29 * percent) / 100);
+	vita2d_draw_texture( img_statsbar_battery, battery_x, 2 );
+	float percent 	= scePowerGetBatteryLifePercent();
+	float width 	= ((29.0f *percent) /100.0f);
 	if ( scePowerIsLowBattery() )
 		{
-		vita2d_draw_rectangle( 938, 9, (width *-1), 14, RGBA8( 255, 48, 48, 255 ) );
+		vita2d_draw_rectangle( (947.0f -width), 4, width, 16, RGBA8( 255, 48, 48, 255 ) );
 		}
 	else
 		{
-		vita2d_draw_rectangle( 938, 9, (width *-1), 14, RGBA8( 91, 223, 38, 255 ) );
+		vita2d_draw_rectangle( (947.0f -width), 4, width, 16, RGBA8( 91, 223, 38, 255 ) );
 		}
-
+	/* 
+	if ( scePowerIsBatteryCharging() )
+		{
+		// TODO: add charging Icon
+		}
+	*/
+	
 	// DATE & TIME
 	SceDateTime time;
 	sceRtcGetCurrentClockLocalTime( &time );
@@ -252,8 +258,9 @@ if ( btnState_search == 1 ) { vita2d_draw_rectangle( (originX +823), 38, 117, 37
 	getTimeString( time_string, time_format, &time );
 	char string[64];
 	sprintf( string, "%s  %s", date_string, time_string );
-	vita2d_font_draw_text( font_25, 670, 25, COLOUR_WHITE, 25, string );
+	vita2d_font_draw_text( font_25, 650, 22, COLOUR_WHITE, 25, string );
 	
+
 // INSTALL ANIMATION
 if ( install_animate )
 	{
