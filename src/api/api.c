@@ -11,7 +11,7 @@
 int api_homebrew_list(Homebrew **homebrews, char *search, char *sort, char* filter)
 {
 	char *api_url = malloc(100 * sizeof(char));
-	sprintf(api_url, "%s.json?search=%s&sort=%s&filter=", API_HOMEBREWS, search, sort, filter);
+	sprintf(api_url, "%s.json?search=%s&sort=%s&filter=%s", API_HOMEBREWS, search, sort, filter);
 	logcat_add(api_url, "", "\n");
 
 	char *json = network_get(api_url);
@@ -20,11 +20,11 @@ int api_homebrew_list(Homebrew **homebrews, char *search, char *sort, char* filt
 	logcat_add("Buffer: ", json, "\n");
 
 	cJSON *root;
-	int ret = json_open(json, &root);
+	json_open(json, &root);
 
 	int code;
 	char *message;
-	ret = json_status(root, &code, &message);
+	int ret = json_status(root, &code, &message);
 
 	if (code == 200) {
 		logcat_add("Status 200: ", message, "\n");
@@ -47,11 +47,11 @@ Homebrew *api_homebrew(char *id)
 	free(api_url);
 
 	cJSON *root;
-	int ret = json_open(json, &root);
+	json_open(json, &root);
 
 	int code;
 	char *message;
-	ret = json_status(root, &code, &message);
+	json_status(root, &code, &message);
 
 	Homebrew *homebrew = json_homebrew(root);
 	// FIXME: Closing the root invalidates our strings
@@ -69,11 +69,11 @@ Icon *api_icon(char *hb_id)
 	free(api_url);
 
 	cJSON *root;
-	int ret = json_open(json, &root);
+	json_open(json, &root);
 
 	int code;
 	char *message;
-	ret = json_status(root, &code, &message);
+	json_status(root, &code, &message);
 
 	Icon *icon = json_icon(root);
 	// FIXME: Closing the root invalidates our strings
@@ -91,13 +91,13 @@ int api_screenshot_list(Screenshot **screenshots, char *hb_id)
 	free(api_url);
 
 	cJSON *root;
-	int ret = json_open(json, &root);
+	json_open(json, &root);
 
 	int code;
 	char *message;
-	ret = json_status(root, &code, &message);
+	json_status(root, &code, &message);
 
-	ret = json_screenshot_list(root, screenshots);
+	int ret = json_screenshot_list(root, screenshots);
 
 	// FIXME: Closing the root invalidates our strings
 	//json_close(root);

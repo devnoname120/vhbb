@@ -59,7 +59,7 @@ int json_status(cJSON *root, int *code, char **message)
 int json_data(cJSON *root, cJSON **data)
 {
 	*data = cJSON_GetObjectItem(root, "data");
-	if (data == NULL) return -1;
+	if (*data == NULL) return -1;
 
 	return 0;
 }

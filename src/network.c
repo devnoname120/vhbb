@@ -97,7 +97,7 @@ void network_download(const char *url, const char *dest)
 
 	int conn = sceHttpCreateConnectionWithURL(tpl, url, 0);
 	int request = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url, 0);
-	int handle = sceHttpSendRequest(request, NULL, 0);
+	sceHttpSendRequest(request, NULL, 0);
 
 	int fh = sceIoOpen(dest, SCE_O_WRONLY | SCE_O_CREAT, 0777);
 
@@ -121,7 +121,7 @@ char *network_get(const char *url)
 
 	int conn = sceHttpCreateConnectionWithURL(tpl, url, 0);
 	int request = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url, 0);
-	int handle = sceHttpSendRequest(request, NULL, 0);
+	sceHttpSendRequest(request, NULL, 0);
 
 	int buf_size = 1000 * sizeof(char);
 	char *buffer = malloc(buf_size);
@@ -132,7 +132,12 @@ char *network_get(const char *url)
 	while ((read = sceHttpReadData(request, &buffer[pos], buf_size - pos)) > 0) {
 		pos += read;
 		buf_size += 1000 * sizeof(char);
-		buffer = realloc(buffer, buf_size);
+		char *new_buffer = realloc(buffer, buf_size);
+		if (new_buffer == NULL) {
+			free(buffer);
+			return NULL;
+		}
+		buffer = new_buffer;
 	}
 
 	sceHttpDeleteRequest(request);

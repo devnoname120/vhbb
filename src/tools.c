@@ -92,7 +92,7 @@ void logcat_add(char *str1, char *str2, char *str3)
 		fprintf(lf, "%s%s%s", str1, str2, str3);
 	}
 	else {
-		FILE *lf = fopen(VHBB_APP_FILE_LOGCAT, "ab+");
+		lf = fopen(VHBB_APP_FILE_LOGCAT, "ab+");
 		fprintf(lf, "%s%s%s", str1, str2, str3);
 	}
 	fclose(lf);
@@ -104,7 +104,7 @@ void logcat_add_real(char *str1, int real1, char *str2)
 		fprintf(lf, "%s%d%s", str1, real1, str2);
 	}
 	else {
-		FILE *lf = fopen(VHBB_APP_FILE_LOGCAT, "ab+");
+		lf = fopen(VHBB_APP_FILE_LOGCAT, "ab+");
 		fprintf(lf, "%s%d%s", str1, real1, str2);
 	}
 	fclose(lf);
