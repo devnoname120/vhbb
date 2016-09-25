@@ -13,5 +13,5 @@
 
 const char *nogg_version(void)
 {
-    return "1.9";
+	return "1.9";
 }

@@ -3,6 +3,7 @@ TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
 OBJS     = 	lib/cJSON/cJSON.o							\
 			src/network.o								\
+			src/tools.o									\
 			src/api/api.o								\
 			src/api/json.o								\
 			src/vhbb.o									\
@@ -93,13 +94,25 @@ EXTRA_NIDS = src/vpk_install/libpromoter/promoterutil.json
 	
 BIN = bin
 	   
-	   
-	
+DEBUG = 1
+
+ifeq ($(RELEASE), 1)
+DEBUG = 0
+endif
+
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
-CFLAGS  = -Wl,-q -Wall -O3 -std=c99 -Ilib/cJSON
+CFLAGS  = -Wl,-q -g -Wall -std=c99 -Ilib/cJSON
 ASFLAGS = $(CFLAGS)
-PSVITAIP = 10.0.63
+PSVITAIP = 10.188.178.81
+
+
+ifeq ($(DEBUG), 1)
+CFLAGS += -Og -DDEBUG
+else
+CFLAGS += -O3
+endif
+
 
 all: $(BIN)/$(TARGET).vpk
 

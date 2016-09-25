@@ -26,7 +26,8 @@ static char *mount_points[] = {
 
 #define N_MOUNT_POINTS (sizeof(mount_points) / sizeof(char **))
 
-int ReadFile(char *file, void *buf, int size) {
+int ReadFile(char *file, void *buf, int size)
+{
 	SceUID fd = sceIoOpen(file, SCE_O_RDONLY, 0);
 	if (fd < 0)
 		return fd;
@@ -37,7 +38,8 @@ int ReadFile(char *file, void *buf, int size) {
 	return read;
 }
 
-int WriteFile(char *file, void *buf, int size) {
+int WriteFile(char *file, void *buf, int size)
+{
 	SceUID fd = sceIoOpen(file, SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 	if (fd < 0)
 		return fd;
@@ -55,12 +57,13 @@ int getFileSize(char *pInputFileName)
 		return fd;
 
 	int fileSize = sceIoLseek(fd, 0, SCE_SEEK_END);
-	
+
 	sceIoClose(fd);
 	return fileSize;
 }
 
-int getPathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *files) {
+int getPathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *files)
+{
 	SceUID dfd = sceIoDopen(path);
 	if (dfd >= 0) {
 		int res = 0;
@@ -84,7 +87,8 @@ int getPathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *files) 
 						sceIoDclose(dfd);
 						return ret;
 					}
-				} else {
+				}
+				else {
 					if (size)
 						(*size) += dir.d_stat.st_size;
 
@@ -100,7 +104,8 @@ int getPathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *files) 
 
 		if (folders)
 			(*folders)++;
-	} else {
+	}
+	else {
 		if (size) {
 			SceIoStat stat;
 			memset(&stat, 0, sizeof(SceIoStat));
@@ -119,7 +124,8 @@ int getPathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *files) 
 	return 1;
 }
 
-int removePath(char *path, uint64_t *value, uint64_t max, void (* SetProgress)(uint64_t value, uint64_t max), int (* cancelHandler)()) {
+int removePath(char *path, uint64_t *value, uint64_t max, void(*SetProgress)(uint64_t value, uint64_t max), int(*cancelHandler)())
+{
 	SceUID dfd = sceIoDopen(path);
 	if (dfd >= 0) {
 		int res = 0;
@@ -143,7 +149,8 @@ int removePath(char *path, uint64_t *value, uint64_t max, void (* SetProgress)(u
 						sceIoDclose(dfd);
 						return ret;
 					}
-				} else {
+				}
+				else {
 					int ret = sceIoRemove(new_path);
 					if (ret < 0) {
 						free(new_path);
@@ -183,7 +190,8 @@ int removePath(char *path, uint64_t *value, uint64_t max, void (* SetProgress)(u
 		if (cancelHandler && cancelHandler()) {
 			return 0;
 		}
-	} else {
+	}
+	else {
 		int ret = sceIoRemove(path);
 		if (ret < 0)
 			return ret;
@@ -202,7 +210,8 @@ int removePath(char *path, uint64_t *value, uint64_t max, void (* SetProgress)(u
 	return 1;
 }
 
-int copyFile(char *src_path, char *dst_path, uint64_t *value, uint64_t max, void (* SetProgress)(uint64_t value, uint64_t max), int (* cancelHandler)()) {
+int copyFile(char *src_path, char *dst_path, uint64_t *value, uint64_t max, void(*SetProgress)(uint64_t value, uint64_t max), int(*cancelHandler)())
+{
 	// The source and destination paths are identical
 	if (strcmp(src_path, dst_path) == 0) {
 		return -1;
@@ -262,7 +271,8 @@ int copyFile(char *src_path, char *dst_path, uint64_t *value, uint64_t max, void
 	return 1;
 }
 
-int copyPath(char *src_path, char *dst_path, uint64_t *value, uint64_t max, void (* SetProgress)(uint64_t value, uint64_t max), int (* cancelHandler)()) {
+int copyPath(char *src_path, char *dst_path, uint64_t *value, uint64_t max, void(*SetProgress)(uint64_t value, uint64_t max), int(*cancelHandler)())
+{
 	// The source and destination paths are identical
 	if (strcmp(src_path, dst_path) == 0) {
 		return -1;
@@ -314,7 +324,8 @@ int copyPath(char *src_path, char *dst_path, uint64_t *value, uint64_t max, void
 
 				if (SCE_S_ISDIR(dir.d_stat.st_mode)) {
 					ret = copyPath(new_src_path, new_dst_path, value, max, SetProgress, cancelHandler);
-				} else {
+				}
+				else {
 					ret = copyFile(new_src_path, new_dst_path, value, max, SetProgress, cancelHandler);
 				}
 
@@ -329,7 +340,8 @@ int copyPath(char *src_path, char *dst_path, uint64_t *value, uint64_t max, void
 		} while (res > 0);
 
 		sceIoDclose(dfd);
-	} else {
+	}
+	else {
 		return copyFile(src_path, dst_path, value, max, SetProgress, cancelHandler);
 	}
 
@@ -351,7 +363,8 @@ static ExtensionType extension_types[] = {
 	{ ".ZIP",  FILE_TYPE_ZIP },
 };
 
-int getFileType(char *file) {
+int getFileType(char *file)
+{
 	char *p = strrchr(file, '.');
 	if (p) {
 		int i;
@@ -365,15 +378,18 @@ int getFileType(char *file) {
 	return FILE_TYPE_UNKNOWN;
 }
 
-int getNumberMountPoints() {
+int getNumberMountPoints()
+{
 	return N_MOUNT_POINTS;
 }
 
-char **getMountPoints() {
+char **getMountPoints()
+{
 	return mount_points;
 }
 
-FileListEntry *fileListFindEntry(FileList *list, char *name) {
+FileListEntry *fileListFindEntry(FileList *list, char *name)
+{
 	FileListEntry *entry = list->head;
 
 	int name_length = strlen(name);
@@ -388,7 +404,8 @@ FileListEntry *fileListFindEntry(FileList *list, char *name) {
 	return NULL;
 }
 
-FileListEntry *fileListGetNthEntry(FileList *list, int n) {
+FileListEntry *fileListGetNthEntry(FileList *list, int n)
+{
 	FileListEntry *entry = list->head;
 
 	while (n > 0 && entry) {
@@ -402,14 +419,16 @@ FileListEntry *fileListGetNthEntry(FileList *list, int n) {
 	return entry;
 }
 
-void fileListAddEntry(FileList *list, FileListEntry *entry, int sort) {
+void fileListAddEntry(FileList *list, FileListEntry *entry, int sort)
+{
 	entry->next = NULL;
 	entry->previous = NULL;
 
 	if (list->head == NULL) {
 		list->head = entry;
 		list->tail = entry;
-	} else {
+	}
+	else {
 		if (sort != SORT_NONE) {
 			FileListEntry *p = list->head;
 			FileListEntry *previous = NULL;
@@ -446,18 +465,21 @@ void fileListAddEntry(FileList *list, FileListEntry *entry, int sort) {
 				entry->next = p;
 				p->previous = entry;
 				list->head = entry;
-			} else if (previous->next == NULL) { // Order: p (old tail) -> entry (new tail)
+			}
+			else if (previous->next == NULL) { // Order: p (old tail) -> entry (new tail)
 				FileListEntry *tail = list->tail;
 				tail->next = entry;
 				entry->previous = tail;
 				list->tail = entry;
-			} else { // Order: previous -> entry -> p
+			}
+			else { // Order: previous -> entry -> p
 				previous->next = entry;
-				entry->previous = previous; 
+				entry->previous = previous;
 				entry->next = p;
 				p->previous = entry;
 			}
-		} else {
+		}
+		else {
 			FileListEntry *tail = list->tail;
 			tail->next = entry;
 			entry->previous = tail;
@@ -468,17 +490,20 @@ void fileListAddEntry(FileList *list, FileListEntry *entry, int sort) {
 	list->length++;
 }
 
-int fileListRemoveEntry(FileList *list, FileListEntry *entry) {
+int fileListRemoveEntry(FileList *list, FileListEntry *entry)
+{
 	if (entry) {
 		if (entry->previous) {
 			entry->previous->next = entry->next;
-		} else {
+		}
+		else {
 			list->head = entry->next;
 		}
 
 		if (entry->next) {
 			entry->next->previous = entry->previous;
-		} else {
+		}
+		else {
 			list->tail = entry->previous;
 		}
 
@@ -491,7 +516,8 @@ int fileListRemoveEntry(FileList *list, FileListEntry *entry) {
 	return 0;
 }
 
-int fileListRemoveEntryByName(FileList *list, char *name) {
+int fileListRemoveEntryByName(FileList *list, char *name)
+{
 	FileListEntry *entry = list->head;
 	FileListEntry *previous = NULL;
 
@@ -501,7 +527,8 @@ int fileListRemoveEntryByName(FileList *list, char *name) {
 		if (entry->name_length == name_length && strcmp(entry->name, name) == 0) {
 			if (previous) {
 				previous->next = entry->next;
-			} else {
+			}
+			else {
 				list->head = entry->next;
 			}
 
@@ -523,7 +550,8 @@ int fileListRemoveEntryByName(FileList *list, char *name) {
 	return 0;
 }
 
-void fileListEmpty(FileList *list) {
+void fileListEmpty(FileList *list)
+{
 	FileListEntry *entry = list->head;
 
 	while (entry) {
@@ -539,7 +567,8 @@ void fileListEmpty(FileList *list) {
 	list->folders = 0;
 }
 
-int fileListGetMountPointEntries(FileList *list) {
+int fileListGetMountPointEntries(FileList *list)
+{
 	int i;
 	for (i = 0; i < N_MOUNT_POINTS; i++) {
 		if (mount_points[i]) {
@@ -564,7 +593,8 @@ int fileListGetMountPointEntries(FileList *list) {
 	return 0;
 }
 
-int fileListGetDirectoryEntries(FileList *list, char *path) {
+int fileListGetDirectoryEntries(FileList *list, char *path)
+{
 	SceUID dfd = sceIoDopen(path);
 	if (dfd < 0)
 		return dfd;
@@ -596,7 +626,8 @@ int fileListGetDirectoryEntries(FileList *list, char *path) {
 				addEndSlash(entry->name);
 				entry->type = FILE_TYPE_UNKNOWN;
 				list->folders++;
-			} else {
+			}
+			else {
 				entry->type = getFileType(entry->name);
 				list->files++;
 			}
@@ -615,7 +646,8 @@ int fileListGetDirectoryEntries(FileList *list, char *path) {
 	return 0;
 }
 
-int fileListGetEntries(FileList *list, char *path) {
+int fileListGetEntries(FileList *list, char *path)
+{
 	if (0/*isInArchive()*/) {
 		return fileListGetArchiveEntries(list, path);
 	}

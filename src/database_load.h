@@ -19,7 +19,7 @@
 
 
 // PULL DATABASE
-download( VHBB_CLOUD_FILE_DATABASE, VHBB_APP_FILE_DATABASE );
+network_download( VHBB_CLOUD_FILE_DATABASE, VHBB_APP_FILE_DATABASE );
 // BUILD DATABASE
 if ( access( VHBB_APP_FILE_DATABASE, F_OK ) == -1 )
 	{
@@ -109,7 +109,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -125,7 +125,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -154,7 +154,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -170,7 +170,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -199,7 +199,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -215,7 +215,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -244,7 +244,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -260,7 +260,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -289,7 +289,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -305,7 +305,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -334,7 +334,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -350,7 +350,7 @@ else
 							{
 							strcpy( progBarInfo, "Retrieving missing icons..." );
 							targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_prev.png" );
-							download( targetFileCloud, targetFileStroage );
+							network_download( targetFileCloud, targetFileStroage );
 							if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 							}
 						if ( access( targetFileStroage, F_OK ) != -1 )
@@ -382,7 +382,7 @@ else
 				{
 				strcpy( progBarInfo, "Retrieving missing icons..." );
 				targetFileCloud			= string_join( 3, VHBB_CLOUD_ADDRESS_ASSETS, dataName, "_icon.png" );
-				download( targetFileCloud, targetFileStroage );
+				network_download( targetFileCloud, targetFileStroage );
 				if ( file_is_png( targetFileStroage ) == 0 )	{ remove( targetFileStroage ); }
 				}
 			if ( access( targetFileStroage, F_OK ) != -1 )
