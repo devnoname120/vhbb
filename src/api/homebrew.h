@@ -1,3 +1,5 @@
+#pragma once
+
 typedef struct {
 	char *UUID;
 	char *name;
@@ -6,3 +8,13 @@ typedef struct {
 	char *first_release;
 	char *description;
 } Homebrew;
+
+typedef struct {
+	char *url;
+} Icon;
+
+typedef struct {
+	char *UUID;
+	char *url;
+	char *description;
+} Screenshot;

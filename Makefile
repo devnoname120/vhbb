@@ -3,6 +3,7 @@ TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
 OBJS     = 	lib/cJSON/cJSON.o							\
 			src/network.o								\
+			src/tools.o									\
 			src/api/api.o								\
 			src/api/json.o								\
 			src/vhbb.o									\
@@ -99,7 +100,7 @@ PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CFLAGS  = -Wl,-q -Wall -O3 -std=c99 -Ilib/cJSON
 ASFLAGS = $(CFLAGS)
-PSVITAIP = 10.0.63
+PSVITAIP = 10.188.178.81
 
 all: $(BIN)/$(TARGET).vpk
 

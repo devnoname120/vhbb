@@ -1,44 +1,21 @@
+#include <stdio.h>
+
+#include <cJSON.h>
+
+#include "../network.h"
+#include "json.h"
+
 #include "api.h"
 
-// Get a string from a URL using GET
-char *json_get(const char *url)
-{
-	// FIXME: don't init / deinit on each call
-	netInit();
-	httpInit();
-
-	int tpl 	= sceHttpCreateTemplate("Vita HomeBrew Browser", 1, 1);
-
-	int conn 	= sceHttpCreateConnectionWithURL(tpl, url, 0 );
-	int request = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url, 0 );
-	int handle 	= sceHttpSendRequest(request, NULL, 0 );
-
-	int buf_size = 1000 * sizeof(char);
-	char *buffer = malloc(buf_size);
-
-	int read = 0;
-	int pos = 0;
-	// read data until finished
-	while ((read = sceHttpReadData(request, &buffer[pos], buf_size - pos)) > 0 )
-	{
-		pos += read;
-		buf_size += 1000 * sizeof(char);
-		buffer = realloc(buffer, buf_size);
-	}
-
-	httpTerm();
-	netTerm();
-
-	// Shrink the buffer
-	buffer = realloc(buffer, pos);
-
-	return buffer;
-}
-
 // Get the basic list of homebrews and put it in a list of structs Homebrew and put the pointer into *homebrews
-int get_homebrew_list(Homebrew **homebrews)
+int api_homebrew_list(Homebrew **homebrews, char *search, char *sort, char* filter)
 {
-	char *json = json_get(API_BASE "homebrews.json");
+	char *api_url = malloc(100*sizeof(char));
+	sprintf(api_url, "%s.json?search=%s&sort=%s&filter=", API_HOMEBREWS, search, sort, filter);
+	logcat_add(api_url, "", "\n");
+
+	char *json = network_get(api_url);
+	free(api_url);
 
 	logcat_add("Buffer: ", json, "\n");
 
@@ -47,11 +24,82 @@ int get_homebrew_list(Homebrew **homebrews)
 
 	int code;
 	char *message;
-	ret = check_status(root, &code, &message);
+	ret = json_status(root, &code, &message);
 
 	if (code == 200) {
 		logcat_add("Status 200: ", message, "\n");
 	}
 
-	return get_homebrew_entries(root, homebrews);
+	ret = json_homebrew_list(root, homebrews);
+	logcat_add("api UUID: ", homebrews[0]->UUID, "\n");
+	// FIXME: Closing the root invalidates our strings
+	//json_close(root);
+	logcat_add("api UUID: ", homebrews[0]->UUID, "\n");
+	return ret;
+}
+
+Homebrew *api_homebrew(char *id)
+{
+	char *api_url = malloc(100*sizeof(char));
+	sprintf(api_url, "%s/%s.json", API_HOMEBREWS, id);
+
+	char *json = network_get(api_url);
+	free(api_url);
+
+	cJSON *root;
+	int ret = json_open(json, &root);
+
+	int code;
+	char *message;
+	ret = json_status(root, &code, &message);
+
+	Homebrew *homebrew = json_homebrew(root);
+	// FIXME: Closing the root invalidates our strings
+	//json_close(root);
+
+	return homebrew;
+}
+
+Icon *api_icon(char *hb_id) {
+	char *api_url = malloc(100*sizeof(char));
+	sprintf(api_url, API_ICON ".json", hb_id);
+
+	char *json = network_get(api_url);
+	free(api_url);
+
+	cJSON *root;
+	int ret = json_open(json, &root);
+
+	int code;
+	char *message;
+	ret = json_status(root, &code, &message);
+
+	Icon *icon = json_icon(root);
+	// FIXME: Closing the root invalidates our strings
+	//json_close(root);
+
+	return icon;
+}
+
+int api_screenshot_list(Screenshot **screenshots, char *hb_id)
+{
+	char *api_url = malloc(100*sizeof(char));
+	sprintf(api_url, API_SCREENSHOTS ".json", hb_id);
+
+	char *json = network_get(api_url);
+	free(api_url);
+
+	cJSON *root;
+	int ret = json_open(json, &root);
+
+	int code;
+	char *message;
+	ret = json_status(root, &code, &message);
+
+	ret = json_screenshot_list(root, screenshots);
+
+	// FIXME: Closing the root invalidates our strings
+	//json_close(root);
+
+	return ret;
 }
