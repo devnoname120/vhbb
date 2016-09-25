@@ -16,18 +16,19 @@
 
 void vorbis_close(vorbis_t *handle)
 {
-    if (!handle) {
-        return;
-    }
+	if (!handle) {
+		return;
+	}
 
-    mem_free(handle, handle->decode_buf);
-    stb_vorbis_close(handle->decoder);
-    if (handle->callbacks.close) {
-        (*handle->callbacks.close)(handle->callback_data);
-    }
-    if (handle->callbacks.free) {
-        (*handle->callbacks.free)(handle->callback_data, handle);
-    } else {
-        free(handle);
-    }
+	mem_free(handle, handle->decode_buf);
+	stb_vorbis_close(handle->decoder);
+	if (handle->callbacks.close) {
+		(*handle->callbacks.close)(handle->callback_data);
+	}
+	if (handle->callbacks.free) {
+		(*handle->callbacks.free)(handle->callback_data, handle);
+	}
+	else {
+		free(handle);
+	}
 }

@@ -12,7 +12,8 @@ static int archive_path_start = 0;
 static unzFile uf = NULL;
 static FileList archive_list;
 
-int fileListGetArchiveEntries(FileList *list, char *path) {
+int fileListGetArchiveEntries(FileList *list, char *path)
+{
 	int res;
 
 	if (!uf)
@@ -54,7 +55,8 @@ int fileListGetArchiveEntries(FileList *list, char *path) {
 					entry->is_folder = 1;
 					entry->type = FILE_TYPE_UNKNOWN;
 					list->folders++;
-				} else {
+				}
+				else {
 					entry->is_folder = 0;
 					entry->type = getFileType(entry->name);
 					list->files++;
@@ -79,7 +81,8 @@ int fileListGetArchiveEntries(FileList *list, char *path) {
 	return 0;
 }
 
-int getArchivePathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *files) {
+int getArchivePathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *files)
+{
 	if (!uf)
 		return -1;
 
@@ -108,7 +111,8 @@ int getArchivePathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *
 			(*folders)++;
 
 		fileListEmpty(&list);
-	} else {
+	}
+	else {
 		if (size)
 			(*size) += stat.st_size;
 
@@ -119,7 +123,8 @@ int getArchivePathInfo(char *path, uint64_t *size, uint32_t *folders, uint32_t *
 	return 0;
 }
 
-int extractArchivePath(char *src, char *dst, uint64_t *value, uint64_t max, void (* SetProgress)(uint64_t value, uint64_t max), int (* cancelHandler)()) {
+int extractArchivePath(char *src, char *dst, uint64_t *value, uint64_t max, void(*SetProgress)(uint64_t value, uint64_t max), int(*cancelHandler)())
+{
 	if (!uf)
 		return -1;
 
@@ -141,7 +146,7 @@ int extractArchivePath(char *src, char *dst, uint64_t *value, uint64_t max, void
 
 		if (SetProgress)
 			SetProgress(value ? *value : 0, max);
-		
+
 		if (cancelHandler && cancelHandler()) {
 			fileListEmpty(&list);
 			return 0;
@@ -171,7 +176,8 @@ int extractArchivePath(char *src, char *dst, uint64_t *value, uint64_t max, void
 		}
 
 		fileListEmpty(&list);
-	} else {
+	}
+	else {
 		SceUID fdsrc = archiveFileOpen(src, SCE_O_RDONLY, 0);
 		if (fdsrc < 0)
 			return fdsrc;
@@ -221,7 +227,8 @@ int extractArchivePath(char *src, char *dst, uint64_t *value, uint64_t max, void
 	return 1;
 }
 
-int archiveFileGetstat(const char *file, SceIoStat *stat) {
+int archiveFileGetstat(const char *file, SceIoStat *stat)
+{
 	if (!uf)
 		return -1;
 
@@ -256,13 +263,14 @@ int archiveFileGetstat(const char *file, SceIoStat *stat) {
 	return -1;
 }
 
-int archiveFileOpen(const char *file, int flags, SceMode mode) {
+int archiveFileOpen(const char *file, int flags, SceMode mode)
+{
 	int res;
 
 	if (!uf)
 		return -1;
 
-	const char *archive_path = file + archive_path_start;	
+	const char *archive_path = file + archive_path_start;
 	int name_length = strlen(archive_path);
 
 	FileListEntry *archive_entry = archive_list.head;
@@ -288,21 +296,24 @@ int archiveFileOpen(const char *file, int flags, SceMode mode) {
 	return -1;
 }
 
-int archiveFileRead(SceUID fd, void *data, SceSize size) {
+int archiveFileRead(SceUID fd, void *data, SceSize size)
+{
 	if (!uf || fd != ARCHIVE_FD)
 		return -1;
 
 	return unzReadCurrentFile(uf, data, size);
 }
 
-int archiveFileClose(SceUID fd) {
+int archiveFileClose(SceUID fd)
+{
 	if (!uf || fd != ARCHIVE_FD)
 		return -1;
 
 	return unzCloseCurrentFile(uf);
 }
 
-int ReadArchiveFile(char *file, void *buf, int size) {
+int ReadArchiveFile(char *file, void *buf, int size)
+{
 	SceUID fd = archiveFileOpen(file, SCE_O_RDONLY, 0);
 	if (fd < 0)
 		return fd;
@@ -312,7 +323,8 @@ int ReadArchiveFile(char *file, void *buf, int size) {
 	return read;
 }
 
-int archiveClose() {
+int archiveClose()
+{
 	if (!uf)
 		return -1;
 
@@ -324,7 +336,8 @@ int archiveClose() {
 	return 0;
 }
 
-int archiveOpen(char *file) {
+int archiveOpen(char *file)
+{
 	// Start position of the archive path
 	archive_path_start = strlen(file) + 1;
 

@@ -3,9 +3,9 @@
 
 #include "wav.h"
 
-static uint32_t _getN(uint8_t *pucCodecAddr,uint32_t *pReadbyte,uint32_t size);
+static uint32_t _getN(uint8_t *pucCodecAddr, uint32_t *pReadbyte, uint32_t size);
 
-int32_t ParseWaveHeader(WaveHeader *pHeader,uint8_t *pucCodecAddr,uint32_t uiInputByte)
+int32_t ParseWaveHeader(WaveHeader *pHeader, uint8_t *pucCodecAddr, uint32_t uiInputByte)
 {
 	uint32_t chunkLength;
 	int32_t  format;
@@ -27,15 +27,13 @@ int32_t ParseWaveHeader(WaveHeader *pHeader,uint8_t *pucCodecAddr,uint32_t uiInp
 
 	/*E Processing loop per chunk */
 	/*J チャンクごとの処理ループ */
-	while (readbyte + 8 < uiInputByte)
-	{
+	while (readbyte + 8 < uiInputByte) {
 		uint32_t chunkType = _getLong(pucCodecAddr, &readbyte);
 		chunkLength = _getLong(pucCodecAddr, &readbyte);
 		chunkLength += (chunkLength & 1);
 
 		if (readbyte + chunkLength > uiInputByte
-			&& chunkType != 0x61746164 /* 'data' */)
-		{
+			&& chunkType != 0x61746164 /* 'data' */) {
 			/*E Give up analyzing because the chunk is not read completely */
 			/*J 読み込みが不完全な chunk なので解析を諦める */
 
@@ -111,16 +109,15 @@ int32_t ParseWaveHeader(WaveHeader *pHeader,uint8_t *pucCodecAddr,uint32_t uiInp
 	return ERROR_READSIZE_IS_TOO_SMALL;
 }
 
-static uint32_t _getN(uint8_t *pucCodecAddr,uint32_t *pReadbyte,uint32_t size)
+static uint32_t _getN(uint8_t *pucCodecAddr, uint32_t *pReadbyte, uint32_t size)
 {
 	uint32_t ret = 0;
 	uint32_t end;
 
 	end = *pReadbyte + size;
-	do
-	{
+	do {
 		size--;
-		ret |= pucCodecAddr[*pReadbyte+size] << (size*8);
+		ret |= pucCodecAddr[*pReadbyte + size] << (size * 8);
 	} while (size > 0);
 
 	*pReadbyte = end;

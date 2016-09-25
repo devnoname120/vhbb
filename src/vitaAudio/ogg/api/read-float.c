@@ -15,37 +15,37 @@
 
 
 int32_t vorbis_read_float(
-    vorbis_t *handle, float *buf, int32_t len, vorbis_error_t *error_ret)
+	vorbis_t *handle, float *buf, int32_t len, vorbis_error_t *error_ret)
 {
-    int32_t count = 0;
-    int error = VORBIS_NO_ERROR;
+	int32_t count = 0;
+	int error = VORBIS_NO_ERROR;
 
-    if (!buf || len < 0 || handle->read_int16_only) {
-        error = VORBIS_ERROR_INVALID_ARGUMENT;
-        goto out;
-    }
+	if (!buf || len < 0 || handle->read_int16_only) {
+		error = VORBIS_ERROR_INVALID_ARGUMENT;
+		goto out;
+	}
 
-    const int channels = handle->channels;
-    while (count < len) {
-        if (handle->decode_buf_pos >= handle->decode_buf_len) {
-            error = decode_frame(handle);
-            if (error) {
-                break;
-            }
-        }
-        const int copy = min(
-            len - count, handle->decode_buf_len - handle->decode_buf_pos);
-        memcpy(buf, ((float *)handle->decode_buf
-                     + handle->decode_buf_pos * channels),
-               copy * channels * sizeof(*buf));
-        buf += copy * channels;
-        count += copy;
-        handle->decode_buf_pos += copy;
-    }
+	const int channels = handle->channels;
+	while (count < len) {
+		if (handle->decode_buf_pos >= handle->decode_buf_len) {
+			error = decode_frame(handle);
+			if (error) {
+				break;
+			}
+		}
+		const int copy = min(
+			len - count, handle->decode_buf_len - handle->decode_buf_pos);
+		memcpy(buf, ((float *)handle->decode_buf
+			+ handle->decode_buf_pos * channels),
+			copy * channels * sizeof(*buf));
+		buf += copy * channels;
+		count += copy;
+		handle->decode_buf_pos += copy;
+	}
 
-  out:
-    if (error_ret) {
-        *error_ret = error;
-    }
-    return count;
+out:
+	if (error_ret) {
+		*error_ret = error;
+	}
+	return count;
 }

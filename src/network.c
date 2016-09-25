@@ -7,7 +7,7 @@
  *		you can redistribute it and/or modify it under the terms of the
  *		GNU General Public License as published by the Free Software Foundation,
  *		either version 3 of the License, or (at your option) any later version.
- *		
+ *
  *		This program comes WITHOUT ANY WARRANTY; without even the implied warranty of
  *		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
  *		Public License for more details.
@@ -63,10 +63,10 @@ void netInit()
 {
 	sceSysmoduleLoadModule(SCE_SYSMODULE_NET);
 	SceNetInitParam netInitParam;
-	int size 				= 1*1024*1024;
-	netInitParam.memory 	= malloc(size);
-	netInitParam.size 		= size;
-	netInitParam.flags 		= 0;
+	int size = 1 * 1024 * 1024;
+	netInitParam.memory = malloc(size);
+	netInitParam.size = size;
+	netInitParam.flags = 0;
 	sceNetInit(&netInitParam);
 	sceNetCtlInit();
 }
@@ -81,7 +81,7 @@ void netTerm()
 void httpInit()
 {
 	sceSysmoduleLoadModule(SCE_SYSMODULE_HTTP);
-	sceHttpInit(1*1024*1024);
+	sceHttpInit(1 * 1024 * 1024);
 }
 
 void httpTerm()
@@ -95,17 +95,16 @@ void network_download(const char *url, const char *dest)
 {
 	network_init();
 
-	int conn 	= sceHttpCreateConnectionWithURL(tpl, url, 0);
+	int conn = sceHttpCreateConnectionWithURL(tpl, url, 0);
 	int request = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url, 0);
-	int handle 	= sceHttpSendRequest(request, NULL, 0);
+	int handle = sceHttpSendRequest(request, NULL, 0);
 
-	int fh 		= sceIoOpen(dest, SCE_O_WRONLY | SCE_O_CREAT, 0777);
+	int fh = sceIoOpen(dest, SCE_O_WRONLY | SCE_O_CREAT, 0777);
 
-	unsigned char data[25600] = {0}; // test with [16*1024]
+	unsigned char data[25600] = { 0 }; // test with [16*1024]
 	int read = 0;
 
-	while ((read = sceHttpReadData(request, &data, sizeof( data ) ) ) > 0)
-	{
+	while ((read = sceHttpReadData(request, &data, sizeof(data))) > 0) {
 		int write = sceIoWrite(fh, data, read);
 	}
 
@@ -120,9 +119,9 @@ char *network_get(const char *url)
 {
 	network_init();
 
-	int conn 	= sceHttpCreateConnectionWithURL(tpl, url, 0 );
-	int request = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url, 0 );
-	int handle 	= sceHttpSendRequest(request, NULL, 0 );
+	int conn = sceHttpCreateConnectionWithURL(tpl, url, 0);
+	int request = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url, 0);
+	int handle = sceHttpSendRequest(request, NULL, 0);
 
 	int buf_size = 1000 * sizeof(char);
 	char *buffer = malloc(buf_size);
@@ -130,8 +129,7 @@ char *network_get(const char *url)
 	int read = 0;
 	int pos = 0;
 	// read data until finished
-	while ((read = sceHttpReadData(request, &buffer[pos], buf_size - pos)) > 0 )
-	{
+	while ((read = sceHttpReadData(request, &buffer[pos], buf_size - pos)) > 0) {
 		pos += read;
 		buf_size += 1000 * sizeof(char);
 		buffer = realloc(buffer, buf_size);

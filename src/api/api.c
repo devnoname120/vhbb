@@ -10,7 +10,7 @@
 // Get the basic list of homebrews and put it in a list of structs Homebrew and put the pointer into *homebrews
 int api_homebrew_list(Homebrew **homebrews, char *search, char *sort, char* filter)
 {
-	char *api_url = malloc(100*sizeof(char));
+	char *api_url = malloc(100 * sizeof(char));
 	sprintf(api_url, "%s.json?search=%s&sort=%s&filter=", API_HOMEBREWS, search, sort, filter);
 	logcat_add(api_url, "", "\n");
 
@@ -40,7 +40,7 @@ int api_homebrew_list(Homebrew **homebrews, char *search, char *sort, char* filt
 
 Homebrew *api_homebrew(char *id)
 {
-	char *api_url = malloc(100*sizeof(char));
+	char *api_url = malloc(100 * sizeof(char));
 	sprintf(api_url, "%s/%s.json", API_HOMEBREWS, id);
 
 	char *json = network_get(api_url);
@@ -60,8 +60,9 @@ Homebrew *api_homebrew(char *id)
 	return homebrew;
 }
 
-Icon *api_icon(char *hb_id) {
-	char *api_url = malloc(100*sizeof(char));
+Icon *api_icon(char *hb_id)
+{
+	char *api_url = malloc(100 * sizeof(char));
 	sprintf(api_url, API_ICON ".json", hb_id);
 
 	char *json = network_get(api_url);
@@ -83,7 +84,7 @@ Icon *api_icon(char *hb_id) {
 
 int api_screenshot_list(Screenshot **screenshots, char *hb_id)
 {
-	char *api_url = malloc(100*sizeof(char));
+	char *api_url = malloc(100 * sizeof(char));
 	sprintf(api_url, API_SCREENSHOTS ".json", hb_id);
 
 	char *json = network_get(api_url);
