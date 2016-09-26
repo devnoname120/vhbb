@@ -28,8 +28,11 @@ int loadTimer					= 0;
 int date_format, time_format;
 int dialogOpen					= 0;
 
-int download_que_running 		= 0;
-int download_que_count			= 0;
+int install_que_running 		= 0;
+int install_que_count			= 0;
+int install_que_complete_count  = 0;
+int install_que_open			= 0;
+int install_que_posy			= 550;
 int install_completed			= 0;
 int install_que1_alpha			= 0;
 int install_que2_alpha			= 0;
@@ -70,6 +73,7 @@ int btnState_settingsContact	= 0;
 int btnState_settingsAbout		= 0;
 int btnState_dialogBtn1			= 0;
 int btnState_dialogBtn2			= 0;
+int btnState_installBtn			= 0;
 
 /// POSITION VARIABLES
 int originX						= 0;
@@ -264,3 +268,5 @@ extern unsigned char _binary_assets_img_statsbar_battery_png_start;
 extern unsigned char _binary_assets_img_inst_que1_png_start;
 extern unsigned char _binary_assets_img_inst_que2_png_start;
 extern unsigned char _binary_assets_img_inst_dialog_png_start;
+extern unsigned char _binary_assets_img_inst_btn_close_png_start;
+extern unsigned char _binary_assets_img_inst_panel_png_start;
