@@ -28,7 +28,7 @@
 	<frame id="frame4">
 		<liveitem>
 			<text align="center" text-align="center" word-wrap="off" ellipsis="on">
-				<str size="20" color="#ffffff" shadow="on">by devnoname120 and Arkanite</str>
+				<str size="20" color="#ffffff" shadow="on"></str>
 			</text>
 		</liveitem>
 	</frame>
