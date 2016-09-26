@@ -59,6 +59,8 @@ OBJS     = 	lib/cJSON/cJSON.o							\
 			assets/img_inst_que1.o						\
 			assets/img_inst_que2.o						\
 			assets/img_inst_dialog.o					\
+			assets/img_inst_btn_close.o					\
+			assets/img_inst_panel.o						\
 			src/vitaAudio/ogg/util/memory.o				\
 			src/vitaAudio/ogg/util/float-to-int16.o		\
 			src/vitaAudio/ogg/util/decode-frame.o		\
