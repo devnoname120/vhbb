@@ -18,85 +18,163 @@
  */
 
 // MAIN SCROLL
-if ( momentum < -1 || momentum > 1 )    { clickable = 0; }
-if ( !previewActive && !settingsOpen )
-	{
-	if ( scroll && ground > 544 && touch_y > 90 )
-		{
-		if ( touch_check )
-			{
+if ( momentum < -1 || momentum > 1 ){
+	clickable = 0;
+}
+if ( !previewActive && !settingsOpen && !install_que_open ) {
+	if ( scroll && ground > 544 && touch_y > 90 ) {
+		if ( touch_check ) {
 			newy	= 0; newy = originY + ( touch_y - prevy );
-			if ( usemomentum == 1 )
-				{
+			if ( usemomentum == 1 ) {
 				momentum = abs( round(( touch_y - prevy ) /2 ));
-				if ( touch_y - prevy > 0 ) 	{ scrolldir = 1; }
-				else 						{ scrolldir = 0; }
+				if ( touch_y - prevy > 0 ) {
+					scrolldir = 1;
 				}
-			if ( newy > 0 ) 			  { newy = 0; }
-			if ( newy -544 < (-ground) )  { newy = (-ground) +544; }
+				else {
+					scrolldir = 0;
+				}
+			}
+			if ( newy > 0 ) {
+				newy = 0;
+			}
+			if ( newy -544 < (-ground) ) {
+				newy = (-ground) +544;
+			}
 			originY = newy; prevy = touch_y;          
-			}
-		if ( touch_check_released ) { prevy = 0; scroll = 0; }
 		}
-	else
-		{
-		if ( touch_check_pressed ) { scroll = 1; prevy = touch_y; }
-		if ( usemomentum && momentum > 0 )
-			{
+		if ( touch_check_released ) {
+			prevy = 0; scroll = 0;
+		}
+	}
+	else {
+		if ( touch_check_pressed ) {
+			scroll = 1; prevy = touch_y;
+		}
+		if ( usemomentum && momentum > 0 ) {
 			newy	= 0;
-			if ( scrolldir == 1 )
-				{
+			if ( scrolldir == 1 ) {
 				newy = originY +momentum;
-				if ( newy > 0 ) { newy = 0; momentum = 0; }
+				if ( newy > 0 ) {
+					newy = 0; momentum = 0;
 				}
-			else
-				{
-				newy    = originY -momentum;
-				if ( newy - 544 <= (-ground) ) { newy = (-ground) +544; momentum = 0; }
-				}
-			originY = newy;
-			if ( momentum > 0 ) { momentum -= 0.2; }
-			}    
-		}
-	}
-// SETTINGS SCROLL
-if ( settingsOpen )
-	{
-	if ( scroll && settingsGround > 544 && touch_y > 90 )
-		{
-		if ( touch_check && touch_x < 207 )
-			{
-			newy	= 0; newy = settingsPosY + ( touch_y - prevy );
-			if ( usemomentum )
-				{
-				momentum = abs( round(( touch_y - prevy ) /2 ));
-				if ( touch_y - prevy > 0 ) 	{ scrolldir = 1; }
-				else 						{ scrolldir = 0; }
-				}
-			if ( newy > 0 ) { newy = 0; }
-			if ( newy -544 < (-settingsGround) )  { newy = (-settingsGround) +544; }
-			settingsPosY = newy; prevy = touch_y;          
 			}
-		if ( touch_check_released ) { prevy = 0; scroll = 0; }
+			else {
+				newy    = originY -momentum;
+				if ( newy - 544 <= (-ground) ) {
+					newy = (-ground) +544; momentum = 0;
+				}
+			}
+			originY = newy;
+			if ( momentum > 0 ) {
+				momentum -= 0.2;
+			}
+		}    
+	}
+}
+// SETTINGS SCROLL
+if ( settingsOpen ) {
+	if ( scroll && settingsGround > 544 && touch_y > 90 ) {
+		if ( touch_check && touch_x < 207 ) {
+			newy	= 0; newy = settingsPosY + ( touch_y - prevy );
+			if ( usemomentum ) {
+				momentum = abs( round(( touch_y - prevy ) /2 ));
+				if ( touch_y - prevy > 0 ) {
+					scrolldir = 1;
+				}
+				else {
+					scrolldir = 0;
+				}
+			}
+			if ( newy > 0 ) {
+				newy = 0;
+			}
+			if ( newy -544 < (-settingsGround) ) {
+				newy = (-settingsGround) +544;
+			}
+			settingsPosY = newy; prevy = touch_y;          
 		}
-	else
-		{
-		if ( touch_check_pressed && touch_x < 207 ) { scroll = 1; prevy = touch_y; }
-		if ( usemomentum && momentum > 0 )
-			{
-			newy	= 0;
-			if ( scrolldir == 1 )
-				{
-				newy = settingsPosY +momentum;
-				if ( newy > 0 ) { newy = 0; momentum = 0; }
-				}
-			else
-				{
-				newy    = settingsPosY -momentum;
-				if ( newy - 544 <= (-settingsGround) ) { newy = (-settingsGround) +544; momentum = 0; }
-				}
-			settingsPosY = newy;
-			if ( momentum > 0 ) { momentum -= 0.2; }
-			}    
+		if ( touch_check_released ) {
+			prevy = 0; scroll = 0;
 		}
 	}
+	else {
+		if ( touch_check_pressed && touch_x < 207 ) {
+			scroll = 1; prevy = touch_y;
+		}
+		if ( usemomentum && momentum > 0 ) {
+			newy	= 0;
+			if ( scrolldir == 1 ) {
+				newy = settingsPosY +momentum;
+				if ( newy > 0 ) {
+					newy = 0; momentum = 0;
+				}
+			}
+			else {
+				newy    = settingsPosY -momentum;
+				if ( newy - 544 <= (-settingsGround) ) {
+					newy = (-settingsGround) +544; momentum = 0;
+				}
+			}
+			settingsPosY = newy;
+			if ( momentum > 0 ) {
+				momentum -= 0.2;
+			}
+		}    
+	}
+}
+	
+// INSTALL QUE OPEN
+if ( install_que_open ) {
+	if ( scroll && settingsGround > 544 && touch_y > 96 ) {
+		if ( touch_check ) {
+			newy	= 0; newy = install_que_posy + ( touch_y - prevy );
+			if ( usemomentum ) {
+				momentum = abs( round(( touch_y - prevy ) /2 ));
+				if ( touch_y - prevy > 0 ) {
+					scrolldir = 1;
+				}
+				else {
+					scrolldir = 0;
+				}
+			}
+			if ( newy > 0 ) {
+				newy = 0;
+			}
+			if ( newy -544 < (-settingsGround) ) {
+				newy = (-settingsGround) +544;
+			}
+			install_que_posy = newy; prevy = touch_y;          
+		}
+		if ( touch_check_released ) {
+			prevy = 0; scroll = 0;
+		}
+	}
+	else {
+		if ( touch_check_pressed ) {
+			scroll = 1; prevy = touch_y;
+		}
+		if ( usemomentum && momentum > 0 ) {
+			newy	= 0;
+			if ( scrolldir == 1 ) {
+				newy = install_que_posy +momentum;
+				if ( newy > 0 ) {
+					newy = 0; momentum = 0;
+				}
+			}
+			else {
+				newy    = install_que_posy -momentum;
+				if ( newy - 544 <= (-settingsGround) ) {
+					newy = (-settingsGround) +544; momentum = 0;
+				}
+			}
+			install_que_posy = newy;
+			if ( momentum > 0 ) {
+				momentum -= 0.2;
+			}
+		}    
+	}
+}
+	
+	
+	
+	
