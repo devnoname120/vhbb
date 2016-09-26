@@ -135,24 +135,31 @@ int main()
 		if (touch_check_pressed) {
 			if (!dialogOpen) {
 				if (!settingsOpen) {
-					if (touch_y < itemPanelHeight) {
-						// TOPBAR BUTTONS
-						if (point_in_rectangle(touch_x, touch_y, 1, 1, 98, 90) && screen != 0) { screen = 0; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-						if (point_in_rectangle(touch_x, touch_y, 99, 1, 204, 90) && screen != 1) { screen = 1; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-						if (point_in_rectangle(touch_x, touch_y, 205, 1, 326, 90) && screen != 2) { screen = 2; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-						if (point_in_rectangle(touch_x, touch_y, 327, 1, 427, 90) && screen != 3) { screen = 3; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-						if (point_in_rectangle(touch_x, touch_y, 428, 1, 552, 90) && screen != 4) { screen = 4; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-						if (point_in_rectangle(touch_x, touch_y, 553, 1, 674, 90) && screen != 5) { screen = 5; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-						if (point_in_rectangle(touch_x, touch_y, 675, 1, 799, 90) && screen != 6) { screen = 6; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-						if (point_in_rectangle(touch_x, touch_y, 800, 1, 960, 90)) { btnState_search = 1; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
-					}
-					else {
-						if (previewActive) {
-							// INSTALL PRESSED
-							if (point_in_rectangle(touch_x, touch_y, 197, 213, 357, 266)) {
-								vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg");
-								btnState_previewAction = 1;
+					if (!install_que_open) {
+						if (touch_y < itemPanelHeight) {
+							// TOPBAR BUTTONS
+							if (point_in_rectangle(touch_x, touch_y, 1, 1, 98, 90) && screen != 0) { screen = 0; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+							if (point_in_rectangle(touch_x, touch_y, 99, 1, 204, 90) && screen != 1) { screen = 1; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+							if (point_in_rectangle(touch_x, touch_y, 205, 1, 326, 90) && screen != 2) { screen = 2; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+							if (point_in_rectangle(touch_x, touch_y, 327, 1, 427, 90) && screen != 3) { screen = 3; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+							if (point_in_rectangle(touch_x, touch_y, 428, 1, 552, 90) && screen != 4) { screen = 4; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+							if (point_in_rectangle(touch_x, touch_y, 553, 1, 674, 90) && screen != 5) { screen = 5; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+							if (point_in_rectangle(touch_x, touch_y, 675, 1, 799, 90) && screen != 6) { screen = 6; originY = 0; previewActive = 0; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+							if (point_in_rectangle(touch_x, touch_y, 800, 1, 960, 90)) { btnState_search = 1; vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg"); }
+						}
+						else {
+							if (previewActive) {
+								// INSTALL PRESSED
+								if (point_in_rectangle(touch_x, touch_y, 197, 213, 357, 266)) {
+									vaudio_play_sound_ogg(&snd_ui, VHBB_RES_DIR_SOUND "snd_tap.ogg");
+									btnState_previewAction = 1;
+								}
 							}
+						}
+					}
+					else{
+						if (point_in_rectangle(touch_x, touch_y, 7, 39, 58, 90)) {
+							btnState_installBtn = 1;
 						}
 					}
 				}
@@ -186,148 +193,156 @@ int main()
 		if (touch_check_released) {
 			if (!dialogOpen) {
 				if (!settingsOpen) {
-					if (!previewActive) {
-						if (itemPressed >= 0 && clickable) {
-							int previewReady = 1;
-							// PREP FOR ITEM PREVIEW
-							switch (screen) {
-							case 0:			// NEW
-								if (itemPressed < 0 || itemPressed >(itemCount_new - 1)) { previewReady = 0; break; }
-								previewCategory = catListNew[itemPressed].cat;
-								strcpy(previewName, catListNew[itemPressed].name);
-								strcpy(previewAuthor, catListNew[itemPressed].author);
-								strcpy(previewVersion, catListNew[itemPressed].version);
-								strcpy(previewDlSize, catListNew[itemPressed].dlSize);
-								strcpy(previewRelease, catListNew[itemPressed].release);
-								strcpy(previewDescription, catListNew[itemPressed].description);
-								strcpy(previewLink, catListNew[itemPressed].link);
-								strcpy(previewDir, catListNew[itemPressed].dir);
-								previewEbootSize = catListNew[itemPressed].ebootSize;
-								break;
-							case 1:			// APPS
-								if (itemPressed < 0 || itemPressed >(itemCount_apps - 1)) { previewReady = 0; break; }
-								previewCategory = catListApps[itemPressed].cat;
-								strcpy(previewName, catListApps[itemPressed].name);
-								strcpy(previewAuthor, catListApps[itemPressed].author);
-								strcpy(previewVersion, catListApps[itemPressed].version);
-								strcpy(previewDlSize, catListApps[itemPressed].dlSize);
-								strcpy(previewRelease, catListApps[itemPressed].release);
-								strcpy(previewDescription, catListApps[itemPressed].description);
-								strcpy(previewLink, catListApps[itemPressed].link);
-								strcpy(previewDir, catListApps[itemPressed].dir);
-								previewEbootSize = catListApps[itemPressed].ebootSize;
-								break;
-							case 2:			// GAMES
-								if (itemPressed < 0 || itemPressed >(itemCount_games - 1)) { previewReady = 0; break; }
-								previewCategory = catListGames[itemPressed].cat;
-								strcpy(previewName, catListGames[itemPressed].name);
-								strcpy(previewAuthor, catListGames[itemPressed].author);
-								strcpy(previewVersion, catListGames[itemPressed].version);
-								strcpy(previewDlSize, catListGames[itemPressed].dlSize);
-								strcpy(previewRelease, catListGames[itemPressed].release);
-								strcpy(previewDescription, catListGames[itemPressed].description);
-								strcpy(previewLink, catListGames[itemPressed].link);
-								strcpy(previewDir, catListGames[itemPressed].dir);
-								previewEbootSize = catListGames[itemPressed].ebootSize;
-								break;
-							case 3:			// EMULATORS
-								if (itemPressed < 0 || itemPressed >(itemCount_emu - 1)) { previewReady = 0; break; }
-								previewCategory = catListEmulators[itemPressed].cat;
-								strcpy(previewName, catListEmulators[itemPressed].name);
-								strcpy(previewAuthor, catListEmulators[itemPressed].author);
-								strcpy(previewVersion, catListEmulators[itemPressed].version);
-								strcpy(previewDlSize, catListEmulators[itemPressed].dlSize);
-								strcpy(previewRelease, catListEmulators[itemPressed].release);
-								strcpy(previewDescription, catListEmulators[itemPressed].description);
-								strcpy(previewLink, catListEmulators[itemPressed].link);
-								strcpy(previewDir, catListEmulators[itemPressed].dir);
-								previewEbootSize = catListEmulators[itemPressed].ebootSize;
-								break;
-							case 4:			// UTILITIES
-								if (itemPressed < 0 || itemPressed >(itemCount_util - 1)) { previewReady = 0; break; }
-								previewCategory = catListUtilities[itemPressed].cat;
-								strcpy(previewName, catListUtilities[itemPressed].name);
-								strcpy(previewAuthor, catListUtilities[itemPressed].author);
-								strcpy(previewVersion, catListUtilities[itemPressed].version);
-								strcpy(previewDlSize, catListUtilities[itemPressed].dlSize);
-								strcpy(previewRelease, catListUtilities[itemPressed].release);
-								strcpy(previewDescription, catListUtilities[itemPressed].description);
-								strcpy(previewLink, catListUtilities[itemPressed].link);
-								strcpy(previewDir, catListUtilities[itemPressed].dir);
-								previewEbootSize = catListUtilities[itemPressed].ebootSize;
-								break;
-							case 5:			// THEMES
-								if (itemPressed < 0 || itemPressed >(itemCount_themes - 1)) { previewReady = 0; break; }
-								previewCategory = catListThemes[itemPressed].cat;
-								strcpy(previewName, catListThemes[itemPressed].name);
-								strcpy(previewAuthor, catListThemes[itemPressed].author);
-								strcpy(previewVersion, catListThemes[itemPressed].version);
-								strcpy(previewDlSize, catListThemes[itemPressed].dlSize);
-								strcpy(previewRelease, catListThemes[itemPressed].release);
-								strcpy(previewDescription, catListThemes[itemPressed].description);
-								strcpy(previewLink, catListThemes[itemPressed].link);
-								strcpy(previewDir, catListThemes[itemPressed].dir);
-								previewEbootSize = catListThemes[itemPressed].ebootSize;
-								break;
-							case 6:			// DEMOS
-								if (itemPressed < 0 || itemPressed >(itemCount_demos - 1)) { previewReady = 0; break; }
-								previewCategory = catListDemos[itemPressed].cat;
-								strcpy(previewName, catListDemos[itemPressed].name);
-								strcpy(previewAuthor, catListDemos[itemPressed].author);
-								strcpy(previewVersion, catListDemos[itemPressed].version);
-								strcpy(previewDlSize, catListDemos[itemPressed].dlSize);
-								strcpy(previewRelease, catListDemos[itemPressed].release);
-								strcpy(previewDescription, catListDemos[itemPressed].description);
-								strcpy(previewLink, catListDemos[itemPressed].link);
-								strcpy(previewDir, catListDemos[itemPressed].dir);
-								previewEbootSize = catListDemos[itemPressed].ebootSize;
-								break;
-							}
-							if (previewReady) {
-								strtok_r(previewDescription, "|", &previewDesLine2);
-								strtok_r(previewDesLine2, "|", &previewDesLine3);
-								strtok_r(previewDesLine3, "|", &previewDesLine4);
-								strtok_r(previewDesLine4, "|", &previewDesLine5);
-								previewActive = 1;
-								previewListNumber = itemPressed;
-								previewScreenNumber = screen;
-								// CHECK DOWNLOADED, INSTALLED, CURRENT VERSION
-								if (access(previewDir, F_OK) == -1) { preview_isInstalled = 0; }
-								else {
-									preview_isInstalled = 1;
-									unsigned long localV = file_size(string_join(2, previewDir, "eboot.bin"));
-									if (localV == (unsigned long)previewEbootSize) { preview_isCurrent = 1; }
-									else { preview_isCurrent = 0; }
+					if (!install_que_open) {
+						if (!previewActive) {
+							if (itemPressed >= 0 && clickable) {
+								int previewReady = 1;
+								// PREP FOR ITEM PREVIEW
+								switch (screen) {
+								case 0:			// NEW
+									if (itemPressed < 0 || itemPressed >(itemCount_new - 1)) { previewReady = 0; break; }
+									previewCategory = catListNew[itemPressed].cat;
+									strcpy(previewName, catListNew[itemPressed].name);
+									strcpy(previewAuthor, catListNew[itemPressed].author);
+									strcpy(previewVersion, catListNew[itemPressed].version);
+									strcpy(previewDlSize, catListNew[itemPressed].dlSize);
+									strcpy(previewRelease, catListNew[itemPressed].release);
+									strcpy(previewDescription, catListNew[itemPressed].description);
+									strcpy(previewLink, catListNew[itemPressed].link);
+									strcpy(previewDir, catListNew[itemPressed].dir);
+									previewEbootSize = catListNew[itemPressed].ebootSize;
+									break;
+								case 1:			// APPS
+									if (itemPressed < 0 || itemPressed >(itemCount_apps - 1)) { previewReady = 0; break; }
+									previewCategory = catListApps[itemPressed].cat;
+									strcpy(previewName, catListApps[itemPressed].name);
+									strcpy(previewAuthor, catListApps[itemPressed].author);
+									strcpy(previewVersion, catListApps[itemPressed].version);
+									strcpy(previewDlSize, catListApps[itemPressed].dlSize);
+									strcpy(previewRelease, catListApps[itemPressed].release);
+									strcpy(previewDescription, catListApps[itemPressed].description);
+									strcpy(previewLink, catListApps[itemPressed].link);
+									strcpy(previewDir, catListApps[itemPressed].dir);
+									previewEbootSize = catListApps[itemPressed].ebootSize;
+									break;
+								case 2:			// GAMES
+									if (itemPressed < 0 || itemPressed >(itemCount_games - 1)) { previewReady = 0; break; }
+									previewCategory = catListGames[itemPressed].cat;
+									strcpy(previewName, catListGames[itemPressed].name);
+									strcpy(previewAuthor, catListGames[itemPressed].author);
+									strcpy(previewVersion, catListGames[itemPressed].version);
+									strcpy(previewDlSize, catListGames[itemPressed].dlSize);
+									strcpy(previewRelease, catListGames[itemPressed].release);
+									strcpy(previewDescription, catListGames[itemPressed].description);
+									strcpy(previewLink, catListGames[itemPressed].link);
+									strcpy(previewDir, catListGames[itemPressed].dir);
+									previewEbootSize = catListGames[itemPressed].ebootSize;
+									break;
+								case 3:			// EMULATORS
+									if (itemPressed < 0 || itemPressed >(itemCount_emu - 1)) { previewReady = 0; break; }
+									previewCategory = catListEmulators[itemPressed].cat;
+									strcpy(previewName, catListEmulators[itemPressed].name);
+									strcpy(previewAuthor, catListEmulators[itemPressed].author);
+									strcpy(previewVersion, catListEmulators[itemPressed].version);
+									strcpy(previewDlSize, catListEmulators[itemPressed].dlSize);
+									strcpy(previewRelease, catListEmulators[itemPressed].release);
+									strcpy(previewDescription, catListEmulators[itemPressed].description);
+									strcpy(previewLink, catListEmulators[itemPressed].link);
+									strcpy(previewDir, catListEmulators[itemPressed].dir);
+									previewEbootSize = catListEmulators[itemPressed].ebootSize;
+									break;
+								case 4:			// UTILITIES
+									if (itemPressed < 0 || itemPressed >(itemCount_util - 1)) { previewReady = 0; break; }
+									previewCategory = catListUtilities[itemPressed].cat;
+									strcpy(previewName, catListUtilities[itemPressed].name);
+									strcpy(previewAuthor, catListUtilities[itemPressed].author);
+									strcpy(previewVersion, catListUtilities[itemPressed].version);
+									strcpy(previewDlSize, catListUtilities[itemPressed].dlSize);
+									strcpy(previewRelease, catListUtilities[itemPressed].release);
+									strcpy(previewDescription, catListUtilities[itemPressed].description);
+									strcpy(previewLink, catListUtilities[itemPressed].link);
+									strcpy(previewDir, catListUtilities[itemPressed].dir);
+									previewEbootSize = catListUtilities[itemPressed].ebootSize;
+									break;
+								case 5:			// THEMES
+									if (itemPressed < 0 || itemPressed >(itemCount_themes - 1)) { previewReady = 0; break; }
+									previewCategory = catListThemes[itemPressed].cat;
+									strcpy(previewName, catListThemes[itemPressed].name);
+									strcpy(previewAuthor, catListThemes[itemPressed].author);
+									strcpy(previewVersion, catListThemes[itemPressed].version);
+									strcpy(previewDlSize, catListThemes[itemPressed].dlSize);
+									strcpy(previewRelease, catListThemes[itemPressed].release);
+									strcpy(previewDescription, catListThemes[itemPressed].description);
+									strcpy(previewLink, catListThemes[itemPressed].link);
+									strcpy(previewDir, catListThemes[itemPressed].dir);
+									previewEbootSize = catListThemes[itemPressed].ebootSize;
+									break;
+								case 6:			// DEMOS
+									if (itemPressed < 0 || itemPressed >(itemCount_demos - 1)) { previewReady = 0; break; }
+									previewCategory = catListDemos[itemPressed].cat;
+									strcpy(previewName, catListDemos[itemPressed].name);
+									strcpy(previewAuthor, catListDemos[itemPressed].author);
+									strcpy(previewVersion, catListDemos[itemPressed].version);
+									strcpy(previewDlSize, catListDemos[itemPressed].dlSize);
+									strcpy(previewRelease, catListDemos[itemPressed].release);
+									strcpy(previewDescription, catListDemos[itemPressed].description);
+									strcpy(previewLink, catListDemos[itemPressed].link);
+									strcpy(previewDir, catListDemos[itemPressed].dir);
+									previewEbootSize = catListDemos[itemPressed].ebootSize;
+									break;
 								}
-								if (access(string_join(3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk"), F_OK) == -1) { preview_isDownloaded = 0; }
-								else { preview_isDownloaded = 1; }
+								if (previewReady) {
+									strtok_r(previewDescription, "|", &previewDesLine2);
+									strtok_r(previewDesLine2, "|", &previewDesLine3);
+									strtok_r(previewDesLine3, "|", &previewDesLine4);
+									strtok_r(previewDesLine4, "|", &previewDesLine5);
+									previewActive = 1;
+									previewListNumber = itemPressed;
+									previewScreenNumber = screen;
+									// CHECK DOWNLOADED, INSTALLED, CURRENT VERSION
+									if (access(previewDir, F_OK) == -1) { preview_isInstalled = 0; }
+									else {
+										preview_isInstalled = 1;
+										unsigned long localV = file_size(string_join(2, previewDir, "eboot.bin"));
+										if (localV == (unsigned long)previewEbootSize) { preview_isCurrent = 1; }
+										else { preview_isCurrent = 0; }
+									}
+									if (access(string_join(3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk"), F_OK) == -1) { preview_isDownloaded = 0; }
+									else { preview_isDownloaded = 1; }
+								}
+								itemPressed = -1;
 							}
-							itemPressed = -1;
+							if (point_in_rectangle(touch_x, touch_y, 800, 1, 960, 90)) {
+								// USER SEARCH
+								input_get("Vita HomeBrew Search", "", SCE_IME_DIALOG_MAX_TEXT_LENGTH);
+							}
 						}
-						if (point_in_rectangle(touch_x, touch_y, 800, 1, 960, 90)) {
-							// USER SEARCH
-							input_get("Vita HomeBrew Search", "", SCE_IME_DIALOG_MAX_TEXT_LENGTH);
+						else {
+							// INSTALL/UPDATE PRESSED
+							if (point_in_rectangle(touch_x, touch_y, 197, 213, 357, 266)) {
+								// INSTALL
+								char *fCloud;
+								char *fLocal;
+								fCloud = string_join(3, VHBB_CLOUD_ADDRESS_FILES, previewName, ".vpk");
+								fLocal = string_join(3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk");
+								if (!download_que_add(fCloud, fLocal, previewScreenNumber, previewListNumber)) {
+									// QUE FULL (show que full dialog? if needed)
+
+								}
+								install_animate = 1;
+							}
+							if (point_in_rectangle(touch_x, touch_y, 0, 460, 90, 544) && !settingsDraw) {
+								previewActive = 0;
+								itemPressed = previewListNumber;
+							}
 						}
 					}
 					else {
-						// INSTALL/UPDATE PRESSED
-						if (point_in_rectangle(touch_x, touch_y, 197, 213, 357, 266)) {
-							// INSTALL
-							char *fCloud;
-							char *fLocal;
-							fCloud = string_join(3, VHBB_CLOUD_ADDRESS_FILES, previewName, ".vpk");
-							fLocal = string_join(3, VHBB_APP_ADDRESS_STORAGE_FILES, previewName, ".vpk");
-							if (!download_que_add(previewName, fCloud, fLocal, previewScreenNumber, previewListNumber)) {
-								// QUE FULL (show que full dialog? if needed)
-
-							}
-							install_animate = 1;
-						}
-						if (point_in_rectangle(touch_x, touch_y, 0, 460, 90, 544) && !settingsDraw) {
-							previewActive = 0;
-							itemPressed = previewListNumber;
+						if (point_in_rectangle(touch_x, touch_y, 7, 39, 58, 90)) {
+							install_que_open = 0;
 						}
 					}
+					
 				}
 				else {
 					// TOUCH RELEASE FOR SETTINGS HERE (REDO)
@@ -350,8 +365,18 @@ int main()
 			btnState_settingsContact = 0;
 			btnState_settingsAbout = 0;
 			btnState_dialogBtn2 = 0;
+			btnState_installBtn = 0;
 			btnState_search = 0;
 			clickable = 1;
+			
+			// INSTALL QUE TOUCHED
+			if (install_que_count > 0 || install_que_complete_count > 0) {
+				if (point_in_rectangle(touch_x, touch_y, 873, 466, 960, 544)){
+					// INTALL QUE TAPPED
+					install_que_open = 1;
+				}
+			}
+			
 		}
 		//-------------------------------------------------------------
 
