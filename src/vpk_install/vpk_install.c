@@ -31,13 +31,14 @@ static int lock_power_init = 0;
 extern int dialogOpen;
 extern int install_completed;
 
-extern int download_que_running;
-extern int download_que_count;
+extern int install_que_running;
+extern int install_que_count;
 extern int install_dialog_show;
 extern int install_dialog_alpha;
 extern int install_dialog_timer;
 extern int install_dialog_screen;
 extern int install_dialog_pos;
+extern int install_que_complete_count;
 
 
 
@@ -427,17 +428,18 @@ EXIT:
 	if (thid >= 0)
 		sceKernelWaitThreadEnd(thid, NULL, NULL);
 
-	// CHECK DOWNLOAD QUE
-	if (download_que_count > 0) {
+	// CHECK INSTALL QUE
+	if (install_que_count > 0) {
 		DownloadArguments dArgs;
 		dArgs.fileCloud = downloadQue[0].fileCloud;
 		dArgs.fileLocal = downloadQue[0].fileLocal;
+		downloadQue[0].status = "downloading...";
 		SceUID thid2 = sceKernelCreateThread("download_thread", (SceKernelThreadEntry)download_thread, 0x40, 0x10000, 0, 0, NULL);
 		if (thid2 >= 0)
 			sceKernelStartThread(thid2, sizeof(DownloadArguments), &dArgs);
 	}
 	else {
-		download_que_running = 0;
+		install_que_running = 0;
 	}
 
 	// Unlock power timers
@@ -446,8 +448,7 @@ EXIT:
 }
 
 
-int download_thread(SceSize args_size, DownloadArguments *arguments)
-{
+int download_thread(SceSize args_size, DownloadArguments *arguments) {
 	SceUID thid = -1;
 
 	netInit();
@@ -482,6 +483,7 @@ int download_thread(SceSize args_size, DownloadArguments *arguments)
 
 	InstallArguments args;
 	args.file = arguments->fileLocal;
+	downloadQue[0].status = "installing...";
 	SceUID thid2 = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
 	if (thid2 >= 0)
 		sceKernelStartThread(thid2, sizeof(InstallArguments), &args);
@@ -496,42 +498,45 @@ EXIT:
 
 
 // QUE FUNCTIONS -------------------------------------------------------
-int download_que_add(char name, char *fileCloud, char *fileLocal, int screen, int pos)
-{
-	if (download_que_count <= MAX_QUE_SIZE) {
-		downloadQue[download_que_count].name = name;
-		downloadQue[download_que_count].fileCloud = fileCloud;
-		downloadQue[download_que_count].fileLocal = fileLocal;
-		downloadQue[download_que_count].percent = 0;
-		downloadQue[download_que_count].screen = screen;
-		downloadQue[download_que_count].pos = pos;
-		if (!download_que_running) {
-			download_que_running = 1;
+int download_que_add(char *fileCloud, char *fileLocal, int screen, int pos) {
+	if (install_que_count <= MAX_QUE_SIZE) {
+		downloadQue[install_que_count].fileCloud = fileCloud;
+		downloadQue[install_que_count].fileLocal = fileLocal;
+		downloadQue[install_que_count].percent = 0;
+		downloadQue[install_que_count].screen = screen;
+		downloadQue[install_que_count].pos = pos;
+		downloadQue[install_que_count].status = "queued";
+		if (!install_que_running) {
+			install_que_running = 1;
 			DownloadArguments dArgs;
 			dArgs.fileCloud = downloadQue[0].fileCloud;
 			dArgs.fileLocal = downloadQue[0].fileLocal;
+			downloadQue[0].status = "downloading...";
 			SceUID thid = sceKernelCreateThread("download_thread", (SceKernelThreadEntry)download_thread, 0x40, 0x10000, 0, 0, NULL);
 			if (thid >= 0)
 				sceKernelStartThread(thid, sizeof(DownloadArguments), &dArgs);
 		}
-		download_que_count++;
+		install_que_count++;
 		return 1;
 	}
 	return 0;
 }
 
-void download_que_remove()
-{
+
+void download_que_remove() {
+	downloadCompleted[install_que_complete_count].screen = downloadQue[0].screen;
+	downloadCompleted[install_que_complete_count].pos = downloadQue[0].pos;
+	install_que_complete_count++;
 	int i;
-	for (i = 0; i < download_que_count; i++) {
-		downloadQue[i + 1].name = downloadQue[i].name;
+	for (i = 0; i < install_que_count; i++) {
 		downloadQue[i + 1].fileCloud = downloadQue[i].fileCloud;
 		downloadQue[i + 1].fileLocal = downloadQue[i].fileLocal;
 		downloadQue[i + 1].percent = downloadQue[i].percent;
 		downloadQue[i + 1].screen = downloadQue[i].screen;
 		downloadQue[i + 1].pos = downloadQue[i].pos;
+		downloadQue[i + 1].status = downloadQue[i].status;
 	}
-	download_que_count--;
+	install_que_count--;
 }
 
 // ---------------------------------------------------------------------
