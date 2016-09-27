@@ -393,10 +393,6 @@ if (install_que_open) {
 			case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
 			case 5: vita2d_draw_texture( iconListThemes[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
 			case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
-			// TODO:
-			//		- optimize the above, to much unnecessary calculation going on.
-			//		- reduce draw calls, only draw what is on screen.
-			//
 		}
 	}
 	for ( i = 0; i < install_que_complete_count; i++) {
@@ -411,10 +407,6 @@ if (install_que_open) {
 			case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
 			case 5: vita2d_draw_texture( iconListThemes[p],  	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
 			case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
-			// TODO:
-			//		- optimize the above, to much unnecessary calculation going on.
-			//		- reduce draw calls, only draw what is on screen.
-			//
 		}
 	}
 	vita2d_draw_rectangle( 0, install_que_posy, 960, 64, RGBA8( 28, 30, 33, 255 ) );
@@ -441,10 +433,6 @@ else {
 				case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
 				case 5: vita2d_draw_texture( iconListThemes[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
 				case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
-				// TODO:
-				//	- optimize the above, to much unnecessary calculation going on.
-				//	- reduce draw calls, only draw what is on screen.
-				//
 			}
 		}
 		for ( i = 0; i < install_que_complete_count; i++) {
@@ -459,10 +447,6 @@ else {
 				case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
 				case 5: vita2d_draw_texture( iconListThemes[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
 				case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
-				// TODO:
-				//		- optimize the above, to much unnecessary calculation going on.
-				//		- reduce draw calls, only draw what is on screen.
-				//
 			}
 		}
 		vita2d_draw_rectangle( 0, install_que_posy, 960, 64, RGBA8( 37, 40, 45, 255 ) );
