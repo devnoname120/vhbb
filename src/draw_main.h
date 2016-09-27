@@ -426,7 +426,7 @@ if (install_que_open) {
 }
 else {
 	if (install_que_posy < 550) {
-		install_que_posy += 20;
+		install_que_posy += 40;
 		vita2d_draw_rectangle( 0, install_que_posy, 960, 512, RGBA8( 37, 40, 45, 255 ) );
 		int p;
 		for (i = 0; i < install_que_count; i++) {
