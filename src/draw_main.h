@@ -319,13 +319,11 @@ if ( install_que_count ){
 		}
 	}
 }
-else{
-	install_que1_alpha = 0;
+else {
 	if ( install_que2_alpha > 0 ){
 		install_que2_alpha -= 15;
 	}
 	else{
-		install_que1_alpha			= 0;
 		install_que2_alpha			= 0;
 		install_que2_alpha_timer	= 0;
 	}
@@ -375,7 +373,7 @@ switch ( install_dialog_screen ) {
 
 // INSTALL QUE OPEN
 if (install_que_open) {
-	if (install_que_posy > 40)	{ install_que_posy -= 20; }
+	if (install_que_posy > 40)	{ install_que_posy -= 40; }
 	else						{ install_que_posy  = 32; }
 	// BACKGROUND
 	vita2d_draw_rectangle( 0, install_que_posy, 960, 512, RGBA8( 37, 40, 45, 255 ) );
@@ -385,16 +383,16 @@ if (install_que_open) {
 	ground = 109 +((install_que_count +install_que_complete_count) *90);
 	for (i = 0; i < install_que_count; i++) {
 		vita2d_draw_texture( img_inst_panel, 62, (install_que_posy +109 +(i *90)) );
-		vita2d_font_draw_text( font_25, (62 +746), (install_que_posy +109 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, downloadQue[i].status );
+		vita2d_font_draw_text( font_25, 808, (install_que_posy +185 +(i *itemPanelHeight)), COLOUR_WHITE, 25, downloadQue[i].status );
 		p = downloadQue[i].pos;
 		switch (downloadQue[i].screen) {
-			case 0: vita2d_draw_texture( iconListNew[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
-			case 1: vita2d_draw_texture( iconListApps[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
-			case 2: vita2d_draw_texture( iconListGames[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
-			case 3: vita2d_draw_texture( iconListEmulators[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
-			case 4: vita2d_draw_texture( iconListUtilities[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
-			case 5: vita2d_draw_texture( iconListThemes[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
-			case 6: vita2d_draw_texture( iconListDemos[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
+			case 0: vita2d_draw_texture( iconListNew[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
+			case 1: vita2d_draw_texture( iconListApps[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
+			case 2: vita2d_draw_texture( iconListGames[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
+			case 3: vita2d_draw_texture( iconListEmulators[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
+			case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
+			case 5: vita2d_draw_texture( iconListThemes[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
+			case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
 			// TODO:
 			//		- optimize the above, to much unnecessary calculation going on.
 			//		- reduce draw calls, only draw what is on screen.
@@ -403,16 +401,16 @@ if (install_que_open) {
 	}
 	for ( i = 0; i < install_que_complete_count; i++) {
 		vita2d_draw_texture( img_inst_panel, 62, (install_que_posy +109 +(i *90) +(install_que_count *90)) );
-		vita2d_font_draw_text( font_25, (62 +746), (install_que_posy +109 +76 +(i *itemPanelHeight) +(install_que_count *90)), COLOUR_WHITE, 25, "completed" );
+		vita2d_font_draw_text( font_25, 808, (install_que_posy +185 +(i *itemPanelHeight) +(install_que_count *90)), COLOUR_WHITE, 25, "completed" );
 		p = downloadCompleted[i].pos;
 		switch (downloadCompleted[i].screen) {
-			case 0: vita2d_draw_texture( iconListNew[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
-			case 1: vita2d_draw_texture( iconListApps[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
-			case 2: vita2d_draw_texture( iconListGames[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
-			case 3: vita2d_draw_texture( iconListEmulators[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
-			case 4: vita2d_draw_texture( iconListUtilities[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
-			case 5: vita2d_draw_texture( iconListThemes[p],  	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
-			case 6: vita2d_draw_texture( iconListDemos[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
+			case 0: vita2d_draw_texture( iconListNew[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
+			case 1: vita2d_draw_texture( iconListApps[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
+			case 2: vita2d_draw_texture( iconListGames[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
+			case 3: vita2d_draw_texture( iconListEmulators[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
+			case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
+			case 5: vita2d_draw_texture( iconListThemes[p],  	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
+			case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
 			// TODO:
 			//		- optimize the above, to much unnecessary calculation going on.
 			//		- reduce draw calls, only draw what is on screen.
@@ -420,7 +418,11 @@ if (install_que_open) {
 		}
 	}
 	vita2d_draw_rectangle( 0, install_que_posy, 960, 64, RGBA8( 28, 30, 33, 255 ) );
-	vita2d_draw_texture( img_inst_btn_close, 6, (install_que_posy +5) ); // TODO: include button press highlighting
+	vita2d_font_draw_text( font_25, 438, (install_que_posy +40), COLOUR_WHITE, 25, "Install Que" );
+	vita2d_draw_texture( img_inst_btn_close, 6, (install_que_posy +5) );
+	if (btnState_installBtn) {
+		vita2d_draw_rectangle( 10, 41, 44, 46, RGBA8( 255, 255, 255, 200 ) );
+	}
 }
 else {
 	if (install_que_posy < 550) {
@@ -429,16 +431,16 @@ else {
 		int p;
 		for (i = 0; i < install_que_count; i++) {
 			vita2d_draw_texture( img_inst_panel, 62, (install_que_posy +109 +(i *90)) );
-			vita2d_font_draw_text( font_25, (62 +746), (install_que_posy +109 +76 +(i *itemPanelHeight)), COLOUR_WHITE, 25, downloadQue[i].status );
+			vita2d_font_draw_text( font_25, 808, (install_que_posy +185 +(i *itemPanelHeight)), COLOUR_WHITE, 25, downloadQue[i].status );
 			p = downloadQue[i].pos;
 			switch (downloadQue[i].screen) {
-				case 0: vita2d_draw_texture( iconListNew[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
-				case 1: vita2d_draw_texture( iconListApps[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
-				case 2: vita2d_draw_texture( iconListGames[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
-				case 3: vita2d_draw_texture( iconListEmulators[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
-				case 4: vita2d_draw_texture( iconListUtilities[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
-				case 5: vita2d_draw_texture( iconListThemes[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
-				case 6: vita2d_draw_texture( iconListDemos[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
+				case 0: vita2d_draw_texture( iconListNew[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
+				case 1: vita2d_draw_texture( iconListApps[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
+				case 2: vita2d_draw_texture( iconListGames[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
+				case 3: vita2d_draw_texture( iconListEmulators[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
+				case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
+				case 5: vita2d_draw_texture( iconListThemes[p], 	65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
+				case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
 				// TODO:
 				//	- optimize the above, to much unnecessary calculation going on.
 				//	- reduce draw calls, only draw what is on screen.
@@ -447,16 +449,16 @@ else {
 		}
 		for ( i = 0; i < install_que_complete_count; i++) {
 			vita2d_draw_texture( img_inst_panel, 62, (install_que_posy +109 +(i *90) +(install_que_count *90)) );
-			vita2d_font_draw_text( font_25, (62 +746), (install_que_posy +109 +76 +(i *itemPanelHeight) +(install_que_count *90)), COLOUR_WHITE, 25, "completed" 	);
+			vita2d_font_draw_text( font_25, 808, (install_que_posy +185 +(i *itemPanelHeight) +(install_que_count *90)), COLOUR_WHITE, 25, "completed" 	);
 			p = downloadCompleted[i].pos;
 			switch (downloadCompleted[i].screen) {
-				case 0: vita2d_draw_texture( iconListNew[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
-				case 1: vita2d_draw_texture( iconListApps[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
-				case 2: vita2d_draw_texture( iconListGames[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
-				case 3: vita2d_draw_texture( iconListEmulators[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
-				case 4: vita2d_draw_texture( iconListUtilities[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
-				case 5: vita2d_draw_texture( iconListThemes[p], 	(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
-				case 6: vita2d_draw_texture( iconListDemos[p], 		(62 +3), (install_que_posy +109 +3 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, (62 +120), (install_que_posy +109 +33 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
+				case 0: vita2d_draw_texture( iconListNew[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListNew[p].name ); break;
+				case 1: vita2d_draw_texture( iconListApps[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListApps[p].name ); break;
+				case 2: vita2d_draw_texture( iconListGames[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListGames[p].name ); break;
+				case 3: vita2d_draw_texture( iconListEmulators[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListEmulators[p].name ); break;
+				case 4: vita2d_draw_texture( iconListUtilities[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListUtilities[p].name ); break;
+				case 5: vita2d_draw_texture( iconListThemes[p], 	65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListThemes[p].name ); break;
+				case 6: vita2d_draw_texture( iconListDemos[p], 		65, (install_que_posy +112 +(i *itemPanelHeight) +(install_que_count *90)) ); vita2d_font_draw_text( font_35, 182, (install_que_posy +142 +(i *90) +(install_que_count *90)), COLOUR_WHITE, 35, catListDemos[p].name ); break;
 				// TODO:
 				//		- optimize the above, to much unnecessary calculation going on.
 				//		- reduce draw calls, only draw what is on screen.
@@ -464,7 +466,8 @@ else {
 			}
 		}
 		vita2d_draw_rectangle( 0, install_que_posy, 960, 64, RGBA8( 37, 40, 45, 255 ) );
-		vita2d_draw_texture( img_inst_btn_close, 6, (install_que_posy +5) ); // TODO: include button press highlighting
+		vita2d_font_draw_text( font_25, 438, (install_que_posy +40), COLOUR_WHITE, 25, "Install Que" );
+		vita2d_draw_texture( img_inst_btn_close, 6, (install_que_posy +5) );
 	}
 	else {
 		install_que_posy  = 550;
