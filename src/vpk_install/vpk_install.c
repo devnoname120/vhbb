@@ -366,8 +366,7 @@ int makeHeadBin()
 	return 0;
 }
 
-int install_thread(SceSize args_size, InstallArguments *args)
-{
+int install_thread(SceSize args_size, InstallArguments *args) {
 	SceUID thid = -1;
 
 	// Lock power timers
@@ -524,17 +523,19 @@ int download_que_add(char *fileCloud, char *fileLocal, int screen, int pos) {
 
 
 void download_que_remove() {
-	downloadCompleted[install_que_complete_count].screen = downloadQue[0].screen;
-	downloadCompleted[install_que_complete_count].pos = downloadQue[0].pos;
-	install_que_complete_count++;
-	int i;
-	for (i = 0; i < install_que_count; i++) {
-		downloadQue[i + 1].fileCloud = downloadQue[i].fileCloud;
-		downloadQue[i + 1].fileLocal = downloadQue[i].fileLocal;
-		downloadQue[i + 1].percent = downloadQue[i].percent;
-		downloadQue[i + 1].screen = downloadQue[i].screen;
-		downloadQue[i + 1].pos = downloadQue[i].pos;
-		downloadQue[i + 1].status = downloadQue[i].status;
+	if (install_que_complete_count <= MAX_QUE_SIZE) {
+		downloadCompleted[install_que_complete_count].screen = downloadQue[0].screen;
+		downloadCompleted[install_que_complete_count].pos = downloadQue[0].pos;
+		install_que_complete_count++;
+	}
+	int l;
+	for (l = 0; l < install_que_count; l++) {
+		downloadQue[l].fileCloud = downloadQue[l + 1].fileCloud;
+		downloadQue[l].fileLocal = downloadQue[l + 1].fileLocal;
+		downloadQue[l].percent = downloadQue[l + 1].percent;
+		downloadQue[l].screen = downloadQue[l + 1].screen;
+		downloadQue[l].pos = downloadQue[l + 1].pos;
+		downloadQue[l].status = downloadQue[l + 1].status;
 	}
 	install_que_count--;
 }
