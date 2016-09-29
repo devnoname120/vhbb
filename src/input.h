@@ -8,58 +8,43 @@
  */
 
 #define SCE_IME_DIALOG_MAX_TITLE_LENGTH	(128)
-#define SCE_IME_DIALOG_MAX_TEXT_LENGTH	(512)
-int 	inputMaxTextLength		= 0;
-int 	show_input				= 0;
+#define SCE_IME_DIALOG_MAX_TEXT_LENGTH (512)
+int inputMaxTextLength = 0;
+int show_input = 0;
 char userSearch[SCE_IME_DIALOG_MAX_TEXT_LENGTH];
-
-
 #define IME_DIALOG_RESULT_NONE 0
 #define IME_DIALOG_RESULT_RUNNING 1
 #define IME_DIALOG_RESULT_FINISHED 2
 #define IME_DIALOG_RESULT_CANCELED 3
-
 static uint16_t ime_title_utf16[SCE_IME_DIALOG_MAX_TITLE_LENGTH];
 static uint16_t ime_initial_text_utf16[SCE_IME_DIALOG_MAX_TEXT_LENGTH];
 static uint16_t ime_input_text_utf16[SCE_IME_DIALOG_MAX_TEXT_LENGTH + 1];
 static uint8_t ime_input_text_utf8[SCE_IME_DIALOG_MAX_TEXT_LENGTH + 1];
-
-
-
-
-
-
-void utf16_to_utf8( uint16_t *src, uint8_t *dst )
-	{
+void utf16_to_utf8(uint16_t *src, uint8_t *dst) {
 	int p;
-	for ( p = 0; src[p]; p++ )
-		{
-		if ( (src[p] & 0xFF80) == 0 )
-			{
+	for (p = 0; src[p]; p++) {
+		if ((src[p] & 0xFF80) == 0) {
 			*(dst++) = src[p] & 0xFF;
-			}
-		else if ( (src[p] & 0xF800) == 0 )
-			{
+		}
+		else if ((src[p] & 0xF800) == 0) {
 			*(dst++) = ((src[p] >> 6) & 0xFF) | 0xC0;
 			*(dst++) = (src[p] & 0x3F) | 0x80;
-			}
-		else if ( (src[p] & 0xFC00) == 0xD800 && (src[p + 1] & 0xFC00) == 0xDC00 )
-			{
+		}
+		else if ((src[p] & 0xFC00) == 0xD800 && (src[p + 1] & 0xFC00) == 0xDC00) {
 			*(dst++) = (((src[p] + 64) >> 8) & 0x3) | 0xF0;
 			*(dst++) = (((src[p] >> 2) + 16) & 0x3F) | 0x80;
 			*(dst++) = ((src[p] >> 4) & 0x30) | 0x80 | ((src[p + 1] << 2) & 0xF);
 			*(dst++) = (src[p + 1] & 0x3F) | 0x80;
 			p += 1;
-			}
-		else
-			{
+		}
+		else {
 			*(dst++) = ((src[p] >> 12) & 0xF) | 0xE0;
 			*(dst++) = ((src[p] >> 6) & 0x3F) | 0x80;
 			*(dst++) = (src[p] & 0x3F) | 0x80;
-			}
 		}
-	*dst = '\0';
 	}
+	*dst = '\0';
+}
 	
 void utf8_to_utf16( uint8_t *src, uint16_t *dst )
 	{
