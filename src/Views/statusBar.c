@@ -1,4 +1,4 @@
-extern unsigned char _binary_assets_img_statsbar_battery_png_start;
+extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
 
 vita2d_font *font_25;
 vita2d_texture *img_statsbar_battery;
@@ -6,7 +6,7 @@ vita2d_texture *img_statsbar_battery;
 int initStatusBar()
 {
 	font25 = vita2d_load_font_file(VHBB_RES_DIR_FONTS "segoeui.ttf");
-	img_statsbar_battery = vita2d_load_PNG_buffer(&_binary_assets_img_statsbar_battery_png_start);
+	img_statsbar_battery = vita2d_load_PNG_buffer(&_binary_assets_spr_img_statsbar_battery_png_start);
 	return 0;
 }
 
