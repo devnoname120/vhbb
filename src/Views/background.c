@@ -1,3 +1,5 @@
+#include <global_include.h>
+
 extern unsigned char _binary_assets_spr_img_bg_png_start;
 vita2d_texture *img_bg;
 

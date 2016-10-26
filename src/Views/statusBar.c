@@ -1,3 +1,5 @@
+#include <global_include.h>
+
 extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
 
 vita2d_font *font_25;
@@ -5,7 +7,7 @@ vita2d_texture *img_statsbar_battery;
 
 int initStatusBar()
 {
-	font25 = vita2d_load_font_file(VHBB_RES_DIR_FONTS "segoeui.ttf");
+	font_25 = vita2d_load_font_file(FONT_DIR "segoeui.ttf");
 	img_statsbar_battery = vita2d_load_PNG_buffer(&_binary_assets_spr_img_statsbar_battery_png_start);
 	return 0;
 }
@@ -69,22 +71,27 @@ int displayDate()
 	sceRtcGetCurrentClockLocalTime(&time);
 
 	char date_string[16];
-	getDateString(date_string, date_format, &time);
+	// FIXME: Get the date format from the system
+	getDateString(date_string, SCE_SYSTEM_PARAM_DATE_FORMAT_DDMMYYYY, &time);
 
 	char time_string[24];
-	getTimeString(time_string, time_format, &time);
+	// FIXME: Get the time format from the system
+	getTimeString(time_string, SCE_SYSTEM_PARAM_TIME_FORMAT_24HR, &time);
 
 	char string[64];
 	sprintf(string, "%s  %s", date_string, time_string);
 
-	vita2d_font_draw_text(font_25, 650, 22, COLOUR_WHITE, 25, string);
+	vita2d_font_draw_text(font_25, 650, 22, COLOR_WHITE, 25, string);
 
 	return 0;
 }
 
 int displayStatusBar()
 {
-	vita2d_font_draw_text(font_25, 12, 22, COLOUR_WHITE, 25, "Vita HomeBrew Browser");
+	// Background
+	vita2d_draw_rectangle(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT, COLOR_BLACK);
+
+	vita2d_font_draw_text(font_25, 12, 22, COLOR_WHITE, 25, "Vita HomeBrew Browser");
 
 	displayBattery();
 	displayDate();

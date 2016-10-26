@@ -1,21 +1,18 @@
-#include "input.h"
-
-
-typedef enum x{
-	MAIN_VIEW,
-	QUEUE_VIEW
-} GUIViews;
+#include <global_include.h>
 
 int main()
 {
 	vita2d_init();
-	vita2d_set_clear_color(COLOUR_BLACK);
+	vita2d_set_clear_color(COLOR_BLACK);
 
 	initAll();
 
-	GUIViews view = MAIN_VIEW;
+	GUIViews view = LIST_VIEW;
 	while (1) {
 		sceKernelPowerTick(0);
+
+		vita2d_start_drawing();
+		vita2d_clear_screen();
 
 		Input input;
 		getInput(&input);
@@ -23,9 +20,13 @@ int main()
 		handleInput(view, &input);
 
 		displayGUI();
-		
+
+		vita2d_end_drawing();
+		vita2d_swap_buffers();
+		sceDisplayWaitVblankStart();	
 	}
 
+	return 0;
 }
 
 int initAll()
@@ -36,8 +37,8 @@ int initAll()
 	initStatusBar();
 	
 	initCategoryView();
-	initMainView();
-	initQueueView();
+	initListView();
+	//initQueueView();
 
 	return 0;
 }
@@ -48,8 +49,8 @@ int displayGUI()
 	displayStatusBar();
 
 	displayCategoryView();
-	displayMainView();
-	displayQueueView();
+	displayListView();
+	//displayQueueView();
 
 	return 0;
 }
