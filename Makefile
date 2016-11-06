@@ -27,7 +27,7 @@ PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CFLAGS  = -Wl,-q -g -Wall -std=c99 -Isrc/
 ASFLAGS = $(CFLAGS)
-PSVITAIP = 10.188.178.81
+PSVITAIP = $(shell head -n 1 psvitaip.txt) 
 
 
 ifeq ($(DEBUG), 1)
