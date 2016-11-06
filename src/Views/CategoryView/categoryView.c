@@ -4,6 +4,7 @@ extern unsigned char _binary_assets_spr_img_catbar_png_start;
 
 vita2d_texture *img_catbar;
 
+// categoryList_s from categoryView.h should be modified if the size of this list changes
 const Category categoryList [] = {
 	NEW,
 	APPS,
@@ -27,11 +28,11 @@ int handleCategoryViewInput(int focus, Input *input)
 	if (!focus)
 		return 0;
 
-	if (input->pad.buttons & SCE_CTRL_LTRIGGER && selectedCat > 0) {
+	if (keyNewPressed(input, SCE_CTRL_LTRIGGER) && selectedCat > 0) {
 		selectedCat--;
 	}
 
-	if (input->pad.buttons & SCE_CTRL_RTRIGGER && selectedCat < countof(categoryList) - 1) {
+	if (keyNewPressed(input, SCE_CTRL_RTRIGGER) && selectedCat < categoryList_s - 1) {
 		selectedCat++;
 	}
 

@@ -5,15 +5,18 @@
 
 #define LIST_MIN_Y 79
 #define LIST_MAX_Y 543 // This ordinate is included too
-#define LIST_DELTA_Y (LIST_MAX_Y - LIST_MIN_Y)
-#define LIST_HEIGHT (LIST_DELTA_Y + 1)
+#define LIST_RANGE_Y (LIST_MAX_Y - LIST_MIN_Y)
+#define LIST_HEIGHT (LIST_RANGE_Y + 1)
+
+// Max speed px/ms above which selected item is no more selected
+#define LIST_SELECTION_MAX_SPEED 0.000070
 
 
 extern Category *categoryList;
 
 int selectedCat = 0;
 
-ListView categoryListView[countof(categoryList)]; 
+ListView categoryListView[categoryList_s]; 
 
 
 // Retrieve the list of the currently selected category
@@ -42,12 +45,12 @@ int lastDisplayedItem()
 	int firstShown = ITEM_HEIGHT - firstHidden;
 
 	// Height of the hidden/shown part of the last item 
-	int lastShown = (firstHidden + LIST_DELTA_Y) % ITEM_HEIGHT;
+	int lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
 	int lastHidden = ITEM_HEIGHT - lastShown;
 
 	// Number of elements between the first displayed element
 	// and the last displayed element
-	int inbetween = (LIST_DELTA_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
+	int inbetween = (LIST_RANGE_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
 	int last = firstDisplayedItem() + inbetween;
 
 	// Don't display an element that doesn't exist
@@ -64,19 +67,34 @@ int firstFullyDisplayedItem()
 int lastFullyDisplayedItem()
 {
 	int last = lastDisplayedItem();
-	return LIST_MAX_Y - itemPosY(last) + 1 == ITEM_HEIGHT ? last : last-1; 
+	return LIST_MAX_Y - itemPosY(last) + 1 >= ITEM_HEIGHT ? last : last-1; 
 }
+
+
+int coordinateToItem(double coordY)
+{
+	double absoluteY = curList()->posY + coordY - LIST_MIN_Y;
+	int item = (int)absoluteY / ITEM_HEIGHT;
+
+	// Item does not exist
+	if (item >= curList()->hblist_s) {
+		return -1;
+	}
+
+	return item;
+}
+
 
 int initListView()
 {
 	initListItem();
-	for (int i=0; i < countof(categoryListView); i++) {
-		ListView *cList = &categoryListView[i];
+	for (int i=0; i < categoryList_s; i++) {
+		ListView *cList = &(categoryListView[i]);
 		cList->posY = 0;
 		cList->selectedItem = -1;
 		cList->momentum = 0;
 		// FIXME: Depends on what the list contains
-		cList->hblist_s = 7;
+		cList->hblist_s = i+2;
 	}
 	return 0;
 }
@@ -85,17 +103,39 @@ int handleListViewInput(int focus, Input *input)
 {
 	ListView *cList = curList();
 
+	if (keyNewPressed(input, SCE_CTRL_SELECT)) {
+		dbg_printf(DEBUG, "posY: %d", cList->posY);
+		dbg_printf(DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
+		dbg_printf(DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
+	}
+
 	if (focus) {
 		// Touch has the priority over the dpad
-		if (touchAlreadyPressed(input)) {
-			cList->selectedItem = -1;
+		if (touchPressed(input)) {
+			//dbg_printf(DEBUG, "Scroll speed: %f", touchSpeedY);
+			//dbg_printf(DEBUG, "speed: %f", fabs(touchSpeedY));
 
-			int touchDifY;
-			unsigned long timeDif;
+			if (touchNewPressed(input)) {
+				dbg_printf(DEBUG, "clicked on something");
+				double touchY;
+				touchCoordinates(input, NULL, &touchY);
 
-			touchDifference(input, NULL, &touchDifY, &timeDif);
-			
-			cList->posY = MIN(ITEM_HEIGHT*cList->hblist_s - LIST_HEIGHT, MAX(0, cList->posY - touchDifY));
+				cList->selectedItem = coordinateToItem(touchY);
+			} else {
+				double touchSpeedY;
+				touchSpeed(input, NULL, &touchSpeedY, NULL);
+				
+				// If the touch speed is not negligible, unselect
+				if (fabs(touchSpeedY) > LIST_SELECTION_MAX_SPEED)
+					cList->selectedItem = -1;
+
+				double touchDifY;
+				unsigned long timeDif;
+
+				touchDifference(input, NULL, &touchDifY, &timeDif);
+				cList->posY = MIN(MAX(ITEM_HEIGHT*cList->hblist_s - LIST_HEIGHT, 0),
+								MAX(0, cList->posY - touchDifY));
+			}
 			//cList->momentum
 		// There is a selected item
 		} else if (cList->selectedItem != -1) {
@@ -110,7 +150,7 @@ int handleListViewInput(int focus, Input *input)
 								
 			} else if (keyNewPressed(input, SCE_CTRL_DOWN) && cList->selectedItem < cList->hblist_s - 1) {
 				cList->selectedItem++;
-
+				dbg_printf(DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
 				// Scroll down if the selected item is outside of view
 				if (cList->selectedItem > lastFullyDisplayedItem()) {
 					cList->posY += ITEM_HEIGHT;
@@ -131,8 +171,6 @@ int handleListViewInput(int focus, Input *input)
 
 int displayListView()
 {
-	dbg_printf(DEBUG, "First displayed item: %d", firstDisplayedItem());
-	dbg_printf(DEBUG, "Last displayed item: %d", lastDisplayedItem());
 	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) { 
 		displayListItem(itemPosY(i));
 	}

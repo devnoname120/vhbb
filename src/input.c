@@ -68,22 +68,48 @@ int touchNewPressed(Input *input)
 	return touchPressed(input) && !input->oldtouch.reportNum;
 }
 
-int touchCoordinates(Input *input, int *touchX, int *touchY)
+int touchCoordinates(Input *input, double *touchX, double *touchY)
 {
 	if(touchX)
-		*touchX = lerp(input->touch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH);
+		*touchX = lerpd(input->touch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH);
 	if(touchY)
-		*touchY = lerp(input->touch.report[0].y, TOUCH_HEIGHT, SCREEN_HEIGHT);
+		*touchY = lerpd(input->touch.report[0].y, TOUCH_HEIGHT, SCREEN_HEIGHT);
 	return 0;
 }
 
-int touchDifference(Input *input, int *touchDifX, int *touchDifY, unsigned long *timeDif)
+int touchDifference(Input *input, double *touchDifX, double *touchDifY, unsigned long *timeDif)
 {
 	if(touchDifX)
-		*touchDifX = lerp(input->touch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH) - lerp(input->oldtouch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH);
+		*touchDifX = lerpd((double)input->touch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH) - lerpd(input->oldtouch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH);
 	if(touchDifY)
-		*touchDifY = lerp(input->touch.report[0].y, TOUCH_HEIGHT, SCREEN_HEIGHT) - lerp(input->oldtouch.report[0].y, TOUCH_HEIGHT, SCREEN_HEIGHT);
+		*touchDifY = lerpd((double)input->touch.report[0].y, TOUCH_HEIGHT, SCREEN_HEIGHT) - lerpd(input->oldtouch.report[0].y, TOUCH_HEIGHT, SCREEN_HEIGHT);
 	if(timeDif)
 		*timeDif = input->touch.timeStamp - input->oldtouch.timeStamp;
+	return 0;
+}
+
+// Return the speed of the touch movement
+int touchSpeed(Input *input, double *touchSpeedX, double *touchSpeedY, double *touchSpeed)
+{
+	double difX;
+	double difY;
+	unsigned long timeDif;
+
+	touchDifference(input, &difX, &difY, &timeDif);
+
+	double speedX = (double)difX/timeDif;
+	if (touchSpeedX)
+		*touchSpeedX = speedX;
+
+	double speedY = (double)difY/timeDif;
+	if (touchSpeedY)
+		*touchSpeedY = speedY;
+
+	if (!touchSpeed)
+		return 0;
+
+	double speed = sqrt(pow(speedX, 2) + pow(speedY, 2));
+	*touchSpeed = speed;
+
 	return 0;
 }

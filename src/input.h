@@ -22,5 +22,6 @@ int keyNewPressed(Input *input, int buttons);
 int touchPressed(Input *input);
 int touchAlreadyPressed(Input *input);
 int touchNewPressed(Input *input);
-int touchCoordinates(Input *input, int *touchX, int *touchY);
-int touchDifference(Input *input, int *touchDifX, int *touchDifY, unsigned long *timeDif);
+int touchCoordinates(Input *input, double *touchX, double *touchY);
+int touchDifference(Input *input, double *touchDifX, double *touchDifY, unsigned long *timeDif);
+int touchSpeed(Input *input, double *touchSpeedX, double *touchSpeedY, double *touchSpeed);

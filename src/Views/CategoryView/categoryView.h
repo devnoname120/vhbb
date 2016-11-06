@@ -13,6 +13,8 @@ typedef enum {
 	UTILITIES,
 } Category;
 
+#define categoryList_s 5
+
 int initCategoryView();
 int handleCategoryViewInput(int focus, Input *input);
 int displayCategoryView();

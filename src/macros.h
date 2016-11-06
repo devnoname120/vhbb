@@ -22,7 +22,7 @@ enum {
  _a < _b ? _a : _b; })
 
 #define countof(lst) (sizeof(lst)/sizeof(*(lst)))
-#define lerp(value, from_max, to_max) ((((value *10) *(to_max *10)) /(from_max *10)) /10)
+#define lerpd(value, from_max, to_max) (((((double)value *10.) *((double)to_max *10.)) /((double)from_max *10.)) /10.)
 
 #define ALIGN_CENTER(a, b) ((a - b) / 2)
 #define ALIGN_LEFT(x, w) (x - w)
