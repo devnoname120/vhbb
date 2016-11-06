@@ -12,7 +12,7 @@ const Category categoryList [] = {
 	UTILITIES
 	};
 
-int selectedCat;
+extern int selectedCat;
 
 int initCategoryView()
 {
@@ -31,7 +31,7 @@ int handleCategoryViewInput(int focus, Input *input)
 		selectedCat--;
 	}
 
-	if (input->pad.buttons & SCE_CTRL_LTRIGGER && selectedCat < countof(categoryList) - 1) {
+	if (input->pad.buttons & SCE_CTRL_RTRIGGER && selectedCat < countof(categoryList) - 1) {
 		selectedCat++;
 	}
 

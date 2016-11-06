@@ -36,6 +36,15 @@ else
 CFLAGS += -O3
 endif
 
+ifeq ($(psp2shell), 1)
+CFLAGS += -DPSP2SHELL
+LIBS += -lpsp2shell
+endif
+
+ifeq ($(debugnet), 1)
+CFLAGS += -DDEBUGNET
+LIBS += -libdebugnet
+endif
 
 all: $(BIN)/$(TARGET).vpk
 
@@ -74,6 +83,9 @@ vpksend: $(BIN)/$(TARGET).vpk
 send: $(BIN)/eboot.bin
 	curl -T $(BIN)/eboot.bin ftp://$(PSVITAIP):1337/ux0:/app/$(TITLE_ID)/
 	@echo "Sent."
+
+psp2shell: $(BIN)/eboot.bin
+	psp2shell_cli $(PSVITAIP) 3333 reload $(BIN)/eboot.bin
 
 binfolder:
 	@mkdir $(BIN) || true

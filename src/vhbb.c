@@ -2,6 +2,10 @@
 
 int main()
 {
+	#ifdef PSP2SHELL
+	psp2shell_init(3333, 0);
+	#endif
+
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
 
@@ -26,6 +30,10 @@ int main()
 		sceDisplayWaitVblankStart();	
 	}
 
+	#ifdef PSP2SHELL
+	psp2shell_exit();
+	#endif
+
 	return 0;
 }
 
@@ -46,11 +54,11 @@ int initAll()
 int displayGUI()
 {
 	displayBackground();
-	displayStatusBar();
 
-	displayCategoryView();
 	displayListView();
+	displayCategoryView();
 	//displayQueueView();
 
+	displayStatusBar();
 	return 0;
 }

@@ -33,6 +33,14 @@
 #include <psp2/rtc.h>
 #include <psp2/system_param.h>
 
+#ifdef PSP2SHELL
+#include <psp2shell.h>
+#endif
+
+#ifdef DEBUGNET
+#include <debugnet.h>
+#endif
+
 #include <vita2d.h>
 
 #include "vhbb.h"

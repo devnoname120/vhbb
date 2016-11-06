@@ -7,3 +7,5 @@
 
 int initListItem();
 int displayListItem(int posY);
+int displayListItemHighlight(int posY);
+

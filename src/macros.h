@@ -11,6 +11,16 @@ enum {
 	COLOR_YELLOW = RGBA8(240, 255, 0, 255)
 };
 
+#define MAX(a,b) \
+({ __typeof__ (a) _a = (a); \
+   __typeof__ (b) _b = (b); \
+ _a > _b ? _a : _b; })
+
+#define MIN(a,b) \
+({ __typeof__ (a) _a = (a); \
+   __typeof__ (b) _b = (b); \
+ _a < _b ? _a : _b; })
+
 #define countof(lst) (sizeof(lst)/sizeof(*(lst)))
 #define lerp(value, from_max, to_max) ((((value *10) *(to_max *10)) /(from_max *10)) /10)
 
