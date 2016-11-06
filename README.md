@@ -6,8 +6,8 @@
 
 Optional:
 
-- PSP2SHELL: automatically send and reload app after compilation, see [Running](#Running)
-- debugnet: real-time logging that can be viewed from your computer, see [Logging](#Logging)
+- [PSP2SHELL](https://github.com/Cpasjuste/PSP2SHELL#readme): automatically send and reload app after compilation, see [Running](#Running).
+- debugnet: real-time logging that can be viewed from your computer, see [Logging](#Logging).
 
 ## Building
 
@@ -23,7 +23,7 @@ To run VHBB:
 - install the .vpk on your vita using a vpk installer, for example [VitaShell](https://github.com/TheOfficialFloW/VitaShell/releases).
 - a new folder will be created under `ux0:/app/` named `/VHBB00001/`.
 
-You can also use [psp2shell](https://github.com/Cpasjuste/PSP2SHELL) in order to send and reload the application easily after compilation:
+You can also use [PSP2SHELL](https://github.com/Cpasjuste/PSP2SHELL#readme) in order to send and reload the application easily after compilation:
 
 - put the IP of your PS Vita in a new file `psvitaip.txt`
 - compile using `make psp2shell=1` and install the resulting VPK on your Vita like above
