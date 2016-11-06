@@ -5,7 +5,8 @@
 
 #define LIST_MIN_Y 79
 #define LIST_MAX_Y 543 // This ordinate is included too
-#define LIST_HEIGHT (LIST_MAX_Y + 1 - LIST_MIN_Y)
+#define LIST_DELTA_Y (LIST_MAX_Y - LIST_MIN_Y)
+#define LIST_HEIGHT (LIST_DELTA_Y + 1)
 
 
 extern Category *categoryList;
@@ -36,11 +37,21 @@ int firstDisplayedItem()
 // Last item that is (partially or fully) displayed
 int lastDisplayedItem()
 {
-	return firstDisplayedItem() +
-		// Remaining part of the first item to display 
-		(int)(LIST_HEIGHT - curList()->posY % ITEM_HEIGHT
-		// Gives the number of items that can fit	
-		) / ITEM_HEIGHT;
+	// Height of the hidden/shown part of the first item
+	int firstHidden = curList()->posY % ITEM_HEIGHT;
+	int firstShown = ITEM_HEIGHT - firstHidden;
+
+	// Height of the hidden/shown part of the last item 
+	int lastShown = (firstHidden + LIST_DELTA_Y) % ITEM_HEIGHT;
+	int lastHidden = ITEM_HEIGHT - lastShown;
+
+	// Number of elements between the first displayed element
+	// and the last displayed element
+	int inbetween = (LIST_DELTA_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
+	int last = firstDisplayedItem() + inbetween;
+
+	// Don't display an element that doesn't exist
+	return MIN(curList()->hblist_s - 1, last);
 }
 
 int firstFullyDisplayedItem()
@@ -120,9 +131,11 @@ int handleListViewInput(int focus, Input *input)
 
 int displayListView()
 {
+	dbg_printf(DEBUG, "First displayed item: %d", firstDisplayedItem());
+	dbg_printf(DEBUG, "Last displayed item: %d", lastDisplayedItem());
 	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) { 
 		displayListItem(itemPosY(i));
-}
+	}
 
 	if (curList()->selectedItem >= 0) {
 		displayListItemHighlight(itemPosY(curList()->selectedItem));

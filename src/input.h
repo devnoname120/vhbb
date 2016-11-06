@@ -20,6 +20,7 @@ int keyPressed(Input *input, int buttons);
 int keyNewPressed(Input *input, int buttons);
 
 int touchPressed(Input *input);
+int touchAlreadyPressed(Input *input);
 int touchNewPressed(Input *input);
 int touchCoordinates(Input *input, int *touchX, int *touchY);
 int touchDifference(Input *input, int *touchDifX, int *touchDifY, unsigned long *timeDif);

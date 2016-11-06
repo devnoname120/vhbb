@@ -12,6 +12,7 @@
 #include <psp2/touch.h>
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -43,6 +44,7 @@
 
 #include <vita2d.h>
 
+#include "debug.h"
 #include "vhbb.h"
 #include "font.h"
 #include "input.h"

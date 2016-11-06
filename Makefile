@@ -27,8 +27,9 @@ PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CFLAGS  = -Wl,-q -g -Wall -std=c99 -Isrc/
 ASFLAGS = $(CFLAGS)
-PSVITAIP = $(shell head -n 1 psvitaip.txt) 
 
+PSVITAIP = $(shell head -n 1 psvitaip.txt)
+DEBUGNETIP = $(shell head -n 1 debugnetip.txt)
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -Og -DDEBUG
@@ -42,8 +43,8 @@ LIBS += -lpsp2shell
 endif
 
 ifeq ($(debugnet), 1)
-CFLAGS += -DDEBUGNET
-LIBS += -libdebugnet
+CFLAGS += -DDEBUGNET -DDEBUGNETIP="\"$(DEBUGNETIP)\""
+LIBS += -ldebugnet
 endif
 
 all: $(BIN)/$(TARGET).vpk

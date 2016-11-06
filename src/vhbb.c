@@ -2,8 +2,11 @@
 
 int main()
 {
+	dbg_init();
+
 	#ifdef PSP2SHELL
 	psp2shell_init(3333, 0);
+	dbg_printf(INFO, "PSPSHELL started on port 3333");
 	#endif
 
 	vita2d_init();
