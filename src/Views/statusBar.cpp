@@ -2,15 +2,50 @@
 
 extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
 
-vita2d_font *font_25;
-vita2d_texture *img_statsbar_battery;
 
-int initStatusBar()
+void getDateString(char *string, int date_format, SceDateTime *time);
+void getTimeString(char *string, int time_format, SceDateTime *time);
+int displayBattery();
+int displayDate();
+
+StatusBar::StatusBar()
 {
+	#ifdef PSP2SHELL
+
+	SceNetCtlInfo info;
+	if(sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info) < 0) {
+		dbg_printf(DBG_ERROR, "Failed to obtain Vita IP address");
+	} else {
+		strncpy(vitaip, (char * restrict)&(info.ip_address), 16);
+	}
+
+	#endif
+
 	font_25 = vita2d_load_font_file(FONT_DIR "segoeui.ttf");
 	img_statsbar_battery = vita2d_load_PNG_buffer(&_binary_assets_spr_img_statsbar_battery_png_start);
+}
+
+StatusBar::~StatusBar()
+{
+}
+
+int StatusBar::Display()
+{
+	// Background
+	vita2d_draw_rectangle(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT, COLOR_BLACK);
+
+	vita2d_font_draw_text(font_25, 12, 22, COLOR_WHITE, 25, "Vita HomeBrew Browser");
+
+	displayBattery();
+	displayDate();
+
+	#ifdef PSP2SHELL
+	vita2d_font_draw_text(font_25, 400, 22, COLOR_WHITE, 25, vitaip);
+	#endif
+
 	return 0;
 }
+
 
 void getDateString(char *string, int date_format, SceDateTime *time)
 {
@@ -86,15 +121,4 @@ int displayDate()
 	return 0;
 }
 
-int displayStatusBar()
-{
-	// Background
-	vita2d_draw_rectangle(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT, COLOR_BLACK);
 
-	vita2d_font_draw_text(font_25, 12, 22, COLOR_WHITE, 25, "Vita HomeBrew Browser");
-
-	displayBattery();
-	displayDate();
-
-	return 0;
-}

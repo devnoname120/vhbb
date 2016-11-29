@@ -18,7 +18,6 @@
 #include <unistd.h>
 #include <malloc.h>
 #include <math.h>
-#include <stdarg.h>
 #include <sys/stat.h>
 
 #include <psp2/appmgr.h>
@@ -52,6 +51,7 @@
 #include "screen.h"
 #include "touch.h"
 
+#include "Views/View.h"
 #include "Views/background.h"
 #include "Views/statusBar.h"
 #include "Views/CategoryView/categoryView.h"

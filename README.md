@@ -40,7 +40,8 @@ Instructions to use debugnet:
 - set the local IP of your computer in `debugnetip.txt`
 - compile VHBB using `make debugnet=1`
 - on your computer, listen to the port 18194
-  - for example from the terminal with [socat](http://www.dest-unreach.org/socat/): `socat udp-recv:18194 stdout`
+  - with [netcat](http://nc110.sourceforge.net/): `nc -u -l -p 18194`
+  - with [socat](http://www.dest-unreach.org/socat/): `socat udp-recv:18194 stdout`
 - install VHBB on your PS Vita and start it. The logging should display in the terminal.
 
 ## Notes

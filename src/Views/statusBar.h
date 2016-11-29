@@ -4,9 +4,20 @@
 
 #define STATUSBAR_HEIGHT 30
 
-int initStatusBar();
-void getDateString(char *string, int date_format, SceDateTime *time);
-void getTimeString(char *string, int time_format, SceDateTime *time);
-int displayBattery();
-int displayDate();
-int displayStatusBar();
+class StatusBar: public View {
+public:
+	StatusBar();
+	~StatusBar();
+
+	int HandleInput() override;
+	int Display() override;
+
+	
+private:
+	vita2d_font *font_25;
+	vita2d_texture *img_statsbar_battery;
+
+	#ifdef PSP2SHELL
+	char vitaip[16] = {0};
+	#endif
+};

@@ -104,9 +104,9 @@ int handleListViewInput(int focus, Input *input)
 	ListView *cList = curList();
 
 	if (keyNewPressed(input, SCE_CTRL_SELECT)) {
-		dbg_printf(DEBUG, "posY: %d", cList->posY);
-		dbg_printf(DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
-		dbg_printf(DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
+		dbg_printf(DBG_DEBUG, "posY: %d", cList->posY);
+		dbg_printf(DBG_DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
+		dbg_printf(DBG_DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
 	}
 
 	if (focus) {
@@ -115,16 +115,18 @@ int handleListViewInput(int focus, Input *input)
 			//dbg_printf(DEBUG, "Scroll speed: %f", touchSpeedY);
 			//dbg_printf(DEBUG, "speed: %f", fabs(touchSpeedY));
 
-			if (touchNewPressed(input)) {
-				dbg_printf(DEBUG, "clicked on something");
+			double touchSpeedY;
+			touchSpeed(input, NULL, &touchSpeedY, NULL);
+
+			if (touchNewMovement(input) && fabs(touchSpeedY) == 0.) {
 				double touchY;
 				touchCoordinates(input, NULL, &touchY);
 
-				cList->selectedItem = coordinateToItem(touchY);
+				int selectedItem = coordinateToItem(touchY);
+				dbg_printf(DBG_DEBUG, "Clicked on element #%d", selectedItem);
+				cList->selectedItem = selectedItem;
 			} else {
-				double touchSpeedY;
-				touchSpeed(input, NULL, &touchSpeedY, NULL);
-				
+
 				// If the touch speed is not negligible, unselect
 				if (fabs(touchSpeedY) > LIST_SELECTION_MAX_SPEED)
 					cList->selectedItem = -1;

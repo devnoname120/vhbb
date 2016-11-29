@@ -6,9 +6,9 @@ ASSET_DIR  = assets
 SOURCE_DIR = src
 BIN        = bin
 
-SOURCES  =  $(shell find $(SOURCE_DIR) -name '*.c')
+SOURCES  =  $(shell find $(SOURCE_DIR) -name '*.cpp')
 IMAGES   =  $(shell find $(ASSET_DIR) -name '*.png')
-OBJS     =  $(SOURCES:%.c=%.o) $(IMAGES:%.png=%.o)			
+OBJS     =  $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o)			
 			
 
 LIBS = -lm -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
@@ -24,8 +24,8 @@ DEBUG = 0
 endif
 
 PREFIX  = arm-vita-eabi
-CC      = $(PREFIX)-gcc
-CFLAGS  = -Wl,-q -g -Wall -std=c99 -Isrc/
+CC      = $(PREFIX)-g++
+CFLAGS  = -Wl,-q -g -Wall -Wextra -std=c++11 -Isrc/
 ASFLAGS = $(CFLAGS)
 
 PSVITAIP = $(shell head -n 1 psvitaip.txt)
