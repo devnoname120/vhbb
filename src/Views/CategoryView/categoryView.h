@@ -14,8 +14,31 @@ typedef enum {
 	UTILITIES,
 } Category;
 
+typedef struct {
+	int minX;
+	int maxX;
+} CategoryTab;
+
 #define categoryList_s 5
 
-int initCategoryView();
-int handleCategoryViewInput(int focus, Input *input);
-int displayCategoryView();
+class CategoryView: public View {
+public:
+	CategoryView();
+
+	int HandleInput(int focus, const Input& input) override;
+	int Display() override;
+
+	
+private:
+	vita2d_texture *img_catbar;
+	vita2d_texture *img_catbar_highlight;
+	vita2d_texture *img_catbar_sep;
+
+	vita2d_font *font_35;
+	
+	// FIXME: Fixed size, not flexible
+	std::vector<CategoryTab> categoryTabs;
+	std::vector<ListView> listViews;
+	unsigned int selectedCat;
+};
+

@@ -16,18 +16,18 @@ class Input {
 		SceTouchData touch;
 	public:
     	Input();
+    	
     	int Get();
-
 		int Propagate(GUIViews curView);
 
-		int KeyPressed(unsigned int buttons);
-		int KeyNewPressed(unsigned int buttons);
+		int KeyPressed(unsigned int buttons) const;
+		int KeyNewPressed(unsigned int buttons) const;
 
-		int TouchPressed();
-		int TouchAlreadyPressed();
-		int TouchNewPressed();
-		int TouchNewMovement();
-		int TouchCoordinates(double *touchX, double *touchY);
-		int TouchDifference(double *touchDifX, double *touchDifY, unsigned long *timeDif);
-		int TouchSpeed(double *touchSpeedX, double *touchSpeedY, double *touchSpeed);	
+		int TouchPressed() const;
+		int TouchAlreadyPressed() const;
+		int TouchNewPressed() const;
+		int TouchNewMovement() const;
+		int TouchCoordinates(double *touchX, double *touchY) const;
+		int TouchDifference(double *touchDifX, double *touchDifY, unsigned long *timeDif) const;
+		int TouchSpeed(double *touchSpeedX, double *touchSpeedY, double *touchSpeed) const;	
 };

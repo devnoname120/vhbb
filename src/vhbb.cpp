@@ -13,10 +13,10 @@ int main()
 	vita2d_set_clear_color(COLOR_BLACK);
 
 	Input input;
-
-	StatusBar statusBar;
+	
+	Background background;
 	CategoryView categoryView;
-	ListView listView;
+	StatusBar statusBar;
 	// Init queue view too
 
 	GUIViews curView = LIST_VIEW;
@@ -27,8 +27,12 @@ int main()
 		vita2d_clear_screen();
 
 		input.Get();
-		input.Propagate(curView);
-		displayGUI();
+		//input.Propagate(curView); // TODO: Rework function
+		categoryView.HandleInput(0, input);	
+
+		background.Display();
+		categoryView.Display();
+		statusBar.Display();
 
 		vita2d_end_drawing();
 		vita2d_swap_buffers();
@@ -42,15 +46,3 @@ int main()
 	return 0;
 }
 
-// TODO : get rid of this function
-int displayGUI()
-{
-	displayBackground();
-
-	displayListView();
-	displayCategoryView();
-	//displayQueueView();
-
-	displayStatusBar();
-	return 0;
-}

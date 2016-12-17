@@ -1,6 +1,11 @@
 bin/
 Design/
 
+.project
+.cproject
+
+*.swo
+*.swp
 *.o
 psvitaip.txt
 debugnetip.txt

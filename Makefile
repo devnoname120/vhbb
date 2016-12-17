@@ -11,7 +11,7 @@ IMAGES   =  $(shell find $(ASSET_DIR) -name '*.png')
 OBJS     =  $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o)			
 			
 
-LIBS = -lm -lvita2d -lSceKernel_stub -lSceDisplay_stub -lSceGxm_stub \
+LIBS = -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
 	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
 	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
 	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
@@ -24,8 +24,10 @@ DEBUG = 0
 endif
 
 PREFIX  = arm-vita-eabi
-CC      = $(PREFIX)-g++
-CFLAGS  = -Wl,-q -g -Wall -Wextra -std=c++11 -Isrc/
+CC      = $(PREFIX)-gcc
+CXX     = $(PREFIX)-g++
+CFLAGS  = -Wl,-q -g -Wall -Wextra -Isrc/
+CXXFLAGS = $(CFLAGS) -std=c++11
 ASFLAGS = $(CFLAGS)
 
 PSVITAIP = $(shell head -n 1 psvitaip.txt)
@@ -69,7 +71,11 @@ $(BIN)/eboot.bin: $(BIN)/$(TARGET).velf
 	vita-elf-create $< $@
 
 $(BIN)/$(TARGET).elf: binfolder $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
+	$(CXX) $(CXXFLAGS) $(OBJS) $(LIBS) -o $@
+
+
+%.o : %.cpp
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
 
 %.o: %.png
 	$(PREFIX)-ld -r -b binary -o $@ $^

@@ -16,7 +16,7 @@ StatusBar::StatusBar()
 	if(sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info) < 0) {
 		dbg_printf(DBG_ERROR, "Failed to obtain Vita IP address");
 	} else {
-		strncpy(vitaip, (char * restrict)&(info.ip_address), 16);
+		strncpy(vitaip, (char *)&(info.ip_address), 16);
 	}
 
 	#endif
@@ -25,9 +25,6 @@ StatusBar::StatusBar()
 	img_statsbar_battery = vita2d_load_PNG_buffer(&_binary_assets_spr_img_statsbar_battery_png_start);
 }
 
-StatusBar::~StatusBar()
-{
-}
 
 int StatusBar::Display()
 {
@@ -47,7 +44,7 @@ int StatusBar::Display()
 }
 
 
-void getDateString(char *string, int date_format, SceDateTime *time)
+void StatusBar::getDateString(char *string, int date_format, SceDateTime *time)
 {
 	switch (date_format) {
 	case SCE_SYSTEM_PARAM_DATE_FORMAT_YYYYMMDD:
@@ -64,7 +61,7 @@ void getDateString(char *string, int date_format, SceDateTime *time)
 	}
 }
 
-void getTimeString(char *string, int time_format, SceDateTime *time)
+void StatusBar::getTimeString(char *string, int time_format, SceDateTime *time)
 {
 	switch (time_format) {
 	case SCE_SYSTEM_PARAM_TIME_FORMAT_12HR:
@@ -77,7 +74,7 @@ void getTimeString(char *string, int time_format, SceDateTime *time)
 	}
 }
 
-int displayBattery()
+int StatusBar::displayBattery()
 {
 	float battery_x = ALIGN_LEFT(949, vita2d_texture_get_width(img_statsbar_battery));
 	vita2d_draw_texture(img_statsbar_battery, battery_x, 2);
@@ -100,7 +97,7 @@ int displayBattery()
 	return 0;
 }
 
-int displayDate()
+int StatusBar::displayDate()
 {
 	SceDateTime time;
 	sceRtcGetCurrentClockLocalTime(&time);

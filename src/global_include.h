@@ -11,6 +11,9 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/touch.h>
 
+#include <array>
+#include <vector>
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -27,7 +30,6 @@
 #include <psp2/ime_dialog.h>
 #include <psp2/display.h>
 #include <psp2/kernel/modulemgr.h>
-#include <psp2/moduleinfo.h>
 #include <psp2/pgf.h>
 #include <psp2/power.h>
 #include <psp2/rtc.h>
@@ -54,6 +56,6 @@
 #include "Views/View.h"
 #include "Views/background.h"
 #include "Views/statusBar.h"
-#include "Views/CategoryView/categoryView.h"
 #include "Views/ListView/listItem.h"
 #include "Views/ListView/listView.h"
+#include "Views/CategoryView/categoryView.h"

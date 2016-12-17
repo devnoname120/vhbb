@@ -7,9 +7,6 @@
 
 Input::Input()
 {
-	if (isInit)
-		return;
-	isInit = 1;
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, 1);
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_BACK, 1);
 }
@@ -28,7 +25,8 @@ int Input::Get()
 
 int Input::Propagate(GUIViews curView)
 {
-	switch (curView) {
+	// FIXME: rework function
+	/*switch (curView) {
 
 	case LIST_VIEW:
 		handleCategoryViewInput(1, this);
@@ -42,44 +40,44 @@ int Input::Propagate(GUIViews curView)
 		//handleQueueViewInput(1, input);
 		break;
 	}
-
+	*/
 	return 0;
 
 }
 
 // Check if a combination of buttons is pressed
-int Input::KeyPressed(unsigned int buttons)
+int Input::KeyPressed(unsigned int buttons) const
 {
 	return (pad.buttons & buttons) == buttons;
 }
 
 // Check if a combination of buttons is pressed and was not pressed before
-int Input::KeyNewPressed(unsigned int buttons)
+int Input::KeyNewPressed(unsigned int buttons) const
 {
 	return KeyPressed(buttons) && !((oldpad.buttons & buttons) == buttons);
 }
 
-int Input::TouchPressed()
+int Input::TouchPressed() const
 {
 	return touch.reportNum;
 }
 
-int Input::TouchAlreadyPressed()
+int Input::TouchAlreadyPressed() const
 {
 	return TouchPressed() && oldtouch.reportNum;
 }
 
-int Input::TouchNewPressed()
+int Input::TouchNewPressed() const
 {
 	return TouchPressed() && !oldtouch.reportNum;
 }
 
-int Input::TouchNewMovement()
+int Input::TouchNewMovement() const
 {
 	return TouchAlreadyPressed() && !old2touch.reportNum;
 }
 
-int Input::TouchCoordinates(double *touchX, double *touchY)
+int Input::TouchCoordinates(double *touchX, double *touchY) const
 {
 	if(touchX)
 		*touchX = lerpd(touch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH);
@@ -88,7 +86,7 @@ int Input::TouchCoordinates(double *touchX, double *touchY)
 	return 0;
 }
 
-int Input::TouchDifference(double *touchDifX, double *touchDifY, unsigned long *timeDif)
+int Input::TouchDifference(double *touchDifX, double *touchDifY, unsigned long *timeDif) const
 {
 	if(touchDifX)
 		*touchDifX = lerpd((double)touch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH) - lerpd(oldtouch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH);
@@ -100,7 +98,7 @@ int Input::TouchDifference(double *touchDifX, double *touchDifY, unsigned long *
 }
 
 // Return the speed of the touch movement
-int Input::TouchSpeed(double *touchSpeedX, double *touchSpeedY, double *touchSpeed)
+int Input::TouchSpeed(double *touchSpeedX, double *touchSpeedY, double *touchSpeed) const
 {
 	double difX;
 	double difY;

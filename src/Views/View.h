@@ -1,11 +1,11 @@
 #pragma once
 
+#include <global_include.h>
+
 class View
 {
 public:
-	View();
-	~View();
-
-	virtual int HandleInput();
+	virtual int HandleInput(int focus, const Input& input);
 	virtual int Display();
 };
+
