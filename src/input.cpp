@@ -77,6 +77,11 @@ int Input::TouchNewMovement() const
 	return TouchAlreadyPressed() && !old2touch.reportNum;
 }
 
+int Input::TouchAlreadyMovement() const
+{
+	return TouchAlreadyPressed() && old2touch.reportNum;
+}
+
 int Input::TouchCoordinates(double *touchX, double *touchY) const
 {
 	if(touchX)

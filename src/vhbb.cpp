@@ -22,13 +22,12 @@ int main()
 	GUIViews curView = LIST_VIEW;
 	while (1) {
 		//sceKernelPowerTick(0);
-
 		vita2d_start_drawing();
 		vita2d_clear_screen();
 
 		input.Get();
 		//input.Propagate(curView); // TODO: Rework function
-		categoryView.HandleInput(0, input);	
+		categoryView.HandleInput(1, input);	
 
 		background.Display();
 		categoryView.Display();

@@ -27,13 +27,24 @@ CategoryView::CategoryView()
 {
 	img_catbar = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_png_start);
 	img_catbar_highlight = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_highlight_png_start);
+	//dbg_printf(DBG_DEBUG, "pok");	
 	img_catbar_sep = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_sep_png_start);
+	//dbg_printf(DBG_DEBUG, "lok");	
 	font_35 = vita2d_load_font_file(FONT_DIR "segoeui.ttf");
-	
+
+	//dbg_printf(DBG_DEBUG, "ok");	
 	selectedCat = NEW;
+	//dbg_printf(DBG_DEBUG, "nok");
 
 	int remainingWidth = SCREEN_WIDTH;
 	double categoryWidth = SCREEN_WIDTH / countof(categoryList);
+	
+	categoryTabs.reserve(countof(categoryList));
+	listViews.reserve(countof(categoryList));
+	for (unsigned int i=0; i < countof(categoryList); i++) {
+		categoryTabs.push_back(CategoryTab());
+		listViews.push_back(ListView());
+	}
 
 	categoryTabs[0].minX = 0;
 	categoryTabs[0].maxX = (int)categoryWidth;
@@ -50,10 +61,6 @@ CategoryView::CategoryView()
 		dbg_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
 	}
 	
-	listViews.reserve(countof(categoryList));
-	for (unsigned int i=0; i < countof(categoryList); i++) {
-		listViews.push_back(ListView());
-	}
 }
 
 int CategoryView::HandleInput(int focus, const Input& input)
@@ -63,12 +70,15 @@ int CategoryView::HandleInput(int focus, const Input& input)
 
 	if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
 		selectedCat--;
+		dbg_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
 	}
 
 	if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < countof(categoryList) - 1) {
 		selectedCat++;
+		dbg_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
 	}
 	
+	// FIXME wrong focus	
 	listViews[selectedCat].HandleInput(focus, input);
 
 	// TODO Handle input->touch
@@ -77,7 +87,8 @@ int CategoryView::HandleInput(int focus, const Input& input)
 
 int CategoryView::Display()
 {
-
+	listViews[selectedCat].Display();
+	
 	vita2d_draw_texture(img_catbar, CAT_X, CAT_Y);
 
 	for (unsigned int i=0; i < countof(categoryList); i++) {
@@ -91,7 +102,6 @@ int CategoryView::Display()
 	vita2d_draw_texture_scale(img_catbar_highlight, CAT_X + categoryTabs[selectedCat].minX, CAT_Y, stretchX, stretchY);
 	// TODO Display category background
 	
-	listViews[selectedCat].Display();
 
 	return 0;
 }

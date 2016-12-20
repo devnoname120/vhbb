@@ -20,9 +20,9 @@ private:
 	
 	std::vector<ListItem> listItems;
 
-	int posY;
-	int selectedItem;
-	int momentum;
+	int posY = 0;
+	int selectedItem = 0;
+	int momentum = 0;
 	//Homebrew *hblist;
 	int count; // FIXME: not needed because we use a vector
 

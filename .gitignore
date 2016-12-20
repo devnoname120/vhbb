@@ -7,6 +7,5 @@ Design/
 *.swo
 *.swp
 *.o
-psvitaip.txt
-debugnetip.txt
+*ip*.txt
 

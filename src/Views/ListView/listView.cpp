@@ -61,8 +61,12 @@ int ListView::lastFullyDisplayedItem()
 
 int ListView::coordinateToItem(double coordY)
 {
+	dbg_printf(DBG_DEBUG, "posY: %d", posY);
 	double absoluteY = posY + coordY - LIST_MIN_Y;
+	dbg_printf(DBG_DEBUG, "absoluteY: %f", absoluteY);
+
 	int item = (int)absoluteY / ITEM_HEIGHT;
+	dbg_printf(DBG_DEBUG, "item: %d", item);
 
 	// Item does not exist
 	if (item >= count) {
@@ -75,6 +79,7 @@ int ListView::coordinateToItem(double coordY)
 
 ListView::ListView()
 {
+	dbg_printf(DBG_DEBUG, "posY: %d", posY);
 	count = 10;
 	listItems.reserve(count);
 	for (int i=0; i < count; i++) {
@@ -104,9 +109,11 @@ int ListView::HandleInput(int focus, const Input& input)
 				double touchY;
 				input.TouchCoordinates(NULL, &touchY);
 
+				dbg_printf(DBG_DEBUG, "Touch Y: %f", touchY);
+
 				selectedItem = coordinateToItem(touchY);
 				dbg_printf(DBG_DEBUG, "Clicked on element #%d", selectedItem);
-			} else {
+			} else if (input.TouchAlreadyMovement()) {
 
 				// If the touch speed is not negligible, unselect
 				if (fabs(touchSpeedY) > LIST_SELECTION_MAX_SPEED)
@@ -133,7 +140,7 @@ int ListView::HandleInput(int focus, const Input& input)
 								
 			} else if (input.KeyNewPressed(SCE_CTRL_DOWN) && selectedItem < count - 1) {
 				selectedItem++;
-				dbg_printf(DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
+				dbg_printf(DBG_DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
 				// Scroll down if the selected item is outside of view
 				if (selectedItem > lastFullyDisplayedItem()) {
 					posY += ITEM_HEIGHT;

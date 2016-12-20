@@ -11,7 +11,7 @@ int dbg_init()
 	return 0;
 }
 
-int _dbg_printf(int level, char *format, ...)
+int _dbg_printf(int level, const char *format, ...)
 {
 	va_list args;
 	va_start(args, format);
