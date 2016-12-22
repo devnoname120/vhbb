@@ -12,7 +12,7 @@ const Category categoryList[categoryList_s] = {
 	GAMES,
 	EMULATORS,
 	UTILITIES
-	};
+};
 
 const char* categoryList_name[countof(categoryList)] = {
 	"New",
@@ -20,8 +20,19 @@ const char* categoryList_name[countof(categoryList)] = {
 	"Games",
 	"Emulators",
 	"Utilities"
-	};
+};
 
+
+int CategoryView::touchToCat(const Input &input)
+{
+
+	for (int i=0; i < categoryTabs.size(); i++) {
+		if (input.TouchInRectangle(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)))) {
+			return i;
+		}
+	}
+	return -1;
+}
 
 CategoryView::CategoryView()
 {
@@ -68,20 +79,41 @@ int CategoryView::HandleInput(int focus, const Input& input)
 	if (!focus)
 		return 0;
 
-	if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
-		selectedCat--;
-		dbg_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
+	focus = 1;
+	if (input.TouchPressed() && input.TouchInRectangle(Rectangle(Point(CAT_X, CAT_Y), Point(SCREEN_WIDTH, CAT_Y + CAT_HEIGHT)))) {
+		int ind = touchToCat(input);
+		if (ind < 0) {
+			dbg_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
+		} else {
+			selectedCat = ind;
+		}
+	} else {
+		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
+			selectedCat--;
+			dbg_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
+		}
+
+		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < countof(categoryList) - 1) {
+			selectedCat++;
+			dbg_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
+		}
 	}
 
-	if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < countof(categoryList) - 1) {
-		selectedCat++;
-		dbg_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
+	if (input.TouchPressed() && !input.TouchInRectangle(Rectangle(Point(0, LIST_MIN_Y), Point(SCREEN_WIDTH, LIST_MAX_Y)))) {
+		double touchX;
+		double touchY;
+		input.TouchCoordinates(&touchX, &touchY);
+
+		dbg_printf(DBG_DEBUG, "%f,%f: Not in listView area, unfocusing...", touchX, touchY);
+		// test
+		dbg_printf(DBG_DEBUG, "%d,%d : %d,%d  -> listView Area", 0, LIST_MIN_Y, SCREEN_WIDTH, LIST_MAX_Y);
+		focus = 0;
 	}
-	
-	// FIXME wrong focus	
+		
+
+	// FIXME focus is not a good solution	
 	listViews[selectedCat].HandleInput(focus, input);
 
-	// TODO Handle input->touch
 	return 0;
 }
 
@@ -92,6 +124,7 @@ int CategoryView::Display()
 	vita2d_draw_texture(img_catbar, CAT_X, CAT_Y);
 
 	for (unsigned int i=0; i < countof(categoryList); i++) {
+		// FIXME Center and set real name
 		vita2d_font_draw_text(font_35, categoryTabs[i].minX, CAT_Y + CAT_HEIGHT, COLOR_WHITE, 35, "test"/*categoryList_name[i]*/);
 		if (i > 0)
 			vita2d_draw_texture(img_catbar_sep, categoryTabs[i].minX, CAT_Y);
@@ -100,8 +133,6 @@ int CategoryView::Display()
 	float stretchX = ((float)categoryTabs[selectedCat].maxX - categoryTabs[selectedCat].minX)/(float)vita2d_texture_get_width(img_catbar_highlight);
 	float stretchY = ((float)CAT_HEIGHT)/(float)vita2d_texture_get_height(img_catbar_highlight);
 	vita2d_draw_texture_scale(img_catbar_highlight, CAT_X + categoryTabs[selectedCat].minX, CAT_Y, stretchX, stretchY);
-	// TODO Display category background
-	
 
 	return 0;
 }

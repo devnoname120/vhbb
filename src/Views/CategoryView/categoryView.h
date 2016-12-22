@@ -37,8 +37,9 @@ private:
 	vita2d_font *font_35;
 	
 	unsigned int selectedCat;
-	// FIXME: Fixed size, not flexible
 	std::vector<CategoryTab> categoryTabs;
 	std::vector<ListView> listViews;
+
+	int touchToCat(const Input &input);
 };
 

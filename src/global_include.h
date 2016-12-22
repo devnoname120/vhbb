@@ -13,6 +13,7 @@
 
 #include <array>
 #include <vector>
+#include <algorithm>
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -48,6 +49,7 @@
 #include "debug.h"
 #include "vhbb.h"
 #include "font.h"
+#include "shapes.h"
 #include "input.h"
 #include "macros.h"
 #include "screen.h"

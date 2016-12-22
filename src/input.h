@@ -30,5 +30,6 @@ class Input {
 		int TouchAlreadyMovement() const;
 		int TouchCoordinates(double *touchX, double *touchY) const;
 		int TouchDifference(double *touchDifX, double *touchDifY, unsigned long *timeDif) const;
-		int TouchSpeed(double *touchSpeedX, double *touchSpeedY, double *touchSpeed) const;	
+		int TouchSpeed(double *touchSpeedX, double *touchSpeedY, double *touchSpeed) const;
+		int TouchInRectangle(const Rectangle &rect) const;
 };

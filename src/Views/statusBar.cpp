@@ -83,14 +83,13 @@ int StatusBar::displayBattery()
 	float width = ((29.0f * percent) / 100.0f);
 
 	unsigned int battery_color = RGBA8(91, 223, 38, 255);
-	if (scePowerIsLowBattery())
+
+	// FIXME Not sure if it's good performance-wise to do that 60 times per second
+	if (scePowerIsBatteryCharging())
+		battery_color = RGBA8(241, 94, 9, 255);
+	else if (scePowerIsLowBattery())
 		battery_color = RGBA8(255, 48, 48, 255);
 
-	/* 
-	if (scePowerIsBatteryCharging()) {
-		// TODO: add charging Icon
-	}
-	*/
 
 	vita2d_draw_rectangle((947.0f - width), 4, width, 16, battery_color);
 
