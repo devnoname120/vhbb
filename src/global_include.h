@@ -11,6 +11,9 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/touch.h>
 
+
+#include <iostream>
+#include <string>
 #include <array>
 #include <vector>
 #include <algorithm>
@@ -46,12 +49,12 @@
 
 #include <vita2d.h>
 
-#include "debug.h"
-#include "vhbb.h"
-#include "font.h"
-#include "shapes.h"
-#include "input.h"
 #include "macros.h"
+#include "debug.h"
+#include "shapes.h"
+#include "font.h"
+#include "vhbb.h"
+#include "input.h"
 #include "screen.h"
 #include "touch.h"
 

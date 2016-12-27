@@ -5,7 +5,7 @@
 int dbg_init()
 {
 	#ifdef DEBUGNET
-	debugNetInit(DEBUGNETIP, 18194, DEBUG);
+	debugNetInit(DEBUGNETIP, 18194, 3);
 	#endif
 
 	return 0;
@@ -38,7 +38,7 @@ int _dbg_printf(int level, const char *format, ...)
 	va_end(args);
 
 	#ifdef DEBUGNET
-	debugNetSend(buf2);
+	debugNetUDPSend(buf2);
 	#endif
 
 	return 0;

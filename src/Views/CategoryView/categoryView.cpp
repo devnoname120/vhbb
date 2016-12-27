@@ -26,7 +26,7 @@ const char* categoryList_name[countof(categoryList)] = {
 int CategoryView::touchToCat(const Input &input)
 {
 
-	for (int i=0; i < categoryTabs.size(); i++) {
+	for (unsigned int i=0; i < categoryTabs.size(); i++) {
 		if (input.TouchInRectangle(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)))) {
 			return i;
 		}
@@ -34,14 +34,13 @@ int CategoryView::touchToCat(const Input &input)
 	return -1;
 }
 
-CategoryView::CategoryView()
+CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"), 35))
 {
 	img_catbar = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_png_start);
 	img_catbar_highlight = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_highlight_png_start);
 	//dbg_printf(DBG_DEBUG, "pok");	
 	img_catbar_sep = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_sep_png_start);
 	//dbg_printf(DBG_DEBUG, "lok");	
-	font_35 = vita2d_load_font_file(FONT_DIR "segoeui.ttf");
 
 	//dbg_printf(DBG_DEBUG, "ok");	
 	selectedCat = NEW;
@@ -125,7 +124,10 @@ int CategoryView::Display()
 
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		// FIXME Center and set real name
-		vita2d_font_draw_text(font_35, categoryTabs[i].minX, CAT_Y + CAT_HEIGHT, COLOR_WHITE, 35, "test"/*categoryList_name[i]*/);
+		
+		font_35.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
+		// font_35.Draw(Point(categoryTabs[i].minX, CAT_Y + CAT_HEIGHT), std::string("Test"));
+		// vita2d_font_draw_text(font_35, , COLOR_WHITE, 35, "test"/*categoryList_name[i]*/);
 		if (i > 0)
 			vita2d_draw_texture(img_catbar_sep, categoryTabs[i].minX, CAT_Y);
 	}

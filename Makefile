@@ -9,14 +9,7 @@ BIN        = bin
 SOURCES  =  $(shell find $(SOURCE_DIR) -name '*.cpp')
 IMAGES   =  $(shell find $(ASSET_DIR) -name '*.png')
 OBJS     =  $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o)			
-			
-
-LIBS = -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
-	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
-	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
-	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
-	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub
-	   
+				   
 DEBUG = 1
 
 ifeq ($(RELEASE), 1)
@@ -48,6 +41,13 @@ ifeq ($(debugnet), 1)
 CFLAGS += -DDEBUGNET -DDEBUGNETIP="\"$(DEBUGNETIP)\""
 LIBS += -ldebugnet
 endif
+
+LIBS += -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
+	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
+	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
+	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
+	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub
+
 
 all: $(BIN)/$(TARGET).vpk
 

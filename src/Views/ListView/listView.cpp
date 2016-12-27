@@ -17,17 +17,17 @@ int ListView::firstDisplayedItem()
 int ListView::lastDisplayedItem()
 {
 	// Height of the hidden/shown part of the first item
-	int firstHidden = posY % ITEM_HEIGHT;
-	int firstShown = ITEM_HEIGHT - firstHidden;
+	unsigned int firstHidden = posY % ITEM_HEIGHT;
+	unsigned int firstShown = ITEM_HEIGHT - firstHidden;
 
 	// Height of the hidden/shown part of the last item 
-	int lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
-	int lastHidden = ITEM_HEIGHT - lastShown;
+	unsigned int lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
+	unsigned int lastHidden = ITEM_HEIGHT - lastShown;
 
 	// Number of elements between the first displayed element
 	// and the last displayed element
-	int inbetween = (LIST_RANGE_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
-	int last = firstDisplayedItem() + inbetween;
+	unsigned int inbetween = (LIST_RANGE_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
+	unsigned int last = firstDisplayedItem() + inbetween;
 
 	// Don't display an element that doesn't exist
 	return MIN(listItems.size() - 1, last);
@@ -53,7 +53,7 @@ int ListView::coordinateToItem(double coordY)
 	double absoluteY = posY + coordY - LIST_MIN_Y;
 	dbg_printf(DBG_DEBUG, "absoluteY: %f", absoluteY);
 
-	int item = (int)absoluteY / ITEM_HEIGHT;
+	unsigned int item = (int)absoluteY / ITEM_HEIGHT;
 	dbg_printf(DBG_DEBUG, "item: %d", item);
 
 	// Item does not exist

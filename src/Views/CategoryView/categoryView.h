@@ -34,7 +34,7 @@ private:
 	vita2d_texture *img_catbar_highlight;
 	vita2d_texture *img_catbar_sep;
 
-	vita2d_font *font_35;
+	Font font_35;
 	
 	unsigned int selectedCat;
 	std::vector<CategoryTab> categoryTabs;
