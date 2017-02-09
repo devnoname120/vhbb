@@ -13,6 +13,7 @@
 
 
 #include <iostream>
+#include <memory>
 #include <string>
 #include <array>
 #include <vector>
@@ -49,6 +50,8 @@
 
 #include <vita2d.h>
 
+#include <yaml-cpp/yaml.h>
+
 #include "macros.h"
 #include "debug.h"
 #include "shapes.h"
@@ -57,6 +60,8 @@
 #include "input.h"
 #include "screen.h"
 #include "touch.h"
+#include "database.h"
+#include "homebrew.h"
 
 #include "Views/View.h"
 #include "Views/background.h"

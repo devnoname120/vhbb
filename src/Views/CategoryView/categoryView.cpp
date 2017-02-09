@@ -49,11 +49,48 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 	int remainingWidth = SCREEN_WIDTH;
 	double categoryWidth = SCREEN_WIDTH / countof(categoryList);
 	
+	// TODO Remove this
+	std::unique_ptr<Database> db;
+	try {
+		db = std::unique_ptr<Database>(new Database(std::string("ux0:/app/VHBB00001/resources/homebrews.yml")));
+	} catch (const std::exception& ex) {
+		dbg_printf(DBG_ERROR, "Failed to load the YAML database: %s", ex.what());
+	}
+
+
+
 	categoryTabs.reserve(countof(categoryList));
 	listViews.reserve(countof(categoryList));
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		categoryTabs.push_back(CategoryTab());
-		listViews.push_back(ListView());
+		try {
+			YAML::Node hbs = db->db["homebrews"];
+			// dbg_printf(DBG_ERROR, "ismap: %d", hbs.IsMap());
+			YAML::Node hbs2 = hbs["vita"];
+			std::vector<Homebrew> homebs(hbs2.size());
+			for (auto it=hbs2.begin(); it!=hbs2.end(); ++it) {
+				YAML::Node cHb = *it;
+				// dbg_printf(DBG_ERROR, "YAML: node type: %d, size: %d", cHb.Type(), cHb.size());
+				// dbg_printf(DBG_ERROR, "ismap: %d", cHb.IsMap());
+				try {
+					//dbg_printf(DBG_ERROR, "YAML: Got node, type: %d, size: %d", nName.Type(), nName.size());
+					// TODO Granular catching
+					Homebrew chb;
+					chb.title = cHb["name"].as<std::string>();
+					chb.author = cHb["author"].as<std::string>();
+					chb.category = cHb["category"].as<std::string>();
+					chb.description = cHb["description"].as<std::string>();
+					homebs.push_back(chb);
+				} catch (const std::exception& ex) {
+					dbg_printf(DBG_ERROR, "YAML: %s", ex.what());
+				}
+			}
+			listViews.push_back(ListView(
+			homebs)); // FIXME: Wrong vector declaration
+		} catch (const std::exception& ex) {
+			dbg_printf(DBG_ERROR, "Couldn't load the database: %s", ex.what());
+		}
+	
 	}
 
 	categoryTabs[0].minX = 0;

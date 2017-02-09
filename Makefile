@@ -24,7 +24,8 @@ CXXFLAGS = $(CFLAGS) -std=c++11
 ASFLAGS = $(CFLAGS)
 
 PSVITAIP = $(shell head -n 1 psvitaip.txt)
-DEBUGNETIP = $(shell head -n 1 debugnetip.txt)
+#DEBUGNETIP = $(shell head -n 1 debugnetip.txt)
+DEBUGNETIP = $(shell ip route get 1 | awk '{print $$NF;exit}')
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -Og -DDEBUG
@@ -42,11 +43,12 @@ CFLAGS += -DDEBUGNET -DDEBUGNETIP="\"$(DEBUGNETIP)\""
 LIBS += -ldebugnet
 endif
 
-LIBS += -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
+LIBS += -lyaml-cpp -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
 	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
 	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
 	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
-	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub
+	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub \
+	-lpthread
 
 
 all: $(BIN)/$(TARGET).vpk
@@ -60,6 +62,7 @@ all: $(BIN)/$(TARGET).vpk
 		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
 		\
 		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
+		--add assets/homebrews.yml=resources/homebrews.yml \
 	$(BIN)/$(TARGET).vpk
 	
 	

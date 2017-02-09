@@ -1,10 +1,39 @@
 #include <global_include.h>
 
+// Davee: Fix c++ exceptions
+//#### TODO: move to SDK
+extern "C"
+{
+    unsigned int sleep(unsigned int seconds)
+    {
+        sceKernelDelayThread(seconds*1000*1000);
+        return 0;
+    }
+
+    /*int usleep(unsigned int usec)
+    {
+        sceKernelDelayThread(usec);
+        return 0;
+    }*/
+
+    void __sinit(struct _reent *);
+}
+
+__attribute__((constructor(101)))
+void pthread_setup(void) 
+{
+    pthread_init();
+    __sinit(_REENT);
+}
+//#### end TODO
+
 int main()
 {
 	dbg_init();
 
 	#ifdef PSP2SHELL
+	// Do it before any file is opened otherwise psp2shell fails to reload the app
+	sceAppMgrUmount("app0:");
 	psp2shell_init(3333, 0);
 	dbg_printf(DBG_INFO, "PSPSHELL started on port 3333");
 	#endif

@@ -79,14 +79,11 @@ int ListView::updateScrollSpeed(double &scrollSpeed, unsigned long timeDif)
 	return 0;
 }
 
-ListView::ListView()
+ListView::ListView(std::vector<Homebrew> &homebrews)
 {
 	dbg_printf(DBG_DEBUG, "posY: %d", posY);
-	// FIXME Fixed size
-	int count = 10;
-	listItems.reserve(count);
-	for (int i=0; i < count; i++) {
-		listItems.push_back(ListItem());
+	for (Homebrew hb : homebrews) {
+		listItems.push_back(ListItem(hb));
 	}
 }
 
@@ -104,7 +101,8 @@ int ListView::HandleInput(int focus, const Input& input)
 	input.TouchDifference(NULL, NULL, &timeDif);
 	//dbg_printf(DBG_DEBUG, "timeDif: %u", timeDif);
 	//dbg_printf(DBG_DEBUG, "posY before: %d", posY);
-	posY = MIN(MAX(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), MAX(posY + (int)(scrollSpeed * (double)timeDif), 0)); 
+	if (!input.TouchPressed())
+		posY = MIN(MAX(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), MAX(posY + (int)(scrollSpeed * (double)timeDif), 0)); 
 	
 	updateScrollSpeed(scrollSpeed, timeDif);
 

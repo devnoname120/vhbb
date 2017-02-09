@@ -1,0 +1,35 @@
+api: 1
+homebrews:
+  vita:
+    - name: "PSP2048"
+      icon: http://icons.iconarchive.com/icons/alecive/flatwoken/512/Apps-Application-Default-icon.png
+      author: dots-tb
+      category: game
+      description: A 2048 game ported from the PSP to the Vita.
+      home: https://github.com/dots-tb/psp2048
+      downloads:
+        - 01-08-16:
+          version: "1.00"
+          eboot_hash: e93a13a41798a71157b3bd1a7a1281d09dac1390
+          download:
+            - url: "http://vpkmirror.com/files/vpk/psp2048_1_0.vpk"
+            - hash: 1f806d24da3922d6013f36ced683a0c46105e1f4
+    - name: "PSVident"
+      icon: http://vpkmirror.com/icons/psvident.png
+      author: Freakler
+      category: utility
+      description: Get various sytem information about your Vita.
+      home: https://github.com/Freakler/vita-PSVident
+      downloads:
+        - 11-12-16:
+          version: "0.32"
+          eboot_hash: 220032a83f3fe4d6a973950369ee1c2d9f4dc082
+          download:
+            - url: https://github.com/Freakler/vita-PSVident/releases/download/v0.32/PSVident.vpk
+            - hash: c8bd88954601f3f8ea0d79bac0c5b5537b43196a
+        - 28-11-16:
+          version: "0.31"
+          eboot_hash: 8a6f40a24a546d899874d2368a76dca86d7165ba
+        - 08-09-16:
+          version: "0.30"
+          eboot_hash: b1138d07c3e9e82b1224089550c7b663301526e4
