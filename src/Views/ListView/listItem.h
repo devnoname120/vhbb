@@ -7,14 +7,17 @@
 
 class ListItem {
 public:
-	 ListItem(Homebrew &hb);
+	 ListItem(Homebrew hb);
 	
 	int Display(int posY, int highlight);
 private:
 	vita2d_texture *img_itm_panel;
 	vita2d_texture *img_itm_panel_highlight;
 
-	Homebrew &homebrew;
+	Font font_25;
+	Font font_35;
+
+	Homebrew homebrew;
 	
 	int display(int posY);
 	int displayHighlight(int posY);

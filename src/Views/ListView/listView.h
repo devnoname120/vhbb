@@ -16,7 +16,7 @@
 
 class ListView: public View {
 public:
-	ListView(std::vector<Homebrew> &homebrews);
+	ListView(std::vector<Homebrew> homebrews);
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
