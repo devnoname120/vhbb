@@ -1,5 +1,3 @@
-#include <global_include.h>
-
 #include "input.h"
 
 

@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "listView.h"
 
 
 // Ordinate of where the item should be displayed on the screen

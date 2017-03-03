@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "categoryView.h"
 
 extern unsigned char _binary_assets_spr_img_catbar_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_highlight_png_start;

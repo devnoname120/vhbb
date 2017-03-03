@@ -2,6 +2,9 @@
 
 #include <global_include.h>
 
+#include <homebrew.h>
+#include <font.h>
+
 #define ITEM_HEIGHT 90
 #define ITEM_POSX 62
 

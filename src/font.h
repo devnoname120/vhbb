@@ -2,6 +2,8 @@
 
 #include <global_include.h>
 
+#include "shapes.h"
+
 #define FONT_DIR "ux0:/app/VHBB00001/resources/fonts/"
 
 class Font {

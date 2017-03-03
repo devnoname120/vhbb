@@ -2,6 +2,9 @@
 
 #include <global_include.h>
 
+#include <Views/View.h>
+#include "listItem.h"
+
 #define LIST_BASE_X 62
 #define LIST_BASE_Y 115
 

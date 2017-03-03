@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "vhbb.h"
 
 // Davee: Fix c++ exceptions
 //#### TODO: move to SDK

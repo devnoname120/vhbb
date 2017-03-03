@@ -2,6 +2,8 @@
 
 #include <global_include.h>
 
+#include <input.h>
+
 class View
 {
 public:

@@ -6,7 +6,23 @@ ASSET_DIR  = assets
 SOURCE_DIR = src
 BIN        = bin
 
-SOURCES  =  $(shell find $(SOURCE_DIR) -name '*.cpp')
+#SOURCES  =  $(shell find $(SOURCE_DIR) -name '*.cpp')
+SOURCES = src/font.cpp \
+          src/Views/statusBar.cpp \
+          src/Views/View.cpp \
+          src/Views/background.cpp \
+          src/Views/ListView/listItem.cpp \
+          src/Views/ListView/listView.cpp \
+          src/Views/CategoryView/categoryView.cpp \
+          src/vhbb.cpp \
+		  src/homebrewDownload.cpp \
+          src/homebrewRelease.cpp \
+		  src/homebrew.cpp \
+          src/input.cpp \
+          src/shapes.cpp \
+          src/database.cpp \
+          src/debug.cpp
+
 IMAGES   =  $(shell find $(ASSET_DIR) -name '*.png')
 OBJS     =  $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o)			
 				   

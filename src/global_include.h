@@ -52,20 +52,5 @@
 
 #include <yaml-cpp/yaml.h>
 
-#include "macros.h"
 #include "debug.h"
-#include "shapes.h"
-#include "font.h"
-#include "vhbb.h"
-#include "input.h"
-#include "screen.h"
-#include "touch.h"
-#include "database.h"
-#include "homebrew.h"
-
-#include "Views/View.h"
-#include "Views/background.h"
-#include "Views/statusBar.h"
-#include "Views/ListView/listItem.h"
-#include "Views/ListView/listView.h"
-#include "Views/CategoryView/categoryView.h"
+#include "macros.h"

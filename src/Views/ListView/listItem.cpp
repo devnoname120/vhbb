@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "listItem.h"
 
 extern unsigned char _binary_assets_spr_img_itm_panel_png_start;
 extern unsigned char _binary_assets_spr_img_itm_panel_highlight_png_start;

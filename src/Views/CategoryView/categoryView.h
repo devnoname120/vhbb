@@ -2,6 +2,9 @@
 
 #include <global_include.h>
 
+#include <Views/View.h>
+#include <Views/ListView/listView.h>
+
 #define CAT_X 0
 #define CAT_Y 30
 #define CAT_HEIGHT 49

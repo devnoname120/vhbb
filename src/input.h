@@ -2,6 +2,8 @@
 
 #include <global_include.h>
 
+#include "vhbb.h"
+
 class Input {
 	private:
 		static int isInit;

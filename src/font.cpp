@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "font.h"
 
 std::map<std::pair<std::string, unsigned int>, vita2d_font*> Font::fontCache;
 
