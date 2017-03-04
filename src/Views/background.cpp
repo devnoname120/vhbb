@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "background.h"
 
 extern unsigned char _binary_assets_spr_img_bg_png_start;
 

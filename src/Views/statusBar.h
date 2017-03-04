@@ -2,6 +2,11 @@
 
 #include <global_include.h>
 
+#include <font.h>
+#include <screen.h>
+#include "View.h"
+
+
 #define STATUSBAR_HEIGHT 30
 
 class StatusBar: public View {

@@ -1,7 +1,19 @@
-#include <global_include.h>
+#include "font.h"
+
+std::map<std::pair<std::string, unsigned int>, vita2d_font*> Font::fontCache;
 
 Font::Font(const std::string &path, unsigned int fSize) {
+	//dbg_printf(DBG_DEBUG, "Looking for size %d, path: %s", fSize, path.c_str());
+	auto key = std::make_pair(path, fSize);
+	if (fontCache.count(key) >= 1) {
+		//dbg_printf(DBG_DEBUG, "Found it in cache");
+		font = fontCache[key];
+		size = fSize;
+		return;
+	}
+	//dbg_printf(DBG_DEBUG, "Storing in cache...");
 	font = vita2d_load_font_file(path.c_str());
+	fontCache[key] = font;
 	size = fSize;
 }
 

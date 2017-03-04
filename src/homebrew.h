@@ -2,6 +2,7 @@
 
 #include <global_include.h>
 
+#include "homebrewRelease.h"
 
 class Homebrew {
 public:
@@ -11,5 +12,14 @@ public:
 	std::string author;
 	std::string category;
 	std::string description;
-	// TODO add downloads
+	//std::string home; // We don't care about the home
+	
+	HomebrewRelease releases;
+};
+
+namespace YAML {
+template<>
+struct convert<Homebrew> {
+  static bool decode(const Node& node, Homebrew& hb);
+};
 };

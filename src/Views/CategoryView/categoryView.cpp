@@ -1,4 +1,6 @@
-#include <global_include.h>
+#include "categoryView.h"
+#include <screen.h>
+#include <database.h>
 
 extern unsigned char _binary_assets_spr_img_catbar_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_highlight_png_start;
@@ -67,7 +69,8 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 			YAML::Node hbs = db->db["homebrews"];
 			// dbg_printf(DBG_ERROR, "ismap: %d", hbs.IsMap());
 			YAML::Node hbs2 = hbs["vita"];
-			std::vector<Homebrew> homebs(hbs2.size());
+			std::vector<Homebrew> homebs;
+			dbg_printf(DBG_DEBUG, "%d", hbs2.size());
 			for (auto it=hbs2.begin(); it!=hbs2.end(); ++it) {
 				YAML::Node cHb = *it;
 				// dbg_printf(DBG_ERROR, "YAML: node type: %d, size: %d", cHb.Type(), cHb.size());
@@ -76,15 +79,18 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 					//dbg_printf(DBG_ERROR, "YAML: Got node, type: %d, size: %d", nName.Type(), nName.size());
 					// TODO Granular catching
 					Homebrew chb;
-					chb.title = cHb["name"].as<std::string>();
+					chb.title = cHb["title"].as<std::string>();
+					dbg_printf(DBG_DEBUG, "Just got title: %s", chb.title.c_str());
 					chb.author = cHb["author"].as<std::string>();
 					chb.category = cHb["category"].as<std::string>();
 					chb.description = cHb["description"].as<std::string>();
+					dbg_printf(DBG_DEBUG, "Size: %d", homebs.size());
 					homebs.push_back(chb);
 				} catch (const std::exception& ex) {
 					dbg_printf(DBG_ERROR, "YAML: %s", ex.what());
 				}
 			}
+			dbg_printf(DBG_DEBUG, "Size before: %d", homebs.size());
 			listViews.push_back(ListView(
 			homebs)); // FIXME: Wrong vector declaration
 		} catch (const std::exception& ex) {

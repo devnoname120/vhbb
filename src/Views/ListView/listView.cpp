@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "listView.h"
 
 
 // Ordinate of where the item should be displayed on the screen
@@ -79,10 +79,12 @@ int ListView::updateScrollSpeed(double &scrollSpeed, unsigned long timeDif)
 	return 0;
 }
 
-ListView::ListView(std::vector<Homebrew> &homebrews)
+ListView::ListView(std::vector<Homebrew> homebrews)
 {
 	dbg_printf(DBG_DEBUG, "posY: %d", posY);
+	dbg_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
 	for (Homebrew hb : homebrews) {
+		dbg_printf(DBG_DEBUG, "count");
 		listItems.push_back(ListItem(hb));
 	}
 }

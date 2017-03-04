@@ -1,4 +1,4 @@
-#include <global_include.h>
+#include "shapes.h"
 
 Point::Point(double _x, double _y)
 {
