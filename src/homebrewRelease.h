@@ -12,3 +12,10 @@ public:
 
 	HomebrewDownload downloads;
 };
+
+namespace YAML {
+template<>
+struct convert<HomebrewRelease> {
+  static bool decode(const Node& node, HomebrewRelease& hbrel);
+};
+};

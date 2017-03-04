@@ -1,5 +1,10 @@
 #include "vhbb.h"
 
+#include "Views/CategoryView/categoryView.h"
+#include "Views/background.h"
+#include "Views/statusBar.h"
+#include "input.h"
+
 // Davee: Fix c++ exceptions
 //#### TODO: move to SDK
 extern "C"

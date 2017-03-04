@@ -16,3 +16,10 @@ public:
 	
 	HomebrewRelease releases;
 };
+
+namespace YAML {
+template<>
+struct convert<Homebrew> {
+  static bool decode(const Node& node, Homebrew& hb);
+};
+};

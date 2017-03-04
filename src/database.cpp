@@ -1,4 +1,7 @@
 #include "database.h"
+#include "homebrew.h"
+
+#include <global_include.h>
 
 Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path.c_str()))
 {
@@ -8,7 +11,11 @@ Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path.c_str
 	}
 
 	YAML::Node lst = db["homebrews"]["vita"];
-	std::vector<Homebrew> hbs = lst.as<std::vector<Homebrew>>();
+	try {
+		homebrews = lst.as<std::vector<Homebrew>>();
+	} catch (const std::exception& ex) {
+		dbg_printf(DBG_ERROR, "Couldn't unserialize db: %s", ex.what());
+	}
 }
 
 Database::~Database()

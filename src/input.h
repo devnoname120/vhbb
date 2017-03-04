@@ -1,8 +1,8 @@
 #pragma once
 
 #include <global_include.h>
-
 #include "vhbb.h"
+#include <shapes.h>
 
 class Input {
 	private:

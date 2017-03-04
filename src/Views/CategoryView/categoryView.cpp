@@ -1,4 +1,6 @@
 #include "categoryView.h"
+#include <screen.h>
+#include <database.h>
 
 extern unsigned char _binary_assets_spr_img_catbar_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_highlight_png_start;
@@ -77,7 +79,7 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 					//dbg_printf(DBG_ERROR, "YAML: Got node, type: %d, size: %d", nName.Type(), nName.size());
 					// TODO Granular catching
 					Homebrew chb;
-					chb.title = cHb["name"].as<std::string>();
+					chb.title = cHb["title"].as<std::string>();
 					dbg_printf(DBG_DEBUG, "Just got title: %s", chb.title.c_str());
 					chb.author = cHb["author"].as<std::string>();
 					chb.category = cHb["category"].as<std::string>();

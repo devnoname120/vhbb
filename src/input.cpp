@@ -1,6 +1,7 @@
 #include "input.h"
 
-
+#include "screen.h"
+#include "touch.h"
 
 
 Input::Input()
