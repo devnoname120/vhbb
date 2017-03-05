@@ -66,6 +66,16 @@ add_executable(${SHORT_NAME}
   ${PROJECT_SOURCE_FILES}
 )
 
+# FIXME Should be an option
+add_definitions(-DPSP2SHELL)
+target_link_libraries(${SHORT_NAME} psp2shell)
+
+# FIXME Should be an option
+add_definitions(-DDEBUGNET)
+target_link_libraries(${SHORT_NAME} debugnet)
+file(STRINGS "debugnetip.txt" DEBUGNETIP)
+add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
+
 target_link_libraries(${SHORT_NAME}
   yaml-cpp
   m
@@ -109,12 +119,14 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} eboot.bin
   FILE assets/homebrews.yml resources/homebrews.yml
 )
 
+file(STRINGS "psvitaip.txt" PSVITAIP)
+
 add_custom_target(send
-  COMMAND curl -T eboot.bin ftp://$(PSVITAIP):1337/ux0:/app/${VITA_TITLEID}/
+  COMMAND curl -T eboot.bin ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/
   DEPENDS eboot.bin
 )
 
-add_custom_target(psp2shell
-  COMMAND psp2shell_cli $(PSVITAIP) 3333 reload eboot.bin
+add_custom_target(shellsend
+  COMMAND psp2shell_cli ${PSVITAIP} 3333 reload eboot.bin
   DEPENDS eboot.bin
 )
