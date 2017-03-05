@@ -41,7 +41,7 @@ ASFLAGS = $(CFLAGS)
 
 PSVITAIP = $(shell head -n 1 psvitaip.txt)
 #DEBUGNETIP = $(shell head -n 1 debugnetip.txt)
-DEBUGNETIP = $(shell ip route get 1 | awk '{print $$NF;exit}')
+DEBUGNETIP = $(shell cat debugnetip.txt || ip route get 1 | awk '{print $$NF;exit}')
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -Og -DDEBUG
