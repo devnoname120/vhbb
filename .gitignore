@@ -10,3 +10,10 @@ Design/
 *.o
 *ip*.txt
 
+
+eboot.bin
+*.vpk
+*.elf
+*.velf
+*.sfo
+*.psp2dmp
