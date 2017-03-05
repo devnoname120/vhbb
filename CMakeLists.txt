@@ -44,7 +44,7 @@ ENDFUNCTION()
 file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/*.png assets/*.jpeg assets/*.yml assets/*.ttf assets/*.wav assets/*.ogg)
 add_resources(PROJECT_RESOURCES ${res_files})
 
-file(GLOB_RECURSE PROJECT_SOURCE_FILES "*.h" "*.hpp" "*.cpp")
+file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp")
 add_executable(${SHORT_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
