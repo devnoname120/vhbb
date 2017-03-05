@@ -40,61 +40,20 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 {
 	img_catbar = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_png_start);
 	img_catbar_highlight = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_highlight_png_start);
-	//dbg_printf(DBG_DEBUG, "pok");	
-	img_catbar_sep = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_sep_png_start);
-	//dbg_printf(DBG_DEBUG, "lok");	
-
-	//dbg_printf(DBG_DEBUG, "ok");	
+	img_catbar_sep = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_sep_png_start);	
 	selectedCat = NEW;
-	//dbg_printf(DBG_DEBUG, "nok");
 
 	int remainingWidth = SCREEN_WIDTH;
 	double categoryWidth = SCREEN_WIDTH / countof(categoryList);
 	
-	// TODO Remove this
-	std::unique_ptr<Database> db;
-	try {
-		db = std::unique_ptr<Database>(new Database(std::string("ux0:/app/VHBB00001/resources/homebrews.yml")));
-	} catch (const std::exception& ex) {
-		dbg_printf(DBG_ERROR, "Failed to load the YAML database: %s", ex.what());
-	}
-
-
-
 	categoryTabs.reserve(countof(categoryList));
 	listViews.reserve(countof(categoryList));
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		categoryTabs.push_back(CategoryTab());
 		try {
-			YAML::Node hbs = db->db["homebrews"];
-			// dbg_printf(DBG_ERROR, "ismap: %d", hbs.IsMap());
-			YAML::Node hbs2 = hbs["vita"];
-			std::vector<Homebrew> homebs;
-			dbg_printf(DBG_DEBUG, "%d", hbs2.size());
-			for (auto it=hbs2.begin(); it!=hbs2.end(); ++it) {
-				YAML::Node cHb = *it;
-				// dbg_printf(DBG_ERROR, "YAML: node type: %d, size: %d", cHb.Type(), cHb.size());
-				// dbg_printf(DBG_ERROR, "ismap: %d", cHb.IsMap());
-				try {
-					//dbg_printf(DBG_ERROR, "YAML: Got node, type: %d, size: %d", nName.Type(), nName.size());
-					// TODO Granular catching
-					Homebrew chb;
-					chb.title = cHb["title"].as<std::string>();
-					dbg_printf(DBG_DEBUG, "Just got title: %s", chb.title.c_str());
-					chb.author = cHb["author"].as<std::string>();
-					chb.category = cHb["category"].as<std::string>();
-					chb.description = cHb["description"].as<std::string>();
-					dbg_printf(DBG_DEBUG, "Size: %d", homebs.size());
-					homebs.push_back(chb);
-				} catch (const std::exception& ex) {
-					dbg_printf(DBG_ERROR, "YAML: %s", ex.what());
-				}
-			}
-			dbg_printf(DBG_DEBUG, "Size before: %d", homebs.size());
-			listViews.push_back(ListView(
-			homebs)); // FIXME: Wrong vector declaration
+			listViews.push_back(ListView(Database::get_instance()->homebrews)); // FIXME: Wrong vector declaration
 		} catch (const std::exception& ex) {
-			dbg_printf(DBG_ERROR, "Couldn't load the database: %s", ex.what());
+			dbg_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
 		}
 	
 	}

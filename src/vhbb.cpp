@@ -1,12 +1,12 @@
 #include "vhbb.h"
 
+#include "database.h"
 #include "Views/CategoryView/categoryView.h"
 #include "Views/background.h"
 #include "Views/statusBar.h"
 #include "input.h"
 
 // Davee: Fix c++ exceptions
-//#### TODO: move to SDK
 extern "C"
 {
     unsigned int sleep(unsigned int seconds)
@@ -30,7 +30,7 @@ void pthread_setup(void)
     pthread_init();
     __sinit(_REENT);
 }
-//#### end TODO
+
 
 int main()
 {
@@ -45,6 +45,8 @@ int main()
 
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
+
+	Database::get_instance(std::string("ux0:/app/VHBB00001/resources/homebrews.yml"));
 
 	Input input;
 	
