@@ -23,15 +23,13 @@ Database::~Database()
 {
 }
 
-template <class UnaryPredicate>
-std::vector<Homebrew> Database::Filter(UnaryPredicate pred)
-{
-	std::vector<Homebrew> res;
-	std::copy_if(homebrews.begin(), homebrews.end(), back_inserter(res), pred);
-	return res;
-}
-
 
 bool IsCategory::operator()(const Homebrew &hb) const {
-        return cat_.compare(hb.title) == 0;
+	std::string hbcat_lower;
+	std::transform(hb.category.begin(), hb.category.end(), std::back_inserter(hbcat_lower), tolower);
+
+	std::string cat_lower;
+	std::transform(cat_.begin(), cat_.end(), std::back_inserter(cat_lower), tolower);
+
+	return cat_lower.compare(hbcat_lower) == 0;
 }

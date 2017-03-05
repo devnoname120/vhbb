@@ -1,6 +1,6 @@
 #include <global_include.h>
 
-#ifdef DEBUG
+#ifdef _DEBUG
 
 int dbg_init()
 {

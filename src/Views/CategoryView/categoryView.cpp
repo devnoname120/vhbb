@@ -49,7 +49,7 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 	categoryTabs.reserve(countof(categoryList));
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		try {
-			categoryTabs.push_back(CategoryTab(ListView(Database::get_instance()->homebrews)));
+			categoryTabs.push_back(CategoryTab(ListView(Database::get_instance()->homebrews/*Filter(IsCategory("test"))*/)));
 		} catch (const std::exception& ex) {
 			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));
 			dbg_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());

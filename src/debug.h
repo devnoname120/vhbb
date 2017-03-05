@@ -2,7 +2,7 @@
 
 #include <global_include.h>
 
-#ifndef DEBUG
+#ifndef _DEBUG
 #define dbg_init()
 #define dbg_printf(...)
 #else
