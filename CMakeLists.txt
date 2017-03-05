@@ -97,3 +97,8 @@ add_custom_target(send
   COMMAND curl -T eboot.bin ftp://$(PSVITAIP):1337/ux0:/app/${VITA_TITLEID}/
   DEPENDS eboot.bin
 )
+
+add_custom_target(psp2shell
+  COMMAND psp2shell_cli $(PSVITAIP) 3333 reload eboot.bin
+  DEPENDS eboot.bin
+)
