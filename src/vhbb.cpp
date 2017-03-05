@@ -46,7 +46,7 @@ int main()
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
 
-	Database::get_instance(std::string("ux0:/app/VHBB00001/resources/homebrews.yml"));
+	Database::create_instance(std::string("ux0:/app/VHBB00001/resources/homebrews.yml"));
 
 	Input input;
 	

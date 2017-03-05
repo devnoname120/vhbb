@@ -7,8 +7,6 @@
 class Database: public Singleton<Database> {
 friend class Singleton<Database>;
 public:
-	// FIXME Don't use this constructor, it's here because of singleton
-	Database();
 	Database(const std::string &db_path);
 	~Database();
 	const YAML::Node db;
