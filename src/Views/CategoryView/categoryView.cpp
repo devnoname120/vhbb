@@ -47,12 +47,11 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 	double categoryWidth = SCREEN_WIDTH / countof(categoryList);
 	
 	categoryTabs.reserve(countof(categoryList));
-	listViews.reserve(countof(categoryList));
 	for (unsigned int i=0; i < countof(categoryList); i++) {
-		categoryTabs.push_back(CategoryTab());
 		try {
-			listViews.push_back(ListView(Database::get_instance()->homebrews)); // FIXME: Wrong vector declaration
+			categoryTabs.push_back(CategoryTab(ListView(Database::get_instance()->homebrews)));
 		} catch (const std::exception& ex) {
+			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));
 			dbg_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
 		}
 	
@@ -112,15 +111,15 @@ int CategoryView::HandleInput(int focus, const Input& input)
 	}
 		
 
-	// FIXME focus is not a good solution	
-	listViews[selectedCat].HandleInput(focus, input);
+	// FIXME focus is not a good solution
+	categoryTabs.at(selectedCat).listView.HandleInput(focus, input);
 
 	return 0;
 }
 
 int CategoryView::Display()
 {
-	listViews[selectedCat].Display();
+	categoryTabs[selectedCat].listView.Display();
 	
 	vita2d_draw_texture(img_catbar, CAT_X, CAT_Y);
 

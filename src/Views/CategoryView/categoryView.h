@@ -17,10 +17,13 @@ typedef enum {
 	UTILITIES,
 } Category;
 
-typedef struct {
+struct CategoryTab {
 	int minX;
 	int maxX;
-} CategoryTab;
+	ListView listView;
+
+	CategoryTab(ListView aListView) : listView(aListView) {};
+};
 
 #define categoryList_s 5
 
@@ -41,7 +44,6 @@ private:
 	
 	unsigned int selectedCat;
 	std::vector<CategoryTab> categoryTabs;
-	std::vector<ListView> listViews;
 
 	int touchToCat(const Input &input);
 };

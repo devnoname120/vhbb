@@ -7,8 +7,20 @@
 class Database: public Singleton<Database> {
 friend class Singleton<Database>;
 public:
+	std::vector<Homebrew> homebrews;
+
 	Database(const std::string &db_path);
 	~Database();
+
+	template <class UnaryPredicate>
+	std::vector<Homebrew> Filter(UnaryPredicate pred);
+private:
 	const YAML::Node db;
-	std::vector<Homebrew> homebrews;
+};
+
+struct IsCategory : public std::unary_function<std::string, bool> {
+    IsCategory(const std::string &cat) : cat_(cat) {}
+    bool operator()(const Homebrew &hb) const;
+
+    std::string cat_;
 };

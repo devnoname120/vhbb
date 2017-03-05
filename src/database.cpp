@@ -22,3 +22,16 @@ Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path.c_str
 Database::~Database()
 {
 }
+
+template <class UnaryPredicate>
+std::vector<Homebrew> Database::Filter(UnaryPredicate pred)
+{
+	std::vector<Homebrew> res;
+	std::copy_if(homebrews.begin(), homebrews.end(), back_inserter(res), pred);
+	return res;
+}
+
+
+bool IsCategory::operator()(const Homebrew &hb) const {
+        return cat_.compare(hb.title) == 0;
+}
