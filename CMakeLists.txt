@@ -16,8 +16,24 @@ include("${VITASDK}/share/vita.cmake" REQUIRED)
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-q -g -Wall -Wextra -std=gnu11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-q -g -Wall -Wextra -std=c++11")
+# Default build type
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Default build" FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release") # For CMake GUI
+endif()
+
+if(CMAKE_BUILD_TYPE EQUAL Debug)
+  add_definitions(-DDEBUG)
+endif()
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-q -Wall -Wextra -std=gnu11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-q -Wall -Wextra -std=c++11")
+
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
+
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -Os")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -Os")
 
 include_directories(
   src/
