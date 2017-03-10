@@ -40,22 +40,24 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 {
 	img_catbar = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_png_start);
 	img_catbar_highlight = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_highlight_png_start);
-	img_catbar_sep = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_sep_png_start);	
+	img_catbar_sep = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_sep_png_start);
 	selectedCat = NEW;
 
-	int remainingWidth = SCREEN_WIDTH;
-	double categoryWidth = SCREEN_WIDTH / countof(categoryList);
-	
 	categoryTabs.reserve(countof(categoryList));
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		try {
-			categoryTabs.push_back(CategoryTab(ListView(Database::get_instance()->homebrews/*Filter(IsCategory("test"))*/)));
+			auto hbs = Database::get_instance()->Filter(IsCategory("Utility"));
+			categoryTabs.push_back(CategoryTab(ListView(hbs)));
 		} catch (const std::exception& ex) {
 			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));
 			dbg_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
 		}
-	
+
 	}
+
+
+	int remainingWidth = SCREEN_WIDTH;
+	double categoryWidth = SCREEN_WIDTH / countof(categoryList);
 
 	categoryTabs[0].minX = 0;
 	categoryTabs[0].maxX = (int)categoryWidth;
@@ -71,7 +73,8 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 		dbg_printf(DBG_DEBUG, "%d->maxX=%d", i, categoryTabs[i].maxX);
 		dbg_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
 	}
-	
+
+
 }
 
 int CategoryView::HandleInput(int focus, const Input& input)
@@ -109,7 +112,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		dbg_printf(DBG_DEBUG, "%d,%d : %d,%d  -> listView Area", 0, LIST_MIN_Y, SCREEN_WIDTH, LIST_MAX_Y);
 		focus = 0;
 	}
-		
+
 
 	// FIXME focus is not a good solution
 	categoryTabs.at(selectedCat).listView.HandleInput(focus, input);
@@ -120,12 +123,12 @@ int CategoryView::HandleInput(int focus, const Input& input)
 int CategoryView::Display()
 {
 	categoryTabs[selectedCat].listView.Display();
-	
+
 	vita2d_draw_texture(img_catbar, CAT_X, CAT_Y);
 
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		// FIXME Center and set real name
-		
+
 		font_35.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
 		// font_35.Draw(Point(categoryTabs[i].minX, CAT_Y + CAT_HEIGHT), std::string("Test"));
 		// vita2d_font_draw_text(font_35, , COLOR_WHITE, 35, "test"/*categoryList_name[i]*/);
