@@ -3,6 +3,7 @@
 #include <global_include.h>
 
 #include <homebrew.h>
+#include <texture.h>
 #include <font.h>
 
 #define ITEM_HEIGHT 90
@@ -14,8 +15,8 @@ public:
 	
 	int Display(int posY, int highlight);
 private:
-	vita2d_texture *img_itm_panel;
-	vita2d_texture *img_itm_panel_highlight;
+	Texture img_itm_panel;
+	Texture img_itm_panel_highlight;
 
 	Font font_25;
 	Font font_35;

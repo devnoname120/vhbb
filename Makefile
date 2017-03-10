@@ -9,6 +9,7 @@ BIN        = bin
 #SOURCES  =  $(shell find $(SOURCE_DIR) -name '*.cpp')
 SOURCES = src/singleton.cpp \
 		  src/font.cpp \
+		  src/texture.cpp \
           src/Views/statusBar.cpp \
           src/Views/View.cpp \
           src/Views/background.cpp \

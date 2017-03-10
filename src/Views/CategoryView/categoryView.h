@@ -11,8 +11,8 @@
 
 typedef enum {
 	NEW,
-	APPS,
 	GAMES,
+	PORTS,
 	EMULATORS,
 	UTILITIES,
 } Category;

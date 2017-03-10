@@ -10,16 +10,16 @@ extern unsigned char _binary_assets_spr_img_catbar_sep_png_start;
 // categoryList_s from categoryView.h should be modified if the size of this list changes
 const Category categoryList[categoryList_s] = {
 	NEW,
-	APPS,
 	GAMES,
+	PORTS,
 	EMULATORS,
 	UTILITIES
 };
 
 const char* categoryList_name[countof(categoryList)] = {
 	"New",
-	"Apps",
 	"Games",
+	"Ports",
 	"Emulators",
 	"Utilities"
 };
@@ -46,7 +46,25 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 	categoryTabs.reserve(countof(categoryList));
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		try {
-			auto hbs = Database::get_instance()->Filter(IsCategory("1"));
+			auto db = Database::get_instance();
+			std::vector<Homebrew> hbs;
+			switch (categoryList[i]) {
+			case NEW:
+				hbs = db->homebrews;
+				break;
+			case GAMES:
+				hbs = db->Filter(IsCategory("1"));
+				break;
+			case PORTS:
+				hbs = db->Filter(IsCategory("2"));
+				break;
+			case EMULATORS:
+				hbs = db->Filter(IsCategory("5"));
+				break;
+			case UTILITIES:
+				hbs = db->Filter(IsCategory("4"));
+				break;
+			}
 			categoryTabs.push_back(CategoryTab(ListView(hbs)));
 		} catch (const std::exception& ex) {
 			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));
