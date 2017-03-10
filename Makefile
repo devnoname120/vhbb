@@ -10,6 +10,7 @@ BIN        = bin
 SOURCES = src/singleton.cpp \
 		  src/font.cpp \
 		  src/texture.cpp \
+		  src/date.cpp \
           src/Views/statusBar.cpp \
           src/Views/View.cpp \
           src/Views/background.cpp \

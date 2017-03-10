@@ -1,6 +1,8 @@
 #include "categoryView.h"
+
 #include <screen.h>
 #include <database.h>
+#include "date.h"
 
 extern unsigned char _binary_assets_spr_img_catbar_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_highlight_png_start;
@@ -50,7 +52,7 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 			std::vector<Homebrew> hbs;
 			switch (categoryList[i]) {
 			case NEW:
-				hbs = db->homebrews;
+				hbs = db->Sort(IsNewer(true));
 				break;
 			case GAMES:
 				hbs = db->Filter(IsCategory("1"));

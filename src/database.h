@@ -14,10 +14,14 @@ public:
 
 	template <class UnaryPredicate>
 	std::vector<Homebrew> Filter(UnaryPredicate pred);
+
+	template <class UnaryPredicate>
+	std::vector<Homebrew> Sort(UnaryPredicate pred);
 private:
 	const YAML::Node db;
 };
 
+// TODO move this into homebrew.cpp
 template <class UnaryPredicate>
 std::vector<Homebrew> Database::Filter(UnaryPredicate pred)
 {
@@ -32,3 +36,12 @@ struct IsCategory : public std::unary_function<std::string, bool> {
 
     std::string cat_;
 };
+
+
+template <class UnaryPredicate>
+std::vector<Homebrew> Database::Sort(UnaryPredicate pred)
+{
+	std::vector<Homebrew> res = homebrews;
+	std::sort(res.begin(), res.end(), pred);
+	return res;
+}

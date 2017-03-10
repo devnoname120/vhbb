@@ -2,7 +2,8 @@
 
 #include <global_include.h>
 
-#include "homebrewRelease.h"
+#include "date.h"
+
 
 class Homebrew {
 public:
@@ -14,9 +15,10 @@ public:
 	std::string category;
 	std::string type;
 	std::string description;
-	std::string date;
+	Date date;
 	std::string titleid;
 };
+
 
 namespace YAML {
 template<>
