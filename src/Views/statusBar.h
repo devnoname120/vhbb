@@ -17,7 +17,8 @@ public:
 
 	
 private:
-	vita2d_font *font_25;
+	Font font_25;
+	
 	vita2d_texture *img_statsbar_battery;
 
 	#ifdef PSP2SHELL

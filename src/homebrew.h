@@ -7,14 +7,15 @@
 class Homebrew {
 public:
 	// Those should be const but then it's mandatory to use an initialization list
-	std::string title;
+	std::string name;
 	std::string icon; // FIXME Use special class instead
+	std::string version;
 	std::string author;
 	std::string category;
+	std::string type;
 	std::string description;
-	//std::string home; // We don't care about the home
-	
-	HomebrewRelease releases;
+	std::string date;
+	std::string titleid;
 };
 
 namespace YAML {

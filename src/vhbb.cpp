@@ -46,13 +46,20 @@ int main()
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
 
-	Database::create_instance(std::string("ux0:/app/VHBB00001/resources/homebrews.yml"));
+	try {
+		Database::create_instance(std::string("ux0:/app/VHBB00001/resources/rinn.yml"));
+	} catch (const std::exception &ex) {
+		dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
+		throw ex;
+	}
 
 	Input input;
 	
 	Background background;
-	CategoryView categoryView;
+	// FIXME If placed after categoryview initialization it cannot load its images (out-of-memory?)
 	StatusBar statusBar;
+	CategoryView categoryView;
+	
 	// Init queue view too
 
 	GUIViews curView = LIST_VIEW;

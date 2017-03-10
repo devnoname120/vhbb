@@ -1,0 +1,1428 @@
+---
+- 
+    name: ONEtranslate
+    icon: 2697624f7cccec485db606ab23ecb84ece844a0651bac7588d2b6a0f3fbbb5e8.png
+    version: v.1R0
+    author: ONElua Team
+    url: http://rinnegatamante.it/vitadb/hbs/ONEtranslate.vpk
+    type: "4"
+    description: Text translator for PSVITA.
+    id: "195"
+    date: 2017-03-09
+    titleid: ONETRANSL
+- 
+    name: Snes9xVITA
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.1-HENkaku
+    author: frangarcj
+    url: https://github.com/frangarcj/Snes9xVITA/releases/download/1.1-Henkaku/Snes9xVITA.vpk
+    type: "5"
+    description: SNES emulator for the PS Vita.
+    id: "194"
+    date: 2016-07-29
+    titleid: SKOG00001
+- 
+    name: vitaHexenII
+    icon: 15c7108894276150362813e67af8c56b4ff579a487f32229219a4dcd365712e5.png
+    version: v.1.1
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/vitaHexenII.vpk
+    type: "2"
+    description: Hexen II port for PSVITA.
+    id: "193"
+    data: http://rinnegatamante.it/vitadb/hb_data/vitaHexenII_data.zip
+    date: 2017-03-08
+    titleid: HXEN00001
+- 
+    name: UAE4ALL
+    icon: 4492573ddd5c25a9c134b8f93527dfbc6693f3b0edc269d7c7fe7f5dad4257e9.png
+    version: v.1.4.2
+    author: cpasjuste
+    url: http://rinnegatamante.it/vitadb/hbs/uae4all.vpk
+    type: "5"
+    description: Amioga 500/1200 emulator.
+    id: "192"
+    date: 2016-12-18
+    titleid: UAE4ALL00
+- 
+    name: Picoloop
+    icon: 859f7b23d9e05b3226de4a9d92c0caced0b1d4e7276eefaf47d98dd52b940a0e.png
+    version: v.0.76a
+    author: yoyz
+    url: http://rinnegatamante.it/vitadb/hbs/picoloop_vita.vpk
+    type: "4"
+    description: Synth and stepsequencer for PSVITA.
+    id: "191"
+    date: 2017-01-18
+    titleid: PICOLOOP1
+- 
+    name: ScummVM MOD
+    icon: 3c8d7432a15963b7d669323ac2a0e96bf6914bbbc996fb5cb4d30f150a205fe9.png
+    version: v.1.13
+    author: rsn8887
+    url: https://github.com/rsn8887/scummvm/releases/download/1.13/scummvm_mod_1.13.vpk
+    type: "5"
+    description: Maniac Mansion Virtual Machine emulator.
+    id: "190"
+    date: 2017-03-05
+    titleid: VSCU00001
+- 
+    name: UAE4ALL MOD
+    icon: 4492573ddd5c25a9c134b8f93527dfbc6693f3b0edc269d7c7fe7f5dad4257e9.png
+    version: v.1.50
+    author: rsn8887
+    url: https://github.com/rsn8887/uae4all2/releases/download/1.50/uae4all_mod_1.50.vpk
+    type: "5"
+    description: Amiga 500/1200 emulator.
+    id: "189"
+    date: 2017-02-10
+    titleid: UAE4ALL00
+- 
+    name: Clonage Bulle ePSP
+    icon: dcfcf1595b92d4f5d8045d3ecadf6de99c1e52e2bc8d5bf9811a08270d305090.png
+    version: v.1.1
+    author: Markus95
+    url: http://rinnegatamante.it/vitadb/hbs/Clonage_Bulle_ePSP.vpk
+    type: "4"
+    description: ePSP bubble cloner.
+    id: "187"
+    date: 2017-02-12
+    titleid: CLON00001
+- 
+    name: RetroArch
+    icon: d2e291dcd6bc6b02a9f808e6d41f84281258967300fee882c6fa6c81c369bd43.png
+    version: Nightly
+    author: Libretro Team
+    url: http://mirror.gs2012.xyz/getfile.php?f=PSV/HENkaku/EMULATORS/RetroArch/nightly/RetroArch.vpk
+    type: "5"
+    description: Collection of emulators for various platforms
+    id: "186"
+    date: 2017-03-06
+    titleid: RETROVITA
+- 
+    name: Lua Game Of Life
+    icon: cf7289e7a9f3a6ae3c94184632ab31dcbf91994ffa76745c8eaac28bdb2de465.png
+    version: v.0.2
+    author: domis4
+    url: http://rinnegatamante.it/vitadb/hbs/lua-gameoflife.vpk
+    type: "1"
+    description: Game of Life clone.
+    id: "182"
+    date: 2017-01-04
+    titleid: "432100001"
+- 
+    name: ReversMe
+    icon: 1737c080c550071f54972f2ff18d710dc504c6a183f8e4c89e3f40bb70cf8c94.png
+    version: v.1.0
+    author: TheFloW
+    url: http://rinnegatamante.it/vitadb/hbs/ReversMe.vpk
+    type: "1"
+    description: Othello clone for PSVITA.
+    id: "181"
+    date: 2016-07-30
+    titleid: BREW00001
+- 
+    name: VitaDL
+    icon: 128e2794f7efbd9a9186cd562928c882353469f30b116ae12221e01201171e51.png
+    version: v.0.1
+    author: Voxel
+    url: https://github.com/Voxel-Studios/VitaDL/releases/download/v0.1/VitaDL.vpk
+    type: "4"
+    description: Download files from HTTP links.
+    id: "180"
+    date: 2016-12-06
+    titleid: VITADL999
+- 
+    name: Homebrew Downloader
+    icon: 7e17af5191fcca2689d662e554b51f63cfec4f249961ad6b98a07b23346c5723.png
+    version: v.0.3
+    author: D5C85B13876B8
+    url: http://rinnegatamante.it/vitadb/hbs/hbb.vpk
+    type: "4"
+    description: Homebrew downloader for PSVITA.
+    id: "179"
+    date: 2016-10-21
+    titleid: RTST00010
+- 
+    name: Whitelister
+    icon: 8834f97cf0f89d196322a08929360f46190b7f513e50534c089c3d88d0599786.png
+    version: v.1.1
+    author: Kankertje
+    url: https://dl.dropboxusercontent.com/u/82950466/whitelister1_1.vpk
+    type: "4"
+    description: Whitelister for PSTV.
+    id: "178"
+    date: 2016-07-30
+    titleid: XXXX35570
+- 
+    name: Vita Hardware Test
+    icon: 603b3bb3f040333bd85f317d4a0f646cae584938d256e940ec629f2daace3f2c.png
+    version: v.1.0
+    author: ifrit05
+    url: http://rinnegatamante.it/vitadb/hbs/Vita_Hardware_Test.vpk
+    type: "4"
+    description: Hardware tester for PSVITA.
+    id: "177"
+    date: 2016-08-13
+    titleid: VHWT00001
+- 
+    name: RejuveSnake
+    icon: b549cbcfd0a1503f9b4e5d34b2d86135d247d571980a7814d6af8f45d4fd9121.png
+    version: v.1.0
+    author: Ruben_Wolfe
+    url: http://rinnegatamante.it/vitadb/hbs/rejuvesnake.vpk
+    type: "1"
+    description: Snake clone for PSVITA.
+    id: "176"
+    date: 2016-07-30
+    titleid: ARIEL0001
+- 
+    name: memcardswap
+    icon: a929749d2cda578445b702099bff4d172c67f5c5194b621a001dddaf4c4f5d6d.png
+    version: v.1.2
+    author: SMOKE
+    url: https://github.com/SMOKE5/memcardswap/releases/download/v1.2/memcardswap.vpk
+    type: "4"
+    description: Helps during MC swap process.
+    id: "175"
+    date: 2016-09-02
+    titleid: MEMCRDSWP
+- 
+    name: HandyVITA
+    icon: f5a28a91017c0ad6d3145d5de71eef8ac18260cb7b96d8fd7ca2e288be1d1fad.png
+    version: v.1.4
+    author: frangarcj
+    url: https://github.com/frangarcj/HandyVITA/releases/download/1.4-Henkaku/HandyVITA.vpk
+    type: "5"
+    description: Atari Linx emulator.
+    id: "174"
+    date: 2016-07-29
+    titleid: FRAN00002
+- 
+    name: VitaShell Theme Manager
+    icon: 10def254489e6a8a40147eb59b357b9308adb0ad169a5af9c75b3c4b9f5ad8b4.png
+    version: v.1.0
+    author: Ruben_Wolfe
+    url: http://rinnegatamante.it/vitadb/hbs/vitashellthememanager.vpk
+    type: "4"
+    description: Theme manager for VitaShell.
+    id: "173"
+    date: 2016-09-02
+    titleid: ARIEL0004
+- 
+    name: Vita Doom
+    icon: 7efea6eae7184a48b41067fe4e194b89baab583afe5f0273e0eddb417096afb2.png
+    version: v.1.0
+    author: 'MrNetrix & xyzz'
+    url: https://github.com/xyzz/Vita_Doom/releases/download/1.0/vitadoom.vpk
+    type: "2"
+    description: Doom port for PSVITA.
+    id: "172"
+    date: 2016-07-26
+    titleid: DOOM00000
+- 
+    name: Vita Activator
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.1
+    author: ZombieWizzard
+    url: https://github.com/ZombieWizzard/vita-activator/releases/download/v1.1/vita-activator.vpk
+    type: "4"
+    description: Activate your PSVITA.
+    id: "171"
+    date: 2016-08-31
+    titleid: ACTI00000
+- 
+    name: TextQuest
+    icon: 31f5d760031a6dfce38fe6be1bad0c5e48aea808878aac3a140f0f2e464d9d73.png
+    version: v.1.0
+    author: joshaxey
+    url: https://github.com/joshaxey/textquest/releases/download/1.0/TextQuest.vpk
+    type: "1"
+    description: Text adventure for PSVITA.
+    id: "170"
+    date: 2016-08-23
+    titleid: TQUE00001
+- 
+    name: SMSPlusVITA
+    icon: 88497a050137dded2ed27631630d978f9800e3b46bf2a82ed4bf4294ca035600.png
+    version: v.1.3.1
+    author: frangarcj
+    url: https://github.com/frangarcj/SMSplusVITA/releases/download/1.3.1-Henkaku/smsplusvita.vpk
+    type: "5"
+    description: Sega Master System emulator.
+    id: "169"
+    date: 2016-07-29
+    titleid: FRAN00001
+- 
+    name: REminiscence
+    icon: 4face0592c3c88ef3c63600f3025d9ade60418ba7d3861198ff1d2f92b5c50b7.png
+    version: v.0.4.2
+    author: Enrique Somolinos Pérez
+    url: https://github.com/enriquesomolinos/REminiscence-Vita/releases/download/v0.4.2/REminiscence-0.4.2.vpk
+    type: "2"
+    description: Flashback port for PSVITA.
+    id: "168"
+    date: 2016-10-24
+    titleid: SOMO00001
+- 
+    name: Realboy
+    icon: c2fcf6bdbf17422e2c851334c7274c01e83f6d87bda5eca1e8c5c81c2aa1daae.png
+    version: v.1.2
+    author: xerpi
+    url: https://github.com/xerpi/realboy-vita/releases/download/1.2/realboy.vpk
+    type: "5"
+    description: GB/GBC Emulator
+    id: "167"
+    date: 2016-08-01
+    titleid: XERP00003
+- 
+    name: Prince Of Persia
+    icon: f1464d52eb0d6b26677f497f2e4a387d20793e3eaeee6867810d8f114ba0c64a.png
+    version: v.1.12
+    author: cpasjuste
+    url: http://rinnegatamante.it/vitadb/hbs/Prince-Of-Persia.vpk
+    type: "2"
+    description: Classic Prince of Persia port.
+    id: "166"
+    date: 2016-09-26
+    titleid: PRINCEPER
+- 
+    name: NeopopVITA
+    icon: 5c92eca322982194dcf925c344f81c7407442a8fee38ec4e16925913d267acbc.png
+    version: v.0.71.15
+    author: frangarcj
+    url: https://github.com/frangarcj/NeopopVITA/releases/download/0.71.15-Henkaku/NeopopVITA.vpk
+    type: "5"
+    description: Neogeo Pocket Color emulator.
+    id: "165"
+    date: 2016-07-29
+    titleid: FRAN00004
+- 
+    name: mGBA
+    icon: 4bc0f902618d97ba2ec7d35fe4edb0c301d51fa052b574a3e21548f9d27a7723.png
+    version: v.0.5.2
+    author: endrift
+    url: http://rinnegatamante.it/vitadb/hbs/mgba.vpk
+    type: "5"
+    description: GBA emulator for PSVITA.
+    id: "164"
+    date: 2016-12-31
+    titleid: MGBA00001
+- 
+    name: milieTetris
+    icon: ce7f2d4ad6fec476d22a91bdcc22c0439f63c3aa3fd5284948fe9d75201c327b.png
+    version: v.1.0
+    author: GUIDOBOT
+    url: http://rinnegatamante.it/vitadb/hbs/milieTetris.vpk
+    type: "1"
+    description: Tetris clone for PSVITA.
+    id: "163"
+    date: 2016-08-04
+    titleid: GBOT00001
+- 
+    name: History Deleter
+    icon: 088cc808e555db29c63f47307da0a7d1f5e38cb5eb62d96d64e9b5eec9587982.png
+    version: v.1.0
+    author: Chihiro
+    url: 'https://drive.google.com/uc?export=download&id=0B_84KH1GOSfiZTUzQjIxQ1QxeW8'
+    type: "4"
+    description: Purge game logs and errors.
+    id: "162"
+    date: 2016-08-05
+    titleid: KANA00001
+- 
+    name: Henkaku Offline Installer
+    icon: 44db4893ef2d70a3c71cc199e6e90357fba4336bebe17dc4a467a5ba8bd945c7.png
+    version: v.1.0
+    author: xyzz
+    url: https://github.com/henkaku/offline-installer/releases/download/1.0/offlineInstaller.vpk
+    type: "4"
+    description: Offline installer for Henkaku.
+    id: "160"
+    date: 2016-08-10
+    titleid: MLCL00002
+- 
+    name: GenesisPlusGX
+    icon: fed314676a182bf702355bf0a46e6366933a92c9dceb8bec0504f21a034fbeda.png
+    version: v.1.7.5-RC
+    author: frangarcj
+    url: https://github.com/frangarcj/Genesis-Plus-GX/releases/download/1.7.5-RC-Henkaku/GenesisPlusGXVITA.vpk
+    type: "5"
+    description: Sega Genesis/Megadrive emulator.
+    id: "158"
+    date: 2016-07-29
+    titleid: FRAN00003
+- 
+    name: Flood It!
+    icon: cebb681351b58a33c475136d4f3796133442588454b4e4aa0bae3c21923559b6.png
+    version: v.1.3
+    author: notnotme
+    url: https://github.com/notnotme/NotEngine_PSV/releases/download/11.17.2016/floodit.vpk
+    type: "1"
+    description: Small game powered by NotEngine.
+    id: "156"
+    date: 2016-11-17
+    titleid: FLDT00001
+- 
+    name: VITAPluginsManager
+    icon: 35be653a38137b2e5f60845fe06ba539cbf6fb4909fe0d55401aeeecaccfb43c.png
+    version: v.0.6
+    author: NeoLTK
+    url: https://github.com/NeoLTK/VITAPluginsManager/releases/download/0.6/VITAPluginsManager.vpk
+    type: "4"
+    description: Plugins manager for PSVITA.
+    id: "152"
+    date: 2016-10-20
+    titleid: NLTK00001
+- 
+    name: VitaRW
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: 04d791c
+    author: tomtomdu80
+    url: http://mirror.gs2012.xyz/getfile.php?f=PSV/HENkaku/TOOLS/VitaRW/VitaRW.vpk
+    type: "4"
+    description: Sets Read-Only partitions to Read-Write
+    id: "151"
+    date: 2016-09-13
+    titleid: VPRW00001
+- 
+    name: uriCaller
+    icon: 0b7c46756dc882611f0575cf3e4100cf3b7876884c2c7dcf89defca241fd343f.png
+    version: v.0.1
+    author: Freakler
+    url: https://github.com/Freakler/vita-uriCaller/releases/download/0.1/uriCaller.vpk
+    type: "4"
+    description: Utility to call URIs.
+    id: "150"
+    date: 2016-08-23
+    titleid: URI000001
+- 
+    name: RegistryEditor
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.0
+    author: some1
+    url: https://github.com/some1psv/RegistryEditor/releases/download/v1.0/RegistryEditor.vpk
+    type: "4"
+    description: Edit registry settings.
+    id: "149"
+    date: 2016-08-25
+    titleid: REGEDIT01
+- 
+    name: VitaCID
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.0
+    author: tomtomdu80
+    url: https://github.com/tomtomdu80/VitaCID/releases/download/1.0/VitaCID.vpk
+    type: "4"
+    description: "Gets your Vita's CID."
+    id: "148"
+    date: 2016-08-18
+    titleid: VCID00001
+- 
+    name: button-swapper
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.0
+    author: xyzz
+    url: https://github.com/xyzz/vita-button-swapper/releases/download/1.0/button-swapper.vpk
+    type: "4"
+    description: Swaps X/O for Accept/Cancel
+    id: "147"
+    date: 2016-08-11
+    titleid: XYZZ00001
+- 
+    name: idu-mode
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.0
+    author: xyzz
+    url: https://github.com/xyzz/vita-idu/releases/download/1.0/idu-mode.vpk
+    type: "4"
+    description: Enables or disables IDU (Demo) mode
+    id: "145"
+    date: 2016-08-17
+    titleid: XYZZ00003
+- 
+    name: SpiderVita
+    icon: ec01c60e94aee77816e0df40542ef7e37bfa3022a03cacfc6915a992a40cf89a.png
+    version: v.1.2
+    author: LeeStorm
+    url: http://rinnegatamante.it/vitadb/hbs/SpiderVita.vpk
+    type: "1"
+    description: Spider solitaire clone.
+    id: "142"
+    date: 2016-08-22
+    titleid: SPIDERCAR
+- 
+    name: Minesweeper
+    icon: 85fd059ea308ef37968f1a9bcc85da10d32a405e409acae82cbbbdcbb3af72bd.png
+    version: v.1.1
+    author: LeeStorm
+    url: http://rinnegatamante.it/vitadb/hbs/Minesweeper.vpk
+    type: "1"
+    description: Minesweeper clone for PSVITA.
+    id: "141"
+    date: 2016-08-22
+    titleid: MINESWEEP
+- 
+    name: doggytwicevt
+    icon: 0f17c1404db19214d68812d39e5855925e964fd2fe2391d1ef4daaf917eb03a1.png
+    version: v.0.2
+    author: LeeStorm
+    url: http://rinnegatamante.it/vitadb/hbs/doggytwicevt.vpk
+    type: "1"
+    description: Logic game for PSVITA.
+    id: "140"
+    date: 2016-08-22
+    titleid: DOGGYTEST
+- 
+    name: Game of Life
+    icon: 2a6c25e49e6300ec3f14f5524ebde8f4662f71615c566135c26a9ffa420e8680.png
+    version: v.1.0
+    author: Ruben_Wolfe
+    url: http://rinnegatamante.it/vitadb/hbs/gameoflife.vpk
+    type: "1"
+    description: Game of Life clone.
+    id: "139"
+    date: 2016-07-30
+    titleid: ARIEL0002
+- 
+    name: Better Browser Downloader
+    icon: 0e2aacfced0d40d38f800319cfa4b0f3b47b41f121e4c7b48b71222c7028c221.png
+    version: v.0.95
+    author: THEN00P
+    url: https://github.com/THEN00P/Better-Browser-Downloader/releases/download/0.95/BetterBrowserDowloader.vpk
+    type: "4"
+    description: Download homebrews directly from PSVITA.
+    id: "138"
+    date: 2017-03-05
+    titleid: VPKSOURCE
+- 
+    name: Chicken Launcher
+    icon: 4702c3a458c112af5ae05f406045705f03372edca97b9ccf9b1fcce740388738.png
+    version: v.1.0
+    author: crait
+    url: http://rinnegatamante.it/vitadb/hbs/chickenlauncher.vpk
+    type: "1"
+    description: Kitten Cannon clone.
+    id: "137"
+    date: 2016-08-27
+    titleid: CHICKENS2
+- 
+    name: BattleShip Arena
+    icon: b1a8fad2f1a133b35759aeb38a0e8db12e9c4064b23c5d436782d63c4abc5a04.png
+    version: v.1.2
+    author: DesiRED
+    url: http://rinnegatamante.it/vitadb/hbs/BattleShipArena.vpk
+    type: "1"
+    description: Battleship game for PSVITA.
+    id: "135"
+    date: 2016-08-17
+    titleid: BTLSHPARN
+- 
+    name: Bernard Chronicles
+    icon: 0b2223474997d59848fc19c0962c7e0ac7ce3589ed1a5f73bdd04f788643761d.png
+    version: v.0.01
+    author: Flappy Jesus
+    url: http://rinnegatamante.it/vitadb/hbs/Bernard-Chronicles-Tetris-Attack.vpk
+    type: "1"
+    description: Tetris Attack clone for PSVITA.
+    id: "133"
+    date: 2016-10-02
+    titleid: VITATETRI
+- 
+    name: Another World Vita
+    icon: cf83893eff0c6f59b638fc6087b0d806d64eeae4faf0a771ab54e6b61cf394e5.png
+    version: v.1.0
+    author: Enrique Somolinos Pérez
+    url: http://rinnegatamante.it/vitadb/hbs/Another_world.vpk
+    type: "2"
+    description: Another World port for PSVITA.
+    id: "132"
+    date: 2016-09-27
+    titleid: SOMO00002
+- 
+    name: Hendoku
+    icon: 596a5e4c2699e879c8e813100d22f296af4e1cfa5e90c51934229c13af185e0d.png
+    version: v.0.1
+    author: Kuni59
+    url: http://rinnegatamante.it/vitadb/hbs/sudokucpp.vpk
+    type: "1"
+    description: Sudoku game for PSVITA.
+    id: "130"
+    date: 2016-08-09
+    titleid: KUNI00002
+- 
+    name: VitaSudoku
+    icon: e86f68a4c46f28d0f3e94aaf20f039b635eb7c4cd6d8dedf58bf9e3ebeeded6b.png
+    version: v.1.3
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/VitaSudoku.vpk
+    type: "1"
+    description: Sudoku game for PSVITA.
+    id: "129"
+    date: 2016-08-08
+    titleid: SUDO00001
+- 
+    name: Starfield Vita
+    icon: a8b1b6bcd17ff906f87a10d7b46de03458eba783031c079b2f38e173e24d0372.png
+    version: v.0.1
+    author: gnmmarechal
+    url: http://mirror.gs2012.xyz/getfile.php?f=PSV/HENkaku/GAMES/Starfield-Vita-v0.1.vpk
+    type: "1"
+    description: Simple endless game for the PS Vita. Runs on Lua Player Plus Vita
+    id: "128"
+    date: 2017-02-20
+    titleid: STFD00001
+- 
+    name: HOTA
+    icon: fe188b56869589b36f104ddfe6d05f5a9b76d3b40739641edaf21e697247b95b.png
+    version: v.1.0
+    author: usineur
+    url: http://rinnegatamante.it/vitadb/hbs/HOTA.vpk
+    type: "2"
+    description: Heart of the Alien port
+    id: "126"
+    data: http://rinnegatamante.it/vitadb/hb_data/HOTA_datas.zip
+    date: 2016-10-23
+    titleid: HOTA00001
+- 
+    name: ONElua
+    icon: onelua.png
+    version: v.2R0
+    author: ONElua Team
+    url: http://rinnegatamante.it/vitadb/hbs/ONElua.vpk
+    type: "3"
+    description: Lua interpreter for PSVITA.
+    id: "125"
+    date: 2016-12-10
+    titleid: ONELUA2R0
+- 
+    name: ePSP Bubble Installer
+    icon: c28575d05a39cd8d9328f05fce0739534cbd40a03eefd3587729735378296cb1.png
+    version: v.2.0
+    author: CelesteBlue
+    url: http://rinnegatamante.it/vitadb/hbs/ePSP_Bubble_Installer.vpk
+    type: "4"
+    description: Creates a bubble for Adrenaline/ARK.
+    id: "124"
+    date: 2017-02-23
+    titleid: EPSP00001
+- 
+    name: ARK Fast
+    icon: 96d569f1b1b19ee7c04dd26208ae68fa2110e27e92071c88646f30c6d2219ada.png
+    version: v.1.0
+    author: ONElua Team
+    url: http://rinnegatamante.it/vitadb/hbs/ARKFast.vpk
+    type: "4"
+    description: Easy installer for ARK-2
+    id: "123"
+    date: 2017-03-05
+    titleid: ARKTOFAST
+- 
+    name: VitaScreenFlasher
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.1
+    author: SMOKE
+    url: https://github.com/SMOKE5/VitaScreenFlasher/releases/download/v1.1/VitaScreenFlasher.vpk
+    type: "4"
+    description: Screen flasher for PSVITA.
+    id: "122"
+    date: 2016-07-30
+    titleid: SCRENFLSH
+- 
+    name: VitaTester
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.3
+    author: SMOKE
+    url: https://github.com/SMOKE5/VitaTester/releases/download/v1.3/VitaTester.vpk
+    type: "4"
+    description: Test buttons input of your PSVITA.
+    id: "121"
+    date: 2016-08-29
+    titleid: VITATESTR
+- 
+    name: Bermuda Vita
+    icon: 84235dee32a942d678a6547e4e2dbac3cd63480d1a42d911bdc4cf4cb7d7a7cf.png
+    version: v.1.1
+    author: usineur
+    url: http://rinnegatamante.it/vitadb/hbs/bermuda-vita.vpk
+    type: "2"
+    description: Bermuda Syndrome port for PSVITA.
+    id: "115"
+    data: http://rinnegatamante.it/vitadb/hb_data/bermuda.zip
+    date: 2016-11-25
+    titleid: BERM00001
+- 
+    name: GNU Robbo
+    icon: 3c141bbfc70f8d29f2901938aefe7beff5d7f6847920a44e9ad5100ccd2cc0a2.png
+    version: v.0.68
+    author: bomblik
+    url: http://rinnegatamante.it/vitadb/hbs/GNU_Robbo.vpk
+    type: "2"
+    description: Atari XL/XE Robbo port.
+    id: "114"
+    date: 2017-02-20
+    titleid: ROBB00001
+- 
+    name: ZeldaROTH
+    icon: 4a4d10655c740d31660d544a5b8bcbacc9d656496721fbbf1565c0263ecd6083.png
+    version: v.1.0
+    author: usineur
+    url: http://rinnegatamante.it/vitadb/hbs/ZeldaROTH.vpk
+    type: "2"
+    description: 'Zelda: Return of the Hylian port.'
+    id: "109"
+    data: http://rinnegatamante.it/vitadb/hb_data/zroth.zip
+    date: 2016-12-07
+    titleid: ZERO00001
+- 
+    name: PSVident
+    icon: eb6499181065394d0d042adae7e15354c1c26b3e31c99f76ad9ad4078adb3497.png
+    version: v.0.32
+    author: Freakler
+    url: https://github.com/Freakler/vita-PSVident/releases/download/v0.32/PSVident.vpk
+    type: "4"
+    description: Shows info about your PSVITA.
+    id: "108"
+    date: 2016-12-11
+    titleid: PSVIDENT0
+- 
+    name: Pong
+    icon: d09907cd72efbd9d2b97b36d672ff9c3ece97e10fee8b03adfbf1f4668fd35c6.png
+    version: v.1.0
+    author: NamelessGhoul0
+    url: http://rinnegatamante.it/vitadb/hbs/Pong.vpk
+    type: "1"
+    description: Pong clone for PSVITA.
+    id: "102"
+    date: 2016-12-08
+    titleid: VITAPONG0
+- 
+    name: StarKiller 2D
+    icon: 851e0b5f7ae7dde34b85d6a3bb150d24cc88018246c34ba0beede881c075844b.png
+    version: v.1.00
+    author: Freakler
+    url: http://rinnegatamante.it/vitadb/hbs/StarKiller2D.vpk
+    type: "1"
+    description: Basic 2D Puzzle Game for PSVITA.
+    id: "101"
+    date: 2017-01-05
+    titleid: STARKILL0
+- 
+    name: Happy Land
+    icon: 95c3c2e40dc3ea2159672dfaf2a95936817069b3543233a68bca53a5039d1ae9.png
+    version: v.1.0
+    author: MyLegGuy
+    url: http://rinnegatamante.it/vitadb/hbs/HappyLand.vpk
+    type: "1"
+    description: A game where you must find potatoes.
+    id: "100"
+    date: 2017-02-04
+    titleid: MYLEGNOOB
+- 
+    name: Zsokoban
+    icon: edfc9d574ff65f340a66e3e83e8aa77115dc1f970e7fdf105ad6ebd5784a349e.png
+    version: v.1.0
+    author: gdljjrod
+    url: http://rinnegatamante.it/vitadb/hbs/Zsokoban.vpk
+    type: "1"
+    description: Sokoban clone for PSVITA.
+    id: "99"
+    date: 2017-02-23
+    titleid: ZSOKOBAN1
+- 
+    name: Custom Themes Manager
+    icon: 061b87d9a2d4a1490d041dea83d8bbedb025db5c435b8e42bef5a96c24806f10.png
+    version: v.1.0
+    author: Red Squirrel
+    url: http://rinnegatamante.it/vitadb/hbs/CTManager.vpk
+    type: "4"
+    description: Themes Manager for PSVITA.
+    id: "98"
+    date: 2016-10-15
+    titleid: CTMANAGER
+- 
+    name: Game Shrinker
+    icon: f53708caff5294940ab1693d99e59ca90236b3c8feba058bc72f5c2f649e9ac0.png
+    version: v.1.1
+    author: Dakor
+    url: http://rinnegatamante.it/vitadb/hbs/game_shrinker.vpk
+    type: "4"
+    description: Rip your games to save SD space.
+    id: "97"
+    date: 2016-11-26
+    titleid: DAKR00001
+- 
+    name: Vita Calculator
+    icon: 844eda4efba443b1aa0cdd8558beffdbc49c41e7908376f4cb6dc3b9289ec27a.png
+    version: v.1.0
+    author: Flappy Jesus
+    url: http://rinnegatamante.it/vitadb/hbs/Vita-Calculator.vpk
+    type: "4"
+    description: Calculator for PSVITA.
+    id: "96"
+    date: 2016-10-09
+    titleid: VITACALCI
+- 
+    name: Project Void
+    icon: 19007f87f34ec12be824bc56ff8e5753de30c09bcd32b8ab434aef05ee8a1e9d.png
+    version: v.0.0.2
+    author: Akabane87
+    url: http://rinnegatamante.it/vitadb/hbs/projectvoid.vpk
+    type: "1"
+    description: "3D space shoot'em up."
+    id: "95"
+    date: 2017-03-05
+    titleid: VOID00001
+- 
+    name: Tactic Miner
+    icon: 32dd0fe63ee2b5b28ebb2f703d5453da98e244dbc1df186b45ad6325482c6333.png
+    version: v.1.0
+    author: wonre
+    url: http://rinnegatamante.it/vitadb/hbs/tactical_miner.vpk
+    type: "1"
+    description: "Topside shoot'em for PSVITA."
+    id: "93"
+    date: 2016-10-29
+    titleid: WONR00001
+- 
+    name: Procedural Planets
+    icon: 30950c1dcffd83cfab70c14fc46e74ed7394bed86edff1e8ff0db89e7dd56a42.png
+    version: v.1.0
+    author: 'Primer0 & Ruben_Wolfe'
+    url: http://rinnegatamante.it/vitadb/hbs/Procedural_Planets.vpk
+    type: "1"
+    description: Procedural planets generator.
+    id: "91"
+    date: 2016-07-31
+    titleid: PRIMER001
+- 
+    name: Theme Manager EX
+    icon: 91bc30db898b5c483f618bcef1f53cca30d9a5f2f22c922254ad2fdd7f6798a9.png
+    version: v.1.5
+    author: kylon
+    url: https://bitbucket.org/kylon/theme-manager-ex/downloads/vtheme115.vpk
+    type: "4"
+    description: Advanced theme manager for PSVITA.
+    id: "84"
+    date: 2017-03-05
+    titleid: THMX00001
+- 
+    name: Resident Evil CODE:Vita
+    icon: 9da02720d453af3eb0c327342eac42852395ad1b4d7ad0d7bcddafeb0b03bb08.png
+    version: v.0.4
+    author: Markus95
+    url: http://rinnegatamante.it/vitadb/hbs/Resident_Evil_CODE_Vita.vpk
+    type: "1"
+    description: "Shoot'em up for PSVITA"
+    id: "83"
+    date: 2017-02-05
+    titleid: MARK00001
+- 
+    name: VPKMirror
+    icon: 503b6963111122ae136f5b9e4d5172cd29f72f36ecaf53d52d24ce154046f71a.png
+    version: v.1.1
+    author: SMOKE
+    url: https://github.com/SMOKE5/VPKMirror/releases/download/v1.1/VPKMirror.vpk
+    type: "4"
+    description: Download homebrews directly from your PSVITA.
+    id: "82"
+    date: 2016-09-22
+    titleid: VPKMIRROR
+- 
+    name: Vita Restart
+    icon: d05c8c84246800a8f636af29d12a714db9a04b546f62587c0ffca820df60f527.png
+    version: v.0.2
+    author: noname120
+    url: https://github.com/devnoname120/vita-restart/releases/download/0.2/Restart.vpk
+    type: "4"
+    description: Reboots your PSVITA.
+    id: "80"
+    date: 2016-09-17
+    titleid: VRST00001
+- 
+    name: Katawa Shoujo
+    icon: aab8cf790b8c07b5be97292681109562b78e46b79f90699fa0096b11e5a0adfb.png
+    version: v.0.11
+    author: sudovim
+    url: http://rinnegatamante.it/vitadb/hbs/KatawaShoujo.vpk
+    type: "2"
+    description: Katawa Shoujo port for PSVITA.
+    id: "79"
+    date: 2016-10-04
+    titleid: KSVN00001
+- 
+    name: Battery Indicator
+    icon: 0e4c97c579c1eb64ecb2d439d314ea567ce9e651558d7bfc532840a76407598b.png
+    version: v.1.0
+    author: Ruben_Wolfe
+    url: http://rinnegatamante.it/vitadb/hbs/BatteryIndicator.vpk
+    type: "4"
+    description: Shows current battery percentage.
+    id: "78"
+    date: 2016-09-04
+    titleid: ARIEL0005
+- 
+    name: Vita Moonlight
+    icon: b85bb6cb216c87c28693179ac17ddfd1c2c9570d9ef295d48ae6c0dde79a5a16.png
+    version: v.0.1.2
+    author: 'xyzz & d3m3vilurr & ShadowPrince'
+    url: https://github.com/xyzz/vita-moonlight/releases/download/0.1.2/moonlight.vpk
+    type: "4"
+    description: NVIDIA Moonlight Streamer port.
+    id: "76"
+    date: 2016-12-15
+    titleid: XYZZ00002
+- 
+    name: CATSFC-libretro-vita
+    icon: 17f7e96b84404d915c12ee68a527aad293c5ad86187a02c869ca7392e81208fd.png
+    version: MOD v.1
+    author: Malachi
+    url: http://rinnegatamante.it/vitadb/hbs/CATSFC-libretro-vita_MOD.vpk
+    type: "5"
+    description: Modified CATSFC emulator.
+    id: "75"
+    date: 2017-01-15
+    titleid: SKOG10001
+- 
+    name: TEMA
+    icon: 9b3cd5d5c5c42d77fd7c9eb55864aa3e5cb5af43b136d3a171e3fc8aa7d95d3d.png
+    version: v.1.4
+    author: Mithrenes
+    url: http://rinnegatamante.it/vitadb/hbs/TEMA.vpk
+    type: "4"
+    description: Download Livearea/VitaShell themes from your PSVITA.
+    id: "73"
+    date: 2016-10-18
+    titleid: TEMA00001
+- 
+    name: Reboot Shortcut
+    icon: fe063a9f4005b2dd72674fda39e689cf111e52e2ce7821e0754c4830669f5abb.png
+    version: v.1.1
+    author: luck
+    url: http://rinnegatamante.it/vitadb/hbs/Reboot.vpk
+    type: "4"
+    description: Reboots your PSVITA.
+    id: "71"
+    date: 2016-11-03
+    titleid: RBTR00001
+- 
+    name: Shutdown Shortcut
+    icon: 9170451e0c5e0dc27e546c24c46a442e491a5a87648909065e6d99758e6d4d89.png
+    version: v.1.0
+    author: luck
+    url: http://rinnegatamante.it/vitadb/hbs/Shutdown.vpk
+    type: "4"
+    description: Shutdowns your PSVITA.
+    id: "69"
+    date: 2016-11-03
+    titleid: SHTD00001
+- 
+    name: 4Rows
+    icon: 6e337bb59d56f9c18ca5863a865cdb2471e5b69da04263405ff0587e0fa2628d.png
+    version: v.1.1
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/4Rows.vpk
+    type: "1"
+    description: Connect4 game for PSVITA.
+    id: "65"
+    date: 2016-08-01
+    titleid: ROWS00001
+- 
+    name: qrdecoder
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.0.2.1
+    author: linhtinh11
+    url: https://github.com/linhtinh11/vita_qrdecoder/releases/download/0.2.1/qrdecoder.vpk
+    type: "4"
+    description: QR Decoder for PSVITA.
+    id: "64"
+    date: 2017-01-06
+    titleid: GAUT16912
+- 
+    name: Switchkaku
+    icon: 3bc7333e145def7b7aff10b1a7085bcd00ef15371db0d386eacb6d9b73f2a302.png
+    version: v.1.06
+    author: luck
+    url: http://rinnegatamante.it/vitadb/hbs/SwitchKaKu.vpk
+    type: "4"
+    description: Extended Henkaku offline installer.
+    id: "63"
+    date: 2016-12-11
+    titleid: SWKK00001
+- 
+    name: Wololo App
+    icon: f9e445a038cee631bbd529bc88fc4650f949732b84a568c331ed9eae6891a55b.png
+    version: v.1.0
+    author: ICanHazMuffin47
+    url: 'https://drive.google.com/uc?export=download&id=0B_Q6vvtd4mfEMzFCZDI1cVNDODA'
+    type: "4"
+    description: "Wololo's website redirecter."
+    id: "62"
+    date: 2017-01-14
+    titleid: WOLOLO001
+- 
+    name: Vitamin
+    icon: ee0d34045cfc2d646d29f5bbe3a1daaa9e1f75e79916f94a6778dfe09fd9b5e3.png
+    version: v.2.0
+    author: TheFloW
+    url: 'http://mirror.gs2012.xyz/PSV/HENkaku/TOOLS/Vitamin%20Dumper/Vitamin_v2.0.vpk'
+    type: "4"
+    description: Content decrypting tool.
+    id: "56"
+    date: 2016-09-09
+    titleid: VITAMIN00
+- 
+    name: MaiDumpTool
+    icon: 871ec652dd4d89fea31056f47fc48f139888849ba9dc31e541726abbc04a7618.png
+    version: v.233.2zEx
+    author: BeniYukiMai
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/TOOLS/MaiDumpTool/MaiDumpTool_V233.2zEx.vpk
+    type: "4"
+    description: Decrypts content and installs decrypted content to the system.
+    id: "54"
+    date: 2016-10-08
+    titleid: MAIM00001
+- 
+    name: MaiDumpTool (English)
+    icon: 49de7c2f65f3428d2d298860de40eec7677e7ad4b9d3fdb6af8a2621e5888197.png
+    version: v.233.2zEx
+    author: LioMajor
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/TOOLS/MaiDumpTool/MaiDumpTool_V233.2zEx_eng.vpk
+    type: "4"
+    description: Decrypts content and installs decrypted content to the system.
+    id: "53"
+    date: 2016-10-08
+    titleid: MAIM00001
+- 
+    name: VitaToolbox
+    icon: a0c264516ea431af0abf5c6bdd6f4cbb7422acd3d20ccfca96e03d0ecc18242c.png
+    version: v.0.2
+    author: Orion
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/TOOLS/VitaToolbox/VitaToolbox_v0.2.vpk
+    type: "4"
+    description: Swiss army knife of the Vita. Delete history, swap X/O, etc.
+    id: "52"
+    date: 2016-08-31
+    titleid: VITATLBOX
+- 
+    name: luaIrc
+    icon: 1740b1ae04405e57392286c507fc8bb47313a46ab75c1caaf8ca64ec96728edc.png
+    version: v.1.1
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/luaIrc11.vpk
+    type: "4"
+    description: IRC client for PSVITA.
+    id: "51"
+    data: http://rinnegatamante.it/vitadb/hb_data/luaIrc.zip
+    date: 2016-09-15
+    titleid: LIRC00001
+- 
+    name: VitaPad
+    icon: b4b3201894336172760d3f1f5f2af13cc6e5ad04d1e008c03f4a21aa3e718da7.png
+    version: v.1.1
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/VitaPad.vpk
+    type: "4"
+    description: Use your PSVITA as a PC controller.
+    id: "50"
+    date: 2016-08-28
+    titleid: VPAD00001
+- 
+    name: PSVibe
+    icon: 2451064b14e12d2b4eb2d912f42470ac1ffdd8f282e8a50051286381dbc64b7c.png
+    version: v.2-final
+    author: NamelessGhoul0
+    url: https://github.com/NamelessGhoul0/PSVibe/releases/download/v2-final/PSVibe.v2-final.vpk
+    type: "4"
+    description: Controller vibrator for PSTV.
+    id: "48"
+    date: 2016-10-22
+    titleid: PSVIBE001
+- 
+    name: rinCheat SE
+    icon: 098f0a93614ee4c8de5d72e0b4a42eef985e65fb59a1546df2c54e2fbc763b28.png
+    version: v.1.0.1
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/rinCheatSE_bugfix.vpk
+    type: "4"
+    description: Savegames cheat application.
+    id: "46"
+    date: 2016-12-10
+    titleid: RCHT00001
+- 
+    name: AdrenalineEasyInstaller
+    icon: 51b5645f05a45f13901b73e6a17c167ca5cafac8435eb3e005dc4941f45743ca.png
+    version: v.1.05
+    author: Freakler
+    url: https://github.com/Freakler/vita-AdrenalineEasyInstaller/releases/download/v1.05/EasyInstaller_v105.vpk
+    type: "4"
+    description: Easy installer for Adrenaline.
+    id: "36"
+    date: 2017-02-15
+    titleid: ADRINSTAL
+- 
+    name: ScummVM
+    icon: 3c8d7432a15963b7d669323ac2a0e96bf6914bbbc996fb5cb4d30f150a205fe9.png
+    version: 17-02-11
+    author: cpasjuste
+    url: http://files.mydedibox.fr/files/Dev/psp2/scummvm/scummvm-17-02-11.vpk
+    type: "5"
+    description: Maniac Mansion Virtual Machine emulator.
+    id: "35"
+    date: 2017-02-11
+    titleid: VSCU00001
+- 
+    name: PFBA
+    icon: f4c4443b234b3f4890be0a48b3f46d24c67512f40814a72c12e47f495ab467ba.png
+    version: 17-01-29
+    author: cpasjuste
+    url: http://files.mydedibox.fr/files/Dev/psp2/pfba/pfba-2017.01.29.vpk
+    type: "5"
+    description: Arcades emulator for PSVITA.
+    id: "34"
+    date: 2017-01-29
+    titleid: VITAFBA01
+- 
+    name: Simple Text Editor
+    icon: 411c029acd799955572be3429349e79465329db70158495167fb6f0ba93bc196.png
+    version: v.1.1.1
+    author: jakibaki
+    url: 'https://www.dropbox.com/s/n7d51ww2i2a30hj/Simple%20Text%20Editor%201.1.1.vpk?dl=1'
+    type: "4"
+    description: Text editor for PSVITA.
+    id: "33"
+    date: 2016-09-06
+    titleid: TXTE00001
+- 
+    name: Super Hero Chronicles
+    icon: 621fc0c5a05a96e90fc595a8b0f9f9e39d027690e221b53a2d1c7cb73cf6e313.png
+    version: v.1.0
+    author: thesuicidalrobot
+    url: 'https://github.com/thesuicidalrobot/Super-Hero-Chronicles/raw/master/Super%20Hero%20Chronicles.vpk'
+    type: "1"
+    description: "Shoot'em Up game for PSVITA"
+    id: "32"
+    date: 2016-08-20
+    titleid: SHC100001
+- 
+    name: vitaWolfen
+    icon: 0c10c27ef30f0e3fe216de45a28d4394a512341dea5671bbd6272b845a181a63.png
+    version: v.1.0
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/vitaWolfen.vpk
+    type: "2"
+    description: Wolfenstein 3D port for PSVITA.
+    id: "31"
+    data: http://rinnegatamante.it/vitadb/hb_data/vitaWolfen.zip
+    date: 2016-08-11
+    titleid: WLFN0001
+- 
+    name: vitaAirHockey
+    icon: 869d62fbd6c374d3b18f7fc17b4c915552b270f20cb38ded02e300e0199f4553.png
+    version: v.0.2
+    author: LaGaipaG
+    url: https://github.com/LaGaipaG/vitaAirHockey/raw/master/v0.2/vitaAirHockey_v0.2.vpk
+    type: "1"
+    description: Air Hockey game for PSVITA.
+    id: "30"
+    date: 2016-10-04
+    titleid: VAIH00001
+- 
+    name: CATSFC-libretro-vita
+    icon: 17f7e96b84404d915c12ee68a527aad293c5ad86187a02c869ca7392e81208fd.png
+    version: v.1.3.0
+    author: skogaby
+    url: https://github.com/skogaby/CATSFC-libretro/releases/download/1.3.0/CATSFC-libretro-vita-1.3.0.vpk
+    type: "5"
+    description: SNES emulator for PSVITA.
+    id: "29"
+    date: 2016-08-07
+    titleid: SKOG10001
+- 
+    name: AccountSwitcher
+    icon: 5a53bbcbd2b49d74a38ced9bfb9f9c60a033982e1cfb7ac64e4b51b17175df11.png
+    version: v.2.4
+    author: pendor
+    url: https://github.com/elpendor/accountswitcher/releases/download/v2.4/AccountSwitcher.vpk
+    type: "4"
+    description: Utility to swap PSN accounts on a single SD.
+    id: "28"
+    date: 2016-09-18
+    titleid: PEND00000
+- 
+    name: JellyCar
+    icon: aac16ae00587d26f5f0633def3e3fb658754afd99418fb9224fc6b8b24ebdb0b.png
+    version: v.1.5
+    author: Drakon
+    url: http://marcinp.xyz/vita/jellycar/JellyCar_1_5.vpk
+    type: "1"
+    description: 2D game with soft body physics.
+    id: "27"
+    date: 2016-12-05
+    titleid: JELY00001
+- 
+    name: VITAident GUI
+    icon: 8f39546ca79f8f0a48f4867089b946bcb13af615f7a72faa08f1ac72737a7145.png
+    version: v.0.7
+    author: joel16
+    url: https://github.com/joel16/VITAident/releases/download/0.7/VITAident_GUI.vpk
+    type: "4"
+    description: Shows info about your PSVITA.
+    id: "26"
+    date: 2017-02-10
+    titleid: VID000016
+- 
+    name: VITAident
+    icon: 8f39546ca79f8f0a48f4867089b946bcb13af615f7a72faa08f1ac72737a7145.png
+    version: v.0.7
+    author: joel16
+    url: https://github.com/joel16/VITAident/releases/download/0.7/VITAident.vpk
+    type: "4"
+    description: Shows info about your PSVITA.
+    id: "25"
+    date: 2017-02-10
+    titleid: VID000016
+- 
+    name: Minicraft Vita
+    icon: 2338df730215a8ed8f4a983e06346bac605a383bb13e8f45f69a9dd7099a9d3d.png
+    version: v.1.0
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/Minicraft.vpk
+    type: "2"
+    description: Minicraft port for PSVITA.
+    id: "24"
+    data: http://rinnegatamante.it/vitadb/hb_data/Minicraft.zip
+    date: 2016-11-07
+    titleid: CRFT00001
+- 
+    name: DeSmuME-Vita
+    icon: 4cc8c5324b446dd5c2a75d0020bde7a5e417fa760406875e8a0ff95ec0863578.png
+    version: v.0.2
+    author: MasterFeizz
+    url: https://github.com/masterfeizz/DeSmuME-Vita/releases/download/v0.2/desmume.vpk
+    type: "5"
+    description: PoC NDS Emulator.
+    id: "23"
+    date: 2016-08-09
+    titleid: DSEMU0000
+- 
+    name: Blindness II
+    icon: 5f4b992b63d1c2924f191e0cf32e15bbe8113d0c488f0012f5b9c6fdd8f6a8d1.png
+    version: v.2
+    author: AppleIo
+    url: https://github.com/Applelo/Blindness/releases/download/2.00/Blindness-Vita.vpk
+    type: "1"
+    description: Little memory/rapidity game for PSVITA.
+    id: "22"
+    date: 2017-01-29
+    titleid: GXMFUN000
+- 
+    name: VitaShell
+    icon: cbbb234e307a727b32c119d619187df61b1a60dbd63f2e7b66520ef9bc212e2d.png
+    version: v.1.5.1
+    author: TheFloW
+    url: https://github.com/TheOfficialFloW/VitaShell/releases/download/1.51/VitaShell.vpk
+    type: "4"
+    description: Multifunction shell for PSVITA.
+    id: "21"
+    date: 2017-01-13
+    titleid: VITASHELL
+- 
+    name: PFBA Mod
+    icon: f4c4443b234b3f4890be0a48b3f46d24c67512f40814a72c12e47f495ab467ba.png
+    version: v.1.06
+    author: rsn8887
+    url: https://github.com/rsn8887/pfba/releases/download/1.06/pfba_mod_1.06.vpk
+    type: "5"
+    description: Arcades emulator for PSVITA.
+    id: "20"
+    date: 2017-02-09
+    titleid: VITAFBA01
+- 
+    name: vitaWanted
+    icon: 6e8b7d6e0ce5d44a821443966a955ccbafc3a3da1cd197d7a79bb85cef5f6138.png
+    version: v.1.3
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/vitaWanted.vpk
+    type: "1"
+    description: Wanted! clone from SM64DS.
+    id: "19"
+    date: 2016-08-23
+    titleid: WNTD00001
+- 
+    name: BlockOut II
+    icon: cfcd39dca798b5462938a9288699256991790f928f6f356510798963323ebc9c.png
+    version: v.2.5
+    author: bomblik
+    url: http://rinnegatamante.it/vitadb/hbs/BlockOutII.vpk
+    type: "2"
+    description: BlockOut II port for PSVITA.
+    id: "18"
+    date: 2017-02-20
+    titleid: BOUT00002
+- 
+    name: SystemCheckEnabled
+    icon: b2994a379600a1e0df845f872f8fbc8fa1340281351e5175d9029434f609eddd.png
+    version: v.1.0
+    author: Draqen
+    url: http://aldezo.bplaced.net/SystemCheckEnabled.vpk
+    type: "4"
+    description: Check if the console is enabled.
+    id: "17"
+    date: 2017-02-22
+    titleid: ACTPSVITA
+- 
+    name: 2048-PSP
+    icon: 17fe3b55effbf1ced05c356c5e269424ac7da85526281292bf70a552cc1f7f28.png
+    version: 43333cd
+    author: dots-tb
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/GAMES/2048-PSP-43333cd.vpk
+    type: "2"
+    description: Port of 2048-PSP for the PS Vita.
+    id: "16"
+    date: 2016-08-03
+    titleid: "204800001"
+- 
+    name: BreakVeetOut
+    icon: 70b7c6eb0f45f93164252107a5b54b0a05df99c7bdca18437f6e80fdd56045c4.png
+    version: v.1.0
+    author: 'dal3boy & Ruben_Wolfe'
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/GAMES/breakveetoutv1.0.vpk
+    type: "1"
+    description: Clone of BreakOut for the PS Vita.
+    id: "15"
+    date: 2016-07-31
+    titleid: BREWW0001
+- 
+    name: OpenTyrian Vita
+    icon: 1be39eb817d1dd3979cae530cc35941c8ae51a4fc4f26745d13805edd50b1ee5.png
+    version: v.0.99
+    author: z80
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/GAMES/OpenTyrianZ80_099.vpk
+    type: "2"
+    description: Port of OpenTyrian for the PS Vita.
+    id: "14"
+    date: 2016-09-15
+    titleid: Z80TYRIAN
+- 
+    name: vOpenTyrian
+    icon: 767c27e139670527b72f469b9020659244263ee9ba956aa802f9c4805ff1da35.png
+    version: 16-09-19
+    author: cpasjuste
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/GAMES/vOpenTyrian-16-09-19.vpk
+    type: "2"
+    description: Port of OpenTyrian for the PS Vita. Part of the GekiHEN Competition.
+    id: "13"
+    date: 2016-09-20
+    titleid: VOPTIRYAN
+- 
+    name: SDL Prince of Persia Vita
+    icon: f80b48d9880373930c5349ac5104a072add87c6c99f0a62e6f9b24717b333da8.png
+    version: v.1.2
+    author: usineur
+    url: https://github.com/usineur/SDLPoP-Vita/releases/download/vita-1.2/SDLPoP-Vita.vpk
+    type: "2"
+    description: Port of SDLPoP for the PS Vita.
+    id: "12"
+    date: 2016-10-07
+    titleid: SPOP00001
+- 
+    name: AntiBlacklist
+    icon: d0935b0f93b94574f6e3b71b6c60a96038de5e0cc84a3a78ab94eebf7b58bc96.png
+    version: v.1.1
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/AntiBlacklist.vpk
+    type: "4"
+    description: Advanced Whitelister for PSTV.
+    id: "11"
+    date: 2016-08-23
+    titleid: ABLK00001
+- 
+    name: vitaQuake
+    icon: 987bdcdc30e7b98779ba49373a6d253d122635713e7c8185e99a65cb31bfeb4d.png
+    version: v.2.1
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/vitaQuake.vpk
+    type: "2"
+    description: Quake 1 port.
+    id: "10"
+    data: http://rinnegatamante.it/vitadb/hb_data/vitaQuake.zip
+    date: 2016-10-23
+    titleid: QUAK00001
+- 
+    name: vita-savemgr
+    icon: 6623e30364290bbb3b166046ce26b6a2f769bbedf63b15c02d51575fc5d87b3c.png
+    version: Nightly
+    author: d3m3vilurr
+    url: https://github.com/d3m3vilurr/vita-savemgr/releases/download/nightly/savemgr.vpk
+    type: "4"
+    description: Savegame dumper/restorer.
+    id: "9"
+    date: 2017-01-12
+    titleid: SAVEMGR00
+- 
+    name: VitaPong
+    icon: 18746b487153dc1ca3d728ce57b841b6e8faeca65a0900aa46864f73d07642c8.png
+    version: v.1.0
+    author: nyorem
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/GAMES/Vitapong.vpk
+    type: "1"
+    description: Clone of the classic game Pong for the PS Vita.
+    id: "8"
+    date: 2016-09-17
+    titleid: VITAPONG0
+- 
+    name: Flppy Bird
+    icon: 73b81326222cc8a46daed0660d21d7ee251e876beed29d903c8b172610b7cfff.png
+    version: v.1.3
+    author: gambikules
+    url: http://mirror.gs2012.xyz/PSV/HENkaku/GAMES/flppy_bird.vpk
+    type: "1"
+    description: Flappy Bird clone for the PS Vita. Runs on Lua Player Plus Vita.
+    id: "7"
+    date: 2016-08-19
+    titleid: FLPP00001
+- 
+    name: Vita Flappy Bird
+    icon: d15e8d9ab277eb13b37b384ccb5b748d4ae2e78ae4077c253f2c5c0756ca7f21.png
+    version: v.1.0
+    author: yukkurisinai
+    url: https://github.com/yukkurisinai/vita-flappybird/releases/download/v1.0/flappybird.vpk
+    type: "1"
+    description: A Flappy Bird clone for the PS Vita.
+    id: "6"
+    date: 2016-08-09
+    titleid: BIRD00000
+- 
+    name: EasyRPG Player
+    icon: 584da9ba55ab78caf10be0d8906cdfe6587d7017f1183865726991ec2d9da123.png
+    version: Nightly
+    author: Rinnegatamante
+    url: https://ci.easyrpg.org/job/player-vita/lastSuccessfulBuild/artifact/builds/psvita/EasyRPG.vpk
+    type: "5"
+    description: RPG Maker 2k/2k3 player.
+    id: "5"
+    date: 2017-03-04
+    titleid: ERPG00001
+- 
+    name: Moon Whitelister
+    icon: c8050f859fc6af4172e08fc80fd2e4e9c59ef806e7a6961fad9f877ff6097593.png
+    version: v.1.0c
+    author: gnmmarechal
+    url: https://github.com/gnmmarechal/moon-whitelister/releases/download/v1.0c/MoonWhitelisterv1.0c.vpk
+    type: "4"
+    description: PSTV "v1" whitelisting app. Runs on Lua Player Plus Vita R4.
+    id: "4"
+    date: 2016-08-06
+    titleid: GS0100001
+- 
+    name: Labyrinth 3D
+    icon: labyrinth.png
+    version: v.1.3
+    author: Rinnegatamante
+    url: http://rinnegatamante.it/vitadb/hbs/L3D13.vpk
+    type: "1"
+    description: A first person maze solving game in 3D.
+    id: "1"
+    date: 2017-02-28
+    titleid: LBRN00001

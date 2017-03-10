@@ -84,7 +84,6 @@ ListView::ListView(std::vector<Homebrew> homebrews)
 	dbg_printf(DBG_DEBUG, "posY: %d", posY);
 	dbg_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
 	for (Homebrew hb : homebrews) {
-		dbg_printf(DBG_DEBUG, "count");
 		listItems.push_back(ListItem(hb));
 	}
 }

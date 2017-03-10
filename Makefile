@@ -45,7 +45,7 @@ PSVITAIP = $(shell head -n 1 psvitaip.txt)
 DEBUGNETIP = $(shell cat debugnetip.txt || ip route get 1 | awk '{print $$NF;exit}')
 
 ifeq ($(DEBUG), 1)
-CFLAGS += -Og -DDEBUG
+CFLAGS += -O0 -D_DEBUG
 else
 CFLAGS += -O3
 endif
@@ -80,6 +80,7 @@ all: $(BIN)/$(TARGET).vpk
 		\
 		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
 		--add assets/homebrews.yml=resources/homebrews.yml \
+		--add assets/rinn.yml=resources/rinn.yml \
 	$(BIN)/$(TARGET).vpk
 	
 	

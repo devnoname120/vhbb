@@ -46,7 +46,7 @@ CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"),
 	categoryTabs.reserve(countof(categoryList));
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		try {
-			auto hbs = Database::get_instance()->Filter(IsCategory("Utility"));
+			auto hbs = Database::get_instance()->Filter(IsCategory("1"));
 			categoryTabs.push_back(CategoryTab(ListView(hbs)));
 		} catch (const std::exception& ex) {
 			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));

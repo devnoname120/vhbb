@@ -8,7 +8,7 @@ void getTimeString(char *string, int time_format, SceDateTime *time);
 int displayBattery();
 int displayDate();
 
-StatusBar::StatusBar()
+StatusBar::StatusBar() : font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
 {
 	#ifdef PSP2SHELL
 
@@ -21,8 +21,8 @@ StatusBar::StatusBar()
 
 	#endif
 
-	font_25 = vita2d_load_font_file(FONT_DIR "segoeui.ttf");
 	img_statsbar_battery = vita2d_load_PNG_buffer(&_binary_assets_spr_img_statsbar_battery_png_start);
+	if (img_statsbar_battery == nullptr) dbg_printf(DBG_WARNING, "Battery icon is NULL");
 }
 
 
@@ -30,16 +30,15 @@ int StatusBar::Display()
 {
 	// Background
 	vita2d_draw_rectangle(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT, COLOR_BLACK);
-
-	vita2d_font_draw_text(font_25, 12, 22, COLOR_WHITE, 25, "Vita HomeBrew Browser");
+	
+	font_25.Draw(Point(12, 25), "Vita HomeBrew Browser", COLOR_WHITE);
 
 	displayBattery();
 	displayDate();
 
 	#ifdef PSP2SHELL
-	vita2d_font_draw_text(font_25, 400, 22, COLOR_WHITE, 25, vitaip);
+	font_25.Draw(Point(400, 22), vitaip, COLOR_WHITE);
 	#endif
-
 	return 0;
 }
 
@@ -112,7 +111,7 @@ int StatusBar::displayDate()
 	char string[64];
 	sprintf(string, "%s  %s", date_string, time_string);
 
-	vita2d_font_draw_text(font_25, 650, 22, COLOR_WHITE, 25, string);
+	font_25.Draw(Point(650, 22), string, COLOR_WHITE);
 
 	return 0;
 }

@@ -22,7 +22,7 @@ int ListItem::display(int posY)
 {
 	vita2d_draw_texture(img_itm_panel, ITEM_POSX, posY);
 	//dbg_printf(DBG_DEBUG, "Drawing title: %s", homebrew.title.c_str());
-	font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.title);
+	font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.name);
 	font_25.Draw(Point(ITEM_POSX + 120, posY + 76), homebrew.author);
 	// font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.version);
 	//font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.release);
