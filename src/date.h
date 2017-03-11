@@ -5,7 +5,9 @@
 class Date {
 public:
     Date();
-	Date(const std::string &date);
+	Date(std::string date);
+
+    std::string str;
 
     int year;
     int month;

@@ -4,12 +4,12 @@
 
 Date::Date()
 {
-    
+
 }
 
-Date::Date(const std::string &date)
+Date::Date(std::string date)
 {
-    //TODO
+    return;
 }
 
 bool IsNewer::operator()(const Homebrew &hb1, const Homebrew &hb2) const {
@@ -39,14 +39,10 @@ bool IsNewer::operator()(const Homebrew &hb1, const Homebrew &hb2) const {
 
 namespace YAML {
 bool convert<Date>::decode(const Node& node, Date& date) {
-    std::string date_str = node.as<std::string>();
-    dbg_printf(DBG_DEBUG, "Date: %s", date_str.c_str());
-    date.year = atoi(date_str.substr(0, 4).c_str());
-    dbg_printf(DBG_DEBUG, "Year: %d", date.year);
-    date.month = atoi(date_str.substr(5, 2).c_str());
-    dbg_printf(DBG_DEBUG, "Month: %d", date.month);
-    date.day = atoi(date_str.substr(8, 2).c_str());
-    dbg_printf(DBG_DEBUG, "Day: %d", date.day);
+    date.str = node.as<std::string>();
+    date.year = atoi(date.str.substr(0, 4).c_str());
+    date.month = atoi(date.str.substr(5, 2).c_str());
+    date.day = atoi(date.str.substr(8, 2).c_str());
     return true;
 }
 };
