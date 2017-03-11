@@ -1,4 +1,6 @@
 #include "database.h"
+
+#include "network.h"
 #include "homebrew.h"
 
 #include <global_include.h>
@@ -33,4 +35,20 @@ bool IsCategory::operator()(const Homebrew &hb) const {
 	std::transform(cat_.begin(), cat_.end(), std::back_inserter(cat_lower), tolower);
 
 	return cat_lower.compare(hbcat_lower) == 0;
+}
+
+
+int Database::DownloadIcons()
+{
+    sceIoMkdir(ICONS_FOLDER.c_str(), 0777);
+
+    for (auto hb : homebrews) {
+		std::string path = ICONS_FOLDER + "/" + hb.icon;
+
+		if (access(path.c_str(), F_OK) == -1) {
+		    std::string url = ICON_URL_PREFIX + hb.icon;
+
+		    Network::get_instance()->Download(url, path.c_str());
+		}
+	}
 }

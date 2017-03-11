@@ -1,5 +1,6 @@
 #include "vhbb.h"
 
+#include "network.h"
 #include "database.h"
 #include "Views/CategoryView/categoryView.h"
 #include "Views/background.h"
@@ -25,7 +26,7 @@ extern "C"
 }
 
 __attribute__((constructor(101)))
-void pthread_setup(void) 
+void pthread_setup(void)
 {
     pthread_init();
     __sinit(_REENT);
@@ -46,20 +47,24 @@ int main()
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
 
+	Network::create_instance();
+
 	try {
-		Database::create_instance(std::string("ux0:/app/VHBB00001/resources/rinn.yml"));
+		auto db = Database::create_instance(std::string("ux0:/app/VHBB00001/resources/rinn.yml"));
+		dbg_printf(DBG_DEBUG, "Instance created");
+		db->DownloadIcons();
 	} catch (const std::exception &ex) {
 		dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
 		throw ex;
 	}
 
 	Input input;
-	
+
 	Background background;
 	// FIXME If placed after categoryview initialization it cannot load its images (out-of-memory?)
 	StatusBar statusBar;
 	CategoryView categoryView;
-	
+
 	// Init queue view too
 
 	GUIViews curView = LIST_VIEW;
@@ -70,7 +75,7 @@ int main()
 
 		input.Get();
 		//input.Propagate(curView); // TODO: Rework function
-		categoryView.HandleInput(1, input);	
+		categoryView.HandleInput(1, input);
 
 		background.Display();
 		categoryView.Display();
@@ -78,7 +83,7 @@ int main()
 
 		vita2d_end_drawing();
 		vita2d_swap_buffers();
-		sceDisplayWaitVblankStart();	
+		sceDisplayWaitVblankStart();
 	}
 
 	#ifdef PSP2SHELL

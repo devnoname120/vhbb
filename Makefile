@@ -23,12 +23,13 @@ SOURCES = src/singleton.cpp \
 		  src/homebrew.cpp \
           src/input.cpp \
           src/shapes.cpp \
+		  src/network.cpp \
           src/database.cpp \
           src/debug.cpp
 
 IMAGES   =  $(shell find $(ASSET_DIR) -name '*.png')
-OBJS     =  $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o)			
-				   
+OBJS     =  $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o)
+
 DEBUG = 1
 
 ifeq ($(RELEASE), 1)
@@ -84,8 +85,8 @@ all: $(BIN)/$(TARGET).vpk
 		--add assets/homebrews.yml=resources/homebrews.yml \
 		--add assets/rinn.yml=resources/rinn.yml \
 	$(BIN)/$(TARGET).vpk
-	
-	
+
+
 
 $(BIN)/eboot.bin: $(BIN)/$(TARGET).velf
 	vita-make-fself $< $@

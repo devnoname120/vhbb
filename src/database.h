@@ -4,6 +4,7 @@
 #include "homebrew.h"
 #include "singleton.h"
 
+
 class Database: public Singleton<Database> {
 friend class Singleton<Database>;
 public:
@@ -11,6 +12,8 @@ public:
 
 	Database(const std::string &db_path);
 	~Database();
+
+	int DownloadIcons();
 
 	template <class UnaryPredicate>
 	std::vector<Homebrew> Filter(UnaryPredicate pred);

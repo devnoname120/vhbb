@@ -2,6 +2,9 @@
 
 #include <global_include.h>
 
+#define ICONS_FOLDER std::string("ux0:/data/VitaHbBrowser/icons")
+#define ICON_URL_PREFIX std::string("http://rinnegatamante.it/vitadb/icons/")
+
 enum {
 	COLOR_WHITE = RGBA8(255, 255, 255, 255),
 	COLOR_BLACK = RGBA8(0, 0, 0, 255),

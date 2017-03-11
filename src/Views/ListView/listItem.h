@@ -12,17 +12,19 @@
 class ListItem {
 public:
 	 ListItem(Homebrew hb);
-	
+
 	int Display(int posY, int highlight);
 private:
 	Texture img_itm_panel;
 	Texture img_itm_panel_highlight;
 
+	Texture img_icon_;
+
 	Font font_25;
 	Font font_35;
 
 	Homebrew homebrew;
-	
+
 	int display(int posY);
 	int displayHighlight(int posY);
 

@@ -2,7 +2,7 @@
 
 #include <screen.h>
 #include <database.h>
-#include "date.h"
+#include <date.h>
 
 extern unsigned char _binary_assets_spr_img_catbar_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_highlight_png_start;
