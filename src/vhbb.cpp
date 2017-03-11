@@ -61,7 +61,7 @@ int main()
 	Input input;
 
 	Background background;
-	// FIXME If placed after categoryview initialization it cannot load its images (out-of-memory?)
+
 	StatusBar statusBar;
 	CategoryView categoryView;
 
