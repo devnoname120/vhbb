@@ -62,10 +62,10 @@ int Texture::Draw(const Point &pt)
 }
 
 // vita2d doesn't have a draw resize function: https://github.com/xerpi/libvita2d/issues/42
-int Texture::DrawResize(const Point &pt1, const Point &pt2)
+int Texture::DrawResize(const Point &pt1, const Point &dimensions)
 {
-    float stretchX = ((float)pt2.x - pt1.x) / (float)vita2d_texture_get_width(texture);
-    float stretchY = ((float)pt2.y - pt1.y) / (float)vita2d_texture_get_height(texture);
+    float stretchX = ((float)dimensions.x) / (float)vita2d_texture_get_width(texture);
+    float stretchY = ((float)dimensions.y) / (float)vita2d_texture_get_height(texture);
     vita2d_draw_texture_scale(texture, pt1.x, pt1.y, stretchX, stretchY);
     return 0;
 }

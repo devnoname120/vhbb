@@ -50,11 +50,11 @@ int HomebrewView::Display()
 	font_25.Draw(Point(HB_X + 40, HB_Y + 319), std::string("this is a long description"));
 
 	img_preview_btn_download.Draw(Point(HB_X + 201, HB_Y + 187));
-	img_icon.DrawResize(Point(HB_X + 100, HB_Y + 82), Point(HB_X + 100 + 90, HB_Y + 82 + 90));
+	img_icon.DrawResize(Point(HB_X + 100, HB_Y + 82), Point(90, 90));
 
 	if (!screenshots.empty()) {
 		// FIXME Images aren't all fullscreen-sized
-		screenshots.at(0).DrawResize(Point(HB_X + 466, HB_Y + 67), Point(HB_X + 466 + SCREEN_WIDTH/2, HB_Y + 67 + SCREEN_HEIGHT/2));
+		screenshots.at(0).DrawResize(Point(HB_X + 466, HB_Y + 67), Point(SCREEN_WIDTH/2, SCREEN_HEIGHT/2));
 	}
 	// else draw a grey rectangle
 

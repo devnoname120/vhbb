@@ -34,7 +34,7 @@ int ListItem::display(int posY)
 	// font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.version);
 	//font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.release);
 
-	img_icon_.DrawResize(Point(ITEM_POSX, posY), Point(ITEM_POSX + 90, posY + 90));
+	img_icon_.DrawResize(Point(ITEM_POSX, posY), Point(90, 90));
 
 	return 0;
 }
