@@ -159,6 +159,8 @@ int ListView::HandleInput(int focus, const Input& input)
 				if (selectedItem > lastFullyDisplayedItem()) {
 					posY += ITEM_HEIGHT;
 				}
+			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
+				// TODO Create HomebrewView
 			}
 		// No item is selected
 		} else {

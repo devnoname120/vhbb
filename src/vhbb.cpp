@@ -2,6 +2,7 @@
 
 #include "network.h"
 #include "database.h"
+#include "activity.h"
 #include "Views/CategoryView/categoryView.h"
 #include "Views/background.h"
 #include "Views/statusBar.h"
@@ -60,6 +61,8 @@ int main()
 
 	Input input;
 
+	Activity &activity = *Activity::create_instance();
+
 	Background background;
 
 	StatusBar statusBar;
@@ -75,11 +78,19 @@ int main()
 
 		input.Get();
 		//input.Propagate(curView); // TODO: Rework function
-		categoryView.HandleInput(1, input);
+		if (!activity.HasActivity()) {
+			categoryView.HandleInput(1, input);
+		} else {
+			categoryView.HandleInput(0, input);
+		}
+
+		activity.HandleInput(1, input);
 
 		background.Display();
 		categoryView.Display();
 		statusBar.Display();
+
+		activity.Display();
 
 		vita2d_end_drawing();
 		vita2d_swap_buffers();

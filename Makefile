@@ -11,8 +11,9 @@ SOURCES = src/singleton.cpp \
 		  src/font.cpp \
 		  src/texture.cpp \
 		  src/date.cpp \
+		  src/Views/View.cpp \
+		  src/activity.cpp \
           src/Views/statusBar.cpp \
-          src/Views/View.cpp \
           src/Views/background.cpp \
           src/Views/ListView/listItem.cpp \
           src/Views/ListView/listView.cpp \
