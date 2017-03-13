@@ -33,6 +33,10 @@ HomebrewView::HomebrewView(Homebrew hb) :
 
 int HomebrewView::HandleInput(int focus, const Input& input)
 {
+	// TODO use native circle/cross cancelation key
+	if (input.KeyNewPressed(SCE_CTRL_CIRCLE)) {
+		request_destroy = true;
+	}
 	// TODO Implement
 	return 0;
 }
