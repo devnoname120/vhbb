@@ -87,7 +87,9 @@ int main()
 		activity.HandleInput(1, input);
 
 		background.Display();
-		categoryView.Display();
+		if (!activity.HasActivity())
+			categoryView.Display();
+
 		statusBar.Display();
 
 		activity.Display();

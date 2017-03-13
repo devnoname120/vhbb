@@ -18,6 +18,7 @@ SOURCES = src/singleton.cpp \
           src/Views/ListView/listItem.cpp \
           src/Views/ListView/listView.cpp \
           src/Views/CategoryView/categoryView.cpp \
+		  src/Views/HomebrewView/homebrewView.cpp \
           src/vhbb.cpp \
 		  src/homebrewDownload.cpp \
           src/homebrewRelease.cpp \

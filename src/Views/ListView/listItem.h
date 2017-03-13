@@ -14,6 +14,8 @@ public:
 	 ListItem(Homebrew hb);
 
 	int Display(int posY, int highlight);
+
+	Homebrew homebrew;
 private:
 	Texture img_itm_panel;
 	Texture img_itm_panel_highlight;
@@ -23,7 +25,6 @@ private:
 	Font font_25;
 	Font font_35;
 
-	Homebrew homebrew;
 
 	int display(int posY);
 	int displayHighlight(int posY);

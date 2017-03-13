@@ -1,10 +1,13 @@
 #include "listView.h"
 
+#include <activity.h>
+#include <Views/HomebrewView/homebrewView.h>
+
 
 // Ordinate of where the item should be displayed on the screen
 int ListView::itemPosY(int i)
 {
-	return LIST_MIN_Y + i * ITEM_HEIGHT - posY; 
+	return LIST_MIN_Y + i * ITEM_HEIGHT - posY;
 }
 
 // First item that is (partially or fully) displayed
@@ -20,7 +23,7 @@ int ListView::lastDisplayedItem()
 	unsigned int firstHidden = posY % ITEM_HEIGHT;
 	unsigned int firstShown = ITEM_HEIGHT - firstHidden;
 
-	// Height of the hidden/shown part of the last item 
+	// Height of the hidden/shown part of the last item
 	unsigned int lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
 	unsigned int lastHidden = ITEM_HEIGHT - lastShown;
 
@@ -43,7 +46,7 @@ int ListView::firstFullyDisplayedItem()
 int ListView::lastFullyDisplayedItem()
 {
 	int last = lastDisplayedItem();
-	return LIST_MAX_Y - itemPosY(last) + 1 >= ITEM_HEIGHT ? last : last-1; 
+	return LIST_MAX_Y - itemPosY(last) + 1 >= ITEM_HEIGHT ? last : last-1;
 }
 
 
@@ -103,8 +106,8 @@ int ListView::HandleInput(int focus, const Input& input)
 	//dbg_printf(DBG_DEBUG, "timeDif: %u", timeDif);
 	//dbg_printf(DBG_DEBUG, "posY before: %d", posY);
 	if (!input.TouchPressed())
-		posY = MIN(MAX(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), MAX(posY + (int)(scrollSpeed * (double)timeDif), 0)); 
-	
+		posY = MIN(MAX(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), MAX(posY + (int)(scrollSpeed * (double)timeDif), 0));
+
 	updateScrollSpeed(scrollSpeed, timeDif);
 
 	//dbg_printf(DBG_DEBUG, "posY after: %d", posY);
@@ -137,7 +140,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				input.TouchDifference(NULL, &touchDifY, &timeDif);
 				posY = MIN(MAX(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0),
 								MAX(0, posY - touchDifY));
-				scrollSpeed = -touchSpeedY; 
+				scrollSpeed = -touchSpeedY;
 				dbg_printf(DBG_DEBUG, "scrollSpeed: %f", scrollSpeed);
 			}
 			//momentum
@@ -151,7 +154,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				if (selectedItem < firstFullyDisplayedItem()) {
 					posY = MAX(0, posY - ITEM_HEIGHT);
 				}
-								
+
 			} else if (input.KeyNewPressed(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {
 				selectedItem++;
 				dbg_printf(DBG_DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
@@ -160,7 +163,7 @@ int ListView::HandleInput(int focus, const Input& input)
 					posY += ITEM_HEIGHT;
 				}
 			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
-				// TODO Create HomebrewView
+				Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
 			}
 		// No item is selected
 		} else {
@@ -168,7 +171,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				selectedItem = lastFullyDisplayedItem();
 			} else if (input.KeyNewPressed(SCE_CTRL_DOWN)) {
 				selectedItem = firstFullyDisplayedItem();
-			} 
+			}
 		}
 	}
 
@@ -177,7 +180,7 @@ int ListView::HandleInput(int focus, const Input& input)
 
 int ListView::Display()
 {
-	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) { 
+	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) {
 		listItems[i].Display(itemPosY(i), i == selectedItem);
 	}
 

@@ -2,6 +2,8 @@
 
 // TODO Use polymorphism instead of duplicated class
 
+// <sternmull> you could create the key like this: std::ostringstream s;  s << "@" << static_cast<void*>(address); std::string key = s.str();
+// <sternmull> and have a Texture::init(std::string key) that is used by both constructors.
 std::map<std::string, vita2d_texture *> Texture::textureCache1;
 std::map<unsigned char *, vita2d_texture *> Texture::textureCache2;
 
@@ -12,9 +14,9 @@ Texture::Texture(const std::string &path)
     auto key = path;
     if (textureCache1.count(key) >= 1)
     {
-	//dbg_printf(DBG_DEBUG, "Found it in cache");
-	texture = textureCache1[key];
-	return;
+		//dbg_printf(DBG_DEBUG, "Found it in cache");
+		texture = textureCache1[key];
+		return;
     }
     //dbg_printf(DBG_DEBUG, "Storing in cache...");
     texture = vita2d_load_PNG_file(path.c_str());

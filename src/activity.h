@@ -14,10 +14,10 @@ public:
 	int HandleInput(int focus, const Input& input);
 	int Display();
 
-    void AddView(View &view);
+    void AddView(std::shared_ptr<View> view);
     bool HasActivity();
 
 
 private:
-    std::vector<View> views_;
+    std::vector<std::shared_ptr<View>> views_;
 };
