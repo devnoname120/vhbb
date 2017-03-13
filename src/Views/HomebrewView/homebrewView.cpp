@@ -23,6 +23,8 @@ HomebrewView::HomebrewView(Homebrew hb) :
 		std::size_t found = path.find_last_of("/");
 		std::string filename = path.substr(found+1);
 
+		sceIoMkdir(SCREENSHOTS_FOLDER.c_str(), 0777);
+
 		Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
 		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename));
 	}
@@ -50,12 +52,11 @@ int HomebrewView::Display()
 	img_preview_btn_download.Draw(Point(HB_X + 201, HB_Y + 187));
 	img_icon.DrawResize(Point(HB_X + 100, HB_Y + 82), Point(HB_X + 100 + 90, HB_Y + 82 + 90));
 
-	if (!screenshots.empty())
+	if (!screenshots.empty()) {
 		// FIXME Images aren't all fullscreen-sized
-		screenshots.at(0).DrawResize(Point(HB_X + 466, HB_Y + 67), Point(SCREEN_WIDTH/2,SCREEN_HEIGHT/2));
+		screenshots.at(0).DrawResize(Point(HB_X + 466, HB_Y + 67), Point(HB_X + 466 + SCREEN_WIDTH/2, HB_Y + 67 + SCREEN_HEIGHT/2));
+	}
 	// else draw a grey rectangle
-
-	//hb_.screenshot[0].Draw(Point(HB_X + 566, HB_Y + 67));
 
 
 	return 0;

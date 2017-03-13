@@ -19,8 +19,18 @@ Texture::Texture(const std::string &path)
 		return;
     }
     //dbg_printf(DBG_DEBUG, "Storing in cache...");
-    texture = vita2d_load_PNG_file(path.c_str());
-    textureCache1[key] = texture;
+	std::size_t found = path.find_last_of(".");
+	std::string extension = path.substr(found+1);
+
+	if (extension == "jpeg" || extension == "jpg") {
+		texture = vita2d_load_JPEG_file(path.c_str());
+	} else if (extension == "png") {
+		texture = vita2d_load_PNG_file(path.c_str());
+	};
+
+	if (texture == nullptr) dbg_printf(DBG_ERROR, "Couldn't load texture %s", path.c_str());
+    
+	textureCache1[key] = texture;
 }
 
 Texture::Texture(unsigned char* addr)
