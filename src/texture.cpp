@@ -26,10 +26,18 @@ Texture::Texture(const std::string &path)
 		texture = vita2d_load_JPEG_file(path.c_str());
 	} else if (extension == "png") {
 		texture = vita2d_load_PNG_file(path.c_str());
-	};
+	} else {
+		found = path.find_last_of("/");
+		filename = path.substr(found+1);
+		dbg_printf(DBG_ERROR, "Cannot load texture \"%s\": unknown texture type", filename.c_str());
+		return;
+	}
 
-	if (texture == nullptr) dbg_printf(DBG_ERROR, "Couldn't load texture %s", path.c_str());
-    
+	if (texture == nullptr) {
+		dbg_printf(DBG_ERROR, "Couldn't load texture %s", path.c_str());
+		return;
+	}
+
 	textureCache1[key] = texture;
 }
 
