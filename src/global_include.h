@@ -16,6 +16,7 @@
 #include <memory>
 #include <string>
 #include <array>
+#include <unordered_map>
 #include <vector>
 #include <algorithm>
 
@@ -55,3 +56,5 @@
 #include "debug.h"
 #include "macros.h"
 #include "screen.h"
+
+#include "unordered_map_pair_hash.h"

@@ -4,8 +4,8 @@
 
 // <sternmull> you could create the key like this: std::ostringstream s;  s << "@" << static_cast<void*>(address); std::string key = s.str();
 // <sternmull> and have a Texture::init(std::string key) that is used by both constructors.
-std::map<std::string, vita2d_texture *> Texture::textureCache1;
-std::map<unsigned char *, vita2d_texture *> Texture::textureCache2;
+std::unordered_map<std::string, vita2d_texture *> Texture::textureCache1;
+std::unordered_map<unsigned char *, vita2d_texture *> Texture::textureCache2;
 
 
 Texture::Texture(const std::string &path)
@@ -28,7 +28,7 @@ Texture::Texture(const std::string &path)
 		texture = vita2d_load_PNG_file(path.c_str());
 	} else {
 		found = path.find_last_of("/");
-		filename = path.substr(found+1);
+		std::string filename = path.substr(found+1);
 		dbg_printf(DBG_ERROR, "Cannot load texture \"%s\": unknown texture type", filename.c_str());
 		return;
 	}

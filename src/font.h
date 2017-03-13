@@ -13,7 +13,7 @@ public:
 	int Draw(const Point &pt, const std::string &text, int color = COLOR_WHITE);
 	int DrawCentered(const Rectangle &rect, const std::string &text, int color = COLOR_WHITE);
 
-	static std::map<std::pair<std::string, unsigned int>, vita2d_font*> fontCache;
+	static std::unordered_map<std::pair<std::string, unsigned int>, vita2d_font*> fontCache;
 private:
 	vita2d_font *font;
 	unsigned int size;
