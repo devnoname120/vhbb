@@ -29,5 +29,7 @@ private:
 	Homebrew hb_;
 	Texture img_icon;
 
+	std::vector<Texture> screenshots;
+
 };
 

@@ -54,3 +54,4 @@
 
 #include "debug.h"
 #include "macros.h"
+#include "screen.h"

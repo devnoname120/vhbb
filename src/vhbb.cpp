@@ -48,10 +48,12 @@ int main()
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
 
-	Network::create_instance();
+	Network &network = *Network::create_instance();
 
 	try {
-		auto db = Database::create_instance(std::string("ux0:/app/VHBB00001/resources/rinn.yml"));
+		// TODO check if fails
+		network.Download(API_ENDPOINT, API_LOCAL);
+		auto db = Database::create_instance(API_LOCAL);
 		dbg_printf(DBG_DEBUG, "Instance created");
 		db->DownloadIcons();
 	} catch (const std::exception &ex) {

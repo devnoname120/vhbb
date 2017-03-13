@@ -1,5 +1,7 @@
 #include "homebrewView.h"
 
+#include <texture.h>
+#include <network.h>
 
 extern unsigned char _binary_assets_spr_img_preview_infobg_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_download_png_start;
@@ -15,6 +17,15 @@ HomebrewView::HomebrewView(Homebrew hb) :
 	hb_(hb),
 	img_icon(Texture(ICONS_FOLDER + "/" + hb.icon))
 {
+	// FIXME Support more than 1 screenshot
+	if (!hb_.screenshots.empty()) {
+		std::string path = hb_.screenshots.at(0);
+		std::size_t found = path.find_last_of("/");
+		std::string filename = path.substr(found+1);
+
+		Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
+		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename));
+	}
 
 }
 
@@ -38,6 +49,12 @@ int HomebrewView::Display()
 
 	img_preview_btn_download.Draw(Point(HB_X + 201, HB_Y + 187));
 	img_icon.DrawResize(Point(HB_X + 100, HB_Y + 82), Point(HB_X + 100 + 90, HB_Y + 82 + 90));
+
+	if (!screenshots.empty())
+		// FIXME Images aren't all fullscreen-sized
+		screenshots.at(0).DrawResize(Point(HB_X + 466, HB_Y + 67), Point(SCREEN_WIDTH/2,SCREEN_HEIGHT/2));
+	// else draw a grey rectangle
+
 	//hb_.screenshot[0].Draw(Point(HB_X + 566, HB_Y + 67));
 
 
