@@ -8,17 +8,20 @@ std::unordered_map<std::string, vita2d_texture *> Texture::textureCache1;
 std::unordered_map<unsigned char *, vita2d_texture *> Texture::textureCache2;
 
 
-Texture::Texture(const std::string &path)
+Texture::Texture(const std::string &path, bool caching) : caching_(caching)
 {
     //dbg_printf(DBG_DEBUG, "Looking for size %d, path: %s", fSize, path.c_str());
     auto key = path;
-    if (textureCache1.count(key) >= 1)
-    {
-		//dbg_printf(DBG_DEBUG, "Found it in cache");
-		texture = textureCache1[key];
-		return;
-    }
-    //dbg_printf(DBG_DEBUG, "Storing in cache...");
+	if (caching_) {
+		if (textureCache1.count(key) >= 1)
+		{
+			//dbg_printf(DBG_DEBUG, "Found it in cache");
+			texture = textureCache1[key];
+			return;
+		}
+		//dbg_printf(DBG_DEBUG, "Storing in cache...");
+	}
+
 	std::size_t found = path.find_last_of(".");
 	std::string extension = path.substr(found+1);
 
@@ -38,21 +41,33 @@ Texture::Texture(const std::string &path)
 		return;
 	}
 
-	textureCache1[key] = texture;
+	if (caching_) textureCache1[key] = texture;
 }
 
-Texture::Texture(unsigned char* addr)
+Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
 {
 	//dbg_printf(DBG_DEBUG, "Looking for size %d, path: %s", fSize, path.c_str());
+
+
 	auto key = addr;
-	if (textureCache2.count(key) >= 1) {
-		//dbg_printf(DBG_DEBUG, "Found it in cache");
-		texture = textureCache2[key];
-		return;
+	if (caching) {
+		if (textureCache2.count(key) >= 1) {
+			//dbg_printf(DBG_DEBUG, "Found it in cache");
+			texture = textureCache2[key];
+			return;
+		}
 	}
 	//dbg_printf(DBG_DEBUG, "Storing in cache...");
 	texture = vita2d_load_PNG_buffer(addr);
-	textureCache2[key] = texture;
+	if (caching) textureCache2[key] = texture;
+}
+
+
+Texture::~Texture()
+{
+	// FIXME Use smart pointer to avoid premature texture deletion
+	dbg_printf(DBG_DEBUG, "Destructor called");
+	//if (!caching_) vita2d_free_texture(texture);
 }
 
 int Texture::Draw(const Point &pt)

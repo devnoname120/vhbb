@@ -6,8 +6,9 @@
 
 class Texture {
 public:
-  Texture(unsigned char *addr);
-  Texture(const std::string &path);
+  Texture(unsigned char *addr, bool caching = true);
+  Texture(const std::string &path, bool caching = true);
+  ~Texture();
 
   int Draw(const Point &pt);
   int DrawResize(const Point &pt1, const Point &dimensions);
@@ -17,4 +18,5 @@ public:
 
 private:
   vita2d_texture *texture;
+  bool caching_;
 };
