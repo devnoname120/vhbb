@@ -113,7 +113,6 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} eboot.bin
   FILE sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
 
   FILE assets/fonts/segoeui.ttf resources/fonts/segoeui.ttf
-  FILE assets/homebrews.yml resources/homebrews.yml
 )
 
 file(STRINGS "psvitaip.txt" PSVITAIP)
