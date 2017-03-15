@@ -27,7 +27,7 @@ HomebrewView::HomebrewView(Homebrew hb) :
 
 		Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
 		// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
-		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename));
+		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
 	}
 
 }
