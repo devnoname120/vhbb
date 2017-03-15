@@ -2,6 +2,8 @@
 
 #include <global_include.h>
 
+#define VHBB_DATA std::string("ux0:/data/VitaHbBrowser")
+
 #define API_ENDPOINT std::string("http://rinnegatamante.it/vitadb/list_hbs_yaml.php")
 #define API_LOCAL std::string("ux0:/data/VitaHbBrowser/homebrews.yaml")
 

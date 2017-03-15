@@ -38,6 +38,8 @@ void pthread_setup(void)
 
 int main()
 {
+	sceIoMkdir(VHBB_DATA.c_str(), 0777);
+
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
 
