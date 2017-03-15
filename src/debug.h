@@ -2,6 +2,18 @@
 
 #include <global_include.h>
 
+inline std::string methodName(const std::string& prettyFunction)
+{
+    size_t colons = prettyFunction.find("::");
+    size_t begin = prettyFunction.substr(0,colons).rfind(" ") + 1;
+    size_t end = prettyFunction.rfind("(") - begin;
+
+    return prettyFunction.substr(begin,end) + "()";
+}
+
+
+#define __METHOD_NAME__ methodName(__PRETTY_FUNCTION__)
+
 #ifndef _DEBUG
 #define dbg_init()
 #define dbg_printf(...)
@@ -17,6 +29,6 @@ int dbg_init();
 int dbg_printf(int level, const char *format, ...);
 int _dbg_printf(int level, const char *format, ...);
 
-#define dbg_printf(level,format,...) _dbg_printf(level,format"\n",##__VA_ARGS__)
-
+#define dbg_printf(level,format,...) _dbg_printf(level,(std::string("[") + std::string(__FILE__) + ":" + std::to_string(__LINE__) + " " +__METHOD_NAME__ + "]  " + format"\n").c_str(),##__VA_ARGS__)
+//#define dbg_printf(level,format,...) _dbg_printf(level,format"\n",##__VA_ARGS__)
 #endif
