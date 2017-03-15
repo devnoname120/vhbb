@@ -1,4 +1,5 @@
 #include "statusBar.h"
+#include <texture.h>
 
 extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
 
@@ -8,7 +9,9 @@ void getTimeString(char *string, int time_format, SceDateTime *time);
 int displayBattery();
 int displayDate();
 
-StatusBar::StatusBar() : font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
+StatusBar::StatusBar() :
+	font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25)),
+	img_statsbar_battery(Texture(&_binary_assets_spr_img_statsbar_battery_png_start))
 {
 	#ifdef PSP2SHELL
 
@@ -20,9 +23,6 @@ StatusBar::StatusBar() : font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
 	}
 
 	#endif
-
-	img_statsbar_battery = vita2d_load_PNG_buffer(&_binary_assets_spr_img_statsbar_battery_png_start);
-	if (img_statsbar_battery == nullptr) dbg_printf(DBG_WARNING, "Battery icon is NULL");
 }
 
 
@@ -75,8 +75,8 @@ void StatusBar::getTimeString(char *string, int time_format, SceDateTime *time)
 
 int StatusBar::displayBattery()
 {
-	float battery_x = ALIGN_LEFT(949, vita2d_texture_get_width(img_statsbar_battery));
-	vita2d_draw_texture(img_statsbar_battery, battery_x, 2);
+	float battery_x = ALIGN_LEFT(949, vita2d_texture_get_width(img_statsbar_battery.texture.get()));
+	img_statsbar_battery.Draw(Point(battery_x, 2));
 
 	float percent = scePowerGetBatteryLifePercent();
 	float width = ((29.0f * percent) / 100.0f);

@@ -38,11 +38,12 @@ int CategoryView::touchToCat(const Input &input)
 	return -1;
 }
 
-CategoryView::CategoryView() : font_35(Font(std::string(FONT_DIR "segoeui.ttf"), 35))
+CategoryView::CategoryView() :
+	font_35(Font(std::string(FONT_DIR "segoeui.ttf"), 35)),
+	img_catbar(Texture(&_binary_assets_spr_img_catbar_png_start)),
+	img_catbar_highlight(Texture(&_binary_assets_spr_img_catbar_highlight_png_start)),
+	img_catbar_sep(Texture(&_binary_assets_spr_img_catbar_sep_png_start))
 {
-	img_catbar = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_png_start);
-	img_catbar_highlight = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_highlight_png_start);
-	img_catbar_sep = vita2d_load_PNG_buffer(&_binary_assets_spr_img_catbar_sep_png_start);
 	selectedCat = NEW;
 
 	categoryTabs.reserve(countof(categoryList));
@@ -144,7 +145,7 @@ int CategoryView::Display()
 {
 	categoryTabs[selectedCat].listView.Display();
 
-	vita2d_draw_texture(img_catbar, CAT_X, CAT_Y);
+	img_catbar.Draw(Point(CAT_X, CAT_Y));
 
 	for (unsigned int i=0; i < countof(categoryList); i++) {
 		// FIXME Center and set real name
@@ -153,12 +154,10 @@ int CategoryView::Display()
 		// font_35.Draw(Point(categoryTabs[i].minX, CAT_Y + CAT_HEIGHT), std::string("Test"));
 		// vita2d_font_draw_text(font_35, , COLOR_WHITE, 35, "test"/*categoryList_name[i]*/);
 		if (i > 0)
-			vita2d_draw_texture(img_catbar_sep, categoryTabs[i].minX, CAT_Y);
+			img_catbar_sep.Draw(Point(categoryTabs[i].minX, CAT_Y));
 	}
 
-	float stretchX = ((float)categoryTabs[selectedCat].maxX - categoryTabs[selectedCat].minX)/(float)vita2d_texture_get_width(img_catbar_highlight);
-	float stretchY = ((float)CAT_HEIGHT)/(float)vita2d_texture_get_height(img_catbar_highlight);
-	vita2d_draw_texture_scale(img_catbar_highlight, CAT_X + categoryTabs[selectedCat].minX, CAT_Y, stretchX, stretchY);
+	img_catbar_highlight.DrawResize(Point(CAT_X + categoryTabs[selectedCat].minX, CAT_Y), Point(categoryTabs[selectedCat].maxX - categoryTabs[selectedCat].minX, CAT_HEIGHT));
 
 	return 0;
 }

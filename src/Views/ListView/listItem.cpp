@@ -6,12 +6,13 @@
 extern unsigned char _binary_assets_spr_img_itm_panel_png_start;
 extern unsigned char _binary_assets_spr_img_itm_panel_highlight_png_start;
 
-ListItem::ListItem(Homebrew hb)
-    : homebrew(hb), font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25)),
-      font_35(Font(std::string(FONT_DIR "segoeui.ttf"), 35)),
-      img_itm_panel(Texture(&_binary_assets_spr_img_itm_panel_png_start)),
-      img_itm_panel_highlight(Texture(&_binary_assets_spr_img_itm_panel_highlight_png_start)),
-      img_icon_(Texture(ICONS_FOLDER + "/" + hb.icon))
+ListItem::ListItem(Homebrew hb) :
+	homebrew(hb),
+	font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25)),
+    font_35(Font(std::string(FONT_DIR "segoeui.ttf"), 35)),
+    img_itm_panel(Texture(&_binary_assets_spr_img_itm_panel_png_start)),
+    img_itm_panel_highlight(Texture(&_binary_assets_spr_img_itm_panel_highlight_png_start)),
+    img_icon_(Texture(ICONS_FOLDER + "/" + hb.icon))
 
 {
 }

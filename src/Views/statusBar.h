@@ -5,6 +5,7 @@
 #include <font.h>
 #include <screen.h>
 #include "View.h"
+#include <texture.h>
 
 
 #define STATUSBAR_HEIGHT 30
@@ -19,7 +20,7 @@ public:
 private:
 	Font font_25;
 	
-	vita2d_texture *img_statsbar_battery;
+	Texture img_statsbar_battery;
 
 	#ifdef PSP2SHELL
 	char vitaip[16] = {0};

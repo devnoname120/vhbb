@@ -3,6 +3,7 @@
 #include <global_include.h>
 
 #include "View.h"
+#include <texture.h>
 
 class Background : public View
 {
@@ -11,6 +12,6 @@ public:
 
 	int Display() override;
 private:
-	vita2d_texture *img_bg;
+	Texture img_bg;
 };
 

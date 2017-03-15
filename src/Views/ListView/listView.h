@@ -26,12 +26,6 @@ public:
 
 
 private:
-	vita2d_texture *img_catbar;
-	vita2d_texture *img_catbar_highlight;
-	vita2d_texture *img_catbar_sep;
-
-	vita2d_font *font_35;
-
 	std::vector<ListItem> listItems;
 
 	int posY = 0; //!< Position in the list of homebrews if we consider it as a texture

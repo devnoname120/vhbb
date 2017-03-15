@@ -36,9 +36,9 @@ public:
 
 	
 private:
-	vita2d_texture *img_catbar;
-	vita2d_texture *img_catbar_highlight;
-	vita2d_texture *img_catbar_sep;
+	Texture img_catbar;
+	Texture img_catbar_highlight;
+	Texture img_catbar_sep;
 
 	Font font_35;
 	
