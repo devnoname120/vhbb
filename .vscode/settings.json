@@ -1,0 +1,21 @@
+// Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
+{
+    "files.exclude": {
+        "**/*.o": true,
+        "bin/": true,
+        "build/": true
+    },
+    "search.exclude": {
+        "assets": true,
+        "sce_sys": true,
+        "tools": true,
+        "CMakeLists.txt": true,
+        "Makefile": true
+    },
+    "cppcheck.enable": true,
+    "cppcheck.includePaths": [
+        "/usr/local/vitasdk/arm-vita-eabi/include",
+        ".",
+        "src"
+    ]
+}
