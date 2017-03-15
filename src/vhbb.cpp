@@ -19,11 +19,11 @@ extern "C"
         return 0;
     }
 
-    /*int usleep(unsigned int usec)
+    int usleep(useconds_t usec)
     {
         sceKernelDelayThread(usec);
         return 0;
-    }*/
+    }
 
     void __sinit(struct _reent *);
 }
