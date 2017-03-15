@@ -48,7 +48,7 @@ ASFLAGS = $(CFLAGS)
 
 PSVITAIP = $(shell head -n 1 psvitaip.txt)
 #DEBUGNETIP = $(shell head -n 1 debugnetip.txt)
-DEBUGNETIP = $(shell cat debugnetip.txt || ip route get 1 | awk '{print $$NF;exit}')
+DEBUGNETIP = $(shell cat debugnetip.txt 2>/dev/null || ip route get 1 | awk '{print $$NF;exit}')
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -O0 -D_DEBUG
@@ -121,4 +121,4 @@ psp2shell: $(BIN)/eboot.bin
 	psp2shell_cli $(PSVITAIP) 3333 reload $(BIN)/eboot.bin
 
 binfolder:
-	@mkdir $(BIN) || true
+	@mkdir $(BIN) 2>/dev/null || true
