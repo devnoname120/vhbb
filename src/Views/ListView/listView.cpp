@@ -130,7 +130,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				selectedItem = coordinateToItem(touchY);
 				dbg_printf(DBG_DEBUG, "Clicked on element #%d", selectedItem);
 				// FIXME Duplicated code is bad
-				Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+				//Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
 			} else if (input.TouchAlreadyMovement()) {
 				// If the touch speed is not negligible, unselect
 				if (fabs(touchSpeedY) > LIST_SELECTION_MAX_SPEED)
