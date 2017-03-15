@@ -7,6 +7,8 @@
 #include "Views/background.h"
 #include "Views/statusBar.h"
 #include "input.h"
+#include "splash.h"
+
 
 // Davee: Fix c++ exceptions
 extern "C"
@@ -36,6 +38,11 @@ void pthread_setup(void)
 
 int main()
 {
+	vita2d_init();
+	vita2d_set_clear_color(COLOR_BLACK);
+
+	displaySplash();
+
 	dbg_init();
 
 	#ifdef PSP2SHELL
@@ -44,9 +51,6 @@ int main()
 	psp2shell_init(3333, 0);
 	dbg_printf(DBG_INFO, "PSPSHELL started on port 3333");
 	#endif
-
-	vita2d_init();
-	vita2d_set_clear_color(COLOR_BLACK);
 
 	Network &network = *Network::create_instance();
 
