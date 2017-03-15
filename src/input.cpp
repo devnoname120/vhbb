@@ -71,6 +71,11 @@ int Input::TouchNewPressed() const
 	return TouchPressed() && !oldtouch.reportNum;
 }
 
+int Input::TouchStopPressed() const
+{
+	return !TouchPressed() && oldtouch.reportNum;
+}
+
 int Input::TouchNewMovement() const
 {
 	return TouchAlreadyPressed() && !old2touch.reportNum;

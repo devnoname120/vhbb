@@ -113,27 +113,35 @@ int ListView::HandleInput(int focus, const Input& input)
 	//dbg_printf(DBG_DEBUG, "posY after: %d", posY);
 
 	if (focus) {
+		if (input.TouchStopPressed()) {
+			if (preSelectedItem != -1) {
+				selectedItem = preSelectedItem;
+				Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+			}
+
+		}
 		// Touch has the priority over the dpad
 		if (input.TouchPressed()) {
+			double touchY;
+			input.TouchCoordinates(NULL, &touchY);
+			if (input.TouchNewPressed()) {
+				preSelectedItem = coordinateToItem(touchY);
+			}
 			//dbg_printf(DEBUG, "Scroll speed: %f", touchSpeedY);
 			//dbg_printf(DEBUG, "speed: %f", fabs(touchSpeedY));
 
 			double touchSpeedY;
 			input.TouchSpeed(NULL, &touchSpeedY, NULL);
 
-			if (input.TouchNewMovement() && fabs(touchSpeedY) == 0.) {
-				double touchY;
-				input.TouchCoordinates(NULL, &touchY);
+			if (input.TouchNewMovement() && fabs(touchSpeedY) != 0.) {
+				preSelectedItem = -1;
+			}
 
-				dbg_printf(DBG_DEBUG, "Touch Y: %f", touchY);
 
-				selectedItem = coordinateToItem(touchY);
-				dbg_printf(DBG_DEBUG, "Clicked on element #%d", selectedItem);
-				// FIXME Duplicated code is bad
-				//Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
-			} else if (input.TouchAlreadyMovement()) {
+			if (input.TouchAlreadyMovement()) {
 				// If the touch speed is not negligible, unselect
 				if (fabs(touchSpeedY) > LIST_SELECTION_MAX_SPEED)
+					preSelectedItem = -1;
 					selectedItem = -1;
 
 				double touchDifY;

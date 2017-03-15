@@ -28,6 +28,7 @@ class Input {
 		int TouchPressed() const;
 		int TouchAlreadyPressed() const;
 		int TouchNewPressed() const;
+		int TouchStopPressed() const;
 		int TouchNewMovement() const;
 		int TouchAlreadyMovement() const;
 		int TouchCoordinates(double *touchX, double *touchY) const;

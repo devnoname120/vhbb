@@ -35,6 +35,7 @@ private:
 	std::vector<ListItem> listItems;
 
 	int posY = 0; //!< Position in the list of homebrews if we consider it as a texture
+	int preSelectedItem = -1;
 	int selectedItem = -1;
 	double scrollSpeed = 0;
 	//Homebrew *hblist;
