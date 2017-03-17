@@ -1,4 +1,6 @@
 #include "statusBar.h"
+#include <global_include.h>
+
 #include <texture.h>
 
 extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
