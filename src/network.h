@@ -13,7 +13,8 @@ public:
     Network();
     ~Network();
 
-    int Download(std::string url, std::string dest);
+    int Download(std::string url, std::string dest, uint64_t *cur = NULL);
+    int DownloadSize(std::string url, uint64_t *size);
 
 private:
     int templateId_;

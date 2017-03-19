@@ -115,3 +115,53 @@ int unzip(const char *zippath, const char *outpath)
 
     return 0;
 }
+
+int uncompressedSize(const char *zippath, uint64_t *size)
+{
+    unzFile zipfile = unzOpen(zippath);
+    if (!zipfile)
+    {
+        dbg_printf(DBG_DEBUG, "%s: not found", zippath);
+        return -1;
+    }
+
+    unz_global_info global_info;
+    if (unzGetGlobalInfo(zipfile, &global_info) != UNZ_OK)
+    {
+        dbg_printf(DBG_DEBUG, "could not read file global info");
+        unzClose(zipfile);
+        return -1;
+    }
+
+    uLong i;
+    for (i = 0; i < global_info.number_entry; ++i)
+    {
+        unz_file_info file_info;
+        char filename[MAX_FILENAME];
+        if (unzGetCurrentFileInfo(
+            zipfile,
+            &file_info,
+            filename,
+            MAX_FILENAME,
+            NULL, 0, NULL, 0) != UNZ_OK)
+        {
+            dbg_printf(DBG_DEBUG, "could not read file info");
+            unzClose(zipfile);
+            return -1;
+        }
+
+        *size += file_info.uncompressed_size;
+
+
+        // Go the the next entry listed in the zip file.
+        if ((i+1) < global_info.number_entry)
+        {
+            if (unzGoToNextFile(zipfile) != UNZ_OK)
+            {
+                dbg_printf(DBG_DEBUG, "cound not read next file");
+                unzClose(zipfile);
+                return -1;
+            }
+        }
+    }        
+}

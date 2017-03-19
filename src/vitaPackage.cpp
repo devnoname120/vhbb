@@ -186,6 +186,7 @@ int makeHeadBin()
 }
 
 #define ntohl __builtin_bswap32
+
 VitaPackage::VitaPackage(const std::string vpk) :
     vpk_(vpk)
 {
@@ -212,7 +213,13 @@ int VitaPackage::Install()
     sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());
     sceIoMkdir(PACKAGE_TEMP_FOLDER.c_str(), 0777);
 
+    uint64_t size;
+    uncompressedSize(vpk_.c_str(), &size);
+
+    dbg_printf(DBG_DEBUG, "Uncompressed size: %lu", size);
+
     int ret = unzip(vpk_.c_str(), PACKAGE_TEMP_FOLDER.c_str());
+    sceIoRemove(vpk_.c_str());
     if (ret < 0) {
         dbg_printf(DBG_ERROR, "Can't unzip %s: 0x%08X", vpk_.c_str(), ret);
         return -1;
@@ -229,4 +236,6 @@ int VitaPackage::Install()
         dbg_printf(DBG_ERROR, "Can't Promote %s: 0x%08X", vpk_.c_str(), ret);
         return -1;
     }
+
+    sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());
 }

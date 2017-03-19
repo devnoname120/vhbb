@@ -1,5 +1,8 @@
 #include "homebrewView.h"
 #include <vitaPackage.h>
+#include <activity.h>
+#include <Views/ProgressView/progressView.h>
+#include <install_thread.h>
 
 #include <texture.h>
 #include <network.h>
@@ -27,6 +30,7 @@ HomebrewView::HomebrewView(Homebrew hb) :
 		sceIoMkdir(SCREENSHOTS_FOLDER.c_str(), 0777);
 
 		sceIoRemove(SCREENSHOTS_FOLDER.c_str());
+
 		Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
 		// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
 		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
@@ -34,20 +38,32 @@ HomebrewView::HomebrewView(Homebrew hb) :
 
 }
 
+void HomebrewView::homebrewInstall() {
+	try {
+		InstallArguments *args = new InstallArguments;
+		args->url = hb_.url;
+		SceUID thid2 = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
+		sceKernelStartThread(thid2, sizeof(InstallArguments), args);
+		dbg_printf(DBG_DEBUG, "OK");
+	} catch (const std::exception &ex) {
+		dbg_printf(DBG_ERROR, "%s", ex.what());
+	}
+}
+
 int HomebrewView::HandleInput(int focus, const Input& input)
 {
-	// TODO use native circle/cross cancelation key
-	if (input.KeyNewPressed(SCE_CTRL_CIRCLE)) {
+	if (!focus)
+		return 0;
+	
+	if (input.TouchNewPressed()) {
+		if (input.TouchInRectangle(Rectangle(Point(151, 43), Point(151 + 202, 43 + 217)))) {
+			dbg_printf(DBG_DEBUG, "Touch in rectangle for install");
+			homebrewInstall();
+		}
+	} else if (input.KeyNewPressed(SCE_CTRL_CIRCLE)) {
 		request_destroy = true;
 	} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
-		try {
-			Network::get_instance()->Download(hb_.url, std::string("ux0:/temp/test.zip"));
-			dbg_printf(DBG_DEBUG, "Downloaded");
-			VitaPackage pkg = VitaPackage(std::string("ux0:/temp/test.zip"));
-			pkg.Install();	
-		} catch (const std::exception &ex) {
-			dbg_printf(DBG_ERROR, "%s", ex.what());
-		}
+		homebrewInstall();
 	}
 	// TODO Implement
 	return 0;

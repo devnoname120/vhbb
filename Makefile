@@ -15,6 +15,7 @@ MINIZIP_SOURCES = src/minizip/ioapi.c \
 SOURCES = src/zip.cpp \
 		  \
 		  src/vitaPackage.cpp \
+		  src/install_thread.cpp \
 		  \
 		  src/singleton.cpp \
 		  src/font.cpp \
@@ -30,6 +31,7 @@ SOURCES = src/zip.cpp \
           src/Views/ListView/listView.cpp \
           src/Views/CategoryView/categoryView.cpp \
 		  src/Views/HomebrewView/homebrewView.cpp \
+		  src/Views/ProgressView/progressView.cpp \
 		  \
           src/vhbb.cpp \
 		  src/homebrewDownload.cpp \

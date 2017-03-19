@@ -31,5 +31,7 @@ private:
 
 	std::vector<Texture> screenshots;
 
+	void homebrewInstall();
+
 };
 

@@ -41,9 +41,72 @@ Network::~Network()
 
 }
 
-
-int Network::Download(std::string url, std::string dest)
+int Network::DownloadSize(std::string url, uint64_t *size)
 {
+    dbg_printf(DBG_DEBUG, "Checking size of %s", url.c_str());
+    int conn = -1;
+    int req = -1;
+    int fd = -1;
+
+    try {
+        conn = sceHttpCreateConnectionWithURL(templateId_, url.c_str(), SCE_TRUE);
+        if (conn < 0)
+            throw std::runtime_error("Network: Cannot create connection");
+
+        req = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url.c_str(), 0);
+        if (req < 0)
+            throw std::runtime_error("Network: Cannot create request");
+
+        int res = sceHttpSendRequest(req, NULL, 0);
+        if (res < 0) {
+
+            dbg_printf(DBG_ERROR, "sceHttpSendRequest() error: 0x%08X", res);
+            if (res == SCE_HTTP_ERROR_SSL) {
+                int sslErr;
+                unsigned int sslErrDetail;
+                res = sceHttpsGetSslError(req, &sslErr, &sslErrDetail);
+                if (res < 0) {
+                    dbg_printf(DBG_ERROR, "sceHttpsGetSslError error: 0x%08X", res);
+                } else {
+                    dbg_printf(DBG_ERROR, "SSL error: %d, %u\nSee here for meaning: \
+                        https://github.com/vitasdk/vita-headers/blob/master/include/psp2/net/http.h",
+                        sslErr,
+                        sslErrDetail);
+                }
+            }
+
+            throw std::runtime_error("Network: Cannot send request");
+        }
+
+        int statusCode;
+        res = sceHttpGetStatusCode(req, &statusCode);
+        if (res < 0)
+            throw std::runtime_error("Network: Cannot get status code");
+
+        if (statusCode != 200)
+            throw std::runtime_error("Network: unexpected status code");
+
+        res = sceHttpGetResponseContentLength(req, size);
+        if (res < 0)
+            throw std::runtime_error("Network: Cannot get content length");
+
+    } catch (const std::runtime_error &ex) {
+        dbg_printf(DBG_ERROR, "%s", ex.what());
+        if (req >= 0) sceHttpDeleteRequest(req);
+        if (conn >= 0) sceHttpDeleteConnection(conn);
+
+        throw;
+    }
+
+    if (req >= 0) sceHttpDeleteRequest(req);
+    if (conn >= 0) sceHttpDeleteConnection(conn);
+
+    return 0;    
+}
+
+int Network::Download(std::string url, std::string dest, uint64_t *cur)
+{
+    if (cur) *cur = 0;
     dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
     int conn = -1;
     int req = -1;
@@ -97,7 +160,7 @@ int Network::Download(std::string url, std::string dest)
 
             if (read == 0)
                 break;
-
+            if (cur) *cur += read;
             int written = sceIoWrite(fd, buf, read);
             if (written < 0)
                 throw std::runtime_error("Network: Couldn't write data");
