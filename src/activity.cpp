@@ -39,7 +39,13 @@ int Activity::Display()
 
 void Activity::AddView(std::shared_ptr<View> view)
 {
-    views_.push_back(view);
+    views_queue.push_back(view);
+}
+
+void Activity::FlushQueue()
+{
+    std::move(views_queue.begin(), views_queue.end(), std::back_inserter(views_));
+    views_queue.erase(views_queue.begin(),views_queue.end());
 }
 
 bool Activity::HasActivity()

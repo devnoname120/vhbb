@@ -12,8 +12,12 @@ Network::Network()
     sceNetInit(&netInitParam);
     sceNetCtlInit();
 
-    sceSysmoduleLoadModule(SCE_SYSMODULE_HTTP);
+    sceSysmoduleLoadModule(SCE_SYSMODULE_HTTPS);
+    sceSslInit(300 * 1024);
     sceHttpInit(1 * 1024 * 1024);
+
+    // FIXME Do we want to enforce certificate verification?
+    sceHttpsDisableOption(SCE_HTTPS_FLAG_SERVER_VERIFY);
 
     int ret = sceHttpCreateTemplate(VHBB_UA, SCE_HTTP_VERSION_1_1, SCE_TRUE);
     if (ret < 0)
@@ -30,7 +34,11 @@ Network::~Network()
     sceSysmoduleUnloadModule(SCE_SYSMODULE_NET);
 
     sceHttpTerm();
-    sceSysmoduleUnloadModule(SCE_SYSMODULE_HTTP);
+    sceSysmoduleUnloadModule(SCE_SYSMODULE_HTTPS);
+
+    sceSslEnd();
+    sceSysmoduleUnloadModule(SCE_SYSMODULE_SSL);
+
 }
 
 
@@ -51,8 +59,25 @@ int Network::Download(std::string url, std::string dest)
             throw std::runtime_error("Network: Cannot create request");
 
         int res = sceHttpSendRequest(req, NULL, 0);
-        if (res < 0)
+        if (res < 0) {
+
+            dbg_printf(DBG_ERROR, "sceHttpSendRequest() error: 0x%08X", res);
+            if (res == SCE_HTTP_ERROR_SSL) {
+                int sslErr;
+                unsigned int sslErrDetail;
+                res = sceHttpsGetSslError(req, &sslErr, &sslErrDetail);
+                if (res < 0) {
+                    dbg_printf(DBG_ERROR, "sceHttpsGetSslError error: 0x%08X", res);
+                } else {
+                    dbg_printf(DBG_ERROR, "SSL error: %d, %u\nSee here for meaning: \
+                        https://github.com/vitasdk/vita-headers/blob/master/include/psp2/net/http.h",
+                        sslErr,
+                        sslErrDetail);
+                }
+            }
+
             throw std::runtime_error("Network: Cannot send request");
+        }
 
         int statusCode;
         res = sceHttpGetStatusCode(req, &statusCode);

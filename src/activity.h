@@ -15,9 +15,11 @@ public:
 	int Display();
 
     void AddView(std::shared_ptr<View> view);
+    void FlushQueue();
     bool HasActivity();
 
 
 private:
     std::vector<std::shared_ptr<View>> views_;
+    std::vector<std::shared_ptr<View>> views_queue;
 };

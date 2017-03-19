@@ -54,7 +54,7 @@ FUNCTION(ADD_RESOURCES out_var)
   SET(${out_var} "${result}" PARENT_SCOPE)
 ENDFUNCTION()
 
-file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/*.png assets/*.jpeg assets/*.yml assets/*.ttf assets/*.wav assets/*.ogg)
+file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/head.bin assets/*.png assets/*.jpeg assets/*.yml assets/*.ttf assets/*.wav assets/*.ogg)
 add_resources(PROJECT_RESOURCES ${res_files})
 
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp")
@@ -93,13 +93,16 @@ target_link_libraries(${SHORT_NAME}
   SceNet_stub
   SceNetCtl_stub
   SceHttp_stub
+  SceSsl_stub
   ftpvita
   SceAppMgr_stub
   SceAppUtil_stub
+  ScePromoterUtil_Stub
   SceIme_stub
   ScePower_stub
   SceAudio_stub
   SceAudiodec_stub
+  SceSha1_stub
   pthread
 )
 

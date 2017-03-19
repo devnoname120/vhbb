@@ -86,6 +86,7 @@ int main()
 
 		input.Get();
 		//input.Propagate(curView); // TODO: Rework function
+		activity.FlushQueue();
 		if (!activity.HasActivity()) {
 			categoryView.HandleInput(1, input);
 		} else {

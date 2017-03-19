@@ -1,4 +1,5 @@
 #include "homebrewView.h"
+#include <vitaPackage.h>
 
 #include <texture.h>
 #include <network.h>
@@ -25,6 +26,7 @@ HomebrewView::HomebrewView(Homebrew hb) :
 
 		sceIoMkdir(SCREENSHOTS_FOLDER.c_str(), 0777);
 
+		sceIoRemove(SCREENSHOTS_FOLDER.c_str());
 		Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
 		// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
 		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
@@ -37,6 +39,15 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 	// TODO use native circle/cross cancelation key
 	if (input.KeyNewPressed(SCE_CTRL_CIRCLE)) {
 		request_destroy = true;
+	} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
+		try {
+			Network::get_instance()->Download(hb_.url, std::string("ux0:/temp/test.zip"));
+			dbg_printf(DBG_DEBUG, "Downloaded");
+			VitaPackage pkg = VitaPackage(std::string("ux0:/temp/test.zip"));
+			pkg.Install();	
+		} catch (const std::exception &ex) {
+			dbg_printf(DBG_ERROR, "%s", ex.what());
+		}
 	}
 	// TODO Implement
 	return 0;

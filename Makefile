@@ -7,11 +7,21 @@ SOURCE_DIR = src
 BIN        = bin
 
 #SOURCES  =  $(shell find $(SOURCE_DIR) -name '*.cpp')
-SOURCES = src/singleton.cpp \
+MINIZIP_SOURCES = src/minizip/ioapi.c \
+		 		  src/minizip/unzip.c \
+				  src/minizip/zip.c \
+				  src/sha1.c
+
+SOURCES = src/zip.cpp \
+		  \
+		  src/vitaPackage.cpp \
+		  \
+		  src/singleton.cpp \
 		  src/font.cpp \
 		  src/texture.cpp \
 		  src/splash.cpp \
 		  src/date.cpp \
+		  \
 		  src/Views/View.cpp \
 		  src/activity.cpp \
           src/Views/statusBar.cpp \
@@ -20,6 +30,7 @@ SOURCES = src/singleton.cpp \
           src/Views/ListView/listView.cpp \
           src/Views/CategoryView/categoryView.cpp \
 		  src/Views/HomebrewView/homebrewView.cpp \
+		  \
           src/vhbb.cpp \
 		  src/homebrewDownload.cpp \
           src/homebrewRelease.cpp \
@@ -31,7 +42,8 @@ SOURCES = src/singleton.cpp \
           src/debug.cpp
 
 IMAGES   =  $(shell find $(ASSET_DIR) -name '*.png')
-OBJS     =  $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o)
+HEAD_BIN = $(ASSET_DIR)/head.bin
+OBJS     =  $(MINIZIP_SOURCES:%.c=%.o) $(SOURCES:%.cpp=%.o) $(IMAGES:%.png=%.o) $(HEAD_BIN:%.bin=%.o)
 
 DEBUG = 1
 
@@ -69,8 +81,10 @@ endif
 LIBS += -lyaml-cpp -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
 	-lSceSysmodule_stub -lSceCtrl_stub -lSceTouch_stub -lScePgf_stub \
 	-lSceCommonDialog_stub -lfreetype -lpng -ljpeg -lz -lm -lc \
-	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub \
-	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub \
+	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub -lSceSsl_stub \
+	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lScePromoterUtil_stub \
+	-lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub \
+	-lSceSha1_stub \
 	-lpthread
 
 
@@ -85,7 +99,6 @@ all: $(BIN)/$(TARGET).vpk
 		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
 		\
 		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
-		--add assets/homebrews.yml=resources/homebrews.yml \
 	$(BIN)/$(TARGET).vpk
 
 
@@ -103,7 +116,13 @@ $(BIN)/$(TARGET).elf: binfolder $(OBJS)
 %.o : %.cpp
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
 
+%.o : %.c
+	$(CC) -c $(CFLAGS) -o $@ $<
+
 %.o: %.png
+	$(PREFIX)-ld -r -b binary -o $@ $^
+
+%.o: %.bin
 	$(PREFIX)-ld -r -b binary -o $@ $^
 
 clean:
