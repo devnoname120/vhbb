@@ -7,7 +7,8 @@
 #include "Views/background.h"
 #include "Views/statusBar.h"
 #include "input.h"
-#include "splash.h"
+#include "splash_thread.h"
+#include "nosleep_thread.h"
 
 
 // Davee: Fix c++ exceptions
@@ -43,7 +44,13 @@ int main()
 	vita2d_init();
 	vita2d_set_clear_color(COLOR_BLACK);
 
-	displaySplash();
+	// Sleep crashes the app
+	SceUID thid_sleep = sceKernelCreateThread("nosleep_thread", (SceKernelThreadEntry)nosleep_thread, 0x40, 0x1000, 0, 0, NULL);
+	sceKernelStartThread(thid_sleep, 0, NULL);
+
+	//displaySplash();
+	SceUID thid_spl = sceKernelCreateThread("splash_thread", (SceKernelThreadEntry)splash_thread, 0x40, 0x10000, 0, 0, NULL);
+	sceKernelStartThread(thid_spl, 0, NULL);
 
 	dbg_init();
 

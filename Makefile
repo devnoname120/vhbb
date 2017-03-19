@@ -16,11 +16,12 @@ SOURCES = src/zip.cpp \
 		  \
 		  src/vitaPackage.cpp \
 		  src/install_thread.cpp \
+		  src/nosleep_thread.cpp \
 		  \
 		  src/singleton.cpp \
 		  src/font.cpp \
 		  src/texture.cpp \
-		  src/splash.cpp \
+		  src/splash_thread.cpp \
 		  src/date.cpp \
 		  \
 		  src/Views/View.cpp \
@@ -67,7 +68,7 @@ DEBUGNETIP = $(shell cat debugnetip.txt 2>/dev/null || ip route get 1 | awk '{pr
 ifeq ($(DEBUG), 1)
 CFLAGS += -O0 -D_DEBUG
 else
-CFLAGS += -O3
+CFLAGS += -Os
 endif
 
 ifeq ($(psp2shell), 1)

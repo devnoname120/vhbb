@@ -238,4 +238,5 @@ int VitaPackage::Install()
     }
 
     sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());
+    return 0;
 }

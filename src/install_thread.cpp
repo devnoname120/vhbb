@@ -44,10 +44,14 @@ int install_thread(SceSize args_size, InstallArguments *args) {
         percent = 50;
         progress->SetProgress(percent, std::string("Finished downloading"));
 
-        progress->SetProgress(40, std::string("Installing..."));
+        progress->SetProgress(percent, std::string("Installing..."));
         VitaPackage pkg = VitaPackage(std::string("ux0:/temp/download.vpk"));
-        pkg.Install();
-        progress->SetProgress(100, std::string("Finished"));
+        int res = pkg.Install();
+        if (res < 0) {
+            progress->SetProgress(100, std::string("Error installing the package"));
+        } else {
+            progress->SetProgress(100, std::string("Finished"));
+        }
     } catch (const std::exception &ex) {
         dbg_printf(DBG_ERROR, "%s", ex.what());
     }

@@ -116,6 +116,7 @@ int ListView::HandleInput(int focus, const Input& input)
 		if (input.TouchStopPressed()) {
 			if (preSelectedItem != -1) {
 				selectedItem = preSelectedItem;
+				dbg_printf(DBG_DEBUG, "Clicked, adding view...");
 				Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
 			}
 
@@ -173,6 +174,7 @@ int ListView::HandleInput(int focus, const Input& input)
 					posY += ITEM_HEIGHT;
 				}
 			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
+				dbg_printf(DBG_DEBUG, "Pressed, adding view...");
 				Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
 			}
 		// No item is selected

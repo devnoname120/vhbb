@@ -9,6 +9,33 @@
 #define MAX_FILENAME 512
 #define READ_SIZE 8192
 
+static void mkdir_rec(const char *dir) {
+        char tmp[256];
+        char *p = NULL;
+        size_t len;
+
+        snprintf(tmp, sizeof(tmp),"%s",dir);
+        len = strlen(tmp);
+        if(tmp[len - 1] == '/')
+                tmp[len - 1] = 0;
+        for(p = tmp + 1; *p; p++)
+                if(*p == '/') {
+                        *p = 0;
+                        sceIoMkdir(tmp, 0777);
+                        *p = '/';
+                }
+        sceIoMkdir(tmp, 0777);
+}
+
+std::string dirnameOf(const std::string& fname)
+{
+     size_t pos = fname.find_last_of("\\/");
+     return (std::string::npos == pos)
+         ? ""
+         : fname.substr(0, pos);
+}
+
+
 int unzip(const char *zippath, const char *outpath)
 {
     unzFile zipfile = unzOpen(zippath);
@@ -53,10 +80,15 @@ int unzip(const char *zippath, const char *outpath)
         if (fullfilepath[filename_length-1] == dir_delimter)
         {
             dbg_printf(DBG_DEBUG, "dir:%s", fullfilepath);
-            sceIoMkdir(fullfilepath, 0777);
+            //sceIoMkdir(fullfilepath, 0777);
+            mkdir_rec(fullfilepath);
         }
         else
         {
+            // Create the dir where the file will be placed
+            std::string destdir = dirnameOf(std::string(fullfilepath));
+            mkdir_rec(destdir.c_str());
+
             // Entry is a file, so extract it.
             dbg_printf(DBG_DEBUG, "file:%s", fullfilepath);
             if (unzOpenCurrentFile(zipfile) != UNZ_OK)

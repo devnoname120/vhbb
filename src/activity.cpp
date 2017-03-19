@@ -39,6 +39,7 @@ int Activity::Display()
 
 void Activity::AddView(std::shared_ptr<View> view)
 {
+    dbg_printf(DBG_DEBUG, "Adding view");
     views_queue.push_back(view);
 }
 
