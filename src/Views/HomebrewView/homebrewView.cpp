@@ -36,6 +36,19 @@ HomebrewView::HomebrewView(Homebrew hb) :
 		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
 	}
 
+	std::string long_description_cut_draft = hb_.long_description;
+	std::replace(long_description_cut_draft.begin(), long_description_cut_draft.end(), '\n', ' ');
+
+	long_description_cut1 = long_description_cut_draft.substr(0, 77);
+	try {
+		long_description_cut2 = long_description_cut_draft.substr(77, 77);
+		long_description_cut3 = long_description_cut_draft.substr(155, 77);
+		long_description_cut4 = long_description_cut_draft.substr(232, 73);
+		if (long_description_cut_draft.length() >= 305) long_description_cut4 += "...";
+	} catch (const std::exception &ex) {
+		dbg_printf(DBG_DEBUG, "Error when cutting description: %s", ex.what());
+	}
+
 }
 
 void HomebrewView::homebrewInstall() {
@@ -80,8 +93,10 @@ int HomebrewView::Display()
 	//font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
 	// FIXME: Display real description
 	if (!hb_.long_description.empty()) {
-		std::string cut = hb_.long_description.substr(0, 70) + "...";
-		font_25.Draw(Point(HB_X + 40, HB_Y + 319 + 80), cut);
+		font_25.Draw(Point(HB_X + 40, HB_Y + 362), long_description_cut1);
+		if (!long_description_cut2.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 40), long_description_cut2);
+		if (!long_description_cut3.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 80), long_description_cut3);
+		if (!long_description_cut4.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 120), long_description_cut4);
 	}
 	
 

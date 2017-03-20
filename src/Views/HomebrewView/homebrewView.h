@@ -31,6 +31,11 @@ private:
 
 	std::vector<Texture> screenshots;
 
+	std::string long_description_cut1 = "";
+	std::string long_description_cut2 = "";
+	std::string long_description_cut3 = "";
+	std::string long_description_cut4 = "";
+
 	void homebrewInstall();
 
 };
