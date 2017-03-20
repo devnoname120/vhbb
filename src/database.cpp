@@ -1,9 +1,10 @@
 #include "database.h"
+#include <global_include.h>
 
+#include "zip.h"
 #include "network.h"
 #include "homebrew.h"
 
-#include <global_include.h>
 
 
 Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path.c_str()))
@@ -35,6 +36,15 @@ bool IsCategory::operator()(const Homebrew &hb) const {
 int Database::DownloadIcons()
 {
     sceIoMkdir(ICONS_FOLDER.c_str(), 0777);
+
+	if (access((ICONS_FOLDER + "/init.txt").c_str(), F_OK) == -1) {
+		unzip(ICON_ZIP.c_str(), (ICONS_FOLDER + "/").c_str());
+
+		std::string ok = "ok";
+		int fd = sceIoOpen((ICONS_FOLDER + "/init.txt").c_str(), SCE_O_WRONLY|SCE_O_CREAT, 0777);
+		sceIoWrite(fd, ok.c_str(), 2);
+		sceIoClose(fd);
+	}
 
     for (auto hb : homebrews) {
 		std::string path = ICONS_FOLDER + "/" + hb.icon;

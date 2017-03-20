@@ -101,6 +101,7 @@ all: $(BIN)/$(TARGET).vpk
 		--add sce_sys/livearea/contents/startup.png=sce_sys/livearea/contents/startup.png \
 		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
 		\
+		--add assets/icons.zip=resources/icons.zip \
 		--add assets/fonts/segoeui.ttf=resources/fonts/segoeui.ttf \
 	$(BIN)/$(TARGET).vpk
 

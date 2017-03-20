@@ -122,7 +122,8 @@ int Network::Download(std::string url, std::string dest, uint64_t *cur)
             throw std::runtime_error("Network: Cannot create request");
 
         int res = sceHttpSendRequest(req, NULL, 0);
-        if (res < 0) {
+        int i=0;
+        for (i=0; res < 0 && i < 6; i++) {
 
             dbg_printf(DBG_ERROR, "sceHttpSendRequest() error: 0x%08X", res);
             if (res == SCE_HTTP_ERROR_SSL) {
@@ -138,9 +139,12 @@ int Network::Download(std::string url, std::string dest, uint64_t *cur)
                         sslErrDetail);
                 }
             }
-
-            throw std::runtime_error("Network: Cannot send request");
+            sceKernelDelayThread(500 * 1000); // Wait for 0.5 sec
+            res = sceHttpSendRequest(req, NULL, 0);
         }
+        if (res < 0)
+            throw std::runtime_error("Network: Cannot send request");
+
 
         int statusCode;
         res = sceHttpGetStatusCode(req, &statusCode);
