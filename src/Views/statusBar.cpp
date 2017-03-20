@@ -4,7 +4,7 @@
 #include <texture.h>
 
 extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
-
+extern unsigned char _binary_assets_spr_img_statsbar_battery_charge_png_start;
 
 void getDateString(char *string, int date_format, SceDateTime *time);
 void getTimeString(char *string, int time_format, SceDateTime *time);
@@ -13,7 +13,8 @@ int displayDate();
 
 StatusBar::StatusBar() :
 	font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25)),
-	img_statsbar_battery(Texture(&_binary_assets_spr_img_statsbar_battery_png_start))
+	img_statsbar_battery(Texture(&_binary_assets_spr_img_statsbar_battery_png_start)),
+	img_statsbar_battery_charge(Texture(&_binary_assets_spr_img_statsbar_battery_charge_png_start))
 {
 	#ifdef PSP2SHELL
 
@@ -78,7 +79,6 @@ void StatusBar::getTimeString(char *string, int time_format, SceDateTime *time)
 int StatusBar::displayBattery()
 {
 	float battery_x = ALIGN_LEFT(949, vita2d_texture_get_width(img_statsbar_battery.texture.get()));
-	img_statsbar_battery.Draw(Point(battery_x, 2));
 
 	float percent = scePowerGetBatteryLifePercent();
 	float width = ((29.0f * percent) / 100.0f);
@@ -86,13 +86,14 @@ int StatusBar::displayBattery()
 	unsigned int battery_color = RGBA8(91, 223, 38, 255);
 
 	// FIXME Not sure if it's good performance-wise to do that 60 times per second
-	if (scePowerIsBatteryCharging())
-		battery_color = RGBA8(241, 94, 9, 255);
-	else if (scePowerIsLowBattery())
+	if (scePowerIsLowBattery())
 		battery_color = RGBA8(255, 48, 48, 255);
-
-
 	vita2d_draw_rectangle((947.0f - width), 4, width, 16, battery_color);
+	
+	if (scePowerIsBatteryCharging())
+		img_statsbar_battery_charge.Draw(Point(battery_x, 2));
+	else
+		img_statsbar_battery.Draw(Point(battery_x, 2));
 
 	return 0;
 }

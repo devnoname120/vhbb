@@ -21,6 +21,7 @@ private:
 	Font font_25;
 	
 	Texture img_statsbar_battery;
+	Texture img_statsbar_battery_charge;
 
 	#ifdef PSP2SHELL
 	char vitaip[16] = {0};
