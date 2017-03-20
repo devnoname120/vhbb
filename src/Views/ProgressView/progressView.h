@@ -7,13 +7,13 @@
 #include <texture.h>
 #include <font.h>
 
-#define PROGRESS_VIEW_X 228
-#define PROGRESS_VIEW_Y 155
+#define PROGRESS_VIEW_X 227
+#define PROGRESS_VIEW_Y 221
 
-#define PROGRESS_BAR_X 82
-#define PROGRESS_BAR_X_WIDTH 344
-#define PROGRESS_BAR_Y 145
-#define PROGRESS_BAR_Y_HEIGHT 34
+#define PROGRESS_BAR_X 83
+#define PROGRESS_BAR_X_WIDTH 342
+#define PROGRESS_BAR_Y 101
+#define PROGRESS_BAR_Y_HEIGHT 20
 
 class ProgressView: public View {
 public:

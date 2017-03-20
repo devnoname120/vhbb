@@ -22,7 +22,7 @@ int ProgressView::Display()
     float progress_x = ((float)PROGRESS_BAR_X_WIDTH) * ((float)percent_ / (float)100);
     vita2d_draw_rectangle(PROGRESS_VIEW_X + PROGRESS_BAR_X, PROGRESS_VIEW_Y + PROGRESS_BAR_Y, progress_x, PROGRESS_BAR_Y_HEIGHT, COLOR_BLUEGREY);
     
-    font_25.Draw(Point(PROGRESS_VIEW_X + PROGRESS_BAR_X, PROGRESS_VIEW_Y + PROGRESS_BAR_Y + PROGRESS_BAR_Y_HEIGHT + 40), message_);
+    font_25.Draw(Point(PROGRESS_VIEW_X + PROGRESS_BAR_X, PROGRESS_VIEW_Y + 72), message_);
 
     if (percent_ == 100) {
         // FIXME hacky
