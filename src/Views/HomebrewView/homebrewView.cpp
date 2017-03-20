@@ -71,11 +71,11 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 
 int HomebrewView::Display()
 {
-	img_preview_infobg.Draw(Point(HB_X, HB_Y + 246));
+	img_preview_infobg.Draw(Point(HB_X, HB_Y + 300));
 
-	font_40.Draw(Point(HB_X + 203, HB_Y + 110), hb_.name, COLOR_WHITE);
-	font_25.Draw(Point(HB_X + 203, HB_Y + 136), hb_.author, COLOR_AQUA);
-	font_25.Draw(Point(HB_X + 203, HB_Y + 169), hb_.version, COLOR_WHITE);
+	font_40.Draw(Point(HB_X + 225, HB_Y + 88), hb_.name, COLOR_WHITE);
+	font_25.Draw(Point(HB_X + 225, HB_Y + 115), hb_.author, COLOR_AQUA);
+	font_25.Draw(Point(HB_X + 225, HB_Y + 144), hb_.version, COLOR_WHITE);
 	//font_20.Draw(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
 	//font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
 	// FIXME: Display real description
@@ -85,12 +85,12 @@ int HomebrewView::Display()
 	}
 	
 
-	img_preview_btn_download.Draw(Point(HB_X + 201, HB_Y + 187));
-	img_icon.DrawResize(Point(HB_X + 100, HB_Y + 82), Point(90, 90));
+	img_preview_btn_download.Draw(Point(HB_X + 218, HB_Y + 168));
+	img_icon.DrawResize(Point(HB_X + 122, HB_Y + 60), Point(90, 90));
 
 	if (!screenshots.empty()) {
 		// FIXME Images aren't all fullscreen-sized
-		screenshots.at(0).DrawResize(Point(HB_X + 466, HB_Y + 67), Point(SCREEN_WIDTH/2, SCREEN_HEIGHT/2));
+		screenshots.at(0).DrawResize(Point(HB_X + 560, HB_Y + 110), Point(376, 210));
 	}
 	// else draw a grey rectangle
 
