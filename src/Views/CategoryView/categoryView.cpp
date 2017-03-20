@@ -87,7 +87,7 @@ CategoryView::CategoryView() :
 	dbg_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
 
 	for (unsigned int i=1; i < countof(categoryList); i++) {
-		categoryTabs[i].minX = categoryTabs[i-1].maxX + 1;
+		categoryTabs[i].minX = categoryTabs[i-1].maxX;
 		categoryTabs[i].maxX = categoryTabs[i].minX + (int)remainingWidth / (countof(categoryList) - i);
 		remainingWidth -= (int)categoryTabs[i].maxX + 1 - categoryTabs[i].minX;
 		dbg_printf(DBG_DEBUG, "%d->minX=%d", i, categoryTabs[i].minX);
@@ -154,7 +154,7 @@ int CategoryView::Display()
 		// font_35.Draw(Point(categoryTabs[i].minX, CAT_Y + CAT_HEIGHT), std::string("Test"));
 		// vita2d_font_draw_text(font_35, , COLOR_WHITE, 35, "test"/*categoryList_name[i]*/);
 		if (i > 0)
-			img_catbar_sep.Draw(Point(categoryTabs[i].minX, CAT_Y));
+			img_catbar_sep.Draw(Point(categoryTabs[i].minX - 1, CAT_Y));
 	}
 
 	img_catbar_highlight.DrawResize(Point(CAT_X + categoryTabs[selectedCat].minX, CAT_Y), Point(categoryTabs[selectedCat].maxX - categoryTabs[selectedCat].minX, CAT_HEIGHT));
