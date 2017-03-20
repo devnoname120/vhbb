@@ -72,7 +72,7 @@ int install_thread(SceSize args_size, InstallArguments *args) {
                 if (size != 0) percent_offset = (int)(((double)(*(unzipArgs->cur))/(double)size) * (double)30);
                 progress->SetProgress(percent + percent_offset, std::string("Unzipping..."));
             } else if (step == 1) {
-                if (percent_offset2 < 80 + 18) percent_offset2 += 1;
+                if (percent_offset2 < 18) percent_offset2 += 1;
                 progress->SetProgress(80 + percent_offset2, std::string("Installing..."));
                 sceKernelDelayThread(500 * 1000);               
             }

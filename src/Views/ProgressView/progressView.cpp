@@ -29,7 +29,7 @@ int ProgressView::Display()
         vita2d_end_drawing();
 		vita2d_swap_buffers();
 		sceDisplayWaitVblankStart();
-        sceKernelDelayThread(5 * 1000 * 1000);
+        sceKernelDelayThread(3 * 1000 * 1000);
         vita2d_start_drawing();
         request_destroy = true;
     }
