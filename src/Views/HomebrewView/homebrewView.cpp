@@ -79,7 +79,11 @@ int HomebrewView::Display()
 	//font_20.Draw(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
 	//font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
 	// FIXME: Display real description
-	font_25.Draw(Point(HB_X + 40, HB_Y + 319), std::string("this is a long description"));
+	if (!hb_.long_description.empty()) {
+		std::string cut = hb_.long_description.substr(0, 70) + "...";
+		font_25.Draw(Point(HB_X + 40, HB_Y + 319 + 80), cut);
+	}
+	
 
 	img_preview_btn_download.Draw(Point(HB_X + 201, HB_Y + 187));
 	img_icon.DrawResize(Point(HB_X + 100, HB_Y + 82), Point(90, 90));
