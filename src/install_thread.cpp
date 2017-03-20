@@ -5,6 +5,7 @@
 #include <Views/ProgressView/progressView.h>
 #include <network.h>
 #include <vitaPackage.h>
+#include "zip.h"
 
 
 int install_thread(SceSize args_size, InstallArguments *args) {
@@ -35,9 +36,9 @@ int install_thread(SceSize args_size, InstallArguments *args) {
         sceKernelStartThread(thid, sizeof(DownloadArguments), dlArgs);
 
         while (!*(dlArgs->finished)) {
-            percent_offset = (int)(((double)(*(dlArgs->cur))/(double)size) * (double)40);
+            if (size != 0) percent_offset = (int)(((double)(*(dlArgs->cur))/(double)size) * (double)40);
             progress->SetProgress(percent + percent_offset, std::string("Downloading..."));
-            sceKernelDelayThread(1000 * 1000);
+            sceKernelDelayThread(100 * 1000);
         }
         dbg_printf(DBG_DEBUG, "Downloaded");
 
@@ -45,9 +46,41 @@ int install_thread(SceSize args_size, InstallArguments *args) {
         progress->SetProgress(percent, std::string("Finished downloading"));
 
         progress->SetProgress(percent, std::string("Installing..."));
-        VitaPackage pkg = VitaPackage(std::string("ux0:/temp/download.vpk"));
-        int res = pkg.Install();
-        if (res < 0) {
+
+
+        uncompressedSize("ux0:/temp/download.vpk", &size);
+
+        UnzipArguments *unzipArgs = new UnzipArguments;
+        finished = false;
+        unzipArgs->finished = &finished;
+
+        cur = 0;
+        unzipArgs->cur = &cur;
+
+        int step = 0;
+        unzipArgs->step = &step;
+
+        int res_zip;
+        unzipArgs->res = &res_zip;
+
+        percent_offset = 0;
+        int percent_offset2 = 0;
+        SceUID thid_zip = sceKernelCreateThread("unzip_thread", (SceKernelThreadEntry)unzip_thread, 0x40, 0x10000, 0, 0, NULL);
+        sceKernelStartThread(thid_zip, sizeof(DownloadArguments), unzipArgs);
+        while (!*(unzipArgs->finished)) {
+            if (step == 0) {
+                if (size != 0) percent_offset = (int)(((double)(*(unzipArgs->cur))/(double)size) * (double)30);
+                progress->SetProgress(percent + percent_offset, std::string("Installing..."));
+            } else if (step == 1) {
+                if (percent_offset2 < 80 + 18) percent_offset2 += 1;
+                progress->SetProgress(80 + percent_offset2, std::string("Installing..."));
+                sceKernelDelayThread(500 * 1000);               
+            }
+
+            sceKernelDelayThread(100 * 1000);
+        }
+
+        if (res_zip < 0) {
             progress->SetProgress(100, std::string("Error installing the package"));
         } else {
             progress->SetProgress(100, std::string("Finished"));
@@ -64,4 +97,11 @@ int download_thread(SceSize args_size, DownloadArguments *args) {
     Network::get_instance()->Download(args->url, args->dest, args->cur);
     *(args->finished) = true;
     sceKernelExitDeleteThread(0);
+}
+
+int unzip_thread(SceSize args_size, UnzipArguments *args) {
+        VitaPackage pkg = VitaPackage(std::string("ux0:/temp/download.vpk"));
+        *(args->res) = pkg.Install(args->cur, args->step);
+        *(args->finished) = true;
+        sceKernelExitDeleteThread(0);
 }

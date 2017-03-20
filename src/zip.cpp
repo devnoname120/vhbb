@@ -36,7 +36,7 @@ std::string dirnameOf(const std::string& fname)
 }
 
 
-int unzip(const char *zippath, const char *outpath)
+int unzip(const char *zippath, const char *outpath, uint64_t *zipCur)
 {
     unzFile zipfile = unzOpen(zippath);
     if (!zipfile)
@@ -73,6 +73,7 @@ int unzip(const char *zippath, const char *outpath)
             return -1;
         }
 
+        if (zipCur) *zipCur += file_info.uncompressed_size;
         sprintf(fullfilepath, "%s%s", outpath, filename);
 
         // Check if this entry is a directory or file.
@@ -150,6 +151,7 @@ int unzip(const char *zippath, const char *outpath)
 
 int uncompressedSize(const char *zippath, uint64_t *size)
 {
+    *size = 0;
     unzFile zipfile = unzOpen(zippath);
     if (!zipfile)
     {

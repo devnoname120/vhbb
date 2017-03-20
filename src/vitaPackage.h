@@ -9,7 +9,7 @@ public:
   VitaPackage(const std::string vpk);
   ~VitaPackage();
 
-  int Install();
+  int Install(uint64_t *zipCur = nullptr, int *step = nullptr);
 
 private:
   std::string vpk_;
