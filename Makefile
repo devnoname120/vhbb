@@ -12,7 +12,8 @@ MINIZIP_SOURCES = src/minizip/ioapi.c \
 				  src/minizip/zip.c \
 				  src/sha1.c
 
-SOURCES = src/zip.cpp \
+SOURCES = src/utils.cpp \
+		  src/zip.cpp \
 		  \
 		  src/vitaPackage.cpp \
 		  src/install_thread.cpp \
