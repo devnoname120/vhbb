@@ -17,13 +17,13 @@ public:
 
 	Homebrew homebrew;
 private:
+	Font font_25;
+	Font font_35;
+
 	Texture img_itm_panel;
 	Texture img_itm_panel_highlight;
 
 	Texture img_icon_;
-
-	Font font_25;
-	Font font_35;
 
 
 	int display(int posY);

@@ -5,7 +5,7 @@ extern unsigned char _binary_assets_spr_img_splash_png_start;
 extern unsigned char _binary_assets_spr_gekihen_splash_png_start;
 
 
-int splash_thread(SceSize args_size, void *args)
+void splash_thread(SceSize args_size, void *args)
 {
     vita2d_texture *tex_splash = vita2d_load_PNG_buffer(&_binary_assets_spr_gekihen_splash_png_start);
 

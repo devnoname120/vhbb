@@ -18,7 +18,7 @@ const Category categoryList[categoryList_s] = {
 	UTILITIES
 };
 
-const char* categoryList_name[countof(categoryList)] = {
+const char* categoryList_name[_countof(categoryList)] = {
 	"New",
 	"Games",
 	"Ports",
@@ -46,8 +46,8 @@ CategoryView::CategoryView() :
 {
 	selectedCat = NEW;
 
-	categoryTabs.reserve(countof(categoryList));
-	for (unsigned int i=0; i < countof(categoryList); i++) {
+	categoryTabs.reserve(_countof(categoryList));
+	for (unsigned int i=0; i < _countof(categoryList); i++) {
 		try {
 			auto db = Database::get_instance();
 			std::vector<Homebrew> hbs;
@@ -78,7 +78,7 @@ CategoryView::CategoryView() :
 
 
 	int remainingWidth = SCREEN_WIDTH;
-	double categoryWidth = SCREEN_WIDTH / countof(categoryList);
+	double categoryWidth = SCREEN_WIDTH / _countof(categoryList);
 
 	categoryTabs[0].minX = 0;
 	categoryTabs[0].maxX = (int)categoryWidth;
@@ -86,9 +86,9 @@ CategoryView::CategoryView() :
 	remainingWidth -= (int)categoryWidth;
 	dbg_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
 
-	for (unsigned int i=1; i < countof(categoryList); i++) {
+	for (unsigned int i=1; i < _countof(categoryList); i++) {
 		categoryTabs[i].minX = categoryTabs[i-1].maxX;
-		categoryTabs[i].maxX = categoryTabs[i].minX + (int)remainingWidth / (countof(categoryList) - i);
+		categoryTabs[i].maxX = categoryTabs[i].minX + (int)remainingWidth / (_countof(categoryList) - i);
 		remainingWidth -= (int)categoryTabs[i].maxX + 1 - categoryTabs[i].minX;
 		dbg_printf(DBG_DEBUG, "%d->minX=%d", i, categoryTabs[i].minX);
 		dbg_printf(DBG_DEBUG, "%d->maxX=%d", i, categoryTabs[i].maxX);
@@ -117,7 +117,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 			dbg_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
 		}
 
-		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < countof(categoryList) - 1) {
+		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < _countof(categoryList) - 1) {
 			selectedCat++;
 			dbg_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
 		}
@@ -147,7 +147,7 @@ int CategoryView::Display()
 
 	img_catbar.Draw(Point(CAT_X, CAT_Y));
 
-	for (unsigned int i=0; i < countof(categoryList); i++) {
+	for (unsigned int i=0; i < _countof(categoryList); i++) {
 		// FIXME Center and set real name
 
 		font_35.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);

@@ -24,6 +24,7 @@ int Activity::HandleInput(int focus, const Input& input)
 
     views_.back()->HandleInput(1, input);
     if (views_.back()->request_destroy) views_.erase(views_.end() - 1);
+    return 0;
 }
 
 
@@ -34,6 +35,7 @@ int Activity::Display()
     for (auto it = begin(views_), it_last = end(views_); it != it_last; ++it) {
         (*it)->Display();
     }
+    return 0;
 }
 
 

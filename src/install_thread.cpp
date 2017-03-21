@@ -8,7 +8,7 @@
 #include "zip.h"
 
 
-int install_thread(SceSize args_size, InstallArguments *args) {
+void install_thread(SceSize args_size, InstallArguments *args) {
     try {
         int percent = 0;
 
@@ -93,13 +93,13 @@ int install_thread(SceSize args_size, InstallArguments *args) {
     sceKernelExitDeleteThread(0);
 }
 
-int download_thread(SceSize args_size, DownloadArguments *args) {
+void download_thread(SceSize args_size, DownloadArguments *args) {
     Network::get_instance()->Download(args->url, args->dest, args->cur);
     *(args->finished) = true;
     sceKernelExitDeleteThread(0);
 }
 
-int unzip_thread(SceSize args_size, UnzipArguments *args) {
+void unzip_thread(SceSize args_size, UnzipArguments *args) {
         VitaPackage pkg = VitaPackage(std::string("ux0:/temp/download.vpk"));
         *(args->res) = pkg.Install(args->cur, args->step);
         *(args->finished) = true;

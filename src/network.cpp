@@ -46,7 +46,6 @@ int Network::DownloadSize(std::string url, uint64_t *size)
     dbg_printf(DBG_DEBUG, "Checking size of %s", url.c_str());
     int conn = -1;
     int req = -1;
-    int fd = -1;
 
     try {
         conn = sceHttpCreateConnectionWithURL(templateId_, url.c_str(), SCE_TRUE);

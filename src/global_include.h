@@ -42,6 +42,8 @@
 #include <psp2/rtc.h>
 #include <psp2/system_param.h>
 
+#include "utils.h"
+
 #ifdef PSP2SHELL
 #include <psp2shell.h>
 #endif

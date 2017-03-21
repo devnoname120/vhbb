@@ -55,4 +55,5 @@ int Database::DownloadIcons()
 		    Network::get_instance()->Download(url, path.c_str());
 		}
 	}
+	return 0;
 }

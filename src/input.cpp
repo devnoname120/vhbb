@@ -22,7 +22,7 @@ int Input::Get()
 	return 0;
 }
 
-int Input::Propagate(GUIViews curView)
+int Input::Propagate()
 {
 	// FIXME: rework function
 	/*switch (curView) {

@@ -20,6 +20,6 @@ struct UnzipArguments {
     int *step;
 };
 
-int install_thread(SceSize args_size, InstallArguments *args);
-int download_thread(SceSize args_size, DownloadArguments *args);
-int unzip_thread(SceSize args_size, UnzipArguments *args);
+void install_thread(SceSize args_size, InstallArguments *args);
+void download_thread(SceSize args_size, DownloadArguments *args);
+void unzip_thread(SceSize args_size, UnzipArguments *args);

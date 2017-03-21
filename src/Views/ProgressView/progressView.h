@@ -24,9 +24,9 @@ public:
 
     void SetProgress(int percent, std::string message);
 private:
-	Texture img_dialog_progress_bg;
-
 	Font font_25;
+
+	Texture img_dialog_progress_bg;
 
     int percent_;
     std::string message_;

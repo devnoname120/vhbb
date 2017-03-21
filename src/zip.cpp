@@ -197,5 +197,6 @@ int uncompressedSize(const char *zippath, uint64_t *size)
                 return -1;
             }
         }
-    }        
+    }
+    return 0;   
 }

@@ -36,11 +36,11 @@ public:
 
 	
 private:
+	Font font_35;
+
 	Texture img_catbar;
 	Texture img_catbar_highlight;
 	Texture img_catbar_sep;
-
-	Font font_35;
 	
 	unsigned int selectedCat;
 	std::vector<CategoryTab> categoryTabs;

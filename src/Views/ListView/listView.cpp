@@ -5,47 +5,47 @@
 
 
 // Ordinate of where the item should be displayed on the screen
-int ListView::itemPosY(int i)
+uint ListView::itemPosY(uint i)
 {
 	return LIST_MIN_Y + i * ITEM_HEIGHT - posY;
 }
 
 // First item that is (partially or fully) displayed
-int ListView::firstDisplayedItem()
+uint ListView::firstDisplayedItem()
 {
-	return (int)posY / ITEM_HEIGHT;
+	return (uint)posY / ITEM_HEIGHT;
 }
 
 // Last item that is (partially or fully) displayed
-int ListView::lastDisplayedItem()
+uint ListView::lastDisplayedItem()
 {
 	// Height of the hidden/shown part of the first item
-	unsigned int firstHidden = posY % ITEM_HEIGHT;
-	unsigned int firstShown = ITEM_HEIGHT - firstHidden;
+	uint firstHidden = posY % ITEM_HEIGHT;
+	uint firstShown = ITEM_HEIGHT - firstHidden;
 
 	// Height of the hidden/shown part of the last item
-	unsigned int lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
-	unsigned int lastHidden = ITEM_HEIGHT - lastShown;
+	uint lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
+	uint lastHidden = ITEM_HEIGHT - lastShown;
 
 	// Number of elements between the first displayed element
 	// and the last displayed element
-	unsigned int inbetween = (LIST_RANGE_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
-	unsigned int last = firstDisplayedItem() + inbetween;
+	uint inbetween = (LIST_RANGE_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
+	uint last = firstDisplayedItem() + inbetween;
 
 	// Don't display an element that doesn't exist
-	return MIN(listItems.size() - 1, last);
+	return std::min<uint>(listItems.size() - 1, last);
 }
 
-int ListView::firstFullyDisplayedItem()
+uint ListView::firstFullyDisplayedItem()
 {
-	int first = firstDisplayedItem();
+	uint first = firstDisplayedItem();
 	// Return first displayed item if it starts right where we begin to display
 	return posY % ITEM_HEIGHT == 0 ? first : first + 1;
 }
 
-int ListView::lastFullyDisplayedItem()
+uint ListView::lastFullyDisplayedItem()
 {
-	int last = lastDisplayedItem();
+	uint last = lastDisplayedItem();
 	return LIST_MAX_Y - itemPosY(last) + 1 >= ITEM_HEIGHT ? last : last-1;
 }
 
@@ -56,7 +56,7 @@ int ListView::coordinateToItem(double coordY)
 	double absoluteY = posY + coordY - LIST_MIN_Y;
 	dbg_printf(DBG_DEBUG, "absoluteY: %f", absoluteY);
 
-	unsigned int item = (int)absoluteY / ITEM_HEIGHT;
+	uint item = (uint)absoluteY / ITEM_HEIGHT;
 	dbg_printf(DBG_DEBUG, "item: %d", item);
 
 	// Item does not exist
@@ -106,7 +106,7 @@ int ListView::HandleInput(int focus, const Input& input)
 	//dbg_printf(DBG_DEBUG, "timeDif: %u", timeDif);
 	//dbg_printf(DBG_DEBUG, "posY before: %d", posY);
 	if (!input.TouchPressed())
-		posY = MIN(MAX(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), MAX(posY + (int)(scrollSpeed * (double)timeDif), 0));
+		posY = std::min<uint>(std::max<int>(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), std::max<int>(posY + (int)(scrollSpeed * (double)timeDif), 0));
 
 	updateScrollSpeed(scrollSpeed, timeDif);
 
@@ -141,16 +141,17 @@ int ListView::HandleInput(int focus, const Input& input)
 
 			if (input.TouchAlreadyMovement()) {
 				// If the touch speed is not negligible, unselect
-				if (fabs(touchSpeedY) > LIST_SELECTION_MAX_SPEED)
+				if (fabs(touchSpeedY) > LIST_SELECTION_MAX_SPEED) {
 					preSelectedItem = -1;
 					selectedItem = -1;
+				}
 
 				double touchDifY;
 				unsigned long timeDif;
 
 				input.TouchDifference(NULL, &touchDifY, &timeDif);
-				posY = MIN(MAX(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0),
-								MAX(0, posY - touchDifY));
+				posY = std::min(std::max<int>(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0),
+								std::max<int>(0, posY - touchDifY));
 				scrollSpeed = -touchSpeedY;
 				dbg_printf(DBG_DEBUG, "scrollSpeed: %f", scrollSpeed);
 			}
@@ -163,7 +164,7 @@ int ListView::HandleInput(int focus, const Input& input)
 
 				// Scroll up if the selected item is outside of view
 				if (selectedItem < firstFullyDisplayedItem()) {
-					posY = MAX(0, posY - ITEM_HEIGHT);
+					posY = std::max<int>(0, posY - ITEM_HEIGHT);
 				}
 
 			} else if (input.KeyNewPressed(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {

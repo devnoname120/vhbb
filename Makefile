@@ -57,7 +57,7 @@ endif
 PREFIX  = arm-vita-eabi
 CC      = $(PREFIX)-gcc
 CXX     = $(PREFIX)-g++
-CFLAGS  = -Wl,-q -g -Wall -Wextra -Isrc/
+CFLAGS  = -Wl,-q -g -Wall -Wextra -Wno-sign-compare -Wno-unused-parameter -Isrc/
 CXXFLAGS = $(CFLAGS) -std=c++11
 ASFLAGS = $(CFLAGS)
 

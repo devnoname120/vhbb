@@ -20,7 +20,7 @@ class Input {
     	Input();
     	
     	int Get();
-		int Propagate(GUIViews curView);
+		int Propagate();
 
 		int KeyPressed(unsigned int buttons) const;
 		int KeyNewPressed(unsigned int buttons) const;

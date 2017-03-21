@@ -35,11 +35,11 @@ private:
 	//Homebrew *hblist;
 	int count; // FIXME: not needed because we use a vector
 
-	int itemPosY(int i);
-	int firstDisplayedItem();
-	int lastDisplayedItem();
-	int firstFullyDisplayedItem();
-	int lastFullyDisplayedItem();
+	uint itemPosY(uint i);
+	uint firstDisplayedItem();
+	uint lastDisplayedItem();
+	uint firstFullyDisplayedItem();
+	uint lastFullyDisplayedItem();
 	int coordinateToItem(double coordY);
 	int updateScrollSpeed(double &scrollSpeed, unsigned long timeDif);
 };

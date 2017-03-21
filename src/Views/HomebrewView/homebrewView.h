@@ -19,12 +19,12 @@ public:
 
 
 private:
-	Texture img_preview_infobg;
-	Texture img_preview_btn_download;
-
 	Font font_20;
 	Font font_25;
 	Font font_40;
+
+	Texture img_preview_infobg;
+	Texture img_preview_btn_download;
 
 	Homebrew hb_;
 	Texture img_icon;

@@ -83,9 +83,6 @@ int main()
 	StatusBar statusBar;
 	CategoryView categoryView;
 
-	// Init queue view too
-
-	GUIViews curView = LIST_VIEW;
 	while (1) {
 		//sceKernelPowerTick(0);
 		vita2d_start_drawing();

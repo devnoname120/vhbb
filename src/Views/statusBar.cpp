@@ -78,7 +78,7 @@ void StatusBar::getTimeString(char *string, int time_format, SceDateTime *time)
 
 int StatusBar::displayBattery()
 {
-	float battery_x = ALIGN_LEFT(949, vita2d_texture_get_width(img_statsbar_battery.texture.get()));
+	float battery_x = align_left(949, vita2d_texture_get_width(img_statsbar_battery.texture.get()));
 
 	float percent = scePowerGetBatteryLifePercent();
 	float width = ((29.0f * percent) / 100.0f);
