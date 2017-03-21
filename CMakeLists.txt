@@ -15,6 +15,7 @@ include("${VITASDK}/share/vita.cmake" REQUIRED)
 
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
+set(VITA_VERSION "0.7")
 
 # Default build type
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -23,14 +24,14 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -std=gnu11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -std=c++11")
 
-#set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g")
-#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -Og")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -Og")
 
-#set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Os")
-#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Os")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Os")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Os")
 
 include_directories(
   src/
@@ -57,7 +58,7 @@ ENDFUNCTION()
 file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/head.bin assets/*.png assets/*.jpeg assets/*.yml assets/*.ttf assets/*.wav assets/*.ogg)
 add_resources(PROJECT_RESOURCES ${res_files})
 
-file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp")
+file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
 add_executable(${SHORT_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
@@ -97,17 +98,16 @@ target_link_libraries(${SHORT_NAME}
   ftpvita
   SceAppMgr_stub
   SceAppUtil_stub
-  ScePromoterUtil_Stub
+  ScePromoterUtil_stub
   SceIme_stub
   ScePower_stub
   SceAudio_stub
   SceAudiodec_stub
-  SceSha1_stub
   pthread
 )
 
-vita_create_self(eboot.bin ${SHORT_NAME} UNSAFE)
-vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} eboot.bin
+vita_create_self(${SHORT_NAME}.self ${SHORT_NAME} UNSAFE)
+vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
   FILE sce_sys/icon0.png sce_sys/icon0.png
@@ -115,17 +115,18 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} eboot.bin
   FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
   FILE sce_sys/livearea/contents/template.xml sce_sys/livearea/contents/template.xml
 
+  FILE assets/icons.zip resources/icons.zip
   FILE assets/fonts/segoeui.ttf resources/fonts/segoeui.ttf
 )
 
 file(STRINGS "psvitaip.txt" PSVITAIP)
 
 add_custom_target(send
-  COMMAND curl -T eboot.bin ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/
-  DEPENDS eboot.bin
+  COMMAND curl -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
+  DEPENDS ${SHORT_NAME}.self
 )
 
 add_custom_target(shellsend
-  COMMAND psp2shell_cli ${PSVITAIP} 3333 reload eboot.bin
-  DEPENDS eboot.bin
+  COMMAND psp2shell_cli ${PSVITAIP} 3333 reload ${SHORT_NAME}.self
+  DEPENDS ${SHORT_NAME}.self
 )

@@ -87,7 +87,6 @@ LIBS += -lyaml-cpp -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
 	-lSceNet_stub -lSceNetCtl_stub -lSceHttp_stub -lSceSsl_stub \
 	-lftpvita -lSceAppMgr_stub -lSceAppUtil_stub -lScePromoterUtil_stub \
 	-lSceIme_stub -lScePower_stub -lSceAudio_stub -lSceAudiodec_stub \
-	-lSceSha1_stub \
 	-lpthread
 
 
