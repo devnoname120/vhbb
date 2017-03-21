@@ -17,11 +17,20 @@ set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
 set(VITA_VERSION "00.70")
 
+
+option(DEBUGNET "Enable debugnet for logging" OFF)
+
+# Warning psp2shell makes the homebrew very instable
+option(PSP2SHELL "Enable psp2shell for easy reloading" OFF)
+
+
+
 # Default build type
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING "Default build" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release") # For CMake GUI
 endif()
+
 
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
@@ -64,15 +73,17 @@ add_executable(${SHORT_NAME}
   ${PROJECT_SOURCE_FILES}
 )
 
-# FIXME Should be an option
-add_definitions(-DPSP2SHELL)
-target_link_libraries(${SHORT_NAME} psp2shell)
+if(DEBUGNET)
+  add_definitions(-DDEBUGNET)
+  target_link_libraries(${SHORT_NAME} debugnet)
+  file(STRINGS "debugnetip.txt" DEBUGNETIP)
+  add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
+endif()
 
-# FIXME Should be an option
-add_definitions(-DDEBUGNET)
-target_link_libraries(${SHORT_NAME} debugnet)
-file(STRINGS "debugnetip.txt" DEBUGNETIP)
-add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
+if(PSP2SHELL)
+  add_definitions(-DPSP2SHELL)
+  target_link_libraries(${SHORT_NAME} psp2shell)
+endif()
 
 target_link_libraries(${SHORT_NAME}
   yaml-cpp
