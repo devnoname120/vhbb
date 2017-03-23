@@ -31,9 +31,13 @@ HomebrewView::HomebrewView(Homebrew hb) :
 
 		sceIoRemove(SCREENSHOTS_FOLDER.c_str());
 
-		Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
-		// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
-		screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
+		try {
+			Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
+			// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
+			screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
+		} catch (const std::exception &ex) {
+			dbg_printf(DBG_ERROR, "Cannot download screenshot %s", path);
+		}
 	}
 
 	std::string long_description_cut_draft = hb_.long_description;

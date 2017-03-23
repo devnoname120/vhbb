@@ -14,9 +14,9 @@ void install_thread(SceSize args_size, InstallArguments *args) {
     auto progressView = std::make_shared<ProgressView>(progress);
     try {
         Activity::get_instance()->AddView(progressView);
+        progress.message("Starting the download...");
 
         Network::get_instance()->Download(args->url, std::string("ux0:/temp/download.vpk"), progress.Range(0, 40));
-        dbg_printf(DBG_DEBUG, "Downloaded");
 
         progress.percent(40);
 
@@ -29,7 +29,6 @@ void install_thread(SceSize args_size, InstallArguments *args) {
         
     } catch (const std::exception &ex) {
         progress.message(ex.what());
-        progress.percent(100);
         progressView->Finish(4000);
         dbg_printf(DBG_ERROR, "%s", ex.what());
     }

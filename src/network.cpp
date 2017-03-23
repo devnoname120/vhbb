@@ -115,7 +115,7 @@ int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress *progres
 
 int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 {
-    if(progress) progress->message("Downloading...");
+    if(progress) progress->message("Starting the download...");
 
     dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
     int conn = -1;
@@ -136,7 +136,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         if(progress) progress->percent(5);
 
         int i=0;
-        for (i=0; res < 0 && i < 6; i++) {
+        for (i=2; res < 0 && i < 6; i++) {
 
             dbg_printf(DBG_ERROR, "sceHttpSendRequest() error: 0x%08X", res);
             if (res == SCE_HTTP_ERROR_SSL) {
@@ -152,12 +152,14 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
                         sslErrDetail);
                 }
             }
-            sceKernelDelayThread(500 * 1000); // Wait for 0.5 sec
+            sceKernelDelayThread((i-1)*500 * 1000);
+            if(progress) progress->message("Starting the download... (" + std::to_string(i) + ")");
             res = sceHttpSendRequest(req, NULL, 0);
         }
         if (res < 0)
             throw std::runtime_error("Network: Cannot send request");
-
+        
+        if(progress) progress->message("Downloading...");
 
         int statusCode;
         res = sceHttpGetStatusCode(req, &statusCode);
@@ -205,6 +207,8 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 
         throw;
     }
+
+    dbg_printf(DBG_DEBUG, "Downloaded");
 
     if(progress) progress->percent(100);
 

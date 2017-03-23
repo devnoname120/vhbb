@@ -33,16 +33,13 @@ Texture& Texture::operator=(const Texture& that)
 
 Texture::Texture(const std::string &path, bool caching) : caching_(caching)
 {
-    //dbg_printf(DBG_DEBUG, "Looking for size %d, path: %s", fSize, path.c_str());
     auto key = path;
 	if (caching_) {
 		if (textureCache1.count(key) >= 1)
 		{
-			//dbg_printf(DBG_DEBUG, "Found it in cache");
 			texture = textureCache1[key];
 			return;
 		}
-		//dbg_printf(DBG_DEBUG, "Storing in cache...");
 	}
 
 	std::size_t found = path.find_last_of(".");
@@ -75,12 +72,12 @@ Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
 	auto key = addr;
 	if (caching) {
 		if (textureCache2.count(key) >= 1) {
-			//dbg_printf(DBG_DEBUG, "Found it in cache");
+
 			texture = textureCache2[key];
 			return;
 		}
 	}
-	//dbg_printf(DBG_DEBUG, "Storing in cache...");
+
 	texture = std::make_shared(vita2d_load_PNG_buffer(addr));
 	if (caching) textureCache2[key] = texture;
 }
