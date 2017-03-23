@@ -251,7 +251,7 @@ int VitaPackage::Install(InfoProgress *progress)
 
         i+= 1;
         if (i<50 && progress) progress3.percent(i*2);
-        sceKernelDelayThread(100 * 1000);
+        sceKernelDelayThread(150 * 1000);
     } while (state);
 
     int result = 0;

@@ -23,7 +23,11 @@ public:
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
+	// Wait in millisecond
+	void Finish(uint wait = 300);
 private:
+	uint32_t finish_tick = 0;
+
 	InfoProgress progress_;
 
 	Font font_25;

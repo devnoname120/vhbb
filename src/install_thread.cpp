@@ -44,9 +44,11 @@ void install_thread(SceSize args_size, InstallArguments *args) {
         if (res_zip < 0) {
             progress.message("Error installing the package");
             progress.percent(100);
+            progressView->Finish(4000);
         } else {
             progress.message("Finished");
             progress.percent(100);
+            progressView->Finish(2000);
         }
     } catch (const std::exception &ex) {
         dbg_printf(DBG_ERROR, "%s", ex.what());

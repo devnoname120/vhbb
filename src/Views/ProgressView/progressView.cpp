@@ -25,14 +25,13 @@ int ProgressView::Display()
     
     font_25.Draw(Point(PROGRESS_VIEW_X + PROGRESS_BAR_X, PROGRESS_VIEW_Y + 72), progress_.message());
 
-    if (99.9 <= progress_.percent() && progress_.percent() <= 100.01) {
-        // FIXME hacky
-        vita2d_end_drawing();
-		vita2d_swap_buffers();
-		sceDisplayWaitVblankStart();
-        sceKernelDelayThread(3 * 1000 * 1000);
-        vita2d_start_drawing();
-        request_destroy = true;
-    }
+    if (finish_tick != 0 && sceKernelGetProcessTimeLow() > finish_tick) request_destroy = true;
 	return 0;
+}
+
+void ProgressView::Finish(uint wait)
+{
+    if (wait == 0) {request_destroy = true; return;}
+
+    finish_tick = sceKernelGetProcessTimeLow() + wait * 1000;
 }
