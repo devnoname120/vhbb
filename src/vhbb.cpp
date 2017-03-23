@@ -37,6 +37,17 @@ void pthread_setup(void)
 }
 
 
+void terminate_logger()
+{
+	std::exception_ptr p = std::current_exception();
+	try {
+        std::rethrow_exception(p);
+    } catch(const std::exception& e) {
+        dbg_printf(DBG_ERROR, "terminate() because of %s", e.what());
+    }
+}
+
+
 int main()
 {
 	sceIoMkdir(VHBB_DATA.c_str(), 0777);
@@ -53,6 +64,8 @@ int main()
 	sceKernelStartThread(thid_spl, 0, NULL);
 
 	dbg_init();
+
+	std::set_terminate(terminate_logger);
 
 	#ifdef PSP2SHELL
 	// Do it before any file is opened otherwise psp2shell fails to reload the app
