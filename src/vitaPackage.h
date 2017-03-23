@@ -1,6 +1,7 @@
 #pragma once
 
 #include <global_include.h>
+#include "infoProgress.h"
 
 #define PACKAGE_TEMP_FOLDER std::string("ux0:/temp/pkg/")
 
@@ -9,7 +10,7 @@ public:
   VitaPackage(const std::string vpk);
   ~VitaPackage();
 
-  int Install(uint64_t *zipCur = nullptr, int *step = nullptr);
+  int Install(InfoProgress *progress = nullptr);
 
 private:
   std::string vpk_;

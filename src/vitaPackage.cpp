@@ -208,39 +208,61 @@ VitaPackage::~VitaPackage()
     sceSysmoduleUnloadModuleInternal(SCE_SYSMODULE_PROMOTER_UTIL);
 }
 
-// FIXME Remove zipCur which tells how much of the zip has been extracted
-// This is not a proper way to do it
-int VitaPackage::Install(uint64_t *zipCur, int *step)
+
+int VitaPackage::Install(InfoProgress *progress)
 {
     sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());
     sceIoMkdir(PACKAGE_TEMP_FOLDER.c_str(), 0777);
 
-    uint64_t size;
-    uncompressedSize(vpk_.c_str(), &size);
+    Zipfile vpk_file = Zipfile(vpk_);
 
-    dbg_printf(DBG_DEBUG, "Uncompressed size: %lu", size);
-
-    int ret = unzip(vpk_.c_str(), PACKAGE_TEMP_FOLDER.c_str(), zipCur);
+    InfoProgress progress2;
+    if (progress) progress2 = progress->Range(0, 60);
+    int ret = vpk_file.Unzip(PACKAGE_TEMP_FOLDER.c_str(), &progress2);
     sceIoRemove(vpk_.c_str());
     if (ret < 0) {
         dbg_printf(DBG_ERROR, "Can't unzip %s: 0x%08X", vpk_.c_str(), ret);
         return -1;
     }
 
-    if (step) *step = 1;
-
+    progress->message("Installing...");
     ret = makeHeadBin();
     if (ret < 0) {
         dbg_printf(DBG_ERROR, "Can't make head.bin for : 0x%08X", vpk_.c_str(), ret);
         return -1;
     }
 
-    ret = scePromoterUtilityPromotePkgWithRif(PACKAGE_TEMP_FOLDER.c_str(), 1);
+    InfoProgress progress3;
+    if(progress) progress3 = progress->Range(60, 100);
+    ret = scePromoterUtilityPromotePkg(PACKAGE_TEMP_FOLDER.c_str(), 0);
     if (ret < 0) {
-        dbg_printf(DBG_ERROR, "Can't Promote %s: 0x%08X", vpk_.c_str(), ret);
+        dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityPromotePkgWithRif() = 0x%08X", vpk_.c_str(), ret);
+        return ret;
+    }
+
+    int state = 0;
+    uint i = 0;
+    do {
+        ret = scePromoterUtilityGetState(&state);
+        if (ret < 0) {
+            dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetState() = 0x%08X", vpk_.c_str(), ret);
+            return ret;
+        }
+
+        i+= 1;
+        if (i<50 && progress) progress3.percent(i*2);
+        sceKernelDelayThread(100 * 1000);
+    } while (state);
+
+    int result = 0;
+    ret = scePromoterUtilityGetResult(&result);
+    if (ret < 0) {
+        dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetResult() = 0x%08X", vpk_.c_str(), ret);
         return -1;
     }
 
     sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());
+
+    if(progress) progress->percent(100);
     return 0;
 }

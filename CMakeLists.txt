@@ -141,3 +141,8 @@ add_custom_target(shellsend
   COMMAND psp2shell_cli ${PSVITAIP} 3333 reload ${SHORT_NAME}.self
   DEPENDS ${SHORT_NAME}.self
 )
+
+add_custom_target(vpksend
+  COMMAND curl -T ${SHORT_NAME}.vpk ftp://${PSVITAIP}:1337/ux0:/
+  DEPENDS ${SHORT_NAME}.vpk
+)

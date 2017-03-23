@@ -4,6 +4,8 @@
 
 #include <Views/View.h>
 
+#include "infoProgress.h"
+
 #include <texture.h>
 #include <font.h>
 
@@ -17,17 +19,13 @@
 
 class ProgressView: public View {
 public:
-	 ProgressView();
+	 ProgressView(InfoProgress progress);
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
-
-    void SetProgress(int percent, std::string message);
 private:
+	InfoProgress progress_;
+
 	Font font_25;
-
 	Texture img_dialog_progress_bg;
-
-    int percent_;
-    std::string message_;
 };

@@ -38,11 +38,13 @@ int Database::DownloadIcons()
     sceIoMkdir(ICONS_FOLDER.c_str(), 0777);
 
 	if (access((ICONS_FOLDER + "/init.txt").c_str(), F_OK) == -1) {
-		unzip(ICON_ZIP.c_str(), (ICONS_FOLDER + "/").c_str());
+		// TODO display progess to user
+		auto zip = Zipfile(ICON_ZIP);
 
-		std::string ok = "ok";
+		zip.Unzip(ICONS_FOLDER + "/");
+
 		int fd = sceIoOpen((ICONS_FOLDER + "/init.txt").c_str(), SCE_O_WRONLY|SCE_O_CREAT, 0777);
-		sceIoWrite(fd, ok.c_str(), 2);
+		sceIoWrite(fd, "ok", 2);
 		sceIoClose(fd);
 	}
 
@@ -52,7 +54,7 @@ int Database::DownloadIcons()
 		if (access(path.c_str(), F_OK) == -1) {
 		    std::string url = ICON_URL_PREFIX + hb.icon;
 
-		    Network::get_instance()->Download(url, path.c_str());
+		    Network::get_instance()->Download(url, path);
 		}
 	}
 	return 0;

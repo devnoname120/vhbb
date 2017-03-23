@@ -41,7 +41,7 @@ Network::~Network()
 
 }
 
-int Network::DownloadSize(std::string url, uint64_t *size)
+int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress *progress)
 {
     dbg_printf(DBG_DEBUG, "Checking size of %s", url.c_str());
     int conn = -1;
@@ -77,6 +77,9 @@ int Network::DownloadSize(std::string url, uint64_t *size)
             throw std::runtime_error("Network: Cannot send request");
         }
 
+        if(progress) progress->percent(80);
+
+
         int statusCode;
         res = sceHttpGetStatusCode(req, &statusCode);
         if (res < 0)
@@ -97,15 +100,18 @@ int Network::DownloadSize(std::string url, uint64_t *size)
         throw;
     }
 
+    if(progress) progress->percent(100);
+
     if (req >= 0) sceHttpDeleteRequest(req);
     if (conn >= 0) sceHttpDeleteConnection(conn);
 
     return 0;    
 }
 
-int Network::Download(std::string url, std::string dest, uint64_t *cur)
+int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 {
-    if (cur) *cur = 0;
+    if(progress) progress->message("Downloading...");
+
     dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
     int conn = -1;
     int req = -1;
@@ -121,6 +127,9 @@ int Network::Download(std::string url, std::string dest, uint64_t *cur)
             throw std::runtime_error("Network: Cannot create request");
 
         int res = sceHttpSendRequest(req, NULL, 0);
+
+        if(progress) progress->percent(5);
+
         int i=0;
         for (i=0; res < 0 && i < 6; i++) {
 
@@ -149,12 +158,22 @@ int Network::Download(std::string url, std::string dest, uint64_t *cur)
         res = sceHttpGetStatusCode(req, &statusCode);
         if (res < 0)
             throw std::runtime_error("Network: Cannot get status code");
-
         if (statusCode != 200)
             throw std::runtime_error("Network: unexpected status code");
 
+        uint64_t contentLength;
+        res = sceHttpGetResponseContentLength(req, &contentLength);
+        if (res < 0 && progress != nullptr)
+            throw std::runtime_error("Network: Cannot get content length");
+
+        if (res >= 0)
+        dbg_printf(DBG_DEBUG, "Content length: %lu", contentLength);
+
+        if(progress) progress->percent(10);
+
         fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 
+        uint s_downloaded = 0;
         char buf[4096];
         while(true) {
             int read = sceHttpReadData(req, buf, sizeof(buf));
@@ -163,7 +182,10 @@ int Network::Download(std::string url, std::string dest, uint64_t *cur)
 
             if (read == 0)
                 break;
-            if (cur) *cur += read;
+            
+            s_downloaded += read;
+            if(progress) progress->percent(10 + 90*s_downloaded/contentLength);
+
             int written = sceIoWrite(fd, buf, read);
             if (written < 0)
                 throw std::runtime_error("Network: Couldn't write data");
@@ -178,6 +200,8 @@ int Network::Download(std::string url, std::string dest, uint64_t *cur)
 
         throw;
     }
+
+    if(progress) progress->percent(100);
 
     if (fd >= 0) sceIoClose(fd);
     if (req >= 0) sceHttpDeleteRequest(req);

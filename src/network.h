@@ -3,6 +3,7 @@
 #include <global_include.h>
 
 #include "singleton.h"
+#include "infoProgress.h"
 
 #define VHBB_UA "VHBB/1.00 libhttp/1.1"
 #define MAX_QUEUE_CONN 10
@@ -13,8 +14,8 @@ public:
     Network();
     ~Network();
 
-    int Download(std::string url, std::string dest, uint64_t *cur = NULL);
-    int DownloadSize(std::string url, uint64_t *size);
+    int Download(std::string url, std::string dest, InfoProgress *progress = nullptr);
+    int DownloadSize(std::string url, uint64_t *size, InfoProgress *progress = nullptr);
 
 private:
     int templateId_;

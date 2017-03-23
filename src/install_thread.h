@@ -2,6 +2,8 @@
 
 #include <global_include.h>
 
+#include "infoProgress.h"
+
 struct InstallArguments {
 	std::string url;
 };
@@ -9,15 +11,12 @@ struct InstallArguments {
 struct DownloadArguments {
 	std::string url;
     std::string dest;
-    uint64_t *cur;
-    bool *finished;
+    InfoProgress *progress;
 };
 
 struct UnzipArguments {
-	uint64_t *cur;
-    bool *finished;
     int *res;
-    int *step;
+    InfoProgress *progress;
 };
 
 void install_thread(SceSize args_size, InstallArguments *args);
