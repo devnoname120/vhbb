@@ -208,6 +208,10 @@ VitaPackage::~VitaPackage()
     sceSysmoduleUnloadModuleInternal(SCE_SYSMODULE_PROMOTER_UTIL);
 }
 
+int VitaPackage::Install(InfoProgress progress)
+{
+    return Install(&progress);
+}
 
 int VitaPackage::Install(InfoProgress *progress)
 {
@@ -218,18 +222,14 @@ int VitaPackage::Install(InfoProgress *progress)
 
     InfoProgress progress2;
     if (progress) progress2 = progress->Range(0, 60);
-    int ret = vpk_file.Unzip(PACKAGE_TEMP_FOLDER.c_str(), &progress2);
+    int ret = vpk_file.Unzip(PACKAGE_TEMP_FOLDER, &progress2);
     sceIoRemove(vpk_.c_str());
-    if (ret < 0) {
-        dbg_printf(DBG_ERROR, "Can't unzip %s: 0x%08X", vpk_.c_str(), ret);
-        return -1;
-    }
 
     progress->message("Installing...");
     ret = makeHeadBin();
     if (ret < 0) {
         dbg_printf(DBG_ERROR, "Can't make head.bin for : 0x%08X", vpk_.c_str(), ret);
-        return -1;
+        throw std::runtime_error("Error faking app signature");
     }
 
     InfoProgress progress3;
@@ -237,7 +237,7 @@ int VitaPackage::Install(InfoProgress *progress)
     ret = scePromoterUtilityPromotePkg(PACKAGE_TEMP_FOLDER.c_str(), 0);
     if (ret < 0) {
         dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityPromotePkgWithRif() = 0x%08X", vpk_.c_str(), ret);
-        return ret;
+        throw std::runtime_error("Error installing app");
     }
 
     int state = 0;
@@ -246,7 +246,7 @@ int VitaPackage::Install(InfoProgress *progress)
         ret = scePromoterUtilityGetState(&state);
         if (ret < 0) {
             dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetState() = 0x%08X", vpk_.c_str(), ret);
-            return ret;
+            throw std::runtime_error("Error while instaling");
         }
 
         i+= 1;
@@ -258,7 +258,7 @@ int VitaPackage::Install(InfoProgress *progress)
     ret = scePromoterUtilityGetResult(&result);
     if (ret < 0) {
         dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetResult() = 0x%08X", vpk_.c_str(), ret);
-        return -1;
+        throw std::runtime_error("Installation failed");
     }
 
     sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());

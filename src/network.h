@@ -14,7 +14,10 @@ public:
     Network();
     ~Network();
 
+    int Download(std::string url, std::string dest, InfoProgress progress);
     int Download(std::string url, std::string dest, InfoProgress *progress = nullptr);
+
+    int DownloadSize(std::string url, uint64_t *size, InfoProgress progress);
     int DownloadSize(std::string url, uint64_t *size, InfoProgress *progress = nullptr);
 
 private:

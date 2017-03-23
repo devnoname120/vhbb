@@ -41,6 +41,11 @@ Network::~Network()
 
 }
 
+int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress progress)
+{
+    return DownloadSize(url, size, &progress);
+}
+
 int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress *progress)
 {
     dbg_printf(DBG_DEBUG, "Checking size of %s", url.c_str());
@@ -208,4 +213,9 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
     if (conn >= 0) sceHttpDeleteConnection(conn);
 
     return 0;
+}
+
+int Network::Download(std::string url, std::string dest, InfoProgress progress)
+{
+    return Download(url, dest, &progress);
 }

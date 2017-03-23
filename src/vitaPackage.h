@@ -10,6 +10,7 @@ public:
   VitaPackage(const std::string vpk);
   ~VitaPackage();
 
+  int Install(InfoProgress progress);
   int Install(InfoProgress *progress = nullptr);
 
 private:

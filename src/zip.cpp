@@ -60,21 +60,26 @@ Zipfile::~Zipfile()
     unzClose(zipfile_);
 }
 
-int Zipfile::Unzip(const std::string outpath, InfoProgress *progress_)
+int Zipfile::Unzip(const std::string outpath, InfoProgress &progress)
+{
+    return Unzip(outpath, &progress);
+}
+
+int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
 {
     if (uncompressed_size_ == 0) {
-        if (progress_) {
-            progress_->percent(0);
-            progress_->message("Calculating zip size...");
-            progress_->speed(-1);
+        if (progress) {
+            progress->percent(0);
+            progress->message("Calculating zip size...");
+            progress->speed(-1);
         }
         UncompressedSize();
     }
 
-    if (progress_) {
-        progress_->percent(5);
-        progress_->message("Unzipping...");
-        progress_->speed(-1);
+    if (progress) {
+        progress->percent(5);
+        progress->message("Unzipping...");
+        progress->speed(-1);
     }
 
     char read_buffer[READ_SIZE];
@@ -150,7 +155,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress_)
                 {
                     fwrite(read_buffer, error, 1, out); // TODO check fwrite return
                     s_progress += error;
-                    if (progress_) progress_->percent(5 + 95*s_progress/uncompressed_size_);
+                    if (progress) progress->percent(5 + 95*s_progress/uncompressed_size_);
                 }
             } while (error > 0);
 
@@ -170,8 +175,14 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress_)
         }
     }
 
-    if (progress_) progress_->percent(100);
+    if (progress) progress->percent(100);
     return 0;
+}
+
+
+int Zipfile::UncompressedSize(InfoProgress &progress)
+{
+    return UncompressedSize(&progress);
 }
 
 int Zipfile::UncompressedSize(InfoProgress *progress)
