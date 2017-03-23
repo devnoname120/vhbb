@@ -117,7 +117,11 @@ int ListView::HandleInput(int focus, const Input& input)
 			if (preSelectedItem != -1) {
 				selectedItem = preSelectedItem;
 				dbg_printf(DBG_DEBUG, "Clicked, adding view...");
-				Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+				try {
+					Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+				} catch (const std::exception &ex) {
+					dbg_printf(DBG_ERROR, ex.what());
+				}
 			}
 
 		}
@@ -176,7 +180,11 @@ int ListView::HandleInput(int focus, const Input& input)
 				}
 			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
 				dbg_printf(DBG_DEBUG, "Pressed, adding view...");
-				Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+				try {
+					Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+				} catch (const std::exception &ex) {
+					dbg_printf(DBG_ERROR, ex.what());
+				}
 			}
 		// No item is selected
 		} else {
