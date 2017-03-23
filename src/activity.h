@@ -20,6 +20,7 @@ public:
 
 
 private:
+    std::mutex mtx_; 
     std::vector<std::shared_ptr<View>> views_;
     std::vector<std::shared_ptr<View>> views_queue;
 };
