@@ -49,8 +49,11 @@ HomebrewView::HomebrewView(Homebrew hb) :
 		long_description_cut3 = long_description_cut_draft.substr(155, 77);
 		long_description_cut4 = long_description_cut_draft.substr(232, 73);
 		if (long_description_cut_draft.length() >= 305) long_description_cut4 += "...";
+
+	} catch (const std::out_of_range &ex) {
+		// No problem
 	} catch (const std::exception &ex) {
-		dbg_printf(DBG_DEBUG, "Error when cutting description: %s", ex.what());
+		dbg_printf(DBG_WARNING, "Error when cutting description: %s", ex.what());
 	}
 
 }
