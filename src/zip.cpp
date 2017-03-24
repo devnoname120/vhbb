@@ -57,7 +57,7 @@ Zipfile::Zipfile(const std::string zip_path)
 
 Zipfile::~Zipfile()
 {
-    unzClose(zipfile_);
+    if(zipfile_) unzClose(zipfile_);
 }
 
 int Zipfile::Unzip(const std::string outpath, InfoProgress &progress)
