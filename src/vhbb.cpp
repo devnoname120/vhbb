@@ -11,7 +11,6 @@
 #include "nosleep_thread.h"
 
 
-// Davee: Fix c++ exceptions
 extern "C"
 {
     unsigned int sleep(unsigned int seconds)

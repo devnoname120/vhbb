@@ -98,7 +98,6 @@ int HomebrewView::Display()
 	font_25.Draw(Point(HB_X + 225, HB_Y + 144), hb_.version, COLOR_WHITE);
 	//font_20.Draw(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
 	//font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
-	// FIXME: Display real description
 	if (!hb_.long_description.empty()) {
 		font_25.Draw(Point(HB_X + 40, HB_Y + 362), long_description_cut1);
 		if (!long_description_cut2.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 40), long_description_cut2);

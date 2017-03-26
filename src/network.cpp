@@ -16,7 +16,6 @@ Network::Network()
     sceSslInit(300 * 1024);
     sceHttpInit(1 * 1024 * 1024);
     
-    // FIXME Do we want to enforce certificate verification?
     // Certificate verification for the API fails with SCE_HTTP_ERROR_SSL, SCE_HTTPS_ERROR_SSL_CN_CHECK
     sceHttpsDisableOption(SCE_HTTPS_FLAG_CN_CHECK);
 

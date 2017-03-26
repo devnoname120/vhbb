@@ -148,11 +148,7 @@ int CategoryView::Display()
 	img_catbar.Draw(Point(CAT_X, CAT_Y));
 
 	for (unsigned int i=0; i < _countof(categoryList); i++) {
-		// FIXME Center and set real name
-
 		font_35.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
-		// font_35.Draw(Point(categoryTabs[i].minX, CAT_Y + CAT_HEIGHT), std::string("Test"));
-		// vita2d_font_draw_text(font_35, , COLOR_WHITE, 35, "test"/*categoryList_name[i]*/);
 		if (i > 0)
 			img_catbar_sep.Draw(Point(categoryTabs[i].minX - 1, CAT_Y));
 	}

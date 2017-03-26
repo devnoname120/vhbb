@@ -32,8 +32,6 @@ private:
 	int preSelectedItem = -1;
 	int selectedItem = -1;
 	double scrollSpeed = 0;
-	//Homebrew *hblist;
-	int count; // FIXME: not needed because we use a vector
 
 	uint itemPosY(uint i);
 	uint firstDisplayedItem();
