@@ -18,7 +18,7 @@ set(VITA_TITLEID  "VHBB00001")
 set(VITA_VERSION "00.70")
 
 
-option(DEBUGNET "Enable debugnet for logging" OFF)
+option(DEBUGNET "Enable debugnet for logging" ON)
 
 # Warning psp2shell makes the homebrew very instable
 option(PSP2SHELL "Enable psp2shell for easy reloading" OFF)
