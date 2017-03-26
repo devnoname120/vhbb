@@ -25,8 +25,10 @@ private:
 
 	Texture img_preview_infobg;
 	Texture img_preview_btn_download;
+	Texture img_preview_btn_open;
 
 	Homebrew hb_;
+	bool installed_ = false;
 	Texture img_icon;
 
 	std::vector<Texture> screenshots;
@@ -36,6 +38,7 @@ private:
 	std::string long_description_cut3 = "";
 	std::string long_description_cut4 = "";
 
+	void checkInstalled();
 	void homebrewInstall();
 
 };
