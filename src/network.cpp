@@ -15,7 +15,7 @@ Network::Network()
     sceSysmoduleLoadModule(SCE_SYSMODULE_HTTPS);
     sceSslInit(300 * 1024);
     sceHttpInit(1 * 1024 * 1024);
-
+    
     // FIXME Do we want to enforce certificate verification?
     sceHttpsDisableOption(SCE_HTTPS_FLAG_SERVER_VERIFY);
 
@@ -72,7 +72,7 @@ int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress *progres
                 if (res < 0) {
                     dbg_printf(DBG_ERROR, "sceHttpsGetSslError error: 0x%08X", res);
                 } else {
-                    dbg_printf(DBG_ERROR, "SSL error: %d, %u\nSee here for meaning: \
+                    dbg_printf(DBG_ERROR, "SSL error: 0x%08X, %u\nSee here for meaning: \
                         https://github.com/vitasdk/vita-headers/blob/master/include/psp2/net/http.h",
                         sslErr,
                         sslErrDetail);
@@ -146,7 +146,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
                 if (res < 0) {
                     dbg_printf(DBG_ERROR, "sceHttpsGetSslError error: 0x%08X", res);
                 } else {
-                    dbg_printf(DBG_ERROR, "SSL error: %d, %u\nSee here for meaning: \
+                    dbg_printf(DBG_ERROR, "SSL error: 0x%08X, %u\nSee here for meaning: \
                         https://github.com/vitasdk/vita-headers/blob/master/include/psp2/net/http.h",
                         sslErr,
                         sslErrDetail);
