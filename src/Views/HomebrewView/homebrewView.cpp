@@ -31,12 +31,11 @@ HomebrewView::HomebrewView(Homebrew hb) :
 
 		sceIoMkdir(SCREENSHOTS_FOLDER.c_str(), 0777);
 
-		sceIoRemove(SCREENSHOTS_FOLDER.c_str());
-
 		try {
 			Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
 			// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
 			screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
+			sceIoRemove((SCREENSHOTS_FOLDER + "/" + filename).c_str());
 		} catch (const std::exception &ex) {
 			dbg_printf(DBG_ERROR, "Cannot download screenshot %s", path);
 		}
