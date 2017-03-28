@@ -65,7 +65,7 @@ HomebrewView::HomebrewView(Homebrew hb) :
 void HomebrewView::homebrewInstall() {
 	try {
 		InstallArguments *args = new InstallArguments;
-		args->url = hb_.url;
+		args->hb = hb_;
 		SceUID thid2 = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
 		sceKernelStartThread(thid2, sizeof(InstallArguments), args);
 		dbg_printf(DBG_DEBUG, "OK");

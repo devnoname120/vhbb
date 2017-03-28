@@ -2,10 +2,11 @@
 
 #include <global_include.h>
 
+#include "homebrew.h"
 #include "infoProgress.h"
 
 struct InstallArguments {
-	std::string url;
+	Homebrew hb;
 };
 
 void install_thread(SceSize args_size, InstallArguments *args);
