@@ -14,10 +14,10 @@ public:
   Zipfile(const std::string zip_path);
   ~Zipfile();
 
-  int Unzip(const std::string outpath, InfoProgress &progress);
+  int Unzip(const std::string outpath, InfoProgress progress);
   int Unzip(const std::string outpath, InfoProgress *progress = nullptr);
 
-  int UncompressedSize(InfoProgress &progress);
+  int UncompressedSize(InfoProgress progress);
   int UncompressedSize(InfoProgress *progress = nullptr);
 
 private:

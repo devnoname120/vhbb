@@ -15,7 +15,7 @@ Network::Network()
     sceSysmoduleLoadModule(SCE_SYSMODULE_HTTPS);
     sceSslInit(300 * 1024);
     sceHttpInit(1 * 1024 * 1024);
-    
+
     // Certificate verification for the API fails with SCE_HTTP_ERROR_SSL, SCE_HTTPS_ERROR_SSL_CN_CHECK
     sceHttpsDisableOption(SCE_HTTPS_FLAG_CN_CHECK);
 
@@ -110,12 +110,12 @@ int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress *progres
     if (req >= 0) sceHttpDeleteRequest(req);
     if (conn >= 0) sceHttpDeleteConnection(conn);
 
-    return 0;    
+    return 0;
 }
 
 int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 {
-    if(progress) progress->message("Starting the download...");
+    //if(progress) progress->message("Starting the download...");
 
     dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
     int conn = -1;
@@ -158,7 +158,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         }
         if (res < 0)
             throw std::runtime_error("Network: Cannot send request");
-        
+
         if(progress) progress->message("Downloading...");
 
         int statusCode;
@@ -189,7 +189,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 
             if (read == 0)
                 break;
-            
+
             s_downloaded += read;
             if(progress) progress->percent(10 + 90*s_downloaded/contentLength);
 
