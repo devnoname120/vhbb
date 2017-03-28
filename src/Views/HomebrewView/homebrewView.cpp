@@ -105,7 +105,7 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 	} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
 		homebrewInstall();
 	}
-	// TODO Implement
+
 	return 0;
 }
 
