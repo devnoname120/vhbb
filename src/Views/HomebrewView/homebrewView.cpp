@@ -97,8 +97,7 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 			char uri[32];
 			snprintf(uri, sizeof(uri), "psgm:play?titleid=%s", hb_.titleid.c_str());
 
-			// FIXME Only shows on the livearea
-			sceAppMgrLaunchAppByUri(0xFFFF, uri);
+			sceAppMgrLaunchAppByUri(0x20000, uri);
 		}
 	} else if (input.KeyNewPressed(SCE_CTRL_CIRCLE)) {
 		request_destroy = true;
