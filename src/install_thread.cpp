@@ -11,7 +11,8 @@
 
 void install_thread(SceSize args_size, InstallArguments *args) {
     InfoProgress progressTotal;
-    auto progressView = std::make_shared<ProgressView>(progressTotal);
+	Homebrew targetHb = args->hb;
+    auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb);
 
     InfoProgress progress;
 
