@@ -60,7 +60,7 @@ Zipfile::~Zipfile()
     if(zipfile_) unzClose(zipfile_);
 }
 
-int Zipfile::Unzip(const std::string outpath, InfoProgress &progress)
+int Zipfile::Unzip(const std::string outpath, InfoProgress progress)
 {
     return Unzip(outpath, &progress);
 }
@@ -141,7 +141,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
             }
 
             int error = UNZ_OK;
-            do    
+            do
             {
                 error = unzReadCurrentFile(zipfile_, read_buffer, READ_SIZE);
                 if (error < 0)
@@ -180,7 +180,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
 }
 
 
-int Zipfile::UncompressedSize(InfoProgress &progress)
+int Zipfile::UncompressedSize(InfoProgress progress)
 {
     return UncompressedSize(&progress);
 }
@@ -190,7 +190,7 @@ int Zipfile::UncompressedSize(InfoProgress *progress)
     // Progress is not done yet in this function
     if(progress) progress->message("Calculating zip content size...");
     uncompressed_size_ = 0;
-   
+
     if(unzGoToFirstFile(zipfile_) != UNZ_OK) {
         dbg_printf(DBG_DEBUG, "Cannot go to first file");
         throw std::runtime_error("Error going to first file");
@@ -225,5 +225,5 @@ int Zipfile::UncompressedSize(InfoProgress *progress)
             }
         }
     }
-    return 0;   
+    return 0;
 }
