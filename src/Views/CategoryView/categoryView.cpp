@@ -39,7 +39,7 @@ int CategoryView::touchToCat(const Input &input)
 }
 
 CategoryView::CategoryView() :
-	font_35(Font(std::string(FONT_DIR "segoeui.ttf"), 35)),
+	font_33(Font(std::string(FONT_DIR "segoeui.ttf"), 33)),
 	img_catbar(Texture(&_binary_assets_spr_img_catbar_png_start)),
 	img_catbar_highlight(Texture(&_binary_assets_spr_img_catbar_highlight_png_start)),
 	img_catbar_sep(Texture(&_binary_assets_spr_img_catbar_sep_png_start))
@@ -148,7 +148,7 @@ int CategoryView::Display()
 	img_catbar.Draw(Point(CAT_X, CAT_Y));
 
 	for (unsigned int i=0; i < _countof(categoryList); i++) {
-		font_35.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
+		font_33.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
 		if (i > 0)
 			img_catbar_sep.Draw(Point(categoryTabs[i].minX - 1, CAT_Y));
 	}
