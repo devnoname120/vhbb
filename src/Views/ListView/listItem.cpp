@@ -5,13 +5,21 @@
 
 extern unsigned char _binary_assets_spr_img_itm_panel_png_start;
 extern unsigned char _binary_assets_spr_img_itm_panel_highlight_png_start;
+extern unsigned char _binary_assets_spr_img_itm_label_game_png_start;
+extern unsigned char _binary_assets_spr_img_itm_label_port_png_start;
+extern unsigned char _binary_assets_spr_img_itm_label_emu_png_start;
+extern unsigned char _binary_assets_spr_img_itm_label_util_png_start;
 
 ListItem::ListItem(Homebrew hb) :
 	homebrew(hb),
-	font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25)),
-    font_35(Font(std::string(FONT_DIR "segoeui.ttf"), 35)),
+	font_22(Font(std::string(FONT_DIR "segoeui.ttf"), 22)),
+    font_32(Font(std::string(FONT_DIR "segoeui.ttf"), 32)),
     img_itm_panel(Texture(&_binary_assets_spr_img_itm_panel_png_start)),
     img_itm_panel_highlight(Texture(&_binary_assets_spr_img_itm_panel_highlight_png_start)),
+	img_itm_label_game(Texture(&_binary_assets_spr_img_itm_label_game_png_start)),
+	img_itm_label_port(Texture(&_binary_assets_spr_img_itm_label_port_png_start)),
+	img_itm_label_emu(Texture(&_binary_assets_spr_img_itm_label_emu_png_start)),
+	img_itm_label_util(Texture(&_binary_assets_spr_img_itm_label_util_png_start)),
     img_icon_(Texture(ICONS_FOLDER + "/" + hb.icon))
 
 {
@@ -29,14 +37,24 @@ int ListItem::display(int posY)
 {
 	img_itm_panel.Draw(Point(ITEM_POSX, posY));
 	//dbg_printf(DBG_DEBUG, "Drawing title: %s", homebrew.title.c_str());
-	font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.name);
-	font_25.Draw(Point(ITEM_POSX + 120, posY + 76), homebrew.author);
-	font_25.Draw(Point(ITEM_POSX + 746, posY + 76), homebrew.date.str);
+	font_32.Draw(Point(ITEM_POSX + 120, posY + 30), homebrew.name);
+	font_22.Draw(Point(ITEM_POSX + 122, posY + 76), homebrew.author);
+	font_22.Draw(Point(ITEM_POSX + 776, posY + 76), homebrew.date.str);
 	// font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.version);
 	//font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.release);
 
 	img_icon_.DrawResize(Point(ITEM_POSX, posY), Point(90, 90));
-
+	
+	// TODO: Is there a better way of handling this? Yes i'm talking to You good sir :-)
+	if (!homebrew.category.compare("1"))
+		img_itm_label_game.Draw(Point(ITEM_POSX + 732, posY + 1));
+	else if (!homebrew.category.compare("2"))
+		img_itm_label_port.Draw(Point(ITEM_POSX + 732, posY + 1));
+	else if (!homebrew.category.compare("5"))
+		img_itm_label_emu.Draw(Point(ITEM_POSX + 732, posY + 1));
+	else if (!homebrew.category.compare("4"))
+		img_itm_label_util.Draw(Point(ITEM_POSX + 732, posY + 1));
+	
 	return 0;
 }
 
@@ -45,4 +63,3 @@ int ListItem::displayHighlight(int posY)
 	img_itm_panel_highlight.Draw(Point(ITEM_POSX, posY));
 	return 0;
 }
-
