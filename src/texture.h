@@ -21,6 +21,7 @@ public:
   Texture& operator=(const Texture& that);
 
   int Draw(const Point &pt);
+  int DrawExt(const Point &pt, int alpha);
   int DrawResize(const Point &pt1, const Point &dimensions);
 
   static std::unordered_map<std::string, std::shared_ptr<vita2d_texture>> textureCache1;
