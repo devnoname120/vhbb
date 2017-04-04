@@ -13,7 +13,7 @@ class ListItem {
 public:
 	 ListItem(Homebrew hb);
 
-	int Display(int posY, int highlight);
+	int Display(int posY, int highlight, int highlightAlpha);
 
 	Homebrew homebrew;
 private:
@@ -29,9 +29,9 @@ private:
 	Texture img_itm_label_port;
 	Texture img_itm_label_emu;
 	Texture img_itm_label_util;
-
+	
 	int display(int posY);
-	int displayHighlight(int posY);
+	int displayHighlight(int posY, int alpha);
 
 };
 

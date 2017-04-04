@@ -31,6 +31,11 @@ private:
 	int posY = 0; //!< Position in the list of homebrews if we consider it as a texture
 	int preSelectedItem = -1;
 	int selectedItem = -1;
+	int itemHighlightAlpha = 255;
+	int itemHighlightSpeed = 7;
+	int itemHighlightDirection = 1;
+	int resetHeighlight();
+	
 	double scrollSpeed = 0;
 
 	uint itemPosY(uint i);

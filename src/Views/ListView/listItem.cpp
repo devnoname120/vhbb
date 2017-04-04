@@ -25,11 +25,11 @@ ListItem::ListItem(Homebrew hb) :
 {
 }
 
-int ListItem::Display(int posY, int highlight)
+int ListItem::Display(int posY, int highlight, int highlightAlpha)
 {
 	display(posY);
 	if (highlight)
-		displayHighlight(posY);
+		displayHighlight(posY, highlightAlpha);
 	return 0;
 }
 
@@ -58,8 +58,8 @@ int ListItem::display(int posY)
 	return 0;
 }
 
-int ListItem::displayHighlight(int posY)
+int ListItem::displayHighlight(int posY, int alpha)
 {
-	img_itm_panel_highlight.Draw(Point(ITEM_POSX, posY));
+	img_itm_panel_highlight.DrawExt(Point(ITEM_POSX, posY), alpha);
 	return 0;
 }
