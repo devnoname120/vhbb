@@ -8,10 +8,11 @@ extern unsigned char _binary_assets_spr_img_dialog_progress_bar_glow_png_start;
 extern unsigned char _binary_assets_spr_img_dialog_btn_png_start;
 
 
-ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
+ProgressView::ProgressView(InfoProgress progress, Homebrew hb, pthread_t thid) :
     progress_(progress),
 	font_24(Font(std::string(FONT_DIR "segoeui.ttf"), 24)),
 	hb_(hb),
+	thid_(thid),
 	img_icon(Texture(ICONS_FOLDER + "/" + hb_.icon)),
     img_dialog_progress_bg(Texture(&_binary_assets_spr_img_dialog_progress_bg_png_start)),
 	img_dialog_progress_bar(Texture(&_binary_assets_spr_img_dialog_progress_bar_png_start)),
@@ -22,6 +23,10 @@ ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
 
 int ProgressView::HandleInput(int focus, const Input& input)
 {
+	if (input.TouchNewPressed() && input.TouchInTexture(Point(PROGRESS_VIEW_X + 148, PROGRESS_VIEW_Y + 178), img_dialog_btn)) {
+		pthread_cancel(thid_);
+		progress_.percent(100);
+	}
     return 0;
 }
 

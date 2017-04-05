@@ -142,3 +142,8 @@ int Input::TouchInRectangle(const Rectangle &rect) const
 
 	return rect.Inside(Point(touchX, touchY));
 }
+
+int Input::TouchInTexture(const Point &draw_pt, const Texture &tex) const
+{
+	return TouchInRectangle(Rectangle(draw_pt, Point(draw_pt.x + tex.width, draw_pt.y + tex.height)));
+}

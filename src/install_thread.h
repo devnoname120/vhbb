@@ -9,4 +9,4 @@ struct InstallArguments {
 	Homebrew hb;
 };
 
-void install_thread(SceSize args_size, InstallArguments *args);
+void* install_thread(void* args);

@@ -20,7 +20,7 @@
 
 class ProgressView: public View {
 public:
-	ProgressView(InfoProgress progress, Homebrew hb);
+	ProgressView(InfoProgress progress, Homebrew hb, pthread_t thid);
 	
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
@@ -31,6 +31,7 @@ private:
 
 	InfoProgress progress_;
 	Homebrew hb_;
+	pthread_t thid_; // Kill the thread if install is pressed
 	
 	Font font_24;
 	Texture img_icon;

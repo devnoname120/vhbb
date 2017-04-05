@@ -1,4 +1,6 @@
 #include "homebrewView.h"
+
+#include <pthread.h>
 #include <vitaPackage.h>
 #include <activity.h>
 #include <Views/ProgressView/progressView.h>
@@ -66,8 +68,11 @@ void HomebrewView::homebrewInstall() {
 	try {
 		InstallArguments *args = new InstallArguments;
 		args->hb = hb_;
-		SceUID thid2 = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
-		sceKernelStartThread(thid2, sizeof(InstallArguments), args);
+
+		pthread_t t1;
+		pthread_create(&t1, NULL, install_thread, args);
+		//install_thid_ = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
+		//sceKernelStartThread(install_thid_, sizeof(InstallArguments), args);
 		dbg_printf(DBG_DEBUG, "OK");
 	} catch (const std::exception &ex) {
 		dbg_printf(DBG_ERROR, "%s", ex.what());

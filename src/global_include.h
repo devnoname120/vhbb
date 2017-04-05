@@ -31,6 +31,8 @@
 #include <math.h>
 #include <sys/stat.h>
 
+#include <pthread.h>
+
 #include <psp2/appmgr.h>
 #include <psp2/apputil.h>
 #include <psp2/types.h>

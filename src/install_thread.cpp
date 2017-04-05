@@ -9,21 +9,23 @@
 #include "zip.h"
 
 
-void install_thread(SceSize args_size, InstallArguments *args) {
+void* install_thread(void* args) {
+    InstallArguments* installArgs = (InstallArguments*)args;
+
     InfoProgress progressTotal;
-	Homebrew targetHb = args->hb;
-    auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb);
+	Homebrew targetHb = installArgs->hb;
+    auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb, pthread_self());
 
     InfoProgress progress;
 
     try {
         Activity::get_instance()->AddView(progressView);
 
-        if (!args->hb.data.empty()) {
+        if (!installArgs->hb.data.empty()) {
             progress = progressTotal.Range(0, 50);
 
             progress.message("Starting the data download...");
-            Network::get_instance()->Download(args->hb.data, std::string("ux0:/temp/data.zip"), progress.Range(0, 50));
+            Network::get_instance()->Download(installArgs->hb.data, std::string("ux0:/temp/data.zip"), progress.Range(0, 50));
 
             Zipfile zip = Zipfile("ux0:/temp/data.zip");
             zip.Unzip("ux0:/data/", progress.Range(50, 100));
@@ -35,7 +37,7 @@ void install_thread(SceSize args_size, InstallArguments *args) {
 
         progress.message("Starting the vpk download...");
 
-        Network::get_instance()->Download(args->hb.url, std::string("ux0:/temp/download.vpk"), progress.Range(0, 40));
+        Network::get_instance()->Download(installArgs->hb.url, std::string("ux0:/temp/download.vpk"), progress.Range(0, 40));
 
         VitaPackage pkg = VitaPackage(std::string("ux0:/temp/download.vpk"));
         pkg.Install(progress.Range(40, 100));
@@ -43,14 +45,14 @@ void install_thread(SceSize args_size, InstallArguments *args) {
         YAML::Emitter info;
         info << YAML::BeginMap;
         info << YAML::Key << "name";
-        info << YAML::Value << args->hb.name;
+        info << YAML::Value << installArgs->hb.name;
         info << YAML::Key << "version";
-        info << YAML::Value << args->hb.version;
+        info << YAML::Value << installArgs->hb.version;
         info << YAML::Key << "date";
-        info << YAML::Value << args->hb.date.str;
+        info << YAML::Value << installArgs->hb.date.str;
         info << YAML::EndMap;
 
-      	int fd = sceIoOpen((std::string("ux0:app/") + args->hb.titleid + "/vitadb_info.yml").c_str(), SCE_O_WRONLY|SCE_O_CREAT, 0777);
+      	int fd = sceIoOpen((std::string("ux0:app/") + installArgs->hb.titleid + "/vitadb_info.yml").c_str(), SCE_O_WRONLY|SCE_O_CREAT, 0777);
 		sceIoWrite(fd, info.c_str(), strlen(info.c_str()));
 		sceIoClose(fd);
 
