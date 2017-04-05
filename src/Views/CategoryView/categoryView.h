@@ -36,7 +36,7 @@ public:
 
 	
 private:
-	Font font_35;
+	Font font_33;
 
 	Texture img_catbar;
 	Texture img_catbar_highlight;

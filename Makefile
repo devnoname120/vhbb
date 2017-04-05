@@ -14,6 +14,7 @@ MINIZIP_SOURCES = src/minizip/ioapi.c \
 
 SOURCES = src/utils.cpp \
 		  src/zip.cpp \
+		  src/filesystem.cpp \
 		  \
 		  src/infoProgress.cpp \
 		  src/vitaPackage.cpp \

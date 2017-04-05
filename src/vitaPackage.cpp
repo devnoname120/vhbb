@@ -1,8 +1,9 @@
 #include "vitaPackage.h"
 #include "zip.h"
 #include "sha1.h"
+#include "filesystem.h"
 
-#include <psp2/promoterutil.h> 
+#include <psp2/promoterutil.h>
 
 #define ntohl __builtin_bswap32
 
@@ -215,14 +216,17 @@ int VitaPackage::Install(InfoProgress progress)
 
 int VitaPackage::Install(InfoProgress *progress)
 {
-    sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());
+    int ret = removePath(PACKAGE_TEMP_FOLDER);
+    if (ret < 0)
+        dbg_printf(DBG_ERROR, "removePath() = 0x%08X", ret);
+
     sceIoMkdir(PACKAGE_TEMP_FOLDER.c_str(), 0777);
 
     Zipfile vpk_file = Zipfile(vpk_);
 
     InfoProgress progress2;
     if (progress) progress2 = progress->Range(0, 60);
-    int ret = vpk_file.Unzip(PACKAGE_TEMP_FOLDER, &progress2);
+    vpk_file.Unzip(PACKAGE_TEMP_FOLDER, &progress2);
     sceIoRemove(vpk_.c_str());
 
     progress->message("Installing...");
@@ -261,7 +265,7 @@ int VitaPackage::Install(InfoProgress *progress)
         throw std::runtime_error("Installation failed");
     }
 
-    sceIoRmdir(PACKAGE_TEMP_FOLDER.c_str());
+    removePath(PACKAGE_TEMP_FOLDER);
 
     if(progress) progress->percent(100);
     return 0;

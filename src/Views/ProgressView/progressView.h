@@ -32,7 +32,8 @@ private:
 	InfoProgress progress_;
 	Homebrew hb_;
 	pthread_t thid_; // Kill the thread if install is pressed
-	
+
+	float progressPrevious = 0;
 	Font font_24;
 	Texture img_icon;
 	Texture img_dialog_progress_bg;

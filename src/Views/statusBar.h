@@ -18,7 +18,7 @@ public:
 
 	
 private:
-	Font font_25;
+	Font font_22;
 	
 	Texture img_statsbar_battery;
 	Texture img_statsbar_battery_charge;

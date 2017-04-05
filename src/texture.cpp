@@ -101,6 +101,14 @@ int Texture::Draw(const Point &pt)
 	return 0;
 }
 
+
+int Texture::DrawExt(const Point &pt, int alpha)
+{
+	vita2d_draw_texture_tint(texture.get(), pt.x, pt.y, RGBA8(255, 255, 255, alpha));
+	return 0;
+}
+
+
 // vita2d doesn't have a draw resize function: https://github.com/xerpi/libvita2d/issues/42
 int Texture::DrawResize(const Point &pt1, const Point &dimensions)
 {

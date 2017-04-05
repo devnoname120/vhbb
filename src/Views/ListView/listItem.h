@@ -13,21 +13,25 @@ class ListItem {
 public:
 	 ListItem(Homebrew hb);
 
-	int Display(int posY, int highlight);
+	int Display(int posY, int highlight, int highlightAlpha);
 
 	Homebrew homebrew;
 private:
-	Font font_25;
-	Font font_35;
+	Font font_22;
+	Font font_32;
 
 	Texture img_itm_panel;
 	Texture img_itm_panel_highlight;
 
 	Texture img_icon_;
-
-
+	
+	Texture img_itm_label_game;
+	Texture img_itm_label_port;
+	Texture img_itm_label_emu;
+	Texture img_itm_label_util;
+	
 	int display(int posY);
-	int displayHighlight(int posY);
+	int displayHighlight(int posY, int alpha);
 
 };
 

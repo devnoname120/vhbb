@@ -165,7 +165,7 @@ int ListView::HandleInput(int focus, const Input& input)
 			// TODO: timer instead so that the user can stay clicked
 			if (input.KeyNewPressed(SCE_CTRL_UP) && selectedItem > 0) {
 				selectedItem--;
-
+				resetHeighlight();
 				// Scroll up if the selected item is outside of view
 				if (selectedItem < firstFullyDisplayedItem()) {
 					posY = std::max<int>(0, posY - ITEM_HEIGHT);
@@ -173,6 +173,7 @@ int ListView::HandleInput(int focus, const Input& input)
 
 			} else if (input.KeyNewPressed(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {
 				selectedItem++;
+				resetHeighlight();
 				dbg_printf(DBG_DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
 				// Scroll down if the selected item is outside of view
 				if (selectedItem > lastFullyDisplayedItem()) {
@@ -199,12 +200,33 @@ int ListView::HandleInput(int focus, const Input& input)
 	return 0;
 }
 
+
+int ListView::resetHeighlight()
+{
+	itemHighlightAlpha = 255;
+	itemHighlightDirection = 0;
+	return 0;
+}
+
+
 int ListView::Display()
 {
 	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) {
-		listItems[i].Display(itemPosY(i), i == selectedItem);
+		listItems[i].Display(itemPosY(i), i == selectedItem, itemHighlightAlpha);
 	}
-
+	
+	if (itemHighlightDirection) {
+		if (itemHighlightAlpha < 255 - itemHighlightSpeed)
+			itemHighlightAlpha += itemHighlightSpeed;
+		else
+			itemHighlightDirection = !itemHighlightDirection;
+	}
+	else {
+		if (itemHighlightAlpha > itemHighlightSpeed)
+			itemHighlightAlpha -= itemHighlightSpeed;
+		else
+			itemHighlightDirection = !itemHighlightDirection;
+	}
 	return 0;
 }
 
