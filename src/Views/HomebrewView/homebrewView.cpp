@@ -1,6 +1,6 @@
 #include "homebrewView.h"
 
-#include <pthread.h>
+//#include <pthread.h>
 #include <vitaPackage.h>
 #include <activity.h>
 #include <Views/ProgressView/progressView.h>
@@ -69,8 +69,8 @@ void HomebrewView::homebrewInstall() {
 		InstallArguments *args = new InstallArguments;
 		args->hb = hb_;
 
-		pthread_t t1;
-		pthread_create(&t1, NULL, install_thread, args);
+		//pthread_t t1;
+		//pthread_create(&t1, NULL, install_thread, args);
 		//install_thid_ = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
 		//sceKernelStartThread(install_thid_, sizeof(InstallArguments), args);
 		dbg_printf(DBG_DEBUG, "OK");
@@ -93,7 +93,7 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 {
 	if (!focus)
 		return 0;
-	
+
 	if (input.TouchNewPressed()) {
 		if (input.TouchInRectangle(Rectangle(Point(HB_X + 218, HB_Y + 168), Point(HB_X + 218 + 153, HB_Y + 168 + 46)))) {
 			dbg_printf(DBG_DEBUG, "Touch in rectangle for install");
@@ -128,11 +128,11 @@ int HomebrewView::Display()
 		if (!long_description_cut3.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 80), long_description_cut3);
 		if (!long_description_cut4.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 120), long_description_cut4);
 	}
-	
+
 
 	img_preview_btn_download.Draw(Point(HB_X + 218, HB_Y + 168));
 
-	
+
 	if (installed_) {
 		img_preview_btn_open.Draw(Point(HB_X + 218 + 160, HB_Y + 168));
 	}

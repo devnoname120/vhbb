@@ -26,7 +26,7 @@ Texture& Texture::operator=(const Texture& that)
     if (this != &that)
     {
 		texture = that.texture;
-		caching_ = that.caching_;       
+		caching_ = that.caching_;
     }
     return *this;
 }
@@ -39,8 +39,6 @@ Texture::Texture(const std::string &path, bool caching) :
 		if (textureCache1.count(key) >= 1)
 		{
 			texture = textureCache1[key];
-			width = vita2d_texture_get_width(texture.get());
-			height = vita2d_texture_get_height(texture.get());
 			return;
 		}
 	}
@@ -64,8 +62,6 @@ Texture::Texture(const std::string &path, bool caching) :
 		return;
 	}
 
-	width = vita2d_texture_get_width(texture.get());
-	height = vita2d_texture_get_height(texture.get());
 
 	if (caching_) textureCache1[key] = texture;
 }
@@ -80,16 +76,11 @@ Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
 		if (textureCache2.count(key) >= 1) {
 
 			texture = textureCache2[key];
-			width = vita2d_texture_get_width(texture.get());
-			height = vita2d_texture_get_height(texture.get());
 			return;
 		}
 	}
 
 	texture = std::make_shared(vita2d_load_PNG_buffer(addr));
-
-	width = vita2d_texture_get_width(texture.get());
-	height = vita2d_texture_get_height(texture.get());
 
 	if (caching) textureCache2[key] = texture;
 }
@@ -112,9 +103,19 @@ int Texture::DrawExt(const Point &pt, int alpha)
 // vita2d doesn't have a draw resize function: https://github.com/xerpi/libvita2d/issues/42
 int Texture::DrawResize(const Point &pt1, const Point &dimensions)
 {
-    float stretchX = ((float)dimensions.x) / (float)width;
-    float stretchY = ((float)dimensions.y) / (float)height;
+	// Careful, vita2d_texture_get_width() will crash if vita2d_start_drawing() was not called
+	float width = vita2d_texture_get_width(texture.get());
+	float height = vita2d_texture_get_height(texture.get());
+	if (width == 0 || height == 0) {
+		vita2d_draw_texture(texture.get(), pt1.x, pt1.y);
+		return 0;
+	}
+
+
+    float stretchX = ((float)dimensions.x) / width;
+    float stretchY = ((float)dimensions.y) / height;
     vita2d_draw_texture_scale(texture.get(), pt1.x, pt1.y, stretchX, stretchY);
+
     return 0;
 }
 

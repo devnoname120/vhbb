@@ -29,9 +29,6 @@ public:
 
   std::shared_ptr<vita2d_texture> texture;
 
-    float width;
-    float height;
-
 private:
   bool caching_;
 };

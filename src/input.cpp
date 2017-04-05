@@ -16,7 +16,7 @@ int Input::Get()
 	memcpy(&(oldpad), &(pad), sizeof(pad));
 	memcpy(&(old2touch), &(oldtouch), sizeof(touch));
 	memcpy(&(oldtouch), &(touch), sizeof(touch));
-	
+
 	sceCtrlPeekBufferPositive(0, &(pad), 1);
 	sceTouchPeek(SCE_TOUCH_PORT_FRONT, &(touch), 1);
 	return 0;
@@ -145,5 +145,5 @@ int Input::TouchInRectangle(const Rectangle &rect) const
 
 int Input::TouchInTexture(const Point &draw_pt, const Texture &tex) const
 {
-	return TouchInRectangle(Rectangle(draw_pt, Point(draw_pt.x + tex.width, draw_pt.y + tex.height)));
+	return TouchInRectangle(Rectangle(draw_pt, Point(draw_pt.x + vita2d_texture_get_width(tex.texture.get()), draw_pt.y + vita2d_texture_get_height(tex.texture.get()))));
 }

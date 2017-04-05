@@ -10,6 +10,8 @@
 #include <texture.h>
 #include <font.h>
 
+//#include <pthread.h>
+
 #define PROGRESS_VIEW_X 171
 #define PROGRESS_VIEW_Y 152
 
@@ -20,8 +22,8 @@
 
 class ProgressView: public View {
 public:
-	ProgressView(InfoProgress progress, Homebrew hb, pthread_t thid);
-	
+	ProgressView(InfoProgress progress, Homebrew hb);
+
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
 	// Wait in millisecond
@@ -31,7 +33,7 @@ private:
 
 	InfoProgress progress_;
 	Homebrew hb_;
-	pthread_t thid_; // Kill the thread if install is pressed
+	//pthread_t thid_; // Kill the thread if install is pressed
 
 	float progressPrevious = 0;
 	Font font_24;

@@ -14,7 +14,7 @@ void* install_thread(void* args) {
 
     InfoProgress progressTotal;
 	Homebrew targetHb = installArgs->hb;
-    auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb, pthread_self());
+    auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb);
 
     InfoProgress progress;
 
