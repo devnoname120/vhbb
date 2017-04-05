@@ -17,7 +17,7 @@ Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path.c_str
 		homebrews = lst.as<std::vector<Homebrew>>();
 
 		// Remove VHBB from the list of homebrews
-		homebrews.erase(std::remove_if(homebrews.begin(), homebrews.end(), IsVHBB),	homebrews.end());
+		homebrews.erase(std::remove_if(homebrews.begin(), homebrews.end(), IsVHBB), homebrews.end());
 	} catch (const std::exception& ex) {
 		dbg_printf(DBG_ERROR, "Couldn't unserialize db: %s", ex.what());
 	}
