@@ -10,7 +10,6 @@
 #include <texture.h>
 #include <font.h>
 
-//#include <pthread.h>
 
 #define PROGRESS_VIEW_X 171
 #define PROGRESS_VIEW_Y 152
@@ -33,7 +32,6 @@ private:
 
 	InfoProgress progress_;
 	Homebrew hb_;
-	//pthread_t thid_; // Kill the thread if install is pressed
 
 	float progressPrevious = 0;
 	Font font_24;

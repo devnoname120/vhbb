@@ -9,9 +9,8 @@
 #include "zip.h"
 
 
-void* install_thread(void* args) {
-    InstallArguments* installArgs = (InstallArguments*)args;
-
+void install_thread(SceSize args_size, InstallArguments *installArgs) {
+    
     InfoProgress progressTotal;
 	Homebrew targetHb = installArgs->hb;
     auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb);
