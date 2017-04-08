@@ -33,7 +33,6 @@ private:
 	InfoProgress progress_;
 	Homebrew hb_;
 
-	float progressPrevious = 0;
 	Font font_24;
 	Texture img_icon;
 	Texture img_dialog_progress_bg;

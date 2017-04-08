@@ -43,15 +43,15 @@ int ProgressView::Display()
 	font_24.Draw(Point(PROGRESS_VIEW_X + 197, PROGRESS_VIEW_Y + 117), progress_.message());
     // Progress bar
     img_dialog_progress_bar.DrawResize(Point(PROGRESS_VIEW_X + 55, PROGRESS_VIEW_Y + 148), Point(progress_x, 11));
-	if ((float)progress_.percent() > progressPrevious)
-		img_dialog_progress_bar_glow.Draw(Point(PROGRESS_VIEW_X + progress_x + 5, PROGRESS_VIEW_Y + 104));
+	// if ((float)progress_.percent() > progressPrevious)
+	img_dialog_progress_bar_glow.Draw(Point(PROGRESS_VIEW_X + progress_x + 5, PROGRESS_VIEW_Y + 104));
 	// Cancel button
 	img_dialog_btn.Draw(Point(PROGRESS_VIEW_X + 148, PROGRESS_VIEW_Y + 178));
 	// Percent (if required)
 	//font_24.Draw(Point(PROGRESS_VIEW_X + 197, PROGRESS_VIEW_Y + 117), progress_.percent());
 
     if (finish_tick != 0 && sceKernelGetProcessTimeLow() > finish_tick) request_destroy = true;
-	progressPrevious = (float)progress_.percent();
+	//progressPrevious = (float)progress_.percent();
 	return 0;
 }
 
