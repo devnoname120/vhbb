@@ -46,7 +46,7 @@ int ProgressView::Display()
 	// if ((float)progress_.percent() > progressPrevious)
 	img_dialog_progress_bar_glow.Draw(Point(PROGRESS_VIEW_X + progress_x + 5, PROGRESS_VIEW_Y + 104));
 	// Cancel button
-	img_dialog_btn.Draw(Point(PROGRESS_VIEW_X + 148, PROGRESS_VIEW_Y + 178));
+	//img_dialog_btn.Draw(Point(PROGRESS_VIEW_X + 148, PROGRESS_VIEW_Y + 178));
 	// Percent (if required)
 	//font_24.Draw(Point(PROGRESS_VIEW_X + 197, PROGRESS_VIEW_Y + 117), progress_.percent());
 
