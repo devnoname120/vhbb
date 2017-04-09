@@ -15,7 +15,7 @@ include("${VITASDK}/share/vita.cmake" REQUIRED)
 
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
-set(VITA_VERSION "00.70")
+set(VITA_VERSION "00.80")
 
 
 option(DEBUGNET "Enable debugnet for logging" ON)

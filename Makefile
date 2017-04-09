@@ -2,6 +2,8 @@ TITLE_ID = 	VHBB00001
 TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
 
+APP_VER = 00.80
+
 ASSET_DIR  = assets
 SOURCE_DIR = src
 BIN        = bin
@@ -96,7 +98,7 @@ LIBS += -lyaml-cpp -lm -lvita2d -lSceDisplay_stub -lSceGxm_stub \
 all: $(BIN)/$(TARGET).vpk
 
 %.vpk: $(BIN)/eboot.bin
-	vita-mksfoex -s TITLE_ID=$(TITLE_ID) "$(TITLE)" $(BIN)/param.sfo
+	vita-mksfoex -s APP_VER=$(APP_VER) -s TITLE_ID=$(TITLE_ID) "$(TITLE)" $(BIN)/param.sfo
 	vita-pack-vpk -s $(BIN)/param.sfo -b $(BIN)/eboot.bin \
 		--add sce_sys/icon0.png=sce_sys/icon0.png \
 		--add sce_sys/livearea/contents/bg.png=sce_sys/livearea/contents/bg.png \
