@@ -32,12 +32,14 @@ private:
 	Texture img_icon;
 
 	std::vector<Texture> screenshots;
-
-	std::string long_description_cut1 = "";
-	std::string long_description_cut2 = "";
-	std::string long_description_cut3 = "";
-	std::string long_description_cut4 = "";
-
+	
+	std::string description = "";
+	
+	//std::string long_description_cut1 = "";
+	//std::string long_description_cut2 = "";
+	//std::string long_description_cut3 = "";
+	//std::string long_description_cut4 = "";
+	
 	void checkInstalled();
 	void homebrewInstall();
 
