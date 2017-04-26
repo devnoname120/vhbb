@@ -2,7 +2,7 @@ TITLE_ID = 	VHBB00001
 TARGET   = 	VitaHBBrowser
 TITLE    =  Vita HomeBrew Browser
 
-APP_VER = 00.80
+APP_VER = 00.81
 
 ASSET_DIR  = assets
 SOURCE_DIR = src
