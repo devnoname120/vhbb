@@ -46,16 +46,9 @@ Texture::Texture(const std::string &path, bool caching) :
 	std::size_t found = path.find_last_of(".");
 	std::string extension = path.substr(found+1);
 
-	if (extension == "jpeg" || extension == "jpg") {
-		texture = std::make_shared(vita2d_load_JPEG_file(path.c_str()));
-	} else if (extension == "png") {
-		texture = std::make_shared(vita2d_load_PNG_file(path.c_str()));
-	} else {
-		found = path.find_last_of("/");
-		std::string filename = path.substr(found+1);
-		dbg_printf(DBG_ERROR, "Cannot load texture \"%s\": unknown texture type", filename.c_str());
-		return;
-	}
+	texture = std::make_shared(vita2d_load_PNG_file(path.c_str()));
+	if (!texture) texture = std::make_shared(vita2d_load_JPEG_file(path.c_str()));
+	if (!texture) texture = std::make_shared(vita2d_load_BMP_file(path.c_str()));
 
 	if (!texture) {
 		dbg_printf(DBG_ERROR, "Couldn't load texture %s", path.c_str());
