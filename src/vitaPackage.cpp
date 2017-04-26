@@ -217,8 +217,10 @@ int VitaPackage::Install(InfoProgress progress)
 int VitaPackage::Install(InfoProgress *progress)
 {
     int ret = removePath(PACKAGE_TEMP_FOLDER);
-    if (ret < 0)
+
+    if (ret < 0) {
         dbg_printf(DBG_ERROR, "removePath() = 0x%08X", ret);
+    }
 
     sceIoMkdir(PACKAGE_TEMP_FOLDER.c_str(), 0777);
 

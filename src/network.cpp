@@ -174,7 +174,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
             throw std::runtime_error("Network: Cannot get content length");
 
         if (res >= 0)
-        dbg_printf(DBG_DEBUG, "Content length: %lu", contentLength);
+            dbg_printf(DBG_DEBUG, "Content length: %lu", contentLength);
 
         if(progress) progress->percent(10);
 

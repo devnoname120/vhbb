@@ -3,13 +3,13 @@
 
 // Path must end with '/'
 int removePath(std::string path) {
-    // sceIoDopen doesn't work if there is a '/' at the end
-    if (path.back() == '/')
-        path.pop_back();
+	// sceIoDopen doesn't work if there is a '/' at the end
+	if (path.back() == '/')
+		path.pop_back();
 
 	SceUID dfd = sceIoDopen(path.c_str());
 	if (dfd >= 0) {
-        path += "/";
+		path += "/";
 		int res = 0;
 
 		do {

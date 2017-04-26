@@ -10,8 +10,8 @@ extern unsigned char _binary_assets_spr_img_dialog_btn_png_start;
 
 ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
     progress_(progress),
-	font_24(Font(std::string(FONT_DIR "segoeui.ttf"), 24)),
 	hb_(hb),
+	font_24(Font(std::string(FONT_DIR "segoeui.ttf"), 24)),
 	//thid_(thid),
 	img_icon(Texture(ICONS_FOLDER + "/" + hb_.icon)),
     img_dialog_progress_bg(Texture(&_binary_assets_spr_img_dialog_progress_bg_png_start)),
