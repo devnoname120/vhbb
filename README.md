@@ -1,4 +1,4 @@
-# Vita Homebrew Browser *v0.8*
+# Vita Homebrew Browser *v0.8*1
 A native homebrew browser for the Playstation Vita.
 
 
