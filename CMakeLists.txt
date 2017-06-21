@@ -20,11 +20,6 @@ set(VITA_VERSION "00.81")
 
 option(DEBUGNET "Enable debugnet for logging" ON)
 
-# Warning psp2shell makes the homebrew very instable
-option(PSP2SHELL "Enable psp2shell for easy reloading" OFF)
-
-
-
 # Default build type
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING "Default build" FORCE)
@@ -80,11 +75,6 @@ if(DEBUGNET)
   add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
 endif()
 
-if(PSP2SHELL)
-  add_definitions(-DPSP2SHELL)
-  target_link_libraries(${SHORT_NAME} psp2shell)
-endif()
-
 target_link_libraries(${SHORT_NAME}
   yaml-cpp
   m
@@ -138,7 +128,7 @@ add_custom_target(send
 )
 
 add_custom_target(shellsend
-  COMMAND psp2shell_cli ${PSVITAIP} 3333 reload ${SHORT_NAME}.self
+  COMMAND psp2shell_cli ${PSVITAIP} 3333 load ${VITA_TITLEID} ${SHORT_NAME}.self
   DEPENDS ${SHORT_NAME}.self
 )
 

@@ -66,15 +66,6 @@ int main()
 
 	std::set_terminate(terminate_logger);
 
-	#ifdef PSP2SHELL
-	// Do it before any file is opened otherwise psp2shell fails to reload the app
-	// Warning the app will crash when coming back from sleep
-	sceAppMgrUmount("app0:");
-	
-	psp2shell_init(3333, 0);
-	dbg_printf(DBG_INFO, "PSPSHELL started on port 3333");
-	#endif
-
 	Network &network = *Network::create_instance();
 
 	try {
@@ -125,10 +116,6 @@ int main()
 		vita2d_swap_buffers();
 		sceDisplayWaitVblankStart();
 	}
-
-	#ifdef PSP2SHELL
-	psp2shell_exit();
-	#endif
 
 	return 0;
 }

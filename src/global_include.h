@@ -45,10 +45,6 @@
 
 #include "utils.h"
 
-#ifdef PSP2SHELL
-#include <psp2shell.h>
-#endif
-
 #ifdef DEBUGNET
 #include <debugnet.h>
 #endif

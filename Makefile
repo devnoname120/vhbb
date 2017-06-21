@@ -76,11 +76,6 @@ else
 CFLAGS += -Os
 endif
 
-ifeq ($(psp2shell), 1)
-CFLAGS += -DPSP2SHELL
-LIBS += -lpsp2shell
-endif
-
 ifeq ($(debugnet), 1)
 CFLAGS += -DDEBUGNET -DDEBUGNETIP="\"$(DEBUGNETIP)\""
 LIBS += -ldebugnet
@@ -145,7 +140,7 @@ send: $(BIN)/eboot.bin
 	@echo "Sent."
 
 psp2shell: $(BIN)/eboot.bin
-	psp2shell_cli $(PSVITAIP) 3333 reload $(BIN)/eboot.bin
+	psp2shell_cli $(PSVITAIP) 3333 load $(TITLE_ID) $(BIN)/eboot.bin
 
 binfolder:
 	@mkdir $(BIN) 2>/dev/null || true

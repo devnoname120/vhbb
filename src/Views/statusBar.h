@@ -23,7 +23,7 @@ private:
 	Texture img_statsbar_battery;
 	Texture img_statsbar_battery_charge;
 
-	#ifdef PSP2SHELL
+	#ifdef _DEBUG
 	char vitaip[16] = {0};
 	#endif
 

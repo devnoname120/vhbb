@@ -16,7 +16,7 @@ StatusBar::StatusBar() :
 	img_statsbar_battery(Texture(&_binary_assets_spr_img_statsbar_battery_png_start)),
 	img_statsbar_battery_charge(Texture(&_binary_assets_spr_img_statsbar_battery_charge_png_start))
 {
-	#ifdef PSP2SHELL
+	#ifdef _DEBUG
 
 	SceNetCtlInfo info;
 	if(sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info) < 0) {
@@ -39,7 +39,7 @@ int StatusBar::Display()
 	displayBattery();
 	displayDate();
 
-	#ifdef PSP2SHELL
+	#ifdef _DEBUG
 	font_22.Draw(Point(400, 22), vitaip, COLOR_WHITE);
 	#endif
 	return 0;
