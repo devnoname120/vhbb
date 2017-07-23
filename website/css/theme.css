@@ -126,7 +126,7 @@ a:hover,a:focus {
 	padding:100px 0 100px 0;
 	text-align:center;
 	color:#fff;
-	background-image:radial-gradient(circle at 50% 50%,rgba(0,0,0,0.46),rgba(0,0,0,0.88)),img/bg.jpg;
+	background-image:radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.46), rgba(13, 32, 94, 0.50)), url('../img/bg.png');
 	-webkit-background-size:cover;
 	-moz-background-size:cover;
 	background-size:cover;
@@ -149,7 +149,7 @@ a:hover,a:focus {
 		}
 	.intro .intro-body .brand-heading {
 		font-size:60px;
-		margin-top:90px;
+		margin-top:50px;
 		margin-bottom:20px;
 		border-top:2px solid #fff;
 		border-bottom:2px solid #fff;
