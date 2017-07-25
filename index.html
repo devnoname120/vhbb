@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+	<script>
+	<!-- TODO: auto gen links (currently a posible issue with 0.81 release date) -->
+	var vpkLink="https://github.com/devnoname120/vhbb/releases/download/0.81/VitaHBBrowser.vpk";
+	var releaseLink="https://github.com/devnoname120/vhbb/releases/tag/0.81";
+	</script>
+	
+	
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="VHBB github page">
+		<meta name="description" content="VHBB GitHub Page">
 		<meta name="author" content="Arkanite">
 		<title>
 				VHBB
@@ -42,9 +49,6 @@
 					<li>
 						<a href="https://github.com/devnoname120/vhbb" target="_blank" >GitHub</a>
 					</li>
-					<li>
-						<a href="website/contact.html">Contact</a>
-					</li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -81,11 +85,6 @@
 						A native homebrew browser for the Playstation Vita.<br><br>
 						Vita Homebrew Browser, in conjunction with Rinnegatamante's Vita homebrew & plugin database <a href="http://vitadb.rinnegatamante.it/" target="_blank" style="border-bottom:1px dashed #ccc;">(VitaDB)</a>, helps you discover, download and install homebrew directly to your HENkaku enabled Playstation Vita.<br><br>VHBB was awarded first place prize in the GekiHEN competition under the 'utilities' category.
 					</p>
-					<p>
-						<a href="#download" class="btn btn-circle page-scroll">
-							<i class="fa fa-angle-double-down animated"></i>
-						</a>
-					</p>
 				</div>
 			</div>
 		</div>
@@ -97,11 +96,15 @@
 				<h2>Download</h2>
 				<div class="col-lg-8 col-lg-offset-2">
 					<p>
-						Latest version<br>v0.81<br><br><a href="https://github.com/devnoname120/vhbb/releases/tag/0.81" target="_blank" style="border-bottom:1px dashed #ccc;">Release Notes</a><br>
+						Latest version<br>v0.81<br><br><a href="releaseLink" id="releaseLink" target="_blank" style="border-bottom:1px dashed #ccc;">Release Notes</a><br>
 					</p>
 					<p>
-						<a href="https://github.com/devnoname120/vhbb/releases/download/0.81/VitaHBBrowser.vpk" class="btnghost page-scroll"><i class="fa fa-download"></i>  Download</a>
+						<a href="" id="vpkLink" class="btnghost page-scroll"><i class="fa fa-download"></i>  Download</a>
 					</p>
+					<script>
+					document.getElementById("vpkLink").href = vpkLink;
+					document.getElementById("releaseLink").href = releaseLink;
+					</script>
 				</div>
 			</div>
 		</div>
@@ -125,7 +128,7 @@
 						 VPK Install<br>
 					</p2>
 					<p>
-						Transfer VitaHBBrowser.vpk too your PS Vita via USB<br>or by using an FTP client (such as <a href="https://filezilla-project.org/download.php?type=client" target="_blank" style="border-bottom:1px dashed #ccc;">FileZilla</a>).
+						Transfer VitaHBBrowser.vpk too your PS Vita via USB<br>or by using a FTP client (such as <a href="https://filezilla-project.org/download.php?type=client" target="_blank" style="border-bottom:1px dashed #ccc;">FileZilla</a>).
 						Once transferred, use either MolecularShell or VitaShell to install the vpk.<br>
 					</p>
 						<img src="website/img/scr3.jpg" alt="" height="266" width="500"><br><br><br><br>
