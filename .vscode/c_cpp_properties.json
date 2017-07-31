@@ -1,42 +1,22 @@
 {
     "configurations": [
         {
-            "name": "Mac",
-            "includePath": [
-                "/usr/include",
-                "/usr/local/include",
-                "/usr/local/vitasdk/arm-vita-eabi/include",
-                "."
-            ],
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            }
-        },
-        {
             "name": "Linux",
             "includePath": [
-                "/usr/include",
-                "/usr/local/include",
-                "/usr/local/vitasdk/arm-vita-eabi/include",
-                "."
+                "${workspaceRoot}/src",
+                "/usr/local/vitasdk/include/",
+                "/usr/local/vitasdk/arm-vita-eabi/include/"
             ],
+            "defines": [],
             "browse": {
+                "path": [
+                    "${workspaceRoot}"
+                ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
-        },
-        {
-            "name": "Win32",
-            "includePath": [
-                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
-                "C:/vitasdk/arm-vita-eabi/include",
-                "."
-            ],
-            "browse": {
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            }
+            },
+            "intelliSenseMode": "clang-x64"
         }
-    ]
+    ],
+    "version": 2
 }

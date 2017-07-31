@@ -39,5 +39,6 @@
         "new": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "cmake.useCMakeServer": true
 }
