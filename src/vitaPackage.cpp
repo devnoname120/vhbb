@@ -197,7 +197,7 @@ VitaPackage::VitaPackage(const std::string vpk) :
 	ptr[0] = 0;
 	ptr[1] = (uint32_t)&ptr[0];
 	uint32_t scepaf_argp[] = {0x400000, 0xEA60, 0x40000, 0, 0};
-    sceSysmoduleLoadModuleInternalWithArg(0x80000008, sizeof(scepaf_argp), scepaf_argp, ptr);
+    sceSysmoduleLoadModuleInternalWithArg(SCE_SYSMODULE_PAF, sizeof(scepaf_argp), scepaf_argp, ptr);
 
     sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_PROMOTER_UTIL);
     scePromoterUtilityInit();
