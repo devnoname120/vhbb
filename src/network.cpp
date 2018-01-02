@@ -180,7 +180,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 
         fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 
-        uint s_downloaded = 0;
+        unsigned int s_downloaded = 0;
         char buf[4096];
         while(true) {
             int read = sceHttpReadData(req, buf, sizeof(buf));

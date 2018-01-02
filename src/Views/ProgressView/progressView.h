@@ -26,7 +26,7 @@ public:
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
 	// Wait in millisecond
-	void Finish(uint wait = 300);
+	void Finish(unsigned int wait = 300);
 private:
 	uint32_t finish_tick = 0;
 

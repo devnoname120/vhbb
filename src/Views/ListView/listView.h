@@ -38,11 +38,11 @@ private:
 	
 	double scrollSpeed = 0;
 
-	uint itemPosY(uint i);
-	uint firstDisplayedItem();
-	uint lastDisplayedItem();
-	uint firstFullyDisplayedItem();
-	uint lastFullyDisplayedItem();
+	unsigned int itemPosY(unsigned int i);
+	unsigned int firstDisplayedItem();
+	unsigned int lastDisplayedItem();
+	unsigned int firstFullyDisplayedItem();
+	unsigned int lastFullyDisplayedItem();
 	int coordinateToItem(double coordY);
 	int updateScrollSpeed(double &scrollSpeed, unsigned long timeDif);
 };

@@ -61,12 +61,12 @@ typedef voidp zipFile;
 /* tm_zip contain date/time info */
 typedef struct tm_zip_s
 {
-    uInt tm_sec;                /* seconds after the minute - [0,59] */
-    uInt tm_min;                /* minutes after the hour - [0,59] */
-    uInt tm_hour;               /* hours since midnight - [0,23] */
-    uInt tm_mday;               /* day of the month - [1,31] */
-    uInt tm_mon;                /* months since January - [0,11] */
-    uInt tm_year;               /* years - [1980..2044] */
+    unsigned int tm_sec;                /* seconds after the minute - [0,59] */
+    unsigned int tm_min;                /* minutes after the hour - [0,59] */
+    unsigned int tm_hour;               /* hours since midnight - [0,23] */
+    unsigned int tm_mday;               /* day of the month - [1,31] */
+    unsigned int tm_mon;                /* months since January - [0,11] */
+    unsigned int tm_year;               /* years - [1980..2044] */
 } tm_zip;
 
 typedef struct
@@ -117,8 +117,8 @@ extern zipFile ZEXPORT zipOpen3_64 OF((const void *pathname, int append, ZPOS64_
     const char ** globalcomment, zlib_filefunc64_def* pzlib_filefunc_def));
 
 extern int ZEXPORT zipOpenNewFileInZip OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level));
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level));
 /* Open a file in the ZIP for writing.
 
    filename : the filename in zip (if NULL, '-' without quote will be used
@@ -134,23 +134,23 @@ extern int ZEXPORT zipOpenNewFileInZip OF((zipFile file, const char* filename, c
    this MUST be '1' if the uncompressed size is >= 0xffffffff. */
 
 extern int ZEXPORT zipOpenNewFileInZip64 OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level, int zip64));
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level, int zip64));
 /* Same as zipOpenNewFileInZip with zip64 support */
 
 extern int ZEXPORT zipOpenNewFileInZip2 OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level, int raw));
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level, int raw));
 /* Same as zipOpenNewFileInZip, except if raw=1, we write raw file */
 
 extern int ZEXPORT zipOpenNewFileInZip2_64 OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level, int raw, int zip64));
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level, int raw, int zip64));
 /* Same as zipOpenNewFileInZip3 with zip64 support */
 
 extern int ZEXPORT zipOpenNewFileInZip3 OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
     int strategy, const char* password, uLong crcForCrypting));
 /* Same as zipOpenNewFileInZip2, except
     windowBits, memLevel, strategy : see parameter strategy in deflateInit2
@@ -158,20 +158,20 @@ extern int ZEXPORT zipOpenNewFileInZip3 OF((zipFile file, const char* filename, 
     crcForCrypting : crc of file to compress (needed for crypting) */
 
 extern int ZEXPORT zipOpenNewFileInZip3_64 OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
     int strategy, const char* password, uLong crcForCrypting, int zip64));
 /* Same as zipOpenNewFileInZip3 with zip64 support */
 
 extern int ZEXPORT zipOpenNewFileInZip4 OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
     int strategy, const char* password, uLong crcForCrypting, uLong versionMadeBy, uLong flagBase));
 /* Same as zipOpenNewFileInZip3 except versionMadeBy & flag fields */
 
 extern int ZEXPORT zipOpenNewFileInZip4_64 OF((zipFile file, const char* filename, const zip_fileinfo* zipfi,
-    const void* extrafield_local, uInt size_extrafield_local, const void* extrafield_global, 
-    uInt size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
+    const void* extrafield_local, unsigned int size_extrafield_local, const void* extrafield_global, 
+    unsigned int size_extrafield_global, const char* comment, int method, int level, int raw, int windowBits, int memLevel, 
     int strategy, const char* password, uLong crcForCrypting, uLong versionMadeBy, uLong flagBase, int zip64));
 /* Same as zipOpenNewFileInZip4 with zip64 support */
 

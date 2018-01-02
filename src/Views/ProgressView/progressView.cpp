@@ -55,7 +55,7 @@ int ProgressView::Display()
 	return 0;
 }
 
-void ProgressView::Finish(uint wait)
+void ProgressView::Finish(unsigned int wait)
 {
     if (wait == 0) {request_destroy = true; return;}
 

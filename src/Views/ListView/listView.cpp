@@ -5,47 +5,47 @@
 
 
 // Ordinate of where the item should be displayed on the screen
-uint ListView::itemPosY(uint i)
+unsigned int ListView::itemPosY(unsigned int i)
 {
 	return LIST_MIN_Y + i * ITEM_HEIGHT - posY;
 }
 
 // First item that is (partially or fully) displayed
-uint ListView::firstDisplayedItem()
+unsigned int ListView::firstDisplayedItem()
 {
-	return (uint)posY / ITEM_HEIGHT;
+	return (unsigned int)posY / ITEM_HEIGHT;
 }
 
 // Last item that is (partially or fully) displayed
-uint ListView::lastDisplayedItem()
+unsigned int ListView::lastDisplayedItem()
 {
 	// Height of the hidden/shown part of the first item
-	uint firstHidden = posY % ITEM_HEIGHT;
-	uint firstShown = ITEM_HEIGHT - firstHidden;
+	unsigned int firstHidden = posY % ITEM_HEIGHT;
+	unsigned int firstShown = ITEM_HEIGHT - firstHidden;
 
 	// Height of the hidden/shown part of the last item
-	uint lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
-	uint lastHidden = ITEM_HEIGHT - lastShown;
+	unsigned int lastShown = (firstHidden + LIST_RANGE_Y) % ITEM_HEIGHT;
+	unsigned int lastHidden = ITEM_HEIGHT - lastShown;
 
 	// Number of elements between the first displayed element
 	// and the last displayed element
-	uint inbetween = (LIST_RANGE_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
-	uint last = firstDisplayedItem() + inbetween;
+	unsigned int inbetween = (LIST_RANGE_Y  - firstShown + lastHidden) / ITEM_HEIGHT;
+	unsigned int last = firstDisplayedItem() + inbetween;
 
 	// Don't display an element that doesn't exist
-	return std::min<uint>(listItems.size() - 1, last);
+	return std::min<unsigned int>(listItems.size() - 1, last);
 }
 
-uint ListView::firstFullyDisplayedItem()
+unsigned int ListView::firstFullyDisplayedItem()
 {
-	uint first = firstDisplayedItem();
+	unsigned int first = firstDisplayedItem();
 	// Return first displayed item if it starts right where we begin to display
 	return posY % ITEM_HEIGHT == 0 ? first : first + 1;
 }
 
-uint ListView::lastFullyDisplayedItem()
+unsigned int ListView::lastFullyDisplayedItem()
 {
-	uint last = lastDisplayedItem();
+	unsigned int last = lastDisplayedItem();
 	return LIST_MAX_Y - itemPosY(last) + 1 >= ITEM_HEIGHT ? last : last-1;
 }
 
@@ -56,7 +56,7 @@ int ListView::coordinateToItem(double coordY)
 	double absoluteY = posY + coordY - LIST_MIN_Y;
 	dbg_printf(DBG_DEBUG, "absoluteY: %f", absoluteY);
 
-	uint item = (uint)absoluteY / ITEM_HEIGHT;
+	unsigned int item = (unsigned int)absoluteY / ITEM_HEIGHT;
 	dbg_printf(DBG_DEBUG, "item: %d", item);
 
 	// Item does not exist
@@ -106,7 +106,7 @@ int ListView::HandleInput(int focus, const Input& input)
 	//dbg_printf(DBG_DEBUG, "timeDif: %u", timeDif);
 	//dbg_printf(DBG_DEBUG, "posY before: %d", posY);
 	if (!input.TouchPressed())
-		posY = std::min<uint>(std::max<int>(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), std::max<int>(posY + (int)(scrollSpeed * (double)timeDif), 0));
+		posY = std::min<unsigned int>(std::max<int>(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), std::max<int>(posY + (int)(scrollSpeed * (double)timeDif), 0));
 
 	updateScrollSpeed(scrollSpeed, timeDif);
 
