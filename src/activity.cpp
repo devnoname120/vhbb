@@ -58,6 +58,9 @@ void Activity::FlushQueue()
 
     std::move(views_queue.begin(), views_queue.end(), std::back_inserter(views_));
     views_queue.erase(views_queue.begin(),views_queue.end());
+
+    std::sort(views_.begin(), views_.end(),
+        [] (std::shared_ptr<View> const& view1, std::shared_ptr<View> const& view2) { return view1->priority < view2->priority; });
 }
 
 bool Activity::HasActivity()
