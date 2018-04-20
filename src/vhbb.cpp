@@ -48,6 +48,9 @@ void FetchLoadIcons(SceSize arglen, std::atomic_bool** db_done)
     auto db = Database::create_instance(API_LOCAL);
     db->DownloadIcons();
     **db_done = true;
+
+    auto mainView = std::make_shared<MainView>();
+    Activity::get_instance()->AddView(mainView);
   } catch (const std::exception &ex) {
     dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
     throw ex;
@@ -82,7 +85,7 @@ int main() {
   std::atomic_bool *db_done_ptr = &db_done;
 
   SceUID thid_db = sceKernelCreateThread(
-      "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x200000, 0,
+      "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x20000, 0,
       0, NULL);
   dbg_printf(DBG_DEBUG, "db_done: 0x%08X", &db_done);
   sceKernelStartThread(thid_db, sizeof(&db_done_ptr), &db_done_ptr);
@@ -92,7 +95,7 @@ int main() {
   Activity &activity = *Activity::create_instance();
 
   auto splash = std::make_shared<Splash>();
-  splash->priority = 15;
+  splash->priority = 200;
   activity.AddView(splash);
 
   while (1) {
@@ -101,13 +104,7 @@ int main() {
 
     input.Get();
     // input.Propagate(curView); // TODO: Rework function
-    if (db_done == true) {
-      dbg_printf(DBG_DEBUG, "db_done ok");
-      // FIXME async this because it blocks the drawing thread
-      auto mainView = std::make_shared<MainView>();
-      activity.AddView(mainView);
-      db_done = false;
-    }
+
     activity.FlushQueue();
     activity.HandleInput(1, input);
     activity.Display();

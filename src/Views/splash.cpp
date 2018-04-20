@@ -36,7 +36,7 @@ int Splash::Display()
 			}
 			break;
 		case STEP_STATIC:
-			if (frame_count >= 8*60) {
+			if (frame_count >= 5*60) {
 				step = STEP_FADING_OUT;
 			}
 			frame_count += 1;

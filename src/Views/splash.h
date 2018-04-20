@@ -18,7 +18,7 @@ public:
 
 	int Display() override;
 private:
-	unsigned int splash_index;
+	unsigned int splash_index = 0;
 	SplashStep step = STEP_FADING_IN;
 	unsigned int alpha = 0;
 	unsigned int frame_count = 0;
