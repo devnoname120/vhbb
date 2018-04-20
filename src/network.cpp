@@ -223,3 +223,65 @@ int Network::Download(std::string url, std::string dest, InfoProgress progress)
 {
     return Download(url, dest, &progress);
 }
+
+InternetStatus Network::TestConnection()
+{
+    InternetStatus ret = INTERNET_STATUS_OK;
+    int req = -1;
+    int read = -1;
+    int sendRes = -1;
+    int res = -1;
+    int statusCode = 0;
+    uint64_t contentLength;
+    char buf[4096] = {0};
+
+    int conn = sceHttpCreateConnectionWithURL(templateId_, PORTAL_DETECT_URL, SCE_TRUE);
+    if (conn < 0) {
+        ret = INTERNET_STATUS_NO_INTERNET;
+        goto clean;
+    }
+
+    req = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, PORTAL_DETECT_URL, 0);
+    if (req < 0) {
+        ret = INTERNET_STATUS_NO_INTERNET;
+        goto clean;
+    }
+
+    sendRes = sceHttpSendRequest(req, NULL, 0);
+
+    
+    res = sceHttpGetStatusCode(req, &statusCode);
+
+    if (sendRes < 0 || res < 0 || statusCode != 200) {
+        ret = INTERNET_STATUS_NO_INTERNET;
+        goto clean;
+    }
+    
+    res = sceHttpGetResponseContentLength(req, &contentLength);
+
+    if (res >= 0)
+        dbg_printf(DBG_DEBUG, "Content length: %lu", contentLength);
+
+    
+    read = sceHttpReadData(req, buf, sizeof(buf));
+    if (res <= 0) {
+        ret = INTERNET_STATUS_NO_INTERNET;
+        goto clean;
+    }
+
+    buf[read] = '\0';
+
+    if (strncmp(buf, PORTAL_DETECT_STR, strlen(PORTAL_DETECT_STR))) {
+        ret = INTERNET_STATUS_HOTSPOT_PAGE;
+        goto clean;
+    }
+
+    clean:
+    if (req >= 0) {
+        sceHttpDeleteRequest(req);
+        sceHttpAbortRequest(req);
+    }
+    if (conn >= 0) sceHttpDeleteConnection(conn);
+
+    return ret;
+}

@@ -53,7 +53,6 @@ void Activity::AddView(std::shared_ptr<View> view)
 {
     std::lock_guard<std::mutex> lock(mtx_);
 
-    dbg_printf(DBG_DEBUG, "Adding view");
     views_queue.push_back(view);
 }
 

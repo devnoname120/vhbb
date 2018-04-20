@@ -76,6 +76,9 @@ int main() {
   std::set_terminate(terminate_logger);
 
   Network &network = *Network::create_instance();
+  
+  // TODO Display a dialog if it doesn't work
+  network.TestConnection();
 
   // FIXME Don't crash if network not available, see
   // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
@@ -87,7 +90,6 @@ int main() {
   SceUID thid_db = sceKernelCreateThread(
       "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x20000, 0,
       0, NULL);
-  dbg_printf(DBG_DEBUG, "db_done: 0x%08X", &db_done);
   sceKernelStartThread(thid_db, sizeof(&db_done_ptr), &db_done_ptr);
 
   Input input;
@@ -103,7 +105,6 @@ int main() {
     vita2d_clear_screen();
 
     input.Get();
-    // input.Propagate(curView); // TODO: Rework function
 
     activity.FlushQueue();
     activity.HandleInput(1, input);
