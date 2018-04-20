@@ -1,14 +1,15 @@
 #include "vhbb.h"
 
-#include "Views/CategoryView/categoryView.h"
-#include "Views/background.h"
-#include "Views/statusBar.h"
+#include "Views/mainView.h"
+#include "Views/splash.h"
 #include "activity.h"
 #include "database.h"
 #include "input.h"
 #include "network.h"
 #include "nosleep_thread.h"
 #include "splash_thread.h"
+
+#include <atomic>
 
 extern "C" {
 unsigned int sleep(unsigned int seconds) {
@@ -38,6 +39,23 @@ void terminate_logger() {
   }
 }
 
+void FetchLoadIcons(SceSize arglen, std::atomic_bool** db_done)
+{
+  try {
+    // TODO check if fails
+    auto dl = Network::get_instance();
+    dl->Download(API_ENDPOINT, API_LOCAL);
+    auto db = Database::create_instance(API_LOCAL);
+    db->DownloadIcons();
+    **db_done = true;
+  } catch (const std::exception &ex) {
+    dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
+    throw ex;
+  }
+
+  sceKernelExitDeleteThread(0);
+}
+
 int main() {
   sceIoMkdir(VHBB_DATA.c_str(), 0777);
 
@@ -50,12 +68,6 @@ int main() {
       0, NULL);
   sceKernelStartThread(thid_sleep, 0, NULL);
 
-  // displaySplash();
-  SceUID thid_spl = sceKernelCreateThread("splash_thread",
-                                          (SceKernelThreadEntry)splash_thread,
-                                          0x40, 0x10000, 0, 0, NULL);
-  sceKernelStartThread(thid_spl, 0, NULL);
-
   dbg_init();
 
   std::set_terminate(terminate_logger);
@@ -65,47 +77,39 @@ int main() {
   // FIXME Don't crash if network not available, see
   // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
 
-  try {
-    // TODO check if fails
-    network.Download(API_ENDPOINT, API_LOCAL);
-    auto db = Database::create_instance(API_LOCAL);
-    dbg_printf(DBG_DEBUG, "Instance created");
-    db->DownloadIcons();
-  } catch (const std::exception &ex) {
-    dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
-    throw ex;
-  }
+  
+  std::atomic_bool db_done{false};
+  std::atomic_bool *db_done_ptr = &db_done;
+
+  SceUID thid_db = sceKernelCreateThread(
+      "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x200000, 0,
+      0, NULL);
+  dbg_printf(DBG_DEBUG, "db_done: 0x%08X", &db_done);
+  sceKernelStartThread(thid_db, sizeof(&db_done_ptr), &db_done_ptr);
 
   Input input;
 
   Activity &activity = *Activity::create_instance();
 
-  Background background;
-
-  StatusBar statusBar;
-  CategoryView categoryView;
+  auto splash = std::make_shared<Splash>();
+  splash->priority = 15;
+  activity.AddView(splash);
 
   while (1) {
-    // sceKernelPowerTick(0);
     vita2d_start_drawing();
     vita2d_clear_screen();
 
     input.Get();
     // input.Propagate(curView); // TODO: Rework function
-    activity.FlushQueue();
-    if (!activity.HasActivity()) {
-      categoryView.HandleInput(1, input);
-    } else {
-      categoryView.HandleInput(0, input);
+    if (db_done == true) {
+      dbg_printf(DBG_DEBUG, "db_done ok");
+      // FIXME async this because it blocks the drawing thread
+      auto mainView = std::make_shared<MainView>();
+      activity.AddView(mainView);
+      db_done = false;
     }
-
+    activity.FlushQueue();
     activity.HandleInput(1, input);
-
-    background.Display();
-    if (!activity.HasActivity()) categoryView.Display();
-
-    statusBar.Display();
-
     activity.Display();
 
     vita2d_end_drawing();

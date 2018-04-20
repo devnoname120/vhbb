@@ -112,3 +112,9 @@ int Texture::DrawResize(const Point &pt1, const Point &dimensions)
     return 0;
 }
 
+int Texture::DrawTint(const Point &pt, unsigned int color)
+{
+	vita2d_draw_texture_tint(texture.get(), pt.x, pt.y, color);
+	return 0;
+}
+

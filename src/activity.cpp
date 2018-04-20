@@ -24,8 +24,13 @@ int Activity::HandleInput(int focus, const Input& input)
         return 0;
     }
 
-    views_.back()->HandleInput(1, input);
-    if (views_.back()->request_destroy) views_.erase(views_.end() - 1);
+    views_.back()->HandleInput(focus, input);
+
+    views_.erase(
+        std::remove_if(views_.begin(), views_.end(),
+            [](const std::shared_ptr<View> &view) { return view->request_destroy; }),
+    views_.end());
+
     return 0;
 }
 
