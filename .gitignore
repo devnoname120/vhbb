@@ -1,5 +1,6 @@
 assetsold/
 build*/
+*-build-*/
 bin/
 Design/
 
