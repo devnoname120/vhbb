@@ -7,16 +7,16 @@ extern unsigned char _binary_assets_spr_gekihen_splash_png_start;
 
 
 Splash::Splash() :
-	vhbb_splash(Texture(&_binary_assets_spr_img_splash_png_start)),
-	gekihen_splash(Texture(&_binary_assets_spr_gekihen_splash_png_start))
+	vhbb_splash(&_binary_assets_spr_img_splash_png_start),
+	gekihen_splash(&_binary_assets_spr_gekihen_splash_png_start)
 {
 }
 
 int Splash::Display()
 {
-	Texture splashes[] = {
-		vhbb_splash,
-		gekihen_splash
+	AsyncTexture* splashes[] = {
+		&vhbb_splash,
+		&gekihen_splash
 	};
 
 	if (splash_index >= 2) {
@@ -24,7 +24,7 @@ int Splash::Display()
 		return true;
 	}
 
-	splashes[splash_index].DrawExt(Point(0, 0), alpha);
+	splashes[splash_index]->DrawExt(Point(0, 0), alpha);
 
 	switch(step) {
 		case STEP_FADING_IN:

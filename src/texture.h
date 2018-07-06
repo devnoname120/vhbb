@@ -32,5 +32,7 @@ public:
 
 private:
   bool caching_;
+  std::mutex mtx1_;
+  std::mutex mtx2_;
 };
 

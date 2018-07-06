@@ -36,6 +36,8 @@ Texture::Texture(const std::string &path, bool caching) :
 {
     auto key = path;
 	if (caching_) {
+		std::lock_guard<std::mutex> lock(mtx1_);
+
 		if (textureCache1.count(key) >= 1)
 		{
 			texture = textureCache1[key];
@@ -56,7 +58,10 @@ Texture::Texture(const std::string &path, bool caching) :
 	}
 
 
-	if (caching_) textureCache1[key] = texture;
+	if (caching_) {
+		std::lock_guard<std::mutex> lock(mtx1_);
+		textureCache1[key] = texture;
+	}
 }
 
 Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
@@ -66,8 +71,8 @@ Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
 
 	auto key = addr;
 	if (caching) {
+		std::lock_guard<std::mutex> lock(mtx2_);
 		if (textureCache2.count(key) >= 1) {
-
 			texture = textureCache2[key];
 			return;
 		}
@@ -75,7 +80,10 @@ Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
 
 	texture = std::make_shared(vita2d_load_PNG_buffer(addr));
 
-	if (caching) textureCache2[key] = texture;
+	if (caching) {
+		std::lock_guard<std::mutex> lock(mtx2_);
+		textureCache2[key] = texture;
+	}
 }
 
 

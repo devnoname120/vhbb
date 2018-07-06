@@ -69,7 +69,92 @@ ENDFUNCTION()
 file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/head.bin assets/*.png assets/*.jpeg assets/*.yml assets/*.ttf assets/*.wav assets/*.ogg)
 add_resources(PROJECT_RESOURCES ${res_files})
 
-file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
+set(PROJECT_SOURCE_FILES
+        src/activity.cpp
+        src/activity.h
+        src/AsyncTexture.cpp
+        src/AsyncTexture.h
+        src/database.cpp
+        src/database.h
+        src/date.cpp
+        src/date.h
+        src/debug.cpp
+        src/debug.h
+        src/filesystem.cpp
+        src/filesystem.h
+        src/font.cpp
+        src/font.h
+        src/global_include.h
+        src/Graphic/Geometry/Point.h
+        src/Graphic/Geometry/Rectangle.h
+        src/homebrew.cpp
+        src/homebrewDownload.cpp
+        src/homebrewDownload.h
+        src/homebrew.h
+        src/homebrewRelease.cpp
+        src/homebrewRelease.h
+        src/infoProgress.cpp
+        src/infoProgress.h
+        src/input.cpp
+        src/input.h
+        src/install_thread.cpp
+        src/install_thread.h
+        src/macros.h
+        src/minizip/crypt.h
+        src/minizip/ioapi.c
+        src/minizip/ioapi.h
+        src/minizip/unzip.c
+        src/minizip/unzip.h
+        src/minizip/zip.c
+        src/minizip/zip.h
+        src/network.cpp
+        src/network.h
+        src/nosleep_thread.cpp
+        src/nosleep_thread.h
+        src/screen.h
+        src/sha1.c
+        src/sha1.h
+        src/shapes.cpp
+        src/shapes.h
+        src/singleton.cpp
+        src/singleton.h
+        src/splash_thread.cpp
+        src/splash_thread.h
+        src/texture.cpp
+        src/texture.h
+        src/touch.h
+        src/unordered_map_pair_hash.h
+        src/utils.cpp
+        src/utils.h
+        src/vhbb.cpp
+        src/vhbb.h
+        src/Views/background.cpp
+        src/Views/background.h
+        src/Views/CategoryView/categoryView.cpp
+        src/Views/CategoryView/categoryView.h
+        src/Views/HomebrewView/homebrewView.cpp
+        src/Views/HomebrewView/homebrewView.h
+        src/Views/ListView/listItem.cpp
+        src/Views/ListView/listItem.h
+        src/Views/ListView/listView.cpp
+        src/Views/ListView/listView.h
+        src/Views/mainView.cpp
+        src/Views/mainView.h
+        src/Views/ProgressView/progressView.cpp
+        src/Views/ProgressView/progressView.h
+        src/Views/splash.cpp
+        src/Views/splash.h
+        src/Views/statusBar.cpp
+        src/Views/statusBar.h
+        src/Views/View.cpp
+        src/Views/View.h
+        src/vitaPackage.cpp
+        src/vitaPackage.h
+        src/zip.cpp
+        src/zip.h
+
+        src/ThreadPool.h)
+
 add_executable(${SHORT_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
@@ -79,6 +164,7 @@ if(DEBUGNET)
   add_definitions(-DDEBUGNET)
   target_link_libraries(${SHORT_NAME} debugnet)
   file(STRINGS "debugnetip.txt" DEBUGNETIP)
+  string(STRIP "${DEBUGNETIP}" DEBUGNETIP)
   add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
 endif()
 
@@ -114,7 +200,7 @@ target_link_libraries(${SHORT_NAME}
   ScePower_stub
   SceAudio_stub
   SceAudiodec_stub
-  pthread
+  -Wl,--whole-archive pthread -Wl,--no-whole-archive
 )
 
 vita_create_self(${SHORT_NAME}.self ${SHORT_NAME} UNSAFE UNCOMPRESSED)
@@ -131,12 +217,14 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
 )
 
 file(STRINGS "psvitaip.txt" PSVITAIP)
+string(STRIP "${PSVITAIP}" PSVITAIP)
 
 add_custom_target(send
   COMMAND curl -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
   DEPENDS ${SHORT_NAME}.self
 )
 
+# 3333 load ${VITA_TITLEID} ${SHORT_NAME}.self
 add_custom_target(shellsend
   COMMAND psp2shell_cli ${PSVITAIP} 3333 load ${VITA_TITLEID} ${SHORT_NAME}.self
   DEPENDS ${SHORT_NAME}.self

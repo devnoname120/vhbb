@@ -4,6 +4,7 @@
 
 #include "View.h"
 #include <texture.h>
+#include <AsyncTexture.h>
 
 typedef enum {
 	STEP_FADING_IN,
@@ -23,6 +24,6 @@ private:
 	unsigned int alpha = 0;
 	unsigned int frame_count = 0;
 
-	Texture vhbb_splash;
-	Texture gekihen_splash;
+	AsyncTexture vhbb_splash;
+	AsyncTexture gekihen_splash;
 };
