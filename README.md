@@ -12,7 +12,16 @@ Optional:
 
 ## Building
 
-To build VHBB, navigate to the directory containing `Makefile` and use the `make` command to build.
+To build VHBB, you'll need to have the [vitasdk](https://vitasdk.org) installed and working.
+
+Then run the following commands:
+```
+mkdir build
+cd build
+
+cmake .. -DDEBUGNET=OFF -DCMAKE_BUILD_TYPE=Release
+make -j4
+```
 
 ## Running
 
