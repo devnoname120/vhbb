@@ -5,6 +5,8 @@
 #include "texture.h"
 #include <Views/View.h>
 #include <Views/ListView/listView.h>
+#include <Views/background.h>
+#include <Views/statusBar.h>
 
 #define HB_X 0
 #define HB_Y 30
@@ -26,6 +28,10 @@ private:
 	Texture img_preview_infobg;
 	Texture img_preview_btn_download;
 	Texture img_preview_btn_open;
+
+	// FIXME Hack otherwise we see the other views beneath
+	Background bg;
+	StatusBar sb;
 
 	Homebrew hb_;
 	bool installed_ = false;

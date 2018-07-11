@@ -134,6 +134,9 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 
 int HomebrewView::Display()
 {
+	bg.Display();
+    sb.Display();
+
 	img_preview_infobg.Draw(Point(HB_X, HB_Y + 300));
 
 	font_40.Draw(Point(HB_X + 225, HB_Y + 88), hb_.name, COLOR_WHITE);
