@@ -1,6 +1,7 @@
 # Vita HomeBrew Browser
 
-![Alt text](http://www.playlight.com.au/vita/vhbb/info/icon.png "")
+
+![Alt text](https://cloud.githubusercontent.com/assets/21164502/24837255/3af41722-1d73-11e7-8aae-5664fec174f3.png "")
 
 ## Prerequisites
 
