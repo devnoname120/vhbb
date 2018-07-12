@@ -21,7 +21,7 @@ friend class Singleton<Network>;
 public:
     Network();
     ~Network();
-
+	
     int Download(std::string url, std::string dest, InfoProgress progress);
     int Download(std::string url, std::string dest, InfoProgress *progress = nullptr);
 
