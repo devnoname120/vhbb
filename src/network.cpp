@@ -134,8 +134,10 @@ int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress *progres
 		struct curl_slist *headerchunk = NULL;
 		headerchunk = curl_slist_append(headerchunk, "Accept: */*");
 		headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
-		headerchunk = curl_slist_append(headerchunk, "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-		//headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com");  Setting this will lead to errors when trying to download. should be set depending on location : possible : cdn.discordapp.com or images.discordapp.com
+		std::string useragentReq = "User-Agent: " VHBB_UA;
+		const char * useragentReqC = useragentReq.c_str();
+		headerchunk = curl_slist_append(headerchunk, useragentReqC);
+		//headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com"); 
 		headerchunk = curl_slist_append(headerchunk, "Content-Length: 0");
 		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerchunk);
 		
@@ -152,14 +154,14 @@ int Network::DownloadSize(std::string url, uint64_t *size, InfoProgress *progres
 		
 		if(res != CURLE_OK){
 			//fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-			
+			throw std::runtime_error("Network: unexpected status code");
 		}else{
 			//printf("Download size: %" CURL_FORMAT_CURL_OFF_T "\n", clDownloadSize);
 		}
 		
 		
 	}else{
-		
+		throw std::runtime_error("Network: Cannot create request");
 	}
 
 	// cleanup
@@ -214,8 +216,10 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 		struct curl_slist *headerchunk = NULL;
 		headerchunk = curl_slist_append(headerchunk, "Accept: */*");
 		headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
-		headerchunk = curl_slist_append(headerchunk, "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
-		//headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com");  Setting this will lead to errors when trying to download. should be set depending on location : possible : cdn.discordapp.com or images.discordapp.com
+		std::string useragentReq = "User-Agent: " VHBB_UA;
+		const char * useragentReqC = useragentReq.c_str();
+		headerchunk = curl_slist_append(headerchunk, useragentReqC);
+		//headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com"); 
 		headerchunk = curl_slist_append(headerchunk, "Content-Length: 0");
 		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerchunk);
 		
@@ -228,14 +232,14 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 		
 		if(res != CURLE_OK){
 			//fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-			
+			throw std::runtime_error("Network: unexpected status code");
 		}else{
 			
 		}
 		
 		
 	}else{
-		
+		throw std::runtime_error("Network: Cannot create request");
 	}
 
 	// close filedescriptor
@@ -255,61 +259,75 @@ int Network::Download(std::string url, std::string dest, InfoProgress progress)
 InternetStatus Network::TestConnection()
 {
     InternetStatus ret = INTERNET_STATUS_OK;
-    int req = -1;
-    int read = -1;
-    int sendRes = -1;
-    int res = -1;
-    int statusCode = 0;
-    uint64_t contentLength;
-    char buf[4096] = {0};
+    CURL *curl;
+	CURLcode res;
+	curl = curl_easy_init();
+	if(curl) {
+		struct stringcurl body;
+		init_string(&body);
+		struct stringcurl header;
+		init_string(&header);
+		curl_easy_setopt(curl, CURLOPT_URL, PORTAL_DETECT_URL);
+		// Set useragant string
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+		// not sure how to use this when enabled
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+		// not sure how to use this when enabled
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+		// Set SSL VERSION to TLS 1.2
+		curl_easy_setopt(curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+		// Set timeout for the connection to build
+		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 10L);
+		// Follow redirects (?)
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
-    int conn = sceHttpCreateConnectionWithURL(templateId_, PORTAL_DETECT_URL, SCE_TRUE);
-    if (conn < 0) {
-        ret = INTERNET_STATUS_NO_INTERNET;
-        goto clean;
-    }
-
-    req = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, PORTAL_DETECT_URL, 0);
-    if (req < 0) {
-        ret = INTERNET_STATUS_NO_INTERNET;
-        goto clean;
-    }
-
-    sendRes = sceHttpSendRequest(req, NULL, 0);
-
-    
-    res = sceHttpGetStatusCode(req, &statusCode);
-
-    if (sendRes < 0 || res < 0 || statusCode != 200) {
-        ret = INTERNET_STATUS_NO_INTERNET;
-        goto clean;
-    }
-    
-    res = sceHttpGetResponseContentLength(req, &contentLength);
-
-    if (res >= 0)
-        dbg_printf(DBG_DEBUG, "Content length: %lu", contentLength);
-
-    
-    read = sceHttpReadData(req, buf, sizeof(buf));
-    if (res <= 0) {
-        ret = INTERNET_STATUS_NO_INTERNET;
-        goto clean;
-    }
-
-    buf[read] = '\0';
-
-    if (strncmp(buf, PORTAL_DETECT_STR, strlen(PORTAL_DETECT_STR))) {
-        ret = INTERNET_STATUS_HOTSPOT_PAGE;
-        goto clean;
-    }
-
-    clean:
-    if (req >= 0) {
-        sceHttpDeleteRequest(req);
-        sceHttpAbortRequest(req);
-    }
-    if (conn >= 0) sceHttpDeleteConnection(conn);
-
+		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+		// The progress callback
+		//curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progress_callback);
+		
+		// Write body function and pointer 
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &body);
+		
+		// write function of response headers
+		curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, writefunc);
+		// the response header data where to write to
+		curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header);
+		// Request Header :
+		struct curl_slist *headerchunk = NULL;
+		headerchunk = curl_slist_append(headerchunk, "Accept: */*");
+		headerchunk = curl_slist_append(headerchunk, "Content-Type: application/json");
+		std::string useragentReq = "User-Agent: " VHBB_UA;
+		const char * useragentReqC = useragentReq.c_str();
+		headerchunk = curl_slist_append(headerchunk, useragentReqC);
+		//headerchunk = curl_slist_append(headerchunk, "Host: discordapp.com"); 
+		headerchunk = curl_slist_append(headerchunk, "Content-Length: 0");
+		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerchunk);
+		
+		// Perform the request
+		res = curl_easy_perform(curl);
+		int httpresponsecode = 0;
+		curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &httpresponsecode);
+		
+		
+		std::string responseBody = std::string(body.ptr , body.len);
+		if (strncmp(responseBody.c_str(), PORTAL_DETECT_STR, strlen(PORTAL_DETECT_STR))) {
+			ret = INTERNET_STATUS_HOTSPOT_PAGE;
+		}
+		
+		if(res != CURLE_OK){
+			//fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+		}else{
+			
+		}
+		
+		
+	}else{
+		
+	}
+	
+	// cleanup
+	curl_easy_cleanup(curl);
+	
     return ret;
 }
