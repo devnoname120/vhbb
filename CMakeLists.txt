@@ -37,6 +37,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-sign-compare -Wno-unu
 #set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Os")
 #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Os")
 
+
+find_package(CURL REQUIRED)
+find_package(OpenSSL REQUIRED)
+
 include_directories(
   src/
 )
@@ -96,6 +100,8 @@ target_link_libraries(${SHORT_NAME}
   SceNetCtl_stub
   SceHttp_stub
   SceSsl_stub
+  ${CURL_LIBRARIES}
+  ${OPENSSL_LIBRARIES}
   ftpvita
   SceAppMgr_stub
   SceAppUtil_stub
