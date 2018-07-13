@@ -13,6 +13,9 @@ set(SHORT_NAME VitaHBBrowser)
 project(${SHORT_NAME})
 include("${VITASDK}/share/vita.cmake" REQUIRED)
 
+set(ENV{PKG_CONFIG_PATH} "$ENV{VITASDK}/arm-vita-eabi/lib/pkgconfig")
+include(FindPkgConfig)
+
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
 set(VITA_VERSION "00.81")
@@ -36,6 +39,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-sign-compare -Wno-unu
 
 #set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Os")
 #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Os")
+
+find_package(CURL REQUIRED)
+find_package(OpenSSL REQUIRED)
+pkg_check_modules(CURLPP REQUIRED curlpp)
 
 include_directories(
   src/
@@ -96,6 +103,9 @@ target_link_libraries(${SHORT_NAME}
   SceNetCtl_stub
   SceHttp_stub
   SceSsl_stub
+  ${CURLPP_LDFLAGS}
+  ${CURL_LIBRARIES}
+  ${OPENSSL_LIBRARIES}
   ftpvita
   SceAppMgr_stub
   SceAppUtil_stub
