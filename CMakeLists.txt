@@ -18,7 +18,7 @@ include(FindPkgConfig)
 
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
-set(VITA_VERSION "00.81")
+set(VITA_VERSION "00.82")
 
 
 option(DEBUGNET "Enable debugnet for logging" ON)
