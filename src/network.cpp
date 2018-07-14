@@ -1,6 +1,46 @@
 #include "network.h"
 
 
+#include <curlpp/cURLpp.hpp>
+#include <curlpp/Easy.hpp>
+#include <curlpp/Options.hpp>
+#include <curlpp/Exception.hpp>
+
+#define MAX_FILE_LENGTH 20000
+
+class WriterFileClass
+{
+public:
+    WriterFileClass(std::string dest) {
+        m_fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
+
+        if (m_fd < 0)
+            cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
+    }
+
+    ~WriterFileClass() {
+        if(m_fd >= 0) {
+            sceIoClose(m_fd);
+        }
+    }
+
+    size_t WriterFileClassCallback(char* ptr, size_t size, size_t nmemb)
+    {
+        int ret = sceIoWrite(m_fd, ptr, size*nmemb);
+        if (ret < 0)
+            cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
+
+        return ret;
+    }
+
+    int rewind() {
+        return sceIoLseek(m_fd, 0, SCE_SEEK_SET);
+    }
+
+private:
+    int m_fd = -1;
+};
+
 Network::Network()
 {
     sceSysmoduleLoadModule(SCE_SYSMODULE_NET);
@@ -23,10 +63,14 @@ Network::Network()
     if (ret < 0)
         throw std::runtime_error("Network: Cannot create template");
     templateId_ = ret;
+
+    cURLpp::initialize();
 }
 
 Network::~Network()
 {
+    cURLpp::terminate();
+
     sceHttpDeleteTemplate(templateId_);
 
     sceNetCtlTerm();
@@ -43,106 +87,56 @@ Network::~Network()
 
 int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 {
-    //if(progress) progress->message("Starting the download...");
-
     dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
-    int conn = -1;
-    int req = -1;
-    int fd = -1;
 
     try {
-        conn = sceHttpCreateConnectionWithURL(templateId_, url.c_str(), SCE_TRUE);
-        if (conn < 0)
-            throw std::runtime_error("Network: Cannot create connection");
+        curlpp::Easy request;
 
-        req = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, url.c_str(), 0);
-        if (req < 0)
-            throw std::runtime_error("Network: Cannot create request");
+        request.setOpt(new curlpp::options::Url(url));
+        request.setOpt(new curlpp::options::UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"));
+        request.setOpt(new curlpp::options::SslVerifyHost(0L));
+        request.setOpt(new curlpp::options::SslVerifyPeer(false));
 
-        int res = sceHttpSendRequest(req, NULL, 0);
+        request.setOpt(new curlpp::options::ConnectTimeout(10L));
+        request.setOpt(new curlpp::options::FollowLocation(true));
+        request.setOpt(new curlpp::options::MaxRedirs(8L));
+        request.setOpt(new curlpp::options::NoProgress(true));
 
-        if(progress) progress->percent(5);
+        using namespace std::placeholders;
+        WriterFileClass mWriterChunk(dest);
 
-        int i=0;
-        for (i=2; res < 0 && i < 6; i++) {
+        curlpp::types::WriteFunctionFunctor functor = std::bind(&WriterFileClass::WriterFileClassCallback, &mWriterChunk, _1, _2, _3);
+        request.setOpt(new curlpp::options::WriteFunction(functor));
 
-            dbg_printf(DBG_ERROR, "sceHttpSendRequest() error: 0x%08X", res);
-            if (res == SCE_HTTP_ERROR_SSL) {
-                int sslErr;
-                unsigned int sslErrDetail;
-                res = sceHttpsGetSslError(req, &sslErr, &sslErrDetail);
-                if (res < 0) {
-                    dbg_printf(DBG_ERROR, "sceHttpsGetSslError error: 0x%08X", res);
-                } else {
-                    dbg_printf(DBG_ERROR, "SSL error: 0x%08X, %u\nSee here for meaning: \
-                        https://github.com/vitasdk/vita-headers/blob/master/include/psp2/net/http.h",
-                        sslErr,
-                        sslErrDetail);
-                }
-            }
-            sceKernelDelayThread((i-1)*500 * 1000);
-            if(progress) progress->message("Starting the download... (" + std::to_string(i) + ")");
-            res = sceHttpSendRequest(req, NULL, 0);
-        }
-        if (res < 0)
-            throw std::runtime_error("Network: Cannot send request");
-
-        if(progress) progress->message("Downloading...");
-
-        int statusCode;
-        res = sceHttpGetStatusCode(req, &statusCode);
-        if (res < 0)
-            throw std::runtime_error("Network: Cannot get status code");
-        if (statusCode != 200)
-            throw std::runtime_error("Network: unexpected status code");
-
-        uint64_t contentLength;
-        res = sceHttpGetResponseContentLength(req, &contentLength);
-        if (res < 0 && progress != nullptr)
-            throw std::runtime_error("Network: Cannot get content length");
-
-        if (res >= 0)
-            dbg_printf(DBG_DEBUG, "Content length: %lu", contentLength);
-
-        if(progress) progress->percent(10);
-
-        fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
-
-        unsigned int s_downloaded = 0;
-        char buf[4096];
-        while(true) {
-            int read = sceHttpReadData(req, buf, sizeof(buf));
-            if (read < 0)
-                throw std::runtime_error("Network: Couldn't read data");
-
-            if (read == 0)
+        for (unsigned int retries=1; retries <= 3; retries++) {
+            try {
+                request.perform();
                 break;
+            } catch (curlpp::RuntimeError &e) {
+                if (retries == 3)
+                    throw e;
 
-            s_downloaded += read;
-            if(progress) progress->percent(10 + 90*s_downloaded/contentLength);
-
-            int written = sceIoWrite(fd, buf, read);
-            if (written < 0)
-                throw std::runtime_error("Network: Couldn't write data");
+                mWriterChunk.rewind();
+                if(progress) progress->message("Retrying the download... (" + std::to_string(retries) + ")");
+                sceKernelDelayThread(retries*500 * 1000);
+                continue;
+            }
         }
 
+        // TODO Check this
+        //curlpp::infos::ResponseCode::get(request);//
+//        if (statusCode != 200)
+//            throw std::runtime_error("Network: unexpected status code");
+//        throw std::runtime_error("Network: Cannot get content length");
 
-    } catch (const std::runtime_error &ex) {
-        dbg_printf(DBG_ERROR, "%s", ex.what());
-        if (fd >= 0) sceIoClose(fd);
-        if (req >= 0) sceHttpDeleteRequest(req);
-        if (conn >= 0) sceHttpDeleteConnection(conn);
+        // if(progress) progress->percent(10 + 90*s_downloaded/contentLength);
 
-        throw;
+    } catch (curlpp::RuntimeError &e) {
+        dbg_printf(DBG_ERROR, "cURLpp exception: ", e.what().c_str());
+        throw std::runtime_error("Network: Cannot send request");
     }
 
-    dbg_printf(DBG_DEBUG, "Downloaded");
-
     if(progress) progress->percent(100);
-
-    if (fd >= 0) sceIoClose(fd);
-    if (req >= 0) sceHttpDeleteRequest(req);
-    if (conn >= 0) sceHttpDeleteConnection(conn);
 
     return 0;
 }
