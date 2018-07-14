@@ -113,7 +113,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         request.setOpt(new curlpp::options::ConnectTimeout(10L));
         request.setOpt(new curlpp::options::FollowLocation(true));
         request.setOpt(new curlpp::options::MaxRedirs(8L));
-        request.setOpt(new curlpp::options::NoProgress(true));
+        request.setOpt(new curlpp::options::FailOnError(true));
 
         using namespace std::placeholders;
 
