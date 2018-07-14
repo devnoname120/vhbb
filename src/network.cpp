@@ -93,7 +93,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         curlpp::Easy request;
 
         request.setOpt(new curlpp::options::Url(url));
-        request.setOpt(new curlpp::options::UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"));
+        request.setOpt(new curlpp::options::UserAgent(VHBB_UA));
         request.setOpt(new curlpp::options::SslVerifyHost(0L));
         request.setOpt(new curlpp::options::SslVerifyPeer(false));
 
