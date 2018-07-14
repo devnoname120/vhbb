@@ -23,7 +23,7 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
         if (!installArgs->hb.data.empty()) {
             progress = progressTotal.Range(0, 50);
 
-            progress.message("Starting the data download...");
+            progress.message("Downloading the data...");
             Network::get_instance()->Download(installArgs->hb.data, std::string("ux0:/temp/data.zip"), progress.Range(0, 50));
 
             Zipfile zip = Zipfile("ux0:/temp/data.zip");
@@ -34,7 +34,7 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
             progress = progressTotal;
         }
 
-        progress.message("Starting the vpk download...");
+        progress.message("Downloading the vpk...");
 
         Network::get_instance()->Download(installArgs->hb.url, std::string("ux0:/temp/download.vpk"), progress.Range(0, 40));
 

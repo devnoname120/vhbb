@@ -7,7 +7,7 @@
 
 #define PORTAL_DETECT_URL "http://detectportal.firefox.com/success.txt" // Note : similar portal detector http://www.apple.com/library/test/success.html
 #define PORTAL_DETECT_STR "success"
-#define VHBB_UA "VHBB/1.00 libhttp/1.1"
+#define VHBB_UA "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"
 #define MAX_QUEUE_CONN 10
 
 typedef enum {
@@ -24,9 +24,6 @@ public:
 
     int Download(std::string url, std::string dest, InfoProgress progress);
     int Download(std::string url, std::string dest, InfoProgress *progress = nullptr);
-
-    int DownloadSize(std::string url, uint64_t *size, InfoProgress progress);
-    int DownloadSize(std::string url, uint64_t *size, InfoProgress *progress = nullptr);
 
     InternetStatus TestConnection();
 private:

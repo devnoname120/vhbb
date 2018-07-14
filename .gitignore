@@ -1,4 +1,5 @@
 assetsold/
+bbuild/
 build*/
 *-build-*/
 bin/
