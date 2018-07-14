@@ -8,6 +8,19 @@
 
 #define MAX_FILE_LENGTH 20000
 
+class ProgressClass {
+public:
+    ProgressClass(InfoProgress &progress) : m_progress(progress) {
+    }
+
+    int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow) {
+        m_progress.percent((float)(dlnow / dltotal) * 100);
+        return CURLE_OK;
+    }
+private:
+    InfoProgress &m_progress;
+};
+
 class WriterFileClass
 {
 public:
@@ -103,10 +116,20 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         request.setOpt(new curlpp::options::NoProgress(true));
 
         using namespace std::placeholders;
+
+        if (progress) {
+            request.setOpt(new curlpp::options::NoProgress(false));
+
+            ProgressClass mProgressClass(*progress);
+            curlpp::types::ProgressFunctionFunctor progressFunctor = std::bind(&ProgressClass::ProgressClassCallback, &mProgressClass, _1, _2, _3, _4);
+
+            request.setOpt(new curlpp::options::ProgressFunction(progressFunctor));
+        }
+
         WriterFileClass mWriterChunk(dest);
 
-        curlpp::types::WriteFunctionFunctor functor = std::bind(&WriterFileClass::WriterFileClassCallback, &mWriterChunk, _1, _2, _3);
-        request.setOpt(new curlpp::options::WriteFunction(functor));
+        curlpp::types::WriteFunctionFunctor writeFunctor = std::bind(&WriterFileClass::WriterFileClassCallback, &mWriterChunk, _1, _2, _3);
+        request.setOpt(new curlpp::options::WriteFunction(writeFunctor));
 
         for (unsigned int retries=1; retries <= 3; retries++) {
             try {
@@ -122,14 +145,6 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
                 continue;
             }
         }
-
-        // TODO Check this
-        //curlpp::infos::ResponseCode::get(request);//
-//        if (statusCode != 200)
-//            throw std::runtime_error("Network: unexpected status code");
-//        throw std::runtime_error("Network: Cannot get content length");
-
-        // if(progress) progress->percent(10 + 90*s_downloaded/contentLength);
 
     } catch (curlpp::RuntimeError &e) {
         dbg_printf(DBG_ERROR, "cURLpp exception: ", e.what().c_str());
