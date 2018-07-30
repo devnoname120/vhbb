@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 	<script>
-	<!-- TODO: auto gen links (currently a posible issue with 0.81 release date) -->
-	var vhbbVersion="0.82"
-	var vpkLink="https://github.com/devnoname120/vhbb/releases/download/" + vhbbVersion + "/VitaHBBrowser.vpk";
-	var releaseLink="https://github.com/devnoname120/vhbb/releases/tag/" + vhbbVersion;
+		fetch('https://api.github.com/repos/devnoname120/vhbb/releases/latest')
+			.then(function (response) {
+				return response.json();
+			})
+			.then(function (json) {
+				var vhbbVersion = json.tag_name;
+				var vpkLink = json.assets[0].browser_download_url;
+				var releaseLink = json.html_url;
+
+				document.getElementById("vhbbVersion").innerHTML = vhbbVersion;
+				document.getElementById("vpkLink").href = vpkLink;
+				document.getElementById("releaseLink").href = releaseLink;
+			});
 	</script>
 	
 	
