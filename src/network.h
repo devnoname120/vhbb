@@ -22,8 +22,9 @@ public:
     Network();
     ~Network();
 
-    int Download(std::string url, std::string dest, InfoProgress progress);
-    int Download(std::string url, std::string dest, InfoProgress *progress = nullptr);
+    // FIXME shouldCancel only works if progress is provided
+    int Download(std::string url, std::string dest, InfoProgress progress, std::shared_ptr<bool> shouldCancel = nullptr);
+    int Download(std::string url, std::string dest, InfoProgress *progress = nullptr, std::shared_ptr<bool> shouldCancel = nullptr);
 
     InternetStatus TestConnection();
 private:

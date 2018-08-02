@@ -5,20 +5,30 @@
 #include <curlpp/Easy.hpp>
 #include <curlpp/Options.hpp>
 #include <curlpp/Exception.hpp>
+#include <utility>
 
 #define MAX_FILE_LENGTH 20000
 
 class ProgressClass {
 public:
-    ProgressClass(InfoProgress &progress) : m_progress(progress) {
+    ProgressClass(InfoProgress &progress, std::shared_ptr<bool> shouldCancel = nullptr) :
+            m_progress(progress),
+            m_shouldCancel(shouldCancel) {
     }
 
     int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow) {
         m_progress.percent((float)(dlnow / dltotal) * 100);
+
+        if (m_shouldCancel && *m_shouldCancel) {
+            // Returning a non-0 value cancels the cURL download
+            return -1;
+        }
+
         return CURLE_OK;
     }
 private:
     InfoProgress &m_progress;
+    std::shared_ptr<bool> m_shouldCancel;
 };
 
 class WriterFileClass
@@ -98,7 +108,7 @@ Network::~Network()
 
 }
 
-int Network::Download(std::string url, std::string dest, InfoProgress *progress)
+int Network::Download(std::string url, std::string dest, InfoProgress *progress, std::shared_ptr<bool> shouldCancel = nullptr)
 {
     dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
 
@@ -120,7 +130,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         if (progress) {
             request.setOpt(new curlpp::options::NoProgress(false));
 
-            ProgressClass mProgressClass(*progress);
+            ProgressClass mProgressClass(*progress, shouldCancel);
             curlpp::types::ProgressFunctionFunctor progressFunctor = std::bind(&ProgressClass::ProgressClassCallback, &mProgressClass, _1, _2, _3, _4);
 
             request.setOpt(new curlpp::options::ProgressFunction(progressFunctor));
@@ -136,6 +146,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
                 request.perform();
                 break;
             } catch (curlpp::RuntimeError &e) {
+                dbg_printf(DBG_WARNING, "cURLpp download failed: ", e.what());
                 if (retries == 3)
                     throw e;
 
@@ -156,9 +167,9 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
     return 0;
 }
 
-int Network::Download(std::string url, std::string dest, InfoProgress progress)
+int Network::Download(std::string url, std::string dest, InfoProgress progress, std::shared_ptr<bool> shouldCancel = nullptr)
 {
-    return Download(url, dest, &progress);
+    return Download(url, dest, &progress, shouldCancel);
 }
 
 InternetStatus Network::TestConnection()

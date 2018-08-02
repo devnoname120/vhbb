@@ -13,6 +13,10 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
     
     InfoProgress progressTotal;
 	Homebrew targetHb = installArgs->hb;
+
+	auto shouldCancel = std::make_shared<bool>(false);
+
+	// TODO Pass shouldCancel
     auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb);
 
     InfoProgress progress;
