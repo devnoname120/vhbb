@@ -43,7 +43,7 @@ Texture::Texture(const std::string &path, bool caching) :
 		}
 	}
 
-	std::size_t found = path.find_last_of(".");
+	std::size_t found = path.find_last_of('.');
 	std::string extension = path.substr(found+1);
 
 	texture = std::make_shared(vita2d_load_PNG_file(path.c_str()));
