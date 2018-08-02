@@ -19,6 +19,7 @@ Texture::Texture(const Texture& that)
 {
 	texture = that.texture;
 	caching_ = that.caching_;
+	m_status = that.m_status;
 }
 
 Texture& Texture::operator=(const Texture& that)
@@ -27,6 +28,7 @@ Texture& Texture::operator=(const Texture& that)
     {
 		texture = that.texture;
 		caching_ = that.caching_;
+        m_status = that.m_status;
     }
     return *this;
 }
@@ -39,6 +41,7 @@ Texture::Texture(const std::string &path, bool caching) :
 		if (textureCache1.count(key) >= 1)
 		{
 			texture = textureCache1[key];
+			m_status = LOADED;
 			return;
 		}
 	}
@@ -52,11 +55,13 @@ Texture::Texture(const std::string &path, bool caching) :
 
 	if (!texture) {
 		dbg_printf(DBG_ERROR, "Couldn't load texture %s", path.c_str());
+        m_status = FAILED;
 		return;
 	}
 
 
 	if (caching_) textureCache1[key] = texture;
+	m_status = LOADED;
 }
 
 Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
@@ -69,18 +74,25 @@ Texture::Texture(unsigned char* addr, bool caching) : caching_(caching)
 		if (textureCache2.count(key) >= 1) {
 
 			texture = textureCache2[key];
+			m_status = LOADED;
 			return;
 		}
 	}
 
+	// FIXME Support for other image formats, and Status
 	texture = std::make_shared(vita2d_load_PNG_buffer(addr));
 
 	if (caching) textureCache2[key] = texture;
+	m_status = LOADED;
 }
 
 
 int Texture::Draw(const Point &pt)
 {
+    // TODO Maybe display some kind of placeholder instead?
+	if (m_status != LOADED)
+		return -1;
+
 	vita2d_draw_texture(texture.get(), pt.x, pt.y);
 	return 0;
 }
@@ -88,6 +100,9 @@ int Texture::Draw(const Point &pt)
 
 int Texture::DrawExt(const Point &pt, int alpha)
 {
+	if (m_status != LOADED)
+		return -1;
+
 	vita2d_draw_texture_tint(texture.get(), pt.x, pt.y, RGBA8(255, 255, 255, alpha));
 	return 0;
 }
@@ -95,7 +110,9 @@ int Texture::DrawExt(const Point &pt, int alpha)
 
 // vita2d doesn't have a draw resize function: https://github.com/xerpi/libvita2d/issues/42
 int Texture::DrawResize(const Point &pt1, const Point &dimensions)
-{
+{	if (m_status != LOADED)
+		return -1;
+
 	// Careful, vita2d_texture_get_width() will crash if vita2d_start_drawing() was not called
 	float width = vita2d_texture_get_width(texture.get());
 	float height = vita2d_texture_get_height(texture.get());
@@ -114,6 +131,9 @@ int Texture::DrawResize(const Point &pt1, const Point &dimensions)
 
 int Texture::DrawTint(const Point &pt, unsigned int color)
 {
+	if (m_status != LOADED)
+		return -1;
+
 	vita2d_draw_texture_tint(texture.get(), pt.x, pt.y, color);
 	return 0;
 }

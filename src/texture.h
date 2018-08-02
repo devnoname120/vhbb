@@ -14,6 +14,12 @@ inline std::shared_ptr<vita2d_texture> make_shared(vita2d_texture* tex) {
 
 class Texture {
 public:
+  enum Status {
+      LOADING,
+      LOADED,
+      FAILED
+  };
+
   Texture(unsigned char *addr, bool caching = true);
   Texture(const std::string &path, bool caching = true);
 
@@ -32,5 +38,7 @@ public:
 
 private:
   bool caching_;
+
+  Status m_status = LOADING;
 };
 
