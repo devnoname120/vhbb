@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
-    <generated />
+    <generated>
+      <config projectName="VitaHBBrowser" targetName="send" />
+      <config projectName="VitaHBBrowser" targetName="VitaHBBrowser.vpk" />
+      <config projectName="VitaHBBrowser" targetName="VitaHBBrowser.self" />
+      <config projectName="VitaHBBrowser" targetName="shellsend" />
+      <config projectName="VitaHBBrowser" targetName="vpksend" />
+      <config projectName="VitaHBBrowser" targetName="VitaHBBrowser" />
+    </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" BUILD_OPTIONS="-j 3">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
-            <env name="VITASDK" value="/usr/local/vitasdk-musl" />
+            <env name="VITASDK" value="/usr/local/vitasdk" />
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
       </configuration>
@@ -16,105 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f9b8e0f-9233-4e4d-af5a-e640b7a89bff" name="Default" comment="Add OpenSSL, cURL, cURLpp to the libraries">
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeCache.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CMakeCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CMakeCXXCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CMakeSystem.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CompilerIdC/a.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CompilerIdCXX/CMakeCXXCompilerId.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/3.7.2/CompilerIdCXX/a.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/CMakeRuleHashes.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/Makefile2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/C.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/CXX.includecache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/flags.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/CategoryView/categoryView.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/HomebrewView/homebrewView.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/ListView/listItem.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/ListView/listView.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/ProgressView/progressView.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/View.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/background.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/mainView.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/splash.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/Views/statusBar.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/activity.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/database.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/date.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/debug.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/filesystem.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/font.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/homebrew.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/homebrewDownload.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/homebrewRelease.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/infoProgress.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/input.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/install_thread.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/minizip/ioapi.c.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/minizip/unzip.c.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/minizip/zip.c.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/network.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/nosleep_thread.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/sha1.c.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/shapes.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/singleton.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/splash_thread.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/texture.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/utils.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/vhbb.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/vitaPackage.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.dir/src/zip.cpp.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.self.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.self.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.self.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.self.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.self.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.self.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.vpk.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.vpk.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.vpk.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.vpk.dir/depend.internal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.vpk.dir/depend.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/VitaHBBrowser.vpk.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/cmake.check_cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/feature_tests.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/feature_tests.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/feature_tests.cxx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/progress.marks" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/send.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/send.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/send.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/send.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/shellsend.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/shellsend.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/shellsend.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/shellsend.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/vpksend.dir/DependInfo.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/vpksend.dir/build.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/vpksend.dir/cmake_clean.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/CMakeFiles/vpksend.dir/progress.make" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/VitaHBBrowser" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/VitaHBBrowser.self" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbuild/cmake_install.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/install_thread.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/install_thread.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/network.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/network.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/network.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/network.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -124,34 +33,53 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="splash.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Views/splash.cpp">
+      <file leaf-file-name="texture.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/texture.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
+            <state relative-caret-position="372">
+              <caret line="33" column="16" lean-forward="true" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
               <folding>
-                <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#14#41#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="texture.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/texture.h">
+      <file leaf-file-name="input.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/input.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+            <state relative-caret-position="2085">
+              <caret line="139" selection-start-line="139" selection-end-line="139" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <file leaf-file-name="shapes.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/shapes.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1258">
-              <caret line="74" column="25" selection-start-line="74" selection-start-column="25" selection-end-line="74" selection-end-column="25" />
+            <state relative-caret-position="195">
+              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="texture.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/texture.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="334">
+              <caret line="61" column="3" selection-start-line="61" selection-start-column="3" selection-end-line="61" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="listView.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Views/ListView/listView.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="362">
+              <caret line="159" selection-start-line="159" selection-end-line="159" />
             </state>
           </provider>
         </entry>
@@ -159,45 +87,55 @@
       <file leaf-file-name="network.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/network.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="108" column="61" selection-start-line="108" selection-start-column="61" selection-end-line="108" selection-end-column="61" />
+            <state relative-caret-position="90">
+              <caret line="119" column="23" selection-start-line="119" selection-start-column="23" selection-end-line="119" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="singleton.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/singleton.h">
+      <file leaf-file-name="vhbb.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/vhbb.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+            <state relative-caret-position="176">
+              <caret line="65" column="36" lean-forward="true" selection-start-line="65" selection-start-column="36" selection-end-line="65" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#17#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="progressView.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Views/ProgressView/progressView.cpp">
-          <provider selected="true" editor-type-id="text-editor" />
+      <file leaf-file-name="psvitaip.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/psvitaip.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="4" selection-start-column="4" selection-end-column="4" />
+            </state>
+          </provider>
         </entry>
       </file>
-      <file leaf-file-name="network.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="stdexcept" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/c++/7.3.0/stdexcept">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3300">
+              <caret line="220" column="4" selection-start-line="220" selection-start-column="4" selection-end-line="220" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="network.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/network.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="9" column="96" selection-start-line="9" selection-start-column="96" selection-end-line="9" selection-end-column="96" />
+            <state relative-caret-position="420">
+              <caret line="28" column="8" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="macros.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/macros.h">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>std::bind</find>
       <find>AsyncTexture</find>
       <find>ux0</find>
       <find>static</find>
@@ -227,6 +165,7 @@
       <find>starting the</find>
       <find>VHBB_UA</find>
       <find>no</find>
+      <find>socat</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -236,6 +175,7 @@
     </dirStrings>
   </component>
   <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -246,20 +186,20 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/psvitaip.txt" />
-        <option value="$PROJECT_DIR$/debugnetip.txt" />
         <option value="$PROJECT_DIR$/src/ThreadPool.h" />
-        <option value="$PROJECT_DIR$/src/texture.h" />
         <option value="$PROJECT_DIR$/src/texture.cpp" />
         <option value="$PROJECT_DIR$/src/Views/splash.h" />
         <option value="$PROJECT_DIR$/src/Views/splash.cpp" />
         <option value="$PROJECT_DIR$/src/AsyncTexture.h" />
         <option value="$PROJECT_DIR$/src/AsyncTexture.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/src/vhbb.cpp" />
         <option value="$PROJECT_DIR$/src/install_thread.cpp" />
-        <option value="$PROJECT_DIR$/src/network.cpp" />
         <option value="$PROJECT_DIR$/src/network.h" />
+        <option value="$PROJECT_DIR$/psvitaip.txt" />
+        <option value="$PROJECT_DIR$/src/network.cpp" />
+        <option value="$PROJECT_DIR$/debugnetip.txt" />
+        <option value="$PROJECT_DIR$/src/vhbb.cpp" />
+        <option value="$PROJECT_DIR$/src/texture.h" />
       </list>
     </option>
   </component>
@@ -274,10 +214,10 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="256" />
-    <option name="y" value="27" />
-    <option name="width" value="1490" />
-    <option name="height" value="877" />
+    <option name="x" value="960" />
+    <option name="y" value="-17" />
+    <option name="width" value="954" />
+    <option name="height" value="960" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -292,11 +232,6 @@
               <item name="VitaHBBrowser" type="b2602c69:ProjectViewProjectNode" />
               <item name="vhbb" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="VitaHBBrowser" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vhbb" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -304,8 +239,9 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="progress&#9;FILE&#9;file://C:/Users/GameBase/Documents/GitHub/vhbb/src/infoProgress.cpp&#10;infoprogre&#9;FILE&#9;file://C:/Users/GameBase/Documents/GitHub/vhbb/src/infoProgress.cpp&#10;vhbb&#9;FILE&#9;file://C:/Users/GameBase/Documents/GitHub/vhbb/src/vhbb.cpp" />
+    <property name="SearchEverywhereHistoryKey" value="vhbb.c&#9;FILE&#9;file:///home/devnoname120/psv/vhbb/src/vhbb.cpp&#10;progress&#9;FILE&#9;file://C:/Users/GameBase/Documents/GitHub/vhbb/src/infoProgress.cpp&#10;infoprogre&#9;FILE&#9;file://C:/Users/GameBase/Documents/GitHub/vhbb/src/infoProgress.cpp&#10;vhbb&#9;FILE&#9;file://C:/Users/GameBase/Documents/GitHub/vhbb/src/vhbb.cpp" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/cmake-build-debug" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
@@ -321,11 +257,26 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all" />
+  <component name="RunManager" selected="Application.Build All">
+    <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="VitaHBBrowser" RUN_TARGET_NAME="VitaHBBrowser" EXPLICIT_BUILD_TARGET_NAME="all" />
+    <configuration name="VitaHBBrowser" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="VitaHBBrowser" TARGET_NAME="VitaHBBrowser" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="VitaHBBrowser" RUN_TARGET_NAME="VitaHBBrowser" />
+    <configuration name="VitaHBBrowser.self" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="VitaHBBrowser" TARGET_NAME="VitaHBBrowser.self" CONFIG_NAME="Debug" />
+    <configuration name="VitaHBBrowser.vpk" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="VitaHBBrowser" TARGET_NAME="VitaHBBrowser.vpk" CONFIG_NAME="Debug" />
+    <configuration name="send" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="VitaHBBrowser" TARGET_NAME="send" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="VitaHBBrowser" RUN_TARGET_NAME="VitaHBBrowser" />
+    <configuration name="shellsend" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="VitaHBBrowser" TARGET_NAME="shellsend" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="VitaHBBrowser" RUN_TARGET_NAME="VitaHBBrowser" />
+    <configuration name="vpksend" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="VitaHBBrowser" TARGET_NAME="vpksend" CONFIG_NAME="Debug" />
+    <list>
+      <item itemvalue="Application.Build All" />
+      <item itemvalue="Application.send" />
+      <item itemvalue="Application.shellsend" />
+      <item itemvalue="Application.VitaHBBrowser" />
+      <item itemvalue="Application.VitaHBBrowser.self" />
+      <item itemvalue="Application.VitaHBBrowser.vpk" />
+      <item itemvalue="Application.vpksend" />
+    </list>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>$USER_HOME$/.subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -338,6 +289,11 @@
       <workItem from="1527440947140" duration="8915000" />
       <workItem from="1531506912622" duration="12484000" />
       <workItem from="1531560313495" duration="3341000" />
+      <workItem from="1533208381513" duration="38000" />
+      <workItem from="1533209699695" duration="313000" />
+      <workItem from="1533210786118" duration="137000" />
+      <workItem from="1533210943925" duration="2963000" />
+      <workItem from="1533215453565" duration="2946000" />
     </task>
     <task id="LOCAL-00001" summary="Add OpenSSL, cURL, cURLpp to the libraries">
       <created>1531507950438</created>
@@ -360,35 +316,41 @@
       <option name="project" value="LOCAL" />
       <updated>1531560613505</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix compilation">
+      <created>1533215811740</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1533215811740</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39592000" />
+    <option name="totallyTimeSpent" value="45989000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="32" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-1" y="0" width="1922" height="950" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17604166" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="CMake" order="11" visible="true" weight="0.32943678" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.07822086" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4417178" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4914842" visible="true" weight="0.20189774" />
+      <window_info anchor="bottom" id="TODO" order="5" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49868214" visible="true" weight="0.31995133" />
+      <window_info anchor="bottom" id="CMake" order="9" sideWeight="0.41328412" weight="0.32603407" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Run" order="11" sideWeight="0.50131786" side_tool="true" visible="true" weight="0.31995133" />
+      <window_info anchor="bottom" id="Version Control" order="6" weight="0.07822086" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.48444912" weight="0.39659366" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Inspection Results" order="10" visible="true" weight="0.32979852" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection Results" order="12" visible="true" weight="0.32979852" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.50460124" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -401,7 +363,8 @@
     <MESSAGE value="Add OpenSSL, cURL, cURLpp to the libraries" />
     <MESSAGE value="Network: Remove unused DownloadSize" />
     <MESSAGE value="Network: Use cURLpp for download" />
-    <option name="LAST_COMMIT_MESSAGE" value="Network: Use cURLpp for download" />
+    <MESSAGE value="fix compilation" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix compilation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -409,50 +372,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/macros.h">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/network.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2023">
-          <caret line="119" column="66" selection-start-line="119" selection-start-column="61" selection-end-line="119" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Views/splash.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/texture.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2346">
-          <caret line="138" lean-forward="true" selection-start-line="138" selection-end-line="138" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/texture.cpp">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vhbb.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1386">
-          <caret line="77" column="22" selection-start-line="77" selection-start-column="22" selection-end-line="77" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/texture.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -494,20 +413,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/c++/7.2.0/bits/stl_uninitialized.h" />
-    <entry file="file://$PROJECT_DIR$/debugnetip.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/psvitaip.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build081/sdk/vitasdk/share/vita.cmake" />
     <entry file="file://$PROJECT_DIR$/src/Views/statusBar.h">
       <provider selected="true" editor-type-id="text-editor">
@@ -557,13 +462,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/texture.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="87" selection-start-line="6" selection-start-column="74" selection-end-line="6" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/debugnet.h" />
     <entry file="file://$PROJECT_DIR$/src/debug.cpp">
       <provider selected="true" editor-type-id="text-editor">
@@ -581,23 +479,9 @@
     </entry>
     <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/c++/7.2.0/bits/shared_ptr_base.h" />
     <entry file="file://$PROJECT_DIR$/src/ThreadPool.h" />
-    <entry file="file://$PROJECT_DIR$/src/input.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="139" selection-start-line="139" selection-end-line="140" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/texture.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Views/splash.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="330">
           <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
@@ -607,13 +491,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AsyncTexture.h" />
     <entry file="file://$PROJECT_DIR$/src/AsyncTexture.cpp" />
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="74" column="25" selection-start-line="74" selection-start-column="25" selection-end-line="74" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/macros.h">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -630,23 +507,9 @@
     <entry file="file://$PROJECT_DIR$/src/Views/ListView/listItem.h">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Views/ListView/listView.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="108" column="118" selection-start-line="108" selection-start-column="114" selection-end-line="108" selection-end-column="118" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/vhbb.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-578">
-          <caret line="11" column="17" lean-forward="true" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/singleton.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="150">
           <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
         </state>
       </provider>
@@ -666,17 +529,123 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/network.cpp">
+    <entry file="file://$PROJECT_DIR$/src/network.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="108" column="61" selection-start-line="108" selection-start-column="61" selection-end-line="108" selection-end-column="61" />
+        <state relative-caret-position="420">
+          <caret line="28" column="8" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/network.h">
+    <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/c++/7.3.0/bits/stl_uninitialized.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="9" column="96" selection-start-line="9" selection-start-column="96" selection-end-line="9" selection-end-column="96" />
+        <state relative-caret-position="130">
+          <caret line="75" column="8" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/c++/7.3.0/stdexcept">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3300">
+          <caret line="220" column="4" selection-start-line="220" selection-start-column="4" selection-end-line="220" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/psvitaip.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="4" selection-start-column="4" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1342">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/debugnetip.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="12" selection-start-column="12" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/psp2/appmgr.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file:///usr/local/vitasdk/arm-vita-eabi/include/yaml-cpp/yaml.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/global_include.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="622">
+          <caret line="53" column="22" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
+          <folding>
+            <element signature="e#30#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/input.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2085">
+          <caret line="139" selection-start-line="139" selection-end-line="139" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Views/ListView/listView.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="159" selection-start-line="159" selection-end-line="159" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shapes.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/network.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="119" column="23" selection-start-line="119" selection-start-column="23" selection-end-line="119" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/vhbb.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="65" column="36" lean-forward="true" selection-start-line="65" selection-start-column="36" selection-end-line="65" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/texture.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="61" column="3" selection-start-line="61" selection-start-column="3" selection-end-line="61" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/texture.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="33" column="16" lean-forward="true" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
+          <folding>
+            <element signature="e#14#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
