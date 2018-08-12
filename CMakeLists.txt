@@ -74,7 +74,7 @@ file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.
 add_executable(${SHORT_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
-)
+        src/CancelHandler.cpp src/CancelHandler.h)
 
 if(DEBUGNET)
   add_definitions(-DDEBUGNET)
