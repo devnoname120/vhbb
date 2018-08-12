@@ -8,8 +8,9 @@ extern unsigned char _binary_assets_spr_img_dialog_progress_bar_glow_png_start;
 extern unsigned char _binary_assets_spr_img_dialog_btn_png_start;
 
 
-ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
+ProgressView::ProgressView(InfoProgress progress, Homebrew hb, CancelHandler *cancelHandler) :
     progress_(progress),
+	m_cancelHandler(cancelHandler),
 	hb_(hb),
 	font_24(Font(std::string(FONT_DIR "segoeui.ttf"), 24)),
 	//thid_(thid),
@@ -26,6 +27,8 @@ int ProgressView::HandleInput(int focus, const Input& input)
 	if (input.TouchNewPressed() && input.TouchInTexture(Point(PROGRESS_VIEW_X + 148, PROGRESS_VIEW_Y + 178), img_dialog_btn)) {
 		dbg_printf(DBG_WARNING, "Cancel not implemented");
 		//progress_.Finish(3000);
+	} else if(input.KeyNewPressed(SCE_CTRL_CIRCLE) && m_cancelHandler) {
+		m_cancelHandler->Cancel();
 	}
     return 0;
 }

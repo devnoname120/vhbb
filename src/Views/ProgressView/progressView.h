@@ -6,9 +6,12 @@
 #include <homebrew.h>
 
 #include "infoProgress.h"
+#include "../../CancelHandler.h"
+#include "../../../../../../../usr/local/vitasdk/arm-vita-eabi/include/c++/7.3.0/optional"
 
 #include <texture.h>
 #include <font.h>
+#include <CancelHandler.h>
 
 
 #define PROGRESS_VIEW_X 171
@@ -21,7 +24,7 @@
 
 class ProgressView: public View {
 public:
-	ProgressView(InfoProgress progress, Homebrew hb);
+	ProgressView(InfoProgress progress, Homebrew hb, CancelHandler *cancelHandler = nullptr);
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
@@ -30,7 +33,9 @@ public:
 private:
 	uint32_t finish_tick = 0;
 
-	InfoProgress progress_;
+    InfoProgress progress_;
+    CancelHandler *m_cancelHandler = nullptr;
+
 	Homebrew hb_;
 
 	Font font_24;

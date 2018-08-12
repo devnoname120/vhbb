@@ -1,4 +1,5 @@
 #include "network.h"
+#include "CancelHandler.h"
 
 
 #include <curlpp/cURLpp.hpp>
@@ -11,25 +12,32 @@
 
 class ProgressClass {
 public:
-    ProgressClass(InfoProgress &progress, std::shared_ptr<bool> shouldCancel = nullptr) :
-            m_progress(progress),
-            m_shouldCancel(shouldCancel) {
-    }
+    ProgressClass(InfoProgress &progress, CancelGetter cancelGetter = {});
 
     int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow) {
         m_progress.percent((float)(dlnow / dltotal) * 100);
+        dbg_printf(DBG_DEBUG, "11");
+        dbg_printf(DBG_DEBUG, "0x%08X", m_cancelGetter);
 
-        if (m_shouldCancel && *m_shouldCancel) {
+        if (m_cancelGetter != nullptr && m_cancelGetter()) {
+            dbg_printf(DBG_DEBUG, "12");
+
             // Returning a non-0 value cancels the cURL download
             return -1;
         }
+        dbg_printf(DBG_DEBUG, "13");
 
         return CURLE_OK;
     }
 private:
     InfoProgress &m_progress;
-    std::shared_ptr<bool> m_shouldCancel;
+    CancelGetter m_cancelGetter = {};
 };
+
+ProgressClass::ProgressClass(InfoProgress &progress, CancelGetter cancelGetter) :
+        m_progress(progress),
+        m_cancelGetter(cancelGetter) {
+}
 
 class WriterFileClass
 {
@@ -108,7 +116,8 @@ Network::~Network()
 
 }
 
-int Network::Download(std::string url, std::string dest, InfoProgress *progress, std::shared_ptr<bool> shouldCancel = nullptr)
+int Network::Download(std::string url, std::string dest, InfoProgress *progress,
+                      CancelGetter cancelGetter)
 {
     dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
 
@@ -129,11 +138,15 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress,
 
         if (progress) {
             request.setOpt(new curlpp::options::NoProgress(false));
-
-            ProgressClass mProgressClass(*progress, shouldCancel);
+            dbg_printf(DBG_DEBUG, "6");
+            ProgressClass mProgressClass(*progress, cancelGetter);
             curlpp::types::ProgressFunctionFunctor progressFunctor = std::bind(&ProgressClass::ProgressClassCallback, &mProgressClass, _1, _2, _3, _4);
+            dbg_printf(DBG_DEBUG, "7");
+
 
             request.setOpt(new curlpp::options::ProgressFunction(progressFunctor));
+            dbg_printf(DBG_DEBUG, "8");
+
         }
 
         WriterFileClass mWriterChunk(dest);
@@ -143,7 +156,11 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress,
 
         for (unsigned int retries=1; retries <= 3; retries++) {
             try {
+                dbg_printf(DBG_DEBUG, "9");
+
                 request.perform();
+                dbg_printf(DBG_DEBUG, "10");
+
                 break;
             } catch (curlpp::RuntimeError &e) {
                 dbg_printf(DBG_WARNING, "cURLpp download failed: ", e.what());
@@ -167,9 +184,11 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress,
     return 0;
 }
 
-int Network::Download(std::string url, std::string dest, InfoProgress progress, std::shared_ptr<bool> shouldCancel = nullptr)
+int Network::Download(std::string url, std::string dest, InfoProgress progress,
+                      CancelGetter cancelGetter)
 {
-    return Download(url, dest, &progress, shouldCancel);
+    dbg_printf(DBG_DEBUG, "entered download 1");
+    return Download(url, dest, &progress, cancelGetter);
 }
 
 InternetStatus Network::TestConnection()

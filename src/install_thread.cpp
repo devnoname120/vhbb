@@ -7,6 +7,7 @@
 #include <vitaPackage.h>
 #include "infoProgress.h"
 #include "zip.h"
+#include "CancelHandler.h"
 
 
 void install_thread(SceSize args_size, InstallArguments *installArgs) {
@@ -14,10 +15,16 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
     InfoProgress progressTotal;
 	Homebrew targetHb = installArgs->hb;
 
-	auto shouldCancel = std::make_shared<bool>(false);
+    dbg_printf(DBG_DEBUG, "1");
+    CancelHandler cancelHandler;
+    CancelGetter cancelGetter = std::bind(&CancelHandler::GetCancelStatus, &cancelHandler);
+    dbg_printf(DBG_DEBUG, "1b");
 
-	// TODO Pass shouldCancel
-    auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb);
+    bool shouldCancel = cancelGetter();
+
+    dbg_printf(DBG_DEBUG, "2: %d", shouldCancel);
+
+    auto progressView = std::make_shared<ProgressView>(progressTotal, targetHb, &cancelHandler);
 
     InfoProgress progress;
 
@@ -26,6 +33,7 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
 
         if (!installArgs->hb.data.empty()) {
             progress = progressTotal.Range(0, 50);
+            dbg_printf(DBG_DEBUG, "3");
 
             progress.message("Downloading the data...");
             Network::get_instance()->Download(installArgs->hb.data, std::string("ux0:/temp/data.zip"), progress.Range(0, 50));
@@ -37,10 +45,12 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
         } else {
             progress = progressTotal;
         }
+        dbg_printf(DBG_DEBUG, "4");
 
         progress.message("Downloading the vpk...");
 
-        Network::get_instance()->Download(installArgs->hb.url, std::string("ux0:/temp/download.vpk"), progress.Range(0, 40));
+        Network::get_instance()->Download(installArgs->hb.url, std::string("ux0:/temp/download.vpk"), progress.Range(0, 40), cancelGetter);
+        dbg_printf(DBG_DEBUG, "5");
 
         VitaPackage pkg = VitaPackage(std::string("ux0:/temp/download.vpk"));
         pkg.Install(progress.Range(40, 100));

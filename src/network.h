@@ -4,6 +4,7 @@
 
 #include "singleton.h"
 #include "infoProgress.h"
+#include "CancelHandler.h"
 
 #define PORTAL_DETECT_URL "http://detectportal.firefox.com/success.txt" // Note : similar portal detector http://www.apple.com/library/test/success.html
 #define PORTAL_DETECT_STR "success"
@@ -23,8 +24,10 @@ public:
     ~Network();
 
     // FIXME shouldCancel only works if progress is provided
-    int Download(std::string url, std::string dest, InfoProgress progress, std::shared_ptr<bool> shouldCancel = nullptr);
-    int Download(std::string url, std::string dest, InfoProgress *progress = nullptr, std::shared_ptr<bool> shouldCancel = nullptr);
+    int Download(std::string url, std::string dest, InfoProgress progress,
+                 CancelGetter cancelGetter = {});
+    int Download(std::string url, std::string dest, InfoProgress *progress = nullptr,
+                 CancelGetter cancelGetter = {});
 
     InternetStatus TestConnection();
 private:
