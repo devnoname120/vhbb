@@ -83,14 +83,11 @@ int main() {
   // FIXME Don't crash if network not available, see
   // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
 
-  
-  std::atomic_bool db_done{false};
-  std::atomic_bool *db_done_ptr = &db_done;
 
   SceUID thid_db = sceKernelCreateThread(
       "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x20000, 0,
       0, NULL);
-  sceKernelStartThread(thid_db, sizeof(&db_done_ptr), &db_done_ptr);
+  sceKernelStartThread(thid_db, 0, nullptr);
 
   Input input;
 
