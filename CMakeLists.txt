@@ -19,6 +19,7 @@ include(FindPkgConfig)
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
 set(VITA_VERSION "00.82")
+set(VITA_MAKE_FSELF_FLAGS "${VITA_MAKE_FSELF_FLAGS} -a 0x2808000000000000")
 
 
 option(DEBUGNET "Enable debugnet for logging" ON)

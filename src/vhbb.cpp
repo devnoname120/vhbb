@@ -10,6 +10,7 @@
 #include "splash_thread.h"
 
 #include <atomic>
+#include <Views/Dialogs/MessageDialog.h>
 
 extern "C" {
 unsigned int sleep(unsigned int seconds) {
@@ -63,6 +64,7 @@ int main() {
   sceIoMkdir(VHBB_DATA.c_str(), 0777);
 
   vita2d_init();
+//  vita2d_set_vblank_wait(true);
   vita2d_set_clear_color(COLOR_BLACK);
 
   // Sleep crashes the app
@@ -76,26 +78,36 @@ int main() {
   std::set_terminate(terminate_logger);
 
   Network &network = *Network::create_instance();
-  
-  // TODO Display a dialog if it doesn't work
-  network.TestConnection();
-
-  // FIXME Don't crash if network not available, see
-  // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
-
-
-  SceUID thid_db = sceKernelCreateThread(
-      "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x20000, 0,
-      0, NULL);
-  sceKernelStartThread(thid_db, 0, nullptr);
 
   Input input;
 
   Activity &activity = *Activity::create_instance();
 
-  auto splash = std::make_shared<Splash>();
-  splash->priority = 200;
-  activity.AddView(splash);
+
+//  switch (network.TestConnection()) {
+//
+//    case INTERNET_STATUS_OK: {
+//      SceUID thid_db = sceKernelCreateThread(
+//              "db_thread", (SceKernelThreadEntry) FetchLoadIcons, 0x40, 0x20000, 0,
+//              0, NULL);
+//      sceKernelStartThread(thid_db, 0, nullptr);
+//
+//      auto splash = std::make_shared<Splash>();
+//      splash->priority = 200;
+//      activity.AddView(splash);
+//      break;
+//    }
+//    case INTERNET_STATUS_NO_INTERNET:
+//    case INTERNET_STATUS_HOTSPOT_PAGE:
+//      // FIXME Don't crash if network not available, see
+//      // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
+//      break;
+//  }
+
+  auto msgDialog = std::make_shared<MessageDialog>();
+  msgDialog->priority = 1000;
+  activity.AddView(msgDialog);
+
 
   while (1) {
     vita2d_start_drawing();
@@ -105,9 +117,10 @@ int main() {
 
     activity.FlushQueue();
     activity.HandleInput(1, input);
-    activity.Display();
+
 
     vita2d_end_drawing();
+    activity.Display();
     vita2d_swap_buffers();
     sceDisplayWaitVblankStart();
   }
