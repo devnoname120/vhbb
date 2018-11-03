@@ -40,17 +40,22 @@ You can also use [PSP2SHELL](https://github.com/Cpasjuste/PSP2SHELL#readme) in o
 
 ## Logging
 
-Debug code prints text in order to help the debugging. Currently only debugnet is supported. We will probably add file logging in the future.
+Debug code prints text in order to help the debugging. Currently debugnet and file logging are supported.
 
 Instructions to use debugnet:
 
 - install [debugnet](https://github.com/psxdev/debugnet#readme)
 - set the local IP of your computer in `debugnetip.txt`
-- compile VHBB using `make debugnet=1`
+- compile VHBB using `cmake .. -DDEBUGNET=ON`
 - on your computer, listen to the port 18194
   - with [netcat](http://nc110.sourceforge.net/): `nc -u -l -p 18194`
   - with [socat](http://www.dest-unreach.org/socat/): `socat udp-recv:18194 stdout`
 - install VHBB on your PS Vita and start it. The logging should display in the terminal.
+
+
+Instructions to enable file logging:
+- close VHBB
+- launch it by pressing the special text ([image](https://user-images.githubusercontent.com/2824100/47955435-678b3700-df98-11e8-9ae5-cc7c3bc62e5a.png))
 
 ## Notes
 
