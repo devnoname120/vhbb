@@ -1,5 +1,6 @@
 #include "vhbb.h"
 
+
 #include "Views/mainView.h"
 #include "Views/splash.h"
 #include "activity.h"
@@ -47,7 +48,8 @@ void FetchLoadIcons(SceSize arglen, std::atomic_bool** db_done)
     dl->Download(API_ENDPOINT, API_LOCAL);
     auto db = Database::create_instance(API_LOCAL);
     db->DownloadIcons();
-    **db_done = true;
+    if (db_done)
+      **db_done = true;
 
     auto mainView = std::make_shared<MainView>();
     Activity::get_instance()->AddView(mainView);
@@ -71,8 +73,6 @@ int main() {
       0, NULL);
   sceKernelStartThread(thid_sleep, 0, NULL);
 
-  dbg_init();
-
   std::set_terminate(terminate_logger);
 
   Network &network = *Network::create_instance();
@@ -86,7 +86,7 @@ int main() {
 
   SceUID thid_db = sceKernelCreateThread(
       "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x20000, 0,
-      0, NULL);
+      0, nullptr);
   sceKernelStartThread(thid_db, 0, nullptr);
 
   Input input;
