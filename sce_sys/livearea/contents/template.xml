@@ -27,10 +27,10 @@
 		
 	<frame id="frame4">
 		<liveitem>
-			<text align="center" text-align="center" word-wrap="off" ellipsis="on">
-				<str size="20" color="#ffffff" shadow="on"></str>
+			<target>psla:-file_logging</target>
+			<text valign="bottom" align="right" text-align="right" word-wrap="off" ellipsis="on">
+				<str size="20" color="#ffffff" shadow="on">Click here for debug logs</str>
 			</text>
 		</liveitem>
-	</frame>
-	
+	</frame>	
 </livearea>
