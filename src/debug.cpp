@@ -1,7 +1,5 @@
 #include <global_include.h>
 
-#ifdef _DEBUG
-
 
 int g_log_fd = -1;
 bool g_log_to_file = false;
@@ -102,5 +100,3 @@ int _dbg_printf(int level, const char *format, ...)
 
 	return 0;
 }
-
-#endif
