@@ -128,9 +128,9 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		double touchY;
 		input.TouchCoordinates(&touchX, &touchY);
 
-		dbg_printf(DBG_DEBUG, "%f,%f: Not in listView area, unfocusing...", touchX, touchY);
+//		dbg_printf(DBG_DEBUG, "%f,%f: Not in listView area, unfocusing...", touchX, touchY);
 		// test
-		dbg_printf(DBG_DEBUG, "%d,%d : %d,%d  -> listView Area", 0, LIST_MIN_Y, SCREEN_WIDTH, LIST_MAX_Y);
+//		dbg_printf(DBG_DEBUG, "%d,%d : %d,%d  -> listView Area", 0, LIST_MIN_Y, SCREEN_WIDTH, LIST_MAX_Y);
 		focus = 0;
 	}
 
