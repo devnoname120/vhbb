@@ -1,4 +1,4 @@
-# Vita HomeBrew Browser
+# Vita HomeBrew Browser ![GitHub All Releases](https://img.shields.io/github/downloads/devnoname120/vhbb/total.svg)
 
 
 ![Alt text](https://cloud.githubusercontent.com/assets/21164502/24837255/3af41722-1d73-11e7-8aae-5664fec174f3.png "")
