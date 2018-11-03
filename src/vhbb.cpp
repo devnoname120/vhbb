@@ -64,6 +64,26 @@ void FetchLoadIcons(SceSize arglen, std::atomic_bool** db_done)
 int main() {
   sceIoMkdir(VHBB_DATA.c_str(), 0777);
 
+  SceAppUtilInitParam initParam;
+  SceAppUtilBootParam bootParam;
+  memset(&initParam, 0, sizeof(SceAppUtilInitParam));
+  memset(&bootParam, 0, sizeof(SceAppUtilBootParam));
+
+  int retInit = sceAppUtilInit(&initParam, &bootParam);
+  SceAppUtilAppEventParam eventParam;
+  memset(&eventParam, 0, sizeof(SceAppUtilAppEventParam));
+  int retReceive = sceAppUtilReceiveAppEvent(&eventParam);
+
+  // 0x05 means launched from livearea with params (currently only possible param is -file_logging)
+  if (retInit < 0 || retReceive < 0 || eventParam.type == 0x05) {
+    dbg_init(true);
+  // If params need to be actually fetched
+  //  char buffer[2048] = {0};
+  //  sceAppUtilAppEventParseLiveArea(&eventParam, buffer);
+  } else {
+    dbg_init(false);
+  }
+
   vita2d_init();
   vita2d_set_clear_color(COLOR_BLACK);
 

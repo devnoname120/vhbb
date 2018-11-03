@@ -17,8 +17,14 @@ int Input::Get()
 	memcpy(&(old2touch), &(oldtouch), sizeof(touch));
 	memcpy(&(oldtouch), &(touch), sizeof(touch));
 
-	sceCtrlPeekBufferPositive(0, &(pad), 1);
-	sceTouchPeek(SCE_TOUCH_PORT_FRONT, &(touch), 1);
+	int ret = sceCtrlPeekBufferPositive(0, &(pad), 1);
+	if (ret < 0)
+		dbg_printf(DBG_ERROR, "sceCtrlPeekBufferPositive() = 0x%08X", ret);
+
+	ret = sceTouchPeek(SCE_TOUCH_PORT_FRONT, &(touch), 1);
+	if (ret < 0)
+		dbg_printf(DBG_ERROR, "sceTouchPeek() = 0x%08X", ret);
+
 	return 0;
 }
 

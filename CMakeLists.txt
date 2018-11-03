@@ -19,7 +19,7 @@ include(FindPkgConfig)
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
 set(VITA_VERSION "00.82")
-
+add_definitions(-DVITA_VERSION="${VITA_VERSION}")
 
 option(DEBUGNET "Enable debugnet for logging" ON)
 
@@ -29,6 +29,22 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release") # For CMake GUI
 endif()
 
+
+find_package(Git)
+if(NOT Git_FOUND)
+  message(WARNING "Git not found, using unknown as tag...")
+  add_definitions(-DGIT_COMMIT="unknown")
+else()
+  execute_process(
+          COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+          WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+          OUTPUT_VARIABLE DGIT_COMMIT
+          OUTPUT_STRIP_TRAILING_WHITESPACE
+          ERROR_QUIET
+  )
+
+  add_definitions(-DGIT_COMMIT="${DGIT_COMMIT}")
+endif()
 
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
@@ -114,6 +130,7 @@ target_link_libraries(${SHORT_NAME}
   ScePower_stub
   SceAudio_stub
   SceAudiodec_stub
+  SceVshBridge_stub
   pthread
 )
 
