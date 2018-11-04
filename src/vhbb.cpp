@@ -6,6 +6,7 @@
 #include "activity.h"
 #include "database.h"
 #include "input.h"
+#include "debug.h"
 #include "network.h"
 #include "nosleep_thread.h"
 #include "splash_thread.h"
@@ -97,10 +98,22 @@ int main() {
 
   Network &network = *Network::create_instance();
   
-  // TODO Display a dialog if it doesn't work
-  network.TestConnection();
+  int netStatus = network.TestConnection();
+  switch (netStatus) {
+    case INTERNET_STATUS_OK:
+      break;
+    case INTERNET_STATUS_NO_INTERNET:
+    case INTERNET_STATUS_HOTSPOT_PAGE:
+      dbg_printf(DBG_ERROR, "Connection status: %d", netStatus);
+      sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
+		  sceKernelDelayThread(10000);
+		  sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
+		  sceKernelExitProcess(0);
+      break;
+  }
+  
 
-  // FIXME Don't crash if network not available, see
+  // FIXME Handle network issues more gracefully
   // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
 
 
