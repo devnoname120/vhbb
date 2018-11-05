@@ -5,6 +5,13 @@
 #include <activity.h>
 #include <Views/mainView.h>
 
+void StartFetchLoadIconsThread() {
+  SceUID thid_db = sceKernelCreateThread(
+            "db_thread", (SceKernelThreadEntry) FetchLoadIcons, 0x40, 0x20000, 0,
+            0, nullptr);
+  sceKernelStartThread(thid_db, 0, nullptr);
+}
+
 void FetchLoadIcons(unsigned int arglen, std::atomic<bool> **db_done)
 {
   try {

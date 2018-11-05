@@ -13,9 +13,7 @@
 #include "vitasdk_quirks.h"
 
 
-int main() {
-  sceIoMkdir(VHBB_DATA.c_str(), 0777);
-
+void debug_start() {
   SceAppUtilInitParam initParam;
   SceAppUtilBootParam bootParam;
   memset(&initParam, 0, sizeof(SceAppUtilInitParam));
@@ -35,46 +33,43 @@ int main() {
   } else {
     dbg_init(false);
   }
+}
+
+void network_test() {
+  Network &network = *Network::create_instance();
+
+  int netStatus = network.TestConnection();
+  switch (netStatus) {
+  case INTERNET_STATUS_OK:
+    break;
+  case INTERNET_STATUS_NO_INTERNET:
+  case INTERNET_STATUS_HOTSPOT_PAGE:
+    dbg_printf(DBG_ERROR, "Connection status: %d", netStatus);
+    sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
+    sceKernelDelayThread(10000);
+	sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
+	sceKernelExitProcess(0);
+    break;
+  }
+  // FIXME Handle network issues more gracefully
+  // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
+}
+
+int main() {
+  sceIoMkdir(VHBB_DATA.c_str(), 0777);
+
+  std::set_terminate(terminate_logger);
+  debug_start();
+
+  // Sleep invalidates file descriptors
+  StartNoSleepThread();
+  network_test();
+  StartFetchLoadIconsThread();
 
   vita2d_init();
   vita2d_set_clear_color(COLOR_BLACK);
 
-  // Sleep crashes the app
-  SceUID thid_sleep = sceKernelCreateThread(
-      "nosleep_thread", (SceKernelThreadEntry)nosleep_thread, 0x40, 0x1000, 0,
-      0, NULL);
-  sceKernelStartThread(thid_sleep, 0, NULL);
-
-  std::set_terminate(terminate_logger);
-
-  Network &network = *Network::create_instance();
-  
-  int netStatus = network.TestConnection();
-  switch (netStatus) {
-    case INTERNET_STATUS_OK:
-      break;
-    case INTERNET_STATUS_NO_INTERNET:
-    case INTERNET_STATUS_HOTSPOT_PAGE:
-      dbg_printf(DBG_ERROR, "Connection status: %d", netStatus);
-      sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
-		  sceKernelDelayThread(10000);
-		  sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
-		  sceKernelExitProcess(0);
-      break;
-  }
-  
-
-  // FIXME Handle network issues more gracefully
-  // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
-
-
-  SceUID thid_db = sceKernelCreateThread(
-          "db_thread", (SceKernelThreadEntry) FetchLoadIcons, 0x40, 0x20000, 0,
-          0, nullptr);
-  sceKernelStartThread(thid_db, 0, nullptr);
-
   Input input;
-
   Activity &activity = *Activity::create_instance();
 
   auto splash = std::make_shared<Splash>();
