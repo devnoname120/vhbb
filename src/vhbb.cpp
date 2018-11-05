@@ -10,34 +10,8 @@
 #include "nosleep_thread.h"
 #include "splash_thread.h"
 #include "fetch_load_icons_thread.h"
+#include "vitasdk_quirks.h"
 
-extern "C" {
-unsigned int sleep(unsigned int seconds) {
-  sceKernelDelayThread(seconds * 1000 * 1000);
-  return 0;
-}
-
-int usleep(useconds_t usec) {
-  sceKernelDelayThread(usec);
-  return 0;
-}
-
-void __sinit(struct _reent *);
-}
-
-__attribute__((constructor(101))) void pthread_setup(void) {
-  pthread_init();
-  __sinit(_REENT);
-}
-
-void terminate_logger() {
-  std::exception_ptr p = std::current_exception();
-  try {
-    std::rethrow_exception(p);
-  } catch (const std::exception &e) {
-    dbg_printf(DBG_ERROR, "terminate() because of %s", e.what());
-  }
-}
 
 int main() {
   sceIoMkdir(VHBB_DATA.c_str(), 0777);
