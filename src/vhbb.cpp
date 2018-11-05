@@ -4,14 +4,12 @@
 #include "Views/mainView.h"
 #include "Views/splash.h"
 #include "activity.h"
-#include "database.h"
 #include "input.h"
 #include "debug.h"
 #include "network.h"
 #include "nosleep_thread.h"
 #include "splash_thread.h"
-
-#include <atomic>
+#include "fetch_load_icons_thread.h"
 
 extern "C" {
 unsigned int sleep(unsigned int seconds) {
@@ -39,27 +37,6 @@ void terminate_logger() {
   } catch (const std::exception &e) {
     dbg_printf(DBG_ERROR, "terminate() because of %s", e.what());
   }
-}
-
-void FetchLoadIcons(SceSize arglen, std::atomic_bool** db_done)
-{
-  try {
-    // TODO check if fails
-    auto dl = Network::get_instance();
-    dl->Download(API_ENDPOINT, API_LOCAL);
-    auto db = Database::create_instance(API_LOCAL);
-    db->DownloadIcons();
-    if (db_done)
-      **db_done = true;
-
-    auto mainView = std::make_shared<MainView>();
-    Activity::get_instance()->AddView(mainView);
-  } catch (const std::exception &ex) {
-    dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
-    throw ex;
-  }
-
-  sceKernelExitDeleteThread(0);
 }
 
 int main() {
@@ -118,8 +95,8 @@ int main() {
 
 
   SceUID thid_db = sceKernelCreateThread(
-      "db_thread", (SceKernelThreadEntry)FetchLoadIcons, 0x40, 0x20000, 0,
-      0, nullptr);
+          "db_thread", (SceKernelThreadEntry) FetchLoadIcons, 0x40, 0x20000, 0,
+          0, nullptr);
   sceKernelStartThread(thid_db, 0, nullptr);
 
   Input input;
