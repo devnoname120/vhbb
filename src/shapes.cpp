@@ -9,7 +9,7 @@ Point::Point(double _x, double _y)
 
 int Rectangle::Inside(const Point &pt) const
 {
-	dbg_printf(DBG_DEBUG, "Inside point: %f,%f", pt.x, pt.y);
+    log_printf(DBG_DEBUG, "Inside point: %f,%f", pt.x, pt.y);
 
 	return pt.x >= topLeft.x && pt.x <= bottomRight.x
 		&& pt.y >=topLeft.y && pt.y <= bottomRight.y;

@@ -100,7 +100,7 @@ Network::~Network()
 
 int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 {
-    dbg_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
+    log_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
 
     try {
         curlpp::Easy request;
@@ -147,7 +147,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         }
 
     } catch (curlpp::RuntimeError &e) {
-        dbg_printf(DBG_ERROR, "cURLpp exception: ", e.what());
+        log_printf(DBG_ERROR, "cURLpp exception: ", e.what());
         throw std::runtime_error("Network: Cannot send request");
     }
 
@@ -197,7 +197,7 @@ InternetStatus Network::TestConnection()
     res = sceHttpGetResponseContentLength(req, &contentLength);
 
     if (res >= 0)
-        dbg_printf(DBG_DEBUG, "Content length: %lu", contentLength);
+        log_printf(DBG_DEBUG, "Content length: %lu", contentLength);
 
     
     read = sceHttpReadData(req, buf, sizeof(buf));

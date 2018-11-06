@@ -24,9 +24,9 @@ bool Homebrew::IsInstalled()
 		throw std::runtime_error("scePromoterUtilityInit() = " + ret);
   
   int res;
-  dbg_printf(DBG_DEBUG, "Checking if %s exists...", titleid.c_str());
+    log_printf(DBG_DEBUG, "Checking if %s exists...", titleid.c_str());
 	int installed = scePromoterUtilityCheckExist(titleid.c_str(), &res);
-  dbg_printf(DBG_DEBUG, "Done checking");
+    log_printf(DBG_DEBUG, "Done checking");
 
 	scePromoterUtilityExit();
 

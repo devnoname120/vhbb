@@ -26,12 +26,12 @@ void debug_start() {
 
   // 0x05 means launched from livearea with params (currently only possible param is -file_logging)
   if (retInit < 0 || retReceive < 0 || eventParam.type == 0x05) {
-    dbg_init(true);
+    log_init(true);
   // If params need to be actually fetched
   //  char buffer[2048] = {0};
   //  sceAppUtilAppEventParseLiveArea(&eventParam, buffer);
   } else {
-    dbg_init(false);
+    log_init(false);
   }
 }
 
@@ -44,7 +44,7 @@ void network_test() {
     break;
   case INTERNET_STATUS_NO_INTERNET:
   case INTERNET_STATUS_HOTSPOT_PAGE:
-    dbg_printf(DBG_ERROR, "Connection status: %d", netStatus);
+    log_printf(DBG_ERROR, "Connection status: %d", netStatus);
     sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
     sceKernelDelayThread(10000);
 	sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);

@@ -71,7 +71,7 @@ CategoryView::CategoryView() :
 			categoryTabs.push_back(CategoryTab(ListView(hbs)));
 		} catch (const std::exception& ex) {
 			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));
-			dbg_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
+            log_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
 		}
 
 	}
@@ -82,17 +82,17 @@ CategoryView::CategoryView() :
 
 	categoryTabs[0].minX = 0;
 	categoryTabs[0].maxX = (int)categoryWidth;
-	dbg_printf(DBG_DEBUG, "0->maxX=%d", categoryTabs[0].maxX);
+    log_printf(DBG_DEBUG, "0->maxX=%d", categoryTabs[0].maxX);
 	remainingWidth -= (int)categoryWidth;
-	dbg_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
+    log_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
 
 	for (unsigned int i=1; i < _countof(categoryList); i++) {
 		categoryTabs[i].minX = categoryTabs[i-1].maxX;
 		categoryTabs[i].maxX = categoryTabs[i].minX + (int)remainingWidth / (_countof(categoryList) - i);
 		remainingWidth -= (int)categoryTabs[i].maxX + 1 - categoryTabs[i].minX;
-		dbg_printf(DBG_DEBUG, "%d->minX=%d", i, categoryTabs[i].minX);
-		dbg_printf(DBG_DEBUG, "%d->maxX=%d", i, categoryTabs[i].maxX);
-		dbg_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
+        log_printf(DBG_DEBUG, "%d->minX=%d", i, categoryTabs[i].minX);
+        log_printf(DBG_DEBUG, "%d->maxX=%d", i, categoryTabs[i].maxX);
+        log_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
 	}
 
 
@@ -107,19 +107,19 @@ int CategoryView::HandleInput(int focus, const Input& input)
 	if (input.TouchPressed() && input.TouchInRectangle(Rectangle(Point(CAT_X, CAT_Y), Point(SCREEN_WIDTH, CAT_Y + CAT_HEIGHT)))) {
 		int ind = touchToCat(input);
 		if (ind < 0) {
-			dbg_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
+            log_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
 		} else {
 			selectedCat = ind;
 		}
 	} else {
 		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
 			selectedCat--;
-			dbg_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
+            log_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
 		}
 
 		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < _countof(categoryList) - 1) {
 			selectedCat++;
-			dbg_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
+            log_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
 		}
 	}
 
@@ -128,9 +128,9 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		double touchY;
 		input.TouchCoordinates(&touchX, &touchY);
 
-//		dbg_printf(DBG_DEBUG, "%f,%f: Not in listView area, unfocusing...", touchX, touchY);
+//		log_printf(DBG_DEBUG, "%f,%f: Not in listView area, unfocusing...", touchX, touchY);
 		// test
-//		dbg_printf(DBG_DEBUG, "%d,%d : %d,%d  -> listView Area", 0, LIST_MIN_Y, SCREEN_WIDTH, LIST_MAX_Y);
+//		log_printf(DBG_DEBUG, "%d,%d : %d,%d  -> listView Area", 0, LIST_MIN_Y, SCREEN_WIDTH, LIST_MAX_Y);
 		focus = 0;
 	}
 

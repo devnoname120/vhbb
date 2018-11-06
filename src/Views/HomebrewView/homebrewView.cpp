@@ -55,11 +55,11 @@ HomebrewView::HomebrewView(Homebrew hb) :
 			screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
 			sceIoRemove((SCREENSHOTS_FOLDER + "/" + filename).c_str());
 		} catch (const std::exception &ex) {
-			dbg_printf(DBG_ERROR, "Cannot download screenshot %s", path);
+            log_printf(DBG_ERROR, "Cannot download screenshot %s", path);
 		}
 	}
 
-	dbg_printf(DBG_DEBUG, "Checking if installed");
+    log_printf(DBG_DEBUG, "Checking if installed");
 	checkInstalled();
 	
 	std::string descriptionRaw = hb_.long_description;
@@ -80,7 +80,7 @@ HomebrewView::HomebrewView(Homebrew hb) :
 	} catch (const std::out_of_range &ex) {
 		// No problem
 	} catch (const std::exception &ex) {
-		dbg_printf(DBG_WARNING, "Error when cutting description: %s", ex.what());
+		log_printf(DBG_WARNING, "Error when cutting description: %s", ex.what());
 	}
 */
 }
@@ -92,9 +92,9 @@ void HomebrewView::homebrewInstall() {
 
 		int install_thid_ = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
 		sceKernelStartThread(install_thid_, sizeof(InstallArguments), args);
-		dbg_printf(DBG_DEBUG, "OK");
+        log_printf(DBG_DEBUG, "OK");
 	} catch (const std::exception &ex) {
-		dbg_printf(DBG_ERROR, "%s", ex.what());
+        log_printf(DBG_ERROR, "%s", ex.what());
 	}
 }
 
@@ -103,9 +103,9 @@ void HomebrewView::checkInstalled()
 	try {
 		installed_ = hb_.IsInstalled();
 	} catch (const std::exception &ex) {
-		dbg_printf(DBG_ERROR, "error checking if installed: %s", ex.what());
+        log_printf(DBG_ERROR, "error checking if installed: %s", ex.what());
 	}
-	dbg_printf(DBG_DEBUG, "installed_ = %d", installed_);
+    log_printf(DBG_DEBUG, "installed_ = %d", installed_);
 }
 
 int HomebrewView::HandleInput(int focus, const Input& input)
@@ -115,7 +115,7 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 
 	if (input.TouchNewPressed()) {
 		if (input.TouchInRectangle(Rectangle(Point(HB_X + 218, HB_Y + 168), Point(HB_X + 218 + 153, HB_Y + 168 + 46)))) {
-			dbg_printf(DBG_DEBUG, "Touch in rectangle for install");
+            log_printf(DBG_DEBUG, "Touch in rectangle for install");
 			homebrewInstall();
 		} else if (installed_ && input.TouchInRectangle(Rectangle(Point(HB_X + 218 + 160, HB_Y + 168), Point(HB_X + 218 + 160 + 153, HB_Y + 168 + 46)))) {
 			char uri[32];

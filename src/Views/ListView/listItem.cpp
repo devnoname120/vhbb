@@ -36,7 +36,7 @@ int ListItem::Display(int posY, int highlight, int highlightAlpha)
 int ListItem::display(int posY)
 {
 	img_itm_panel.Draw(Point(ITEM_POSX, posY));
-	//dbg_printf(DBG_DEBUG, "Drawing title: %s", homebrew.title.c_str());
+	//log_printf(DBG_DEBUG, "Drawing title: %s", homebrew.title.c_str());
 	font_32.Draw(Point(ITEM_POSX + 120, posY + 30), homebrew.name);
 	font_22.Draw(Point(ITEM_POSX + 122, posY + 76), homebrew.author);
 	font_22.Draw(Point(ITEM_POSX + 776, posY + 76), homebrew.date.str);

@@ -34,6 +34,6 @@ void terminate_logger() {
     try {
         std::rethrow_exception(p);
     } catch (const std::exception &e) {
-        dbg_printf(DBG_ERROR, "terminate() because of %s", e.what());
+        log_printf(DBG_ERROR, "terminate() because of %s", e.what());
     }
 }

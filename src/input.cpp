@@ -19,11 +19,11 @@ int Input::Get()
 
 	int ret = sceCtrlPeekBufferPositive(0, &(pad), 1);
 	if (ret < 0)
-		dbg_printf(DBG_ERROR, "sceCtrlPeekBufferPositive() = 0x%08X", ret);
+        log_printf(DBG_ERROR, "sceCtrlPeekBufferPositive() = 0x%08X", ret);
 
 	ret = sceTouchPeek(SCE_TOUCH_PORT_FRONT, &(touch), 1);
 	if (ret < 0)
-		dbg_printf(DBG_ERROR, "sceTouchPeek() = 0x%08X", ret);
+        log_printf(DBG_ERROR, "sceTouchPeek() = 0x%08X", ret);
 
 	return 0;
 }
@@ -143,8 +143,9 @@ int Input::TouchInRectangle(const Rectangle &rect) const
 	double touchX, touchY;
 	TouchCoordinates(&touchX, &touchY);
 
-	dbg_printf(DBG_DEBUG, "TouchInRectangle rectangle: %f,%f:%f,%f", rect.topLeft.x, rect.topLeft.y, rect.bottomRight.x, rect.bottomRight.y);
-	dbg_printf(DBG_DEBUG, "TouchInRectangle touch: %f,%f", touchX, touchY);
+    log_printf(DBG_DEBUG, "TouchInRectangle rectangle: %f,%f:%f,%f", rect.topLeft.x, rect.topLeft.y, rect.bottomRight.x,
+               rect.bottomRight.y);
+    log_printf(DBG_DEBUG, "TouchInRectangle touch: %f,%f", touchX, touchY);
 
 	return rect.Inside(Point(touchX, touchY));
 }

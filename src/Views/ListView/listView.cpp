@@ -52,12 +52,12 @@ unsigned int ListView::lastFullyDisplayedItem()
 
 int ListView::coordinateToItem(double coordY)
 {
-	dbg_printf(DBG_DEBUG, "posY: %d", posY);
+    log_printf(DBG_DEBUG, "posY: %d", posY);
 	double absoluteY = posY + coordY - LIST_MIN_Y;
-	dbg_printf(DBG_DEBUG, "absoluteY: %f", absoluteY);
+    log_printf(DBG_DEBUG, "absoluteY: %f", absoluteY);
 
 	unsigned int item = (unsigned int)absoluteY / ITEM_HEIGHT;
-	dbg_printf(DBG_DEBUG, "item: %d", item);
+    log_printf(DBG_DEBUG, "item: %d", item);
 
 	// Item does not exist
 	if (item >= listItems.size()) {
@@ -84,8 +84,8 @@ int ListView::updateScrollSpeed(double &scrollSpeed, unsigned long timeDif)
 
 ListView::ListView(std::vector<Homebrew> homebrews)
 {
-	dbg_printf(DBG_DEBUG, "posY: %d", posY);
-	dbg_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
+    log_printf(DBG_DEBUG, "posY: %d", posY);
+    log_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
 	for (Homebrew hb : homebrews) {
 		listItems.push_back(ListItem(hb));
 	}
@@ -95,32 +95,32 @@ int ListView::HandleInput(int focus, const Input& input)
 {
 
 	if (input.KeyNewPressed(SCE_CTRL_SELECT)) {
-		dbg_printf(DBG_DEBUG, "posY: %d", posY);
-		dbg_printf(DBG_DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
-		dbg_printf(DBG_DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
+        log_printf(DBG_DEBUG, "posY: %d", posY);
+        log_printf(DBG_DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
+        log_printf(DBG_DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
 	}
 
 	// Calculate new posY from scrolling speed and time elapsed
 	unsigned long timeDif;
 	input.TouchDifference(NULL, NULL, &timeDif);
-	//dbg_printf(DBG_DEBUG, "timeDif: %u", timeDif);
-	//dbg_printf(DBG_DEBUG, "posY before: %d", posY);
+	//log_printf(DBG_DEBUG, "timeDif: %u", timeDif);
+	//log_printf(DBG_DEBUG, "posY before: %d", posY);
 	if (!input.TouchPressed())
 		posY = std::min<unsigned int>(std::max<int>(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0), std::max<int>(posY + (int)(scrollSpeed * (double)timeDif), 0));
 
 	updateScrollSpeed(scrollSpeed, timeDif);
 
-	//dbg_printf(DBG_DEBUG, "posY after: %d", posY);
+	//log_printf(DBG_DEBUG, "posY after: %d", posY);
 
 	if (focus) {
 		if (input.TouchStopPressed()) {
 			if (preSelectedItem != -1) {
 				selectedItem = preSelectedItem;
-				dbg_printf(DBG_DEBUG, "Clicked, adding view...");
+                log_printf(DBG_DEBUG, "Clicked, adding view...");
 				try {
 					Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
 				} catch (const std::exception &ex) {
-					dbg_printf(DBG_ERROR, ex.what());
+                    log_printf(DBG_ERROR, ex.what());
 				}
 			}
 
@@ -132,8 +132,8 @@ int ListView::HandleInput(int focus, const Input& input)
 			if (input.TouchNewPressed()) {
 				preSelectedItem = coordinateToItem(touchY);
 			}
-			//dbg_printf(DEBUG, "Scroll speed: %f", touchSpeedY);
-			//dbg_printf(DEBUG, "speed: %f", fabs(touchSpeedY));
+			//log_printf(DEBUG, "Scroll speed: %f", touchSpeedY);
+			//log_printf(DEBUG, "speed: %f", fabs(touchSpeedY));
 
 			double touchSpeedY;
 			input.TouchSpeed(NULL, &touchSpeedY, NULL);
@@ -157,7 +157,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				posY = std::min(std::max<int>(ITEM_HEIGHT*listItems.size() - LIST_HEIGHT, 0),
 								std::max<int>(0, posY - touchDifY));
 				scrollSpeed = -touchSpeedY;
-				dbg_printf(DBG_DEBUG, "scrollSpeed: %f", scrollSpeed);
+                log_printf(DBG_DEBUG, "scrollSpeed: %f", scrollSpeed);
 			}
 			//momentum
 		// There is a selected item
@@ -174,17 +174,17 @@ int ListView::HandleInput(int focus, const Input& input)
 			} else if (input.KeyNewPressed(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {
 				selectedItem++;
 				resetHeighlight();
-				dbg_printf(DBG_DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
+                log_printf(DBG_DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
 				// Scroll down if the selected item is outside of view
 				if (selectedItem > lastFullyDisplayedItem()) {
 					posY += ITEM_HEIGHT;
 				}
 			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
-				dbg_printf(DBG_DEBUG, "Pressed, adding view...");
+                log_printf(DBG_DEBUG, "Pressed, adding view...");
 				try {
 					Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
 				} catch (const std::exception &ex) {
-					dbg_printf(DBG_ERROR, ex.what());
+                    log_printf(DBG_ERROR, ex.what());
 				}
 			}
 		// No item is selected

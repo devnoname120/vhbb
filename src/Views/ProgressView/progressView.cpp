@@ -24,7 +24,7 @@ ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
 int ProgressView::HandleInput(int focus, const Input& input)
 {
 	if (input.TouchNewPressed() && input.TouchInTexture(Point(PROGRESS_VIEW_X + 148, PROGRESS_VIEW_Y + 178), img_dialog_btn)) {
-		dbg_printf(DBG_WARNING, "Cancel not implemented");
+        log_printf(DBG_WARNING, "Cancel not implemented");
 		//progress_.Finish(3000);
 	}
     return 0;

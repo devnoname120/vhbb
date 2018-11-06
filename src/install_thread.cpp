@@ -62,7 +62,7 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
     } catch (const std::exception &ex) {
         progress.message(ex.what());
         progressView->Finish(4000);
-        dbg_printf(DBG_ERROR, "%s", ex.what());
+        log_printf(DBG_ERROR, "%s", ex.what());
     }
 
     sceKernelExitDeleteThread(0);

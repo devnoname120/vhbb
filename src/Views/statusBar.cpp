@@ -20,7 +20,7 @@ StatusBar::StatusBar() :
 
 	SceNetCtlInfo info;
 	if(sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info) < 0) {
-		dbg_printf(DBG_ERROR, "Failed to obtain Vita IP address");
+        log_printf(DBG_ERROR, "Failed to obtain Vita IP address");
 	} else {
 		strncpy(vitaip, (char *)&(info.ip_address), 16);
 	}

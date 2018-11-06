@@ -43,13 +43,13 @@ Zipfile::Zipfile(const std::string zip_path)
     zipfile_ = unzOpen(zip_path.c_str());
     if (!zipfile_)
     {
-        dbg_printf(DBG_DEBUG, "%s: not found", zip_path.c_str());
+        log_printf(DBG_DEBUG, "%s: not found", zip_path.c_str());
         throw std::runtime_error("Cannot open zip");
     }
 
     if (unzGetGlobalInfo(zipfile_, &global_info_) != UNZ_OK)
     {
-        dbg_printf(DBG_DEBUG, "Could not read file global info");
+        log_printf(DBG_DEBUG, "Could not read file global info");
         throw std::runtime_error("Cannot read zip info");
     }
 
@@ -87,7 +87,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
     uLong i;
     uint64_t s_progress = 0;
     if(unzGoToFirstFile(zipfile_) != UNZ_OK) {
-        dbg_printf(DBG_DEBUG, "Cannot go to first file");
+        log_printf(DBG_DEBUG, "Cannot go to first file");
         throw std::runtime_error("Error going to first file");
     }
 
@@ -103,7 +103,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
             MAX_FILENAME,
             NULL, 0, NULL, 0) != UNZ_OK)
         {
-            dbg_printf(DBG_DEBUG, "Could not read file info");
+            log_printf(DBG_DEBUG, "Could not read file info");
             throw std::runtime_error("Error reading zip file info");
         }
 
@@ -113,7 +113,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
         const size_t filename_length = strlen(fullfilepath);
         if (fullfilepath[filename_length-1] == dir_delimter)
         {
-            dbg_printf(DBG_DEBUG, "dir:%s", fullfilepath);
+            log_printf(DBG_DEBUG, "dir:%s", fullfilepath);
             //sceIoMkdir(fullfilepath, 0777);
             mkdir_rec(fullfilepath);
         }
@@ -124,10 +124,10 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
             mkdir_rec(destdir.c_str());
 
             // Entry is a file, so extract it.
-            dbg_printf(DBG_DEBUG, "file:%s", fullfilepath);
+            log_printf(DBG_DEBUG, "file:%s", fullfilepath);
             if (unzOpenCurrentFile(zipfile_) != UNZ_OK)
             {
-                dbg_printf(DBG_DEBUG, "could not open file");
+                log_printf(DBG_DEBUG, "could not open file");
                 throw std::runtime_error("Cannot open file from zip");
             }
 
@@ -135,7 +135,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
             FILE *out = fopen(fullfilepath, "wb");
             if (out == NULL)
             {
-                dbg_printf(DBG_DEBUG, "could not open destination file");
+                log_printf(DBG_DEBUG, "could not open destination file");
                 unzCloseCurrentFile(zipfile_);
                 throw std::runtime_error("Cannot open destination file");
             }
@@ -146,7 +146,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
                 error = unzReadCurrentFile(zipfile_, read_buffer, READ_SIZE);
                 if (error < 0)
                 {
-                    dbg_printf(DBG_DEBUG, "error %d", error);
+                    log_printf(DBG_DEBUG, "error %d", error);
                     unzCloseCurrentFile(zipfile_);
                     throw std::runtime_error("Cannot read current zip file");
                 }
@@ -169,7 +169,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
         {
             if (unzGoToNextFile(zipfile_) != UNZ_OK)
             {
-                dbg_printf(DBG_DEBUG, "cound not read next file");
+                log_printf(DBG_DEBUG, "cound not read next file");
                 throw std::runtime_error("Error getting next zip file");
             }
         }
@@ -192,7 +192,7 @@ int Zipfile::UncompressedSize(InfoProgress *progress)
     uncompressed_size_ = 0;
 
     if(unzGoToFirstFile(zipfile_) != UNZ_OK) {
-        dbg_printf(DBG_DEBUG, "Cannot go to first file");
+        log_printf(DBG_DEBUG, "Cannot go to first file");
         throw std::runtime_error("Error going to first file");
     }
 
@@ -208,7 +208,7 @@ int Zipfile::UncompressedSize(InfoProgress *progress)
             MAX_FILENAME,
             NULL, 0, NULL, 0) != UNZ_OK)
         {
-            dbg_printf(DBG_DEBUG, "could not read file info");
+            log_printf(DBG_DEBUG, "could not read file info");
             throw std::runtime_error("Error reading zip file info");
         }
 
@@ -220,7 +220,7 @@ int Zipfile::UncompressedSize(InfoProgress *progress)
         {
             if (unzGoToNextFile(zipfile_) != UNZ_OK)
             {
-                dbg_printf(DBG_DEBUG, "cound not read next file");
+                log_printf(DBG_DEBUG, "cound not read next file");
                 throw std::runtime_error("Error calculating zip size");
             }
         }

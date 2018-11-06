@@ -219,7 +219,7 @@ int VitaPackage::Install(InfoProgress *progress)
     int ret = removePath(PACKAGE_TEMP_FOLDER);
 
     if (ret < 0) {
-        dbg_printf(DBG_ERROR, "removePath() = 0x%08X", ret);
+        log_printf(DBG_ERROR, "removePath() = 0x%08X", ret);
     }
 
     sceIoMkdir(PACKAGE_TEMP_FOLDER.c_str(), 0777);
@@ -234,7 +234,7 @@ int VitaPackage::Install(InfoProgress *progress)
     progress->message("Installing...");
     ret = makeHeadBin();
     if (ret < 0) {
-        dbg_printf(DBG_ERROR, "Can't make head.bin for : 0x%08X", vpk_.c_str(), ret);
+        log_printf(DBG_ERROR, "Can't make head.bin for : 0x%08X", vpk_.c_str(), ret);
         throw std::runtime_error("Error faking app signature");
     }
 
@@ -242,7 +242,7 @@ int VitaPackage::Install(InfoProgress *progress)
     if(progress) progress3 = progress->Range(60, 100);
     ret = scePromoterUtilityPromotePkg(PACKAGE_TEMP_FOLDER.c_str(), 0);
     if (ret < 0) {
-        dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityPromotePkgWithRif() = 0x%08X", vpk_.c_str(), ret);
+        log_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityPromotePkgWithRif() = 0x%08X", vpk_.c_str(), ret);
         throw std::runtime_error("Error installing app");
     }
 
@@ -251,7 +251,7 @@ int VitaPackage::Install(InfoProgress *progress)
     do {
         ret = scePromoterUtilityGetState(&state);
         if (ret < 0) {
-            dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetState() = 0x%08X", vpk_.c_str(), ret);
+            log_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetState() = 0x%08X", vpk_.c_str(), ret);
             throw std::runtime_error("Error while instaling");
         }
 
@@ -263,7 +263,7 @@ int VitaPackage::Install(InfoProgress *progress)
     int result = 0;
     ret = scePromoterUtilityGetResult(&result);
     if (ret < 0) {
-        dbg_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetResult() = 0x%08X", vpk_.c_str(), ret);
+        log_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityGetResult() = 0x%08X", vpk_.c_str(), ret);
         throw std::runtime_error("Installation failed");
     }
 

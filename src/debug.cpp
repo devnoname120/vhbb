@@ -8,7 +8,7 @@ extern "C" {
 int _vshSblGetSystemSwVersion(SceKernelFwInfo *data);
 }
 
-int dbg_init(bool log_to_file)
+int log_init(bool log_to_file)
 {
     g_log_to_file = log_to_file;
 
@@ -32,10 +32,10 @@ int dbg_init(bool log_to_file)
 
         g_log_fd = sceIoOpen(log_file.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 
-        _dbg_printf(DBG_INFO, "VHBB started.\n");
-        _dbg_printf(DBG_INFO, "- Version: %s\n", VITA_VERSION);
-		_dbg_printf(DBG_INFO, "- Commit: %s\n", GIT_COMMIT);
-		_dbg_printf(DBG_INFO, "- GitHub: %s%s\n", "https://github.com/devnoname120/vhbb/tree/", GIT_COMMIT);
+		_log_printf(DBG_INFO, "VHBB started.\n");
+		_log_printf(DBG_INFO, "- Version: %s\n", VITA_VERSION);
+		_log_printf(DBG_INFO, "- Commit: %s\n", GIT_COMMIT);
+		_log_printf(DBG_INFO, "- GitHub: %s%s\n", "https://github.com/devnoname120/vhbb/tree/", GIT_COMMIT);
 
         SceKernelFwInfo data;
         data.size = sizeof(SceKernelFwInfo);
@@ -44,16 +44,16 @@ int dbg_init(bool log_to_file)
         {
             char version[16];
             snprintf(version, 16, "%s", data.versionString);
-            _dbg_printf(DBG_INFO, "- OS: %s\n", version);
+			_log_printf(DBG_INFO, "- OS: %s\n", version);
         }
 
-        _dbg_printf(DBG_INFO, "\n");
+		_log_printf(DBG_INFO, "\n");
 	}
 
 	return 0;
 }
 
-int _dbg_printf(int level, const char *format, ...)
+int _log_printf(int level, const char *format, ...)
 {
 	// If no logging is needed at all
 	#ifndef DEBUGNET

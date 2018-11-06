@@ -27,7 +27,7 @@ void FetchLoadIcons(unsigned int arglen, std::atomic<bool> *db_done)
     Activity::get_instance()->AddView(mainView);
   } catch (const std::exception &ex) {
     // TODO: Add dialog box to let the user know about this issue
-    dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
+      log_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
     throw ex;
   }
 
