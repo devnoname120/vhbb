@@ -12,7 +12,7 @@ void StartFetchLoadIconsThread() {
   sceKernelStartThread(thid_db, 0, nullptr);
 }
 
-void FetchLoadIcons(unsigned int arglen, std::atomic<bool> **db_done)
+void FetchLoadIcons(unsigned int arglen, std::atomic<bool> *db_done)
 {
   try {
     // TODO check if fails
@@ -21,11 +21,12 @@ void FetchLoadIcons(unsigned int arglen, std::atomic<bool> **db_done)
     auto db = Database::create_instance(API_LOCAL);
     db->DownloadIcons();
     if (db_done)
-      **db_done = true;
+      *db_done = true;
 
     auto mainView = std::make_shared<MainView>();
     Activity::get_instance()->AddView(mainView);
   } catch (const std::exception &ex) {
+    // TODO: Add dialog box to let the user know about this issue
     dbg_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
     throw ex;
   }
