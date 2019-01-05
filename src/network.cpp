@@ -170,7 +170,7 @@ InternetStatus Network::TestConnection()
     int res = -1;
     int statusCode = 0;
     uint64_t contentLength;
-    char buf[4096] = {0};
+    char buf[32] = {0};
 
     int conn = sceHttpCreateConnectionWithURL(templateId_, PORTAL_DETECT_URL, SCE_TRUE);
     if (conn < 0) {
@@ -190,10 +190,11 @@ InternetStatus Network::TestConnection()
     res = sceHttpGetStatusCode(req, &statusCode);
 
     if (sendRes < 0 || res < 0 || statusCode != 200) {
+        log_printf(DBG_DEBUG, "Request failed. sendRes=0x%08X, res=0x%08X, statusCode=%d", sendRes, res, statusCode);
         ret = INTERNET_STATUS_NO_INTERNET;
         goto clean;
     }
-    
+
     res = sceHttpGetResponseContentLength(req, &contentLength);
 
     if (res >= 0)
@@ -201,7 +202,8 @@ InternetStatus Network::TestConnection()
 
     
     read = sceHttpReadData(req, buf, sizeof(buf));
-    if (res <= 0) {
+    if (read < 0) {
+        log_printf(DBG_DEBUG, "Cannot read response, error: 0x%08X\n", read);
         ret = INTERNET_STATUS_NO_INTERNET;
         goto clean;
     }
@@ -209,6 +211,7 @@ InternetStatus Network::TestConnection()
     buf[read] = '\0';
 
     if (strncmp(buf, PORTAL_DETECT_STR, strlen(PORTAL_DETECT_STR))) {
+        log_printf(DBG_DEBUG, "Unexpected portal detection response. Expected: \"%s\", got: \"%s\"", PORTAL_DETECT_STR, buf);
         ret = INTERNET_STATUS_HOTSPOT_PAGE;
         goto clean;
     }

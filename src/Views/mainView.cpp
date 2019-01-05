@@ -9,6 +9,7 @@ MainView::MainView()
 int MainView::HandleInput(int focus, const Input& input)
 {
 	categoryView.HandleInput(focus, input);
+	return 0;
 }
 
 int MainView::Display()
