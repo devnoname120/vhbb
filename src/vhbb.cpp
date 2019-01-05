@@ -45,9 +45,14 @@ void network_test() {
   case INTERNET_STATUS_NO_INTERNET:
   case INTERNET_STATUS_HOTSPOT_PAGE:
     log_printf(DBG_ERROR, "Connection status: %d", netStatus);
-    sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
-    sceKernelDelayThread(10000);
-	sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL);
+
+    for (int i = 0; i < 40; i++) {
+      if (sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL) != 0) {
+        break;
+      }
+      sceKernelDelayThread(10000);
+    }
+
 	sceKernelExitProcess(0);
     break;
   }

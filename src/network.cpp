@@ -200,7 +200,7 @@ InternetStatus Network::TestConnection()
     if (res >= 0)
         log_printf(DBG_DEBUG, "Content length: %lu", contentLength);
 
-    
+
     read = sceHttpReadData(req, buf, sizeof(buf));
     if (read < 0) {
         log_printf(DBG_DEBUG, "Cannot read response, error: 0x%08X\n", read);
