@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "progressView.h"
 
 #include <font.h>
@@ -9,8 +11,8 @@ extern unsigned char _binary_assets_spr_img_dialog_btn_png_start;
 
 
 ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
-    progress_(progress),
-	hb_(hb),
+    progress_(std::move(progress)),
+	hb_(std::move(hb)),
 	font_24(Font(std::string(FONT_DIR "segoeui.ttf"), 24)),
 	//thid_(thid),
 	img_icon(Texture(ICONS_FOLDER + "/" + hb_.icon)),
@@ -32,7 +34,7 @@ int ProgressView::HandleInput(int focus, const Input& input)
 
 int ProgressView::Display()
 {
-	float progress_x = ((float)PROGRESS_BAR_X_WIDTH) * ((float)progress_.percent() / (float)100);
+	float progress_x = ((float)PROGRESS_BAR_X_WIDTH) * (progress_.percent() / (float)100);
 	// Icon
 	img_icon.Draw(Point(PROGRESS_VIEW_X + 45, PROGRESS_VIEW_Y + 7));
 	// Background

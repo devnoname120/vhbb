@@ -2,9 +2,7 @@
 #include <texture.h>
 #include "mainView.h"
 
-MainView::MainView()
-{
-}
+MainView::MainView() = default;
 
 int MainView::HandleInput(int focus, const Input& input)
 {

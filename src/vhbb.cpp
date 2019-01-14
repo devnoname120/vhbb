@@ -8,7 +8,6 @@
 #include "debug.h"
 #include "network.h"
 #include "nosleep_thread.h"
-#include "splash_thread.h"
 #include "fetch_load_icons_thread.h"
 #include "vitasdk_quirks.h"
 
@@ -25,39 +24,33 @@ void debug_start() {
   int retReceive = sceAppUtilReceiveAppEvent(&eventParam);
 
   // 0x05 means launched from livearea with params (currently only possible param is -file_logging)
-  if (retInit < 0 || retReceive < 0 || eventParam.type == 0x05) {
-    log_init(true);
-  // If params need to be actually fetched
-  //  char buffer[2048] = {0};
-  //  sceAppUtilAppEventParseLiveArea(&eventParam, buffer);
-  } else {
-    log_init(false);
-  }
+  log_init(retInit < 0 || retReceive < 0 || eventParam.type == 0x05);
 }
 
 void network_test() {
   Network &network = *Network::create_instance();
 
-  int netStatus = network.TestConnection();
+  InternetStatus netStatus = network.TestConnection();
+
   switch (netStatus) {
-  case INTERNET_STATUS_OK:
-    break;
-  case INTERNET_STATUS_NO_INTERNET:
-  case INTERNET_STATUS_HOTSPOT_PAGE:
-    log_printf(DBG_ERROR, "Connection status: %d", netStatus);
+    case INTERNET_STATUS_OK:
+      break;
+    case INTERNET_STATUS_NO_INTERNET:
+    case INTERNET_STATUS_HOTSPOT_PAGE:
+      log_printf(DBG_ERROR, "Connection status: %d", netStatus);
 
-    for (int i = 0; i < 40; i++) {
-      if (sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL) != 0) {
-        break;
+      for (int i = 0; i < 40; i++) {
+        if (sceAppMgrLaunchAppByUri(0xFFFFF, PORTAL_DETECT_URL) != 0) {
+          break;
+        }
+        sceKernelDelayThread(10000);
       }
-      sceKernelDelayThread(10000);
-    }
 
-	sceKernelExitProcess(0);
-    break;
-  }
-  // FIXME Handle network issues more gracefully
-  // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
+      sceKernelExitProcess(0);
+      break;
+    }
+    // FIXME Handle network issues more gracefully
+    // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
 }
 
 int main() {
@@ -81,7 +74,7 @@ int main() {
   splash->priority = 200;
   activity.AddView(splash);
 
-  while (1) {
+  while (true) {
     vita2d_start_drawing();
     vita2d_clear_screen();
 

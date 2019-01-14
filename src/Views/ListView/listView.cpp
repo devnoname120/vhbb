@@ -87,7 +87,7 @@ ListView::ListView(std::vector<Homebrew> homebrews)
     log_printf(DBG_DEBUG, "posY: %d", posY);
     log_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
 	for (Homebrew hb : homebrews) {
-		listItems.push_back(ListItem(hb));
+		listItems.emplace_back(hb);
 	}
 }
 
@@ -102,7 +102,7 @@ int ListView::HandleInput(int focus, const Input& input)
 
 	// Calculate new posY from scrolling speed and time elapsed
 	unsigned long timeDif;
-	input.TouchDifference(NULL, NULL, &timeDif);
+	input.TouchDifference(nullptr, nullptr, &timeDif);
 	//log_printf(DBG_DEBUG, "timeDif: %u", timeDif);
 	//log_printf(DBG_DEBUG, "posY before: %d", posY);
 	if (!input.TouchPressed())
@@ -128,7 +128,7 @@ int ListView::HandleInput(int focus, const Input& input)
 		// Touch has the priority over the dpad
 		if (input.TouchPressed()) {
 			double touchY;
-			input.TouchCoordinates(NULL, &touchY);
+			input.TouchCoordinates(nullptr, &touchY);
 			if (input.TouchNewPressed()) {
 				preSelectedItem = coordinateToItem(touchY);
 			}

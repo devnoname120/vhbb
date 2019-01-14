@@ -1,3 +1,5 @@
+#include <utility>
+
 #pragma once
 
 #include <global_include.h>
@@ -11,7 +13,7 @@ friend class Singleton<Database>;
 public:
 	std::vector<Homebrew> homebrews;
 
-	Database(const std::string &db_path);
+	explicit Database(const std::string &db_path);
 	~Database();
 
 	int DownloadIcons();
@@ -35,7 +37,7 @@ std::vector<Homebrew> Database::Filter(UnaryPredicate pred)
 }
 
 struct IsCategory : public std::unary_function<std::string, bool> {
-    IsCategory(const std::string &cat) : cat_(cat) {}
+	explicit IsCategory(std::string cat) : cat_(std::move(cat)) {}
     bool operator()(const Homebrew &hb) const;
 
     std::string cat_;

@@ -1,9 +1,6 @@
 #include "activity.h"
 
-Activity::~Activity()
-{
-
-}
+Activity::~Activity() = default;
 
 
 int Activity::HandleInput(int focus, const Input& input)
@@ -20,7 +17,7 @@ int Activity::HandleInput(int focus, const Input& input)
             }
 
         }
-    } else if (views_.size() == 0) {
+    } else if (views_.empty()) {
         return 0;
     }
 

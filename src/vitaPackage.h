@@ -7,7 +7,7 @@
 
 class VitaPackage{
 public:
-  VitaPackage(const std::string vpk);
+  explicit VitaPackage(std::string vpk);
   ~VitaPackage();
 
   int Install(InfoProgress progress);

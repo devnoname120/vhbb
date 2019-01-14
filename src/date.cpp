@@ -2,15 +2,7 @@
 
 #include <global_include.h>
 
-Date::Date()
-{
-
-}
-
-Date::Date(std::string date)
-{
-    return;
-}
+Date::Date() = default;
 
 bool IsNewer::operator()(const Homebrew &hb1, const Homebrew &hb2) const {
     bool res = true;
@@ -40,9 +32,9 @@ bool IsNewer::operator()(const Homebrew &hb1, const Homebrew &hb2) const {
 namespace YAML {
 bool convert<Date>::decode(const Node& node, Date& date) {
     date.str = node.as<std::string>();
-    date.year = atoi(date.str.substr(0, 4).c_str());
-    date.month = atoi(date.str.substr(5, 2).c_str());
-    date.day = atoi(date.str.substr(8, 2).c_str());
+    date.year = std::atoi(date.str.substr(0, 4).c_str());
+    date.month = std::atoi(date.str.substr(5, 2).c_str());
+    date.day = std::atoi(date.str.substr(8, 2).c_str());
     return true;
 }
 };

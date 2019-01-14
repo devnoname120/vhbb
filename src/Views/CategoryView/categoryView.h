@@ -1,3 +1,5 @@
+#include <utility>
+
 #pragma once
 
 #include <global_include.h>
@@ -22,7 +24,7 @@ struct CategoryTab {
 	int maxX;
 	ListView listView;
 
-	CategoryTab(ListView aListView) : listView(aListView) {};
+    explicit CategoryTab(ListView aListView) : listView(std::move(aListView)) {};
 };
 
 #define categoryList_s 5

@@ -46,13 +46,13 @@ int ListItem::display(int posY)
 	img_icon_.DrawResize(Point(ITEM_POSX, posY), Point(90, 90));
 	
 	// TODO: Is there a better way of handling this? Yes i'm talking to You good sir :-)
-	if (!homebrew.category.compare("1"))
+	if (homebrew.category == "1")
 		img_itm_label_game.Draw(Point(ITEM_POSX + 732, posY));
-	else if (!homebrew.category.compare("2"))
+	else if (homebrew.category == "2")
 		img_itm_label_port.Draw(Point(ITEM_POSX + 732, posY));
-	else if (!homebrew.category.compare("5"))
+	else if (homebrew.category == "5")
 		img_itm_label_emu.Draw(Point(ITEM_POSX + 732, posY));
-	else if (!homebrew.category.compare("4"))
+	else if (homebrew.category == "4")
 		img_itm_label_util.Draw(Point(ITEM_POSX + 732, posY));
 	
 	return 0;

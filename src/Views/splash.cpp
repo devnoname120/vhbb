@@ -42,7 +42,7 @@ int Splash::Display()
 			frame_count += 1;
 			break;
 		case STEP_FADING_OUT:
-			alpha = std::max<int>(0, ((int)alpha)-4);
+			alpha = (unsigned int) std::max<int>(0, ((int)alpha) - 4);
 			if (alpha <= 0) {
 				alpha = 0;
 				splash_index += 1;

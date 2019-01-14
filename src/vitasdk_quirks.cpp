@@ -1,3 +1,4 @@
+#include <sys/cdefs.h>
 #include <psp2/kernel/threadmgr.h>
 #include <zconf.h>
 #include <alloca.h>
@@ -23,17 +24,18 @@ int usleep(useconds_t usec) {
 void __sinit(struct _reent *);
 }
 
-__attribute__((constructor(101))) void pthread_setup(void) {
+__attribute__((constructor(101))) void __unused pthread_setup() {
     pthread_init();
     __sinit(_REENT);
 }
 
-// FIXME: Doesn't seem to actually work
+
 void terminate_logger() {
     std::exception_ptr p = std::current_exception();
     try {
         std::rethrow_exception(p);
     } catch (const std::exception &e) {
+        // FIXME: e.what() just returns the name of the exception
         log_printf(DBG_ERROR, "terminate() because of %s", e.what());
     }
 }

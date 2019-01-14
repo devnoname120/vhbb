@@ -20,8 +20,8 @@ public:
       FAILED
   };
 
-  Texture(unsigned char *addr, bool caching = true);
-  Texture(const std::string &path, bool caching = true);
+  explicit Texture(unsigned char *addr, bool caching = true);
+  explicit Texture(const std::string &path, bool caching = true);
 
   Texture(const Texture& that);
   Texture& operator=(const Texture& that);

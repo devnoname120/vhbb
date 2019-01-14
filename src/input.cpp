@@ -59,12 +59,12 @@ int Input::KeyPressed(unsigned int buttons) const
 // Check if a combination of buttons is pressed and was not pressed before
 int Input::KeyNewPressed(unsigned int buttons) const
 {
-	return KeyPressed(buttons) && !((oldpad.buttons & buttons) == buttons);
+	return KeyPressed(buttons) && (oldpad.buttons & buttons) != buttons;
 }
 
 int Input::TouchPressed() const
 {
-	return touch.reportNum;
+	return touch.reportNum != 0;
 }
 
 int Input::TouchAlreadyPressed() const
@@ -121,11 +121,11 @@ int Input::TouchSpeed(double *touchSpeedX, double *touchSpeedY, double *touchSpe
 
 	TouchDifference(&difX, &difY, &timeDif);
 
-	double speedX = (double)difX/timeDif;
+	double speedX = difX / timeDif;
 	if (touchSpeedX)
 		*touchSpeedX = speedX;
 
-	double speedY = (double)difY/timeDif;
+	double speedY = difY / timeDif;
 	if (touchSpeedY)
 		*touchSpeedY = speedY;
 

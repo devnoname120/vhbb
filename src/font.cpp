@@ -17,7 +17,7 @@ Font::Font(const std::string &path, unsigned int fSize) {
 	size = fSize;
 }
 
-int Font::Draw(const Point &pt, const std::string &text, int color) {
+int Font::Draw(const Point &pt, const std::string &text, unsigned int color) {
 	return vita2d_font_draw_text(font, pt.x, pt.y, color, size, text.c_str());
 }
 

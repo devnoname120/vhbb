@@ -5,9 +5,6 @@
 #include <Views/View.h>
 #include "listItem.h"
 
-#define LIST_BASE_X 62
-#define LIST_BASE_Y 115
-
 #define LIST_MIN_Y 79
 #define LIST_MAX_Y 543 // This ordinate is included too
 #define LIST_RANGE_Y (LIST_MAX_Y - LIST_MIN_Y)
@@ -19,7 +16,7 @@
 
 class ListView: public View {
 public:
-	ListView(std::vector<Homebrew> homebrews);
+	explicit ListView(std::vector<Homebrew> homebrews);
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;

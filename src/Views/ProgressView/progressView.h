@@ -14,10 +14,7 @@
 #define PROGRESS_VIEW_X 171
 #define PROGRESS_VIEW_Y 152
 
-#define PROGRESS_BAR_X 55
 #define PROGRESS_BAR_X_WIDTH 508
-#define PROGRESS_BAR_Y 148
-#define PROGRESS_BAR_Y_HEIGHT 11
 
 class ProgressView: public View {
 public:

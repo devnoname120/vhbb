@@ -12,10 +12,6 @@ extern unsigned char _binary_assets_head_bin_size;
 
 #define SFO_MAGIC 0x46535000
 
-#define PSF_TYPE_BIN 0
-#define PSF_TYPE_STR 2
-#define PSF_TYPE_VAL 4
-
 static void fpkg_hmac(const uint8_t *data, unsigned int len, uint8_t hmac[16]) {
     SHA1_CTX ctx;
 	char sha1[20];
@@ -58,9 +54,9 @@ typedef struct SfoEntry {
 	uint32_t dataofs;
 } __attribute__((packed)) SfoEntry;
 
-int getSfoString(char *buffer, const char *name, char *string, int length) {
-	SfoHeader *header = (SfoHeader *)buffer;
-	SfoEntry *entries = (SfoEntry *)((uint32_t)buffer + sizeof(SfoHeader));
+int getSfoString(char *buffer, const char *name, char *string, unsigned int length) {
+    auto *header = (SfoHeader *)buffer;
+    auto *entries = (SfoEntry *)((uint32_t)buffer + sizeof(SfoHeader));
 
 	if (header->magic != SFO_MAGIC)
     	return -1;
@@ -78,7 +74,7 @@ int getSfoString(char *buffer, const char *name, char *string, int length) {
 	return -2;
 }
 
-int WriteFile(const char *file, const void *buf, int size) {
+int WriteFile(const char *file, const void *buf, unsigned int size) {
 	SceUID fd = sceIoOpen(file, SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 	if (fd < 0)
 		return fd;
@@ -101,6 +97,7 @@ int allocateReadFile(const char *file, char **buffer) {
 	if (fd < 0)
 		return fd;
 
+	// FIXME Check if < 0
 	int size = sceIoLseek32(fd, 0, SCE_SEEK_END);
 	sceIoLseek32(fd, 0, SCE_SEEK_SET);
 
@@ -150,8 +147,8 @@ int makeHeadBin()
     free(sfo_buffer);
 
     // Allocate head.bin buffer
-    uint8_t *head_bin = (uint8_t *)malloc((int)&_binary_assets_head_bin_size);
-    memcpy(head_bin, (void *)&_binary_assets_head_bin_start, (int)&_binary_assets_head_bin_size);
+    uint8_t *head_bin = (uint8_t *)malloc((size_t)&_binary_assets_head_bin_size);
+    memcpy(head_bin, (void *)&_binary_assets_head_bin_start, (size_t)&_binary_assets_head_bin_size);
 
     // Write full title id
     char full_title_id[48];
@@ -179,7 +176,7 @@ int makeHeadBin()
     sceIoMkdir((PACKAGE_TEMP_FOLDER + "sce_sys/package").c_str(), 0777);
 
     // Write head.bin
-    WriteFile((PACKAGE_TEMP_FOLDER + "sce_sys/package/head.bin").c_str(), head_bin, (int)&_binary_assets_head_bin_size);
+    WriteFile((PACKAGE_TEMP_FOLDER + "sce_sys/package/head.bin").c_str(), head_bin, (unsigned int)&_binary_assets_head_bin_size);
 
     free(head_bin);
 

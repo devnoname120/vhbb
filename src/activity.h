@@ -9,10 +9,10 @@
 class Activity: public Singleton<Activity>, public View {
 friend class Singleton<Activity>;
 public:
-	~Activity();
+	~Activity() override;
 
-	int HandleInput(int focus, const Input& input);
-	int Display();
+	int HandleInput(int focus, const Input& input) override;
+	int Display() override;
 
     void AddView(std::shared_ptr<View> view);
     void FlushQueue();

@@ -36,7 +36,7 @@ Texture& Texture::operator=(const Texture& that)
 Texture::Texture(const std::string &path, bool caching) :
 	caching_(caching)
 {
-    auto key = path;
+	const auto &key = path;
 	if (caching_) {
 		if (textureCache1.count(key) >= 1)
 		{

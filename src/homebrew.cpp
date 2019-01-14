@@ -4,33 +4,31 @@
 
 #include "date.h"
 
-class Date;
-
 bool Homebrew::IsInstalled()
 {
-  // FIXME Don't reload the module every time
+    // FIXME Don't reload the module every time
 
-  // ScePaf is required for PromoterUtil
-  uint32_t ptr[0x100] = {0};
-	ptr[0] = 0;
-	ptr[1] = (uint32_t)&ptr[0];
-	uint32_t scepaf_argp[] = {0x400000, 0xEA60, 0x40000, 0, 0};
-  sceSysmoduleLoadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF, sizeof(scepaf_argp), scepaf_argp, ptr);
+    // ScePaf is required for PromoterUtil
+    uint32_t ptr[0x100] = {0};
+    ptr[0] = 0;
+    ptr[1] = (uint32_t) &ptr[0];
+    uint32_t scepaf_argp[] = {0x400000, 0xEA60, 0x40000, 0, 0};
+    sceSysmoduleLoadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF, sizeof(scepaf_argp), scepaf_argp, ptr);
 
-  sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_PROMOTER_UTIL);
+    sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_PROMOTER_UTIL);
 
-	int ret = scePromoterUtilityInit();
-	if (ret < 0)
-		throw std::runtime_error("scePromoterUtilityInit() = " + ret);
-  
-  int res;
+    int ret = scePromoterUtilityInit();
+    if (ret < 0)
+        throw std::runtime_error("scePromoterUtilityInit() = " + ret);
+
+    int res;
     log_printf(DBG_DEBUG, "Checking if %s exists...", titleid.c_str());
-	int installed = scePromoterUtilityCheckExist(titleid.c_str(), &res);
+    int installed = scePromoterUtilityCheckExist(titleid.c_str(), &res);
     log_printf(DBG_DEBUG, "Done checking");
 
-	scePromoterUtilityExit();
+    scePromoterUtilityExit();
 
-  return installed >= 0;  
+    return installed >= 0;
 }
 
 // Add type to yaml-cpp

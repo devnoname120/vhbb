@@ -14,7 +14,7 @@
 
 class HomebrewView: public View {
 public:
-	HomebrewView(Homebrew hb);
+	explicit HomebrewView(Homebrew hb);
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;

@@ -7,11 +7,8 @@
 
 class Input {
 	private:
-		static int isInit;
 
-    	SceDateTime timer;
-
-		SceCtrlData oldpad;
+	SceCtrlData oldpad;
 		SceCtrlData pad;
 		
 		SceTouchData old2touch;	

@@ -1,3 +1,7 @@
+#include <utility>
+
+#include <utility>
+
 #include "network.h"
 
 
@@ -6,11 +10,9 @@
 #include <curlpp/Options.hpp>
 #include <curlpp/Exception.hpp>
 
-#define MAX_FILE_LENGTH 20000
-
 class ProgressClass {
 public:
-    ProgressClass(InfoProgress &progress) : m_progress(progress) {
+    explicit ProgressClass(InfoProgress &progress) : m_progress(progress) {
     }
 
     int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow) {
@@ -24,12 +26,7 @@ private:
 class WriterFileClass
 {
 public:
-    WriterFileClass(std::string dest) {
-        m_fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
-
-        if (m_fd < 0)
-            cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
-    }
+    explicit WriterFileClass(std::string dest);
 
     ~WriterFileClass() {
         if(m_fd >= 0) {
@@ -53,6 +50,13 @@ public:
 private:
     int m_fd = -1;
 };
+
+WriterFileClass::WriterFileClass(std::string dest) {
+    m_fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
+
+    if (m_fd < 0)
+        cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
+}
 
 Network::Network()
 {
@@ -158,15 +162,15 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 
 int Network::Download(std::string url, std::string dest, InfoProgress progress)
 {
-    return Download(url, dest, &progress);
+    return Download(std::move(url), std::move(dest), &progress);
 }
 
 InternetStatus Network::TestConnection()
 {
     InternetStatus ret = INTERNET_STATUS_OK;
     int req = -1;
-    int read = -1;
-    int sendRes = -1;
+    int read;
+    int sendRes;
     int res = -1;
     int statusCode = 0;
     uint64_t contentLength;
@@ -184,7 +188,7 @@ InternetStatus Network::TestConnection()
         goto clean;
     }
 
-    sendRes = sceHttpSendRequest(req, NULL, 0);
+    sendRes = sceHttpSendRequest(req, nullptr, 0);
 
     
     res = sceHttpGetStatusCode(req, &statusCode);

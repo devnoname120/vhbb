@@ -10,7 +10,7 @@ bool IsVHBB(const Homebrew &hb)
 	return hb.titleid == "VHBB00001";
 }
 
-Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path.c_str()))
+Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path))
 {
 	YAML::Node lst = db;
 	try {
@@ -23,9 +23,7 @@ Database::Database(const std::string &db_path) : db(YAML::LoadFile(db_path.c_str
 	}
 }
 
-Database::~Database()
-{
-}
+Database::~Database() = default;
 
 
 bool IsCategory::operator()(const Homebrew &hb) const {
@@ -35,7 +33,7 @@ bool IsCategory::operator()(const Homebrew &hb) const {
 	std::string cat_lower;
 	std::transform(cat_.begin(), cat_.end(), std::back_inserter(cat_lower), tolower);
 
-	return cat_lower.compare(hbcat_lower) == 0;
+	return cat_lower == hbcat_lower;
 }
 
 

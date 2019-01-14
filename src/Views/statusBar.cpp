@@ -6,11 +6,6 @@
 extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
 extern unsigned char _binary_assets_spr_img_statsbar_battery_charge_png_start;
 
-void getDateString(char *string, int date_format, SceDateTime *time);
-void getTimeString(char *string, int time_format, SceDateTime *time);
-int displayBattery();
-int displayDate();
-
 StatusBar::StatusBar() :
 	font_22(Font(std::string(FONT_DIR "segoeui.ttf"), 22)),
 	img_statsbar_battery(Texture(&_binary_assets_spr_img_statsbar_battery_png_start)),
@@ -49,17 +44,22 @@ int StatusBar::Display()
 void StatusBar::getDateString(char *string, int date_format, SceDateTime *time)
 {
 	switch (date_format) {
-	case SCE_SYSTEM_PARAM_DATE_FORMAT_YYYYMMDD:
-		sprintf(string, "%04d/%02d/%02d", time->year, time->month, time->day);
-		break;
+		case SCE_SYSTEM_PARAM_DATE_FORMAT_YYYYMMDD:
+			sprintf(string, "%04d/%02d/%02d", time->year, time->month, time->day);
+			break;
 
-	case SCE_SYSTEM_PARAM_DATE_FORMAT_DDMMYYYY:
-		sprintf(string, "%02d/%02d/%04d", time->day, time->month, time->year);
-		break;
+		case SCE_SYSTEM_PARAM_DATE_FORMAT_DDMMYYYY:
+			sprintf(string, "%02d/%02d/%04d", time->day, time->month, time->year);
+			break;
 
-	case SCE_SYSTEM_PARAM_DATE_FORMAT_MMDDYYYY:
-		sprintf(string, "%02d/%02d/%04d", time->month, time->day, time->year);
-		break;
+		case SCE_SYSTEM_PARAM_DATE_FORMAT_MMDDYYYY:
+			sprintf(string, "%02d/%02d/%04d", time->month, time->day, time->year);
+			break;
+
+		default:
+			log_printf(DBG_WARNING, "Unexpected system date format: %u", date_format);
+			sprintf(string, "%04d/%02d/%02d", time->year, time->month, time->day);
+			break;
 	}
 }
 
@@ -71,6 +71,11 @@ void StatusBar::getTimeString(char *string, int time_format, SceDateTime *time)
 		break;
 
 	case SCE_SYSTEM_PARAM_TIME_FORMAT_24HR:
+		sprintf(string, "%02d:%02d", time->hour, time->minute);
+		break;
+
+	default:
+		log_printf(DBG_WARNING, "Unexpected system time format: %u", time_format);
 		sprintf(string, "%02d:%02d", time->hour, time->minute);
 		break;
 	}

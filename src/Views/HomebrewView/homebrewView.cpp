@@ -44,7 +44,7 @@ HomebrewView::HomebrewView(Homebrew hb) :
 	// FIXME Support more than 1 screenshot
 	if (!hb_.screenshots.empty()) {
 		std::string path = hb_.screenshots.at(0);
-		std::size_t found = path.find_last_of("/");
+		std::size_t found = path.find_last_of('/');
 		std::string filename = path.substr(found+1);
 
 		sceIoMkdir(SCREENSHOTS_FOLDER.c_str(), 0777);
@@ -52,10 +52,10 @@ HomebrewView::HomebrewView(Homebrew hb) :
 		try {
 			Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
 			// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
-			screenshots.push_back(Texture(SCREENSHOTS_FOLDER + "/" + filename, false));
+			screenshots.emplace_back(SCREENSHOTS_FOLDER + "/" + filename, false);
 			sceIoRemove((SCREENSHOTS_FOLDER + "/" + filename).c_str());
 		} catch (const std::exception &ex) {
-            log_printf(DBG_ERROR, "Cannot download screenshot %s", path);
+            log_printf(DBG_ERROR, "Cannot download screenshot %s", path.c_str());
 		}
 	}
 
@@ -87,10 +87,10 @@ HomebrewView::HomebrewView(Homebrew hb) :
 
 void HomebrewView::homebrewInstall() {
 	try {
-		InstallArguments *args = new InstallArguments;
+		auto *args = new InstallArguments;
 		args->hb = hb_;
 
-		int install_thid_ = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, NULL);
+		int install_thid_ = sceKernelCreateThread("install_thread", (SceKernelThreadEntry)install_thread, 0x40, 0x10000, 0, 0, nullptr);
 		sceKernelStartThread(install_thid_, sizeof(InstallArguments), args);
         log_printf(DBG_DEBUG, "OK");
 	} catch (const std::exception &ex) {

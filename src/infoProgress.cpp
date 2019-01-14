@@ -53,7 +53,7 @@ std::string InfoProgress::message()
 
 void InfoProgress::message(std::string message)
 {
-    *message_ = message;
+    *message_ = std::move(message);
 }
 
 void InfoProgress::message(const char *message)
