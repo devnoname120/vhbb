@@ -141,7 +141,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
                 break;
             } catch (curlpp::RuntimeError &e) {
                 if (retries == 3)
-                    throw e;
+                    throw;
 
                 mWriterChunk.rewind();
                 if(progress) progress->message("Retrying the download... (" + std::to_string(retries) + ")");
