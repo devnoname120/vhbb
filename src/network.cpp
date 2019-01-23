@@ -151,7 +151,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         }
 
     } catch (curlpp::RuntimeError &e) {
-        log_printf(DBG_ERROR, "cURLpp exception: ", e.what());
+        log_printf(DBG_ERROR, "cURLpp exception: %s", e.what());
         throw std::runtime_error("Network: Cannot send request");
     }
 
