@@ -23,6 +23,9 @@ public:
 
 	template <class UnaryPredicate>
 	std::vector<Homebrew> Sort(UnaryPredicate pred);
+
+	template <class UnaryPredicate>
+	std::vector<Homebrew> Search(UnaryPredicate pred);
 private:
 	const YAML::Node db;
 };
@@ -43,18 +46,43 @@ struct IsCategory : public std::unary_function<std::string, bool> {
     std::string cat_;
 };
 
-struct SearchQuery : public std::unary_function<std::string, bool> {
-	SearchQuery(const std::string &query);
-	bool operator()(const Homebrew &hb) const;
-
-	std::string query_;
-};
-
 
 template <class UnaryPredicate>
 std::vector<Homebrew> Database::Sort(UnaryPredicate pred)
 {
 	std::vector<Homebrew> res = homebrews;
 	std::sort(res.begin(), res.end(), pred);
+	return res;
+}
+
+
+typedef struct HomebrewSearchRating {
+	Homebrew hb;
+	float rating = -infinityf();
+}HomebrewSearchRating;
+
+
+struct SearchQuery : public std::unary_function<std::string, HomebrewSearchRating> {
+	SearchQuery(const std::string &query);
+	HomebrewSearchRating operator()(const Homebrew &hb) const;
+
+	std::string query_;
+};
+
+
+template <class UnaryPredicate>
+std::vector<Homebrew> Database::Search(UnaryPredicate pred)
+{
+	// rate the hbs by pred
+	std::vector<HomebrewSearchRating> ratings, pos_ratings;
+	std::transform(homebrews.begin(), homebrews.end(), back_inserter(ratings), pred);
+	// drop negative ratings i.e. no match
+	std::copy_if(ratings.begin(), ratings.end(), back_inserter(pos_ratings), [](HomebrewSearchRating r)->bool{return r.rating >= 0;});
+
+	// sort by rating
+	std::stable_sort(pos_ratings.begin(), pos_ratings.end(), [](HomebrewSearchRating r1, HomebrewSearchRating r2)->bool{return r1.rating > r2.rating;});
+
+	std::vector<Homebrew> res;
+	std::transform(pos_ratings.begin(), pos_ratings.end(), back_inserter(res), [](HomebrewSearchRating r)->Homebrew{return r.hb;});
 	return res;
 }

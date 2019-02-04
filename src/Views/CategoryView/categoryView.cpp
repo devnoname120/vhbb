@@ -81,7 +81,6 @@ CategoryView::CategoryView() :
 				hbs = db->Filter(IsCategory("4"));
 				break;
 			case SEARCH:
-				hbs = db->Filter(SearchQuery("SnAke"));
 				break;
 			}
 			categoryTabs.push_back(CategoryTab(ListView(hbs)));
@@ -198,7 +197,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		log_printf(DBG_DEBUG, "Processing finished search dialog: \"%s\"", _ime_search_view_result.userText.c_str());
 		auto db = Database::get_instance();
 		std::vector<Homebrew> hbs;
-		hbs = db->Filter(SearchQuery(_ime_search_view_result.userText));
+		hbs = db->Search(SearchQuery(_ime_search_view_result.userText));
 		for (unsigned int i=0; i < _countof(categoryList); i++) {
 			if (categoryList[i] == SEARCH) {
 				categoryTabs[i].listView = ListView(hbs);

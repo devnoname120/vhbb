@@ -40,16 +40,20 @@ SearchQuery::SearchQuery(const std::string &query) {
 	std::transform(query.begin(), query.end(), std::back_inserter(query_), tolower);
 }
 
-bool SearchQuery::operator()(const Homebrew &hb) const {
-	std::string fields [] = {hb.name, hb.description, hb.long_description};
-	for (const std::string &field : fields) {
+HomebrewSearchRating SearchQuery::operator()(const Homebrew &hb) const {
+	std::string fields[] = {hb.name, hb.description, hb.long_description};
+	HomebrewSearchRating hb_rating;
+	hb_rating.hb = hb;
+	auto fields_s = sizeof(fields)/sizeof(fields[0]);
+	for (auto i=0; i < fields_s; i++){
 		std::string field_lower;
-		std::transform(field.begin(), field.end(), std::back_inserter(field_lower), tolower);
+		std::transform(fields[i].begin(), fields[i].end(), std::back_inserter(field_lower), tolower);
 		if (field_lower.find(query_, 0) != std::string::npos) {
-			return true;
+			hb_rating.rating = fields_s-i;
+			break;
 		}
 	}
-	return false;
+	return hb_rating;
 }
 
 
