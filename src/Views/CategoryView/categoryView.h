@@ -5,6 +5,7 @@
 #include <global_include.h>
 
 #include <Views/View.h>
+#include <Views/IMEView.h>
 #include <Views/ListView/listView.h>
 
 #define CAT_X 0
@@ -45,11 +46,12 @@ private:
 	Texture img_catbar_highlight;
 	Texture img_catbar_sep;
 	Texture img_magnifying_glass;
-	std::vector<Texture> img_tabs;
-	
+
 	unsigned int selectedCat;
 	std::vector<CategoryTab> categoryTabs;
 
 	int touchToCat(const Input &input);
+
+	IMEViewResult _ime_search_view_result = {};
 };
 

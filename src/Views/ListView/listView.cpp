@@ -82,7 +82,8 @@ int ListView::updateScrollSpeed(double &scrollSpeed, unsigned long timeDif)
 	return 0;
 }
 
-ListView::ListView(std::vector<Homebrew> homebrews)
+ListView::ListView(std::vector<Homebrew> homebrews):
+	font_43(Font(std::string(FONT_DIR "segoeui.ttf"), 43))
 {
     log_printf(DBG_DEBUG, "posY: %d", posY);
     log_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
@@ -211,10 +212,13 @@ int ListView::resetHeighlight()
 
 int ListView::Display()
 {
+	if (listItems.empty()) {
+		font_43.DrawCentered(Rectangle(Point(0, LIST_MIN_Y), Point(SCREEN_WIDTH, LIST_MAX_Y)), "NO RESULTS");
+		return 0;
+	}
 	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) {
 		listItems[i].Display(itemPosY(i), i == selectedItem, itemHighlightAlpha);
 	}
-	
 	if (itemHighlightDirection) {
 		if (itemHighlightAlpha < 255 - itemHighlightSpeed)
 			itemHighlightAlpha += itemHighlightSpeed;

@@ -3,6 +3,7 @@
 #include <screen.h>
 #include <database.h>
 #include <date.h>
+#include <activity.h>
 
 extern unsigned char _binary_assets_spr_img_catbar_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_highlight_png_start;
@@ -144,9 +145,17 @@ int CategoryView::HandleInput(int focus, const Input& input)
 	if (input.TouchPressed() && input.TouchInRectangle(Rectangle(Point(CAT_X, CAT_Y), Point(SCREEN_WIDTH, CAT_Y + CAT_HEIGHT)))) {
 		int ind = touchToCat(input);
 		if (ind < 0) {
-            log_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
+			log_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
 		} else {
-			selectedCat = ind;
+			if (categoryList[ind] == SEARCH) {
+				auto search_dialog = std::make_shared<IMEView>(IMEView(&_ime_search_view_result, "Search", "Enter a query",
+				                                                       _ime_search_view_result.userText.c_str(),
+				                                                       _ime_search_view_result.userText.length()));
+				Activity::get_instance()->AddView(search_dialog);
+				log_printf(DBG_DEBUG, "Opening search dialog");
+			} else {
+				selectedCat = ind;
+			};
 		}
 	} else {
 		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
@@ -183,6 +192,20 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		// test
 //		log_printf(DBG_DEBUG, "%d,%d : %d,%d  -> listView Area", 0, LIST_MIN_Y, SCREEN_WIDTH, LIST_MAX_Y);
 		focus = 0;
+	}
+
+	if (_ime_search_view_result.status == IMEVIEW_STATUS_FINISHED) {
+		log_printf(DBG_DEBUG, "Processing finished search dialog: \"%s\"", _ime_search_view_result.userText.c_str());
+		auto db = Database::get_instance();
+		std::vector<Homebrew> hbs;
+		hbs = db->Filter(SearchQuery(_ime_search_view_result.userText));
+		for (unsigned int i=0; i < _countof(categoryList); i++) {
+			if (categoryList[i] == SEARCH) {
+				categoryTabs[i].listView = ListView(hbs);
+				selectedCat = i;
+			}
+		}
+		_ime_search_view_result.status = IMEVIEW_STATUS_NONE;
 	}
 
 

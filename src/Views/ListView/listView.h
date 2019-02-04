@@ -24,6 +24,7 @@ public:
 
 private:
 	std::vector<ListItem> listItems;
+	Font font_43;
 
 	int posY = 0; //!< Position in the list of homebrews if we consider it as a texture
 	int preSelectedItem = -1;
