@@ -26,9 +26,9 @@ public:
 	IMEView(IMEViewResult *result, const char title[] , const char showText[],
 		SceUInt32 maxInputLength);
 	IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		const char initialText[], uint16_t initialTextSize);
+		const char initialText[]);
 	IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		const char initialText[], uint16_t initialTextSize, SceUInt32 maxInputLength);
+		const char initialText[], SceUInt32 maxInputLength);
 	~IMEView() override;
 
 	int Display() override;

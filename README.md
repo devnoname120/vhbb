@@ -68,3 +68,6 @@ Instructions to enable file logging:
 
 - Code and scripts inside the folder `src\vpk_install` are licensed under the terms of GNU GPLv3. Check the file `src/vpk_install/license.txt` for the complete conditions.
 - The rest of the files (unless specified otherwise) are licensed under the terms of [CC by-nc-sa 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Check the file `license.txt` for the complete conditions.
+
+## Thanks to
+- devingDev for some search [dialog code](https://github.com/devingDev/VitaCord/blob/master/src/VitaIME.cpp).

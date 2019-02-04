@@ -1,43 +1,33 @@
 #include "IMEView.h"
 
 
-IMEView::IMEView(IMEViewResult *result, const char title[] , const char showText[]) {
-	log_printf(DBG_DEBUG, "Created IMEView \"%s\"", title);
-	utf8_to_utf16((uint8_t *)title, _title);
-	utf8_to_utf16((uint8_t *)showText, _showText);
-	_result = result;
-	*_initialText = '\0';
-	_maxTextLength = SCE_IME_DIALOG_MAX_TEXT_LENGTH;
-}
+IMEView::IMEView(IMEViewResult *result, const char title[] , const char showText[]) :
+	IMEView(result, title, showText, nullptr, SCE_IME_DIALOG_MAX_TEXT_LENGTH)
+{}
 
 IMEView::IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		SceUInt32 maxInputLength) {
-	log_printf(DBG_DEBUG, "Created IMEView \"%s\"", title);
-	utf8_to_utf16((uint8_t *)title, _title);
-	utf8_to_utf16((uint8_t *)showText, _showText);
-	_result = result;
-	*_initialText = '\0';
-	_maxTextLength = maxInputLength;
-}
+                 SceUInt32 maxInputLength) :
+	IMEView(result, title, showText, nullptr, maxInputLength)
+{}
 
 
 IMEView::IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		const char initialText[], uint16_t initialTextSize) {
-	log_printf(DBG_DEBUG, "Created IMEView \"%s\"", title);
-	utf8_to_utf16((uint8_t *)title, _title);
-	utf8_to_utf16((uint8_t *)showText, _showText);
-	_result = result;
-	utf8_to_utf16((uint8_t *)initialText, _initialText);
-	_maxTextLength = SCE_IME_DIALOG_MAX_TEXT_LENGTH;
-}
+                 const char initialText[]) :
+	IMEView(result, title, showText, initialText, SCE_IME_DIALOG_MAX_TEXT_LENGTH)
+{}
 
 IMEView::IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		const char initialText[], uint16_t initialTextSize, SceUInt32 maxInputLength) {
+		const char initialText[], SceUInt32 maxInputLength) {
 	log_printf(DBG_DEBUG, "Created IMEView \"%s\"", title);
 	utf8_to_utf16((uint8_t *)title, _title);
 	utf8_to_utf16((uint8_t *)showText, _showText);
 	_result = result;
-	utf8_to_utf16((uint8_t *)initialText, _initialText);
+	if (initialText) {
+		log_printf(DBG_DEBUG, "initialText set \"%s\"", initialText);
+		utf8_to_utf16((uint8_t *) initialText, _initialText);
+	} else {
+		*_initialText = '\0';
+	}
 	_maxTextLength = maxInputLength;
 }
 
@@ -127,6 +117,7 @@ int IMEView::Display() {
 	return 0;
 }
 
+// copied from https://github.com/devingDev/VitaCord/blob/master/src/VitaIME.cpp
 void IMEView::utf8_to_utf16(uint8_t *src, uint16_t *dst) {
 	int i;
 	for (i = 0; src[i];) {
@@ -145,6 +136,7 @@ void IMEView::utf8_to_utf16(uint8_t *src, uint16_t *dst) {
 	*dst = '\0';
 }
 
+// copied from https://github.com/devingDev/VitaCord/blob/master/src/VitaIME.cpp
 void IMEView::utf16_to_utf8(uint16_t *src, uint8_t *dst) {
 	int i;
 	for (i = 0; src[i]; i++) {
