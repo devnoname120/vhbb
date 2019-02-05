@@ -95,7 +95,7 @@ ListView::ListView(std::vector<Homebrew> homebrews):
 int ListView::HandleInput(int focus, const Input& input)
 {
 
-	if (input.KeyNewPressed(SCE_CTRL_SELECT)) {
+	if (input.KeyNewPressedNoRepeat(SCE_CTRL_SELECT)) {
         log_printf(DBG_DEBUG, "posY: %d", posY);
         log_printf(DBG_DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
         log_printf(DBG_DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
@@ -180,7 +180,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				if (selectedItem > lastFullyDisplayedItem()) {
 					posY += ITEM_HEIGHT;
 				}
-			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
+			} else if (input.KeyNewPressedNoRepeat(SCE_CTRL_CROSS)) {
                 log_printf(DBG_DEBUG, "Pressed, adding view...");
 				try {
 					Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
