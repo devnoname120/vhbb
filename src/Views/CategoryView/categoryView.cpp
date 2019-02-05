@@ -135,6 +135,13 @@ CategoryView::CategoryView() :
 
 }
 
+void CategoryView::startSearch() {
+	auto search_dialog = std::make_shared<IMEView>(IMEView(&_ime_search_view_result, "Search", "Enter a query",
+	                                                       _ime_search_view_result.userText.c_str()));
+	Activity::get_instance()->AddView(search_dialog);
+	log_printf(DBG_DEBUG, "Opening search dialog");
+}
+
 int CategoryView::HandleInput(int focus, const Input& input)
 {
 	if (!focus)
@@ -147,10 +154,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 			log_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
 		} else {
 			if (categoryList[ind] == SEARCH) {
-				auto search_dialog = std::make_shared<IMEView>(IMEView(&_ime_search_view_result, "Search", "Enter a query",
-				                                                       _ime_search_view_result.userText.c_str()));
-				Activity::get_instance()->AddView(search_dialog);
-				log_printf(DBG_DEBUG, "Opening search dialog");
+				startSearch();
 			} else {
 				selectedCat = ind;
 			};
@@ -178,6 +182,11 @@ int CategoryView::HandleInput(int focus, const Input& input)
 				}
 			}
 			log_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
+		}
+
+		if (input.KeyNewPressedNoRepeat(SCE_CTRL_TRIANGLE)) {
+			log_printf(DBG_DEBUG, "TRIANGLE, start search");
+			startSearch();
 		}
 	}
 

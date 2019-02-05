@@ -53,5 +53,6 @@ private:
 	int touchToCat(const Input &input);
 
 	IMEViewResult _ime_search_view_result = {};
+	void startSearch();
 };
 
