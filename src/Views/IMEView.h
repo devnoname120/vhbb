@@ -2,7 +2,9 @@
 
 #include <global_include.h>
 
+#include <singleton.h>
 #include <Views/View.h>
+#include <activity.h>
 #include <sys/socket.h>
 
 
@@ -20,20 +22,25 @@ struct IMEViewResult {
 };
 
 
-class IMEView : public View {
+class IMEView : Singleton<IMEView>,public View {
 public:
-	IMEView(IMEViewResult *result, const char title[] , const char showText[]);
-	IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		SceUInt32 maxInputLength);
-	IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		const char initialText[]);
-	IMEView(IMEViewResult *result, const char title[] , const char showText[],
-		const char initialText[], SceUInt32 maxInputLength);
+	IMEView();
+//	static void openIMEView(IMEViewResult *result, const std::string *title , const std::string *showText,
+//	                        SceUInt32 maxInputLength);
+//	static void openIMEView(IMEViewResult *result, const std::string *title , const std::string *showText,
+//	                        const std::string *initialText=nullptr, SceUInt32 maxInputLength=SCE_IME_DIALOG_MAX_TEXT_LENGTH);
+	static void openIMEView(IMEViewResult *result, std::string title , std::string showText,
+	                        SceUInt32 maxInputLength);
+	static void openIMEView(IMEViewResult *result, std::string title , std::string showText,
+	                        std::string initialText="", SceUInt32 maxInputLength=SCE_IME_DIALOG_MAX_TEXT_LENGTH);
 	~IMEView() override;
 
 	int Display() override;
 
 private:
+//	void prepare(IMEViewResult *result, const std::string *title , const std::string *showText, const std::string *initialText, SceUInt32 maxInputLength);
+	void prepare(IMEViewResult *result, std::string title , std::string showText, std::string initialText, SceUInt32 maxInputLength);
+
 	uint16_t _title[SCE_IME_DIALOG_MAX_TITLE_LENGTH];
 	uint16_t _showText[SCE_IME_DIALOG_MAX_TEXT_LENGTH];
 	SceUInt32 _maxTextLength;

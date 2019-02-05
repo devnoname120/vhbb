@@ -55,8 +55,6 @@ void network_test() {
 
 int main() {
   sceIoMkdir(VHBB_DATA.c_str(), 0777);
-  auto sce_common_dialog_config_param = SceCommonDialogConfigParam{};
-  sceCommonDialogSetConfigParam(&sce_common_dialog_config_param);
 
   std::set_terminate(terminate_logger);
   debug_start();

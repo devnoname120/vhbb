@@ -136,9 +136,7 @@ CategoryView::CategoryView() :
 }
 
 void CategoryView::startSearch() {
-	auto search_dialog = std::make_shared<IMEView>(IMEView(&_ime_search_view_result, "Search", "Enter a query",
-	                                                       _ime_search_view_result.userText.c_str()));
-	Activity::get_instance()->AddView(search_dialog);
+	IMEView::openIMEView(&_ime_search_view_result, "Search", "Enter a query", _ime_search_view_result.userText);
 	log_printf(DBG_DEBUG, "Opening search dialog");
 }
 

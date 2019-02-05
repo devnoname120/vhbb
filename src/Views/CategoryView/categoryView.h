@@ -1,9 +1,7 @@
-#include <utility>
-
 #pragma once
 
+#include <utility>
 #include <global_include.h>
-
 #include <Views/View.h>
 #include <Views/IMEView.h>
 #include <Views/ListView/listView.h>
