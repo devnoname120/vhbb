@@ -23,11 +23,11 @@ const Category categoryList[categoryList_s] = {
 
 // set -1 to equally distribute the remaining width
 const int categoryList_widths[categoryList_s] = {
-	-1,
-	-1,
-	-1,
-	-1,
-	-1,
+	CAT_AUTO_WIDTH,
+	CAT_AUTO_WIDTH,
+	CAT_AUTO_WIDTH,
+	CAT_AUTO_WIDTH,
+	CAT_AUTO_WIDTH,
 	80
 };
 const char* categoryList_name[_countof(categoryList)] = {
@@ -36,7 +36,7 @@ const char* categoryList_name[_countof(categoryList)] = {
 	"Ports",
 	"Emulators",
 	"Utilities",
-	nullptr
+	""
 };
 
 
@@ -97,7 +97,7 @@ CategoryView::CategoryView() :
 	int remainingWidth = SCREEN_WIDTH;
 	unsigned int countAutoWidth = 0;
 	for (unsigned int i=0; i < _countof(categoryList); i++) {
-		if (categoryList_widths[i] >= 0) {
+		if (categoryList_widths[i] != CAT_AUTO_WIDTH) {
 			remainingWidth -= categoryList_widths[i];
 		} else {
 			countAutoWidth += 1;
@@ -118,7 +118,7 @@ CategoryView::CategoryView() :
 		} else {
 			categoryTabs[i].minX = categoryTabs[i-1].maxX;
 		}
-		if (categoryList_widths[i] >= 0) {
+		if (categoryList_widths[i] != CAT_AUTO_WIDTH) {
 			categoryTabs[i].maxX = categoryTabs[i].minX + categoryList_widths[i];
 		} else {
 			categoryTabs[i].maxX = categoryTabs[i].minX + categoryAutoWidth;
@@ -157,7 +157,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 				startSearch();
 			} else {
 				selectedCat = ind;
-			};
+			}
 		}
 	} else {
 		if (input.KeyNewPressedNoRepeat(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
@@ -229,7 +229,7 @@ int CategoryView::Display()
 	img_catbar.Draw(Point(CAT_X, CAT_Y));
 
 	for (unsigned int i=0; i < _countof(categoryList); i++) {
-		if (categoryList_name[i])
+		if (categoryList_name[i][0] != '\0')
 			font_33.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
 		if (categoryList[i] == SEARCH)
 			img_magnifying_glass.DrawCentered(Point((categoryTabs[i].minX + categoryTabs[i].maxX)/2.0, CAT_Y + CAT_HEIGHT / 2.0));

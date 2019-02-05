@@ -7,6 +7,7 @@
 
 #define INPUT_INIT_REPEAT_DELAY 20  // max 127
 #define INPUT_REPEAT_DELAY 3  // max 127
+#define INPUT_ANALOG_DEAD_ZONE 64
 
 class Input {
 	private:

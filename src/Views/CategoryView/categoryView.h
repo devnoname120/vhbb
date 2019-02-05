@@ -11,6 +11,7 @@
 #define CAT_X 0
 #define CAT_Y 30
 #define CAT_HEIGHT 49
+#define CAT_AUTO_WIDTH -1
 
 typedef enum {
 	NEW,

@@ -24,6 +24,7 @@ public:
 	template <class UnaryPredicate>
 	std::vector<Homebrew> Sort(UnaryPredicate pred);
 
+	// FIXME: would be better if Filter and Sort could be concatenated to effectively perform a search
 	template <class UnaryPredicate>
 	std::vector<Homebrew> Search(UnaryPredicate pred);
 private:
@@ -56,10 +57,10 @@ std::vector<Homebrew> Database::Sort(UnaryPredicate pred)
 }
 
 
-typedef struct HomebrewSearchRating {
+struct HomebrewSearchRating {
 	Homebrew hb;
 	float rating = -infinityf();
-}HomebrewSearchRating;
+};
 
 
 struct SearchQuery : public std::unary_function<std::string, HomebrewSearchRating> {

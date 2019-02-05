@@ -33,13 +33,13 @@ int Input::Get()
 }
 
 void Input::handleAnalogSticks() {
-	if (pad.ly < 63)
+	if (pad.ly < 127 - INPUT_ANALOG_DEAD_ZONE)
 		pad.buttons |= SCE_CTRL_UP;
-	if (pad.ly > 191)
+	if (pad.ly > 127 + INPUT_ANALOG_DEAD_ZONE)
 		pad.buttons |= SCE_CTRL_DOWN;
-	if (pad.lx < 63)
+	if (pad.lx < 127 - INPUT_ANALOG_DEAD_ZONE)
 		pad.buttons |= SCE_CTRL_LEFT;
-	if (pad.lx > 191)
+	if (pad.lx > 127 + INPUT_ANALOG_DEAD_ZONE)
 		pad.buttons |= SCE_CTRL_RIGHT;
 }
 
@@ -60,26 +60,25 @@ void Input::handleRepeatPress() {
 	};
 	for (const auto &b : buttons) {
 		unsigned int SCE_CTRL = std::get<0>(b);
+		if(!KeyPressed(SCE_CTRL)) continue;
 		uint8_t *pad_mem = std::get<1>(b);
 		uint8_t oldpad_mem = std::get<2>(b);
-		if(KeyPressed(SCE_CTRL)) {
-			// log_printf(DBG_DEBUG, "oldmem 0x%02X    mem 0x%02X    btn 0x%08X", oldpad_mem, *pad_mem, SCE_CTRL);
-			if ((oldpad_mem & 1) == 1) {
-				*pad_mem = (oldpad_mem + 2) % (INPUT_REPEAT_DELAY << 2);
-				if (*pad_mem < oldpad_mem) {
-					oldpad.buttons &= ~SCE_CTRL;
-					repeatMask |= SCE_CTRL;
-				}
-			} else {
-				*pad_mem = (oldpad_mem + 2) % (INPUT_INIT_REPEAT_DELAY << 2);
-				if (*pad_mem < oldpad_mem) {
-					oldpad.buttons &= ~SCE_CTRL;
-					repeatMask |= SCE_CTRL;
-					*pad_mem |= 1;
-				}
+		// log_printf(DBG_DEBUG, "oldmem 0x%02X    mem 0x%02X    btn 0x%08X", oldpad_mem, *pad_mem, SCE_CTRL);
+		if ((oldpad_mem & 1) == 1) {
+			*pad_mem = (oldpad_mem + 2) % (INPUT_REPEAT_DELAY << 2);
+			if (*pad_mem < oldpad_mem) {
+				oldpad.buttons &= ~SCE_CTRL;
+				repeatMask |= SCE_CTRL;
 			}
-			// log_printf(DBG_DEBUG, "oldmem 0x%02X    mem 0x%02X    btn 0x%08X\n", oldpad_mem, *pad_mem, SCE_CTRL);
+		} else {
+			*pad_mem = (oldpad_mem + 2) % (INPUT_INIT_REPEAT_DELAY << 2);
+			if (*pad_mem < oldpad_mem) {
+				oldpad.buttons &= ~SCE_CTRL;
+				repeatMask |= SCE_CTRL;
+				*pad_mem |= 1;
+			}
 		}
+		// log_printf(DBG_DEBUG, "oldmem 0x%02X    mem 0x%02X    btn 0x%08X\n", oldpad_mem, *pad_mem, SCE_CTRL);
 	}
 }
 
