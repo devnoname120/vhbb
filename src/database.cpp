@@ -36,6 +36,22 @@ bool IsCategory::operator()(const Homebrew &hb) const {
 	return cat_lower == hbcat_lower;
 }
 
+SearchQuery::SearchQuery(const std::string &query) {
+	std::transform(query.begin(), query.end(), std::back_inserter(query_), tolower);
+}
+
+bool SearchQuery::operator()(const Homebrew &hb) const {
+	std::string fields [] = {hb.name, hb.description, hb.long_description};
+	for (const std::string &field : fields) {
+		std::string field_lower;
+		std::transform(field.begin(), field.end(), std::back_inserter(field_lower), tolower);
+		if (field_lower.find(query_, 0) != std::string::npos) {
+			return true;
+		}
+	}
+	return false;
+}
+
 
 int Database::DownloadIcons()
 {

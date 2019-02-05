@@ -28,7 +28,7 @@ void FetchLoadIcons(unsigned int arglen, std::atomic<bool> *db_done)
   } catch (const std::exception &ex) {
     // TODO: Add dialog box to let the user know about this issue
       log_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
-    throw ex;
+    throw;
   }
 
   sceKernelExitDeleteThread(0);

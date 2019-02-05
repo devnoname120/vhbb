@@ -17,6 +17,7 @@ typedef enum {
 	PORTS,
 	EMULATORS,
 	UTILITIES,
+	SEARCH
 } Category;
 
 struct CategoryTab {
@@ -27,7 +28,7 @@ struct CategoryTab {
     explicit CategoryTab(ListView aListView) : listView(std::move(aListView)) {};
 };
 
-#define categoryList_s 5
+#define categoryList_s 6
 
 class CategoryView: public View {
 public:
@@ -43,6 +44,8 @@ private:
 	Texture img_catbar;
 	Texture img_catbar_highlight;
 	Texture img_catbar_sep;
+	Texture img_magnifying_glass;
+	std::vector<Texture> img_tabs;
 	
 	unsigned int selectedCat;
 	std::vector<CategoryTab> categoryTabs;

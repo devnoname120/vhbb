@@ -107,6 +107,17 @@ int Texture::DrawExt(const Point &pt, int alpha)
 	return 0;
 }
 
+int Texture::DrawCentered(const Point &pt) {
+	if (m_status != LOADED)
+		return -1;
+	// Careful, vita2d_texture_get_width() will crash if vita2d_start_drawing() was not called
+	float width = vita2d_texture_get_width(texture.get());
+	float height = vita2d_texture_get_height(texture.get());
+	Point top_left = Point(pt.x - width/2, pt.y - height/2);
+
+	vita2d_draw_texture(texture.get(), top_left.x, top_left.y);
+	return 0;
+}
 
 // vita2d doesn't have a draw resize function: https://github.com/xerpi/libvita2d/issues/42
 int Texture::DrawResize(const Point &pt1, const Point &dimensions)

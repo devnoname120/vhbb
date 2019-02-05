@@ -43,6 +43,13 @@ struct IsCategory : public std::unary_function<std::string, bool> {
     std::string cat_;
 };
 
+struct SearchQuery : public std::unary_function<std::string, bool> {
+	SearchQuery(const std::string &query);
+	bool operator()(const Homebrew &hb) const;
+
+	std::string query_;
+};
+
 
 template <class UnaryPredicate>
 std::vector<Homebrew> Database::Sort(UnaryPredicate pred)

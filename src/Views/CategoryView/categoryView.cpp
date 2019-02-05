@@ -7,6 +7,7 @@
 extern unsigned char _binary_assets_spr_img_catbar_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_highlight_png_start;
 extern unsigned char _binary_assets_spr_img_catbar_sep_png_start;
+extern unsigned char _binary_assets_spr_img_magnifying_glass_png_start;
 
 
 // categoryList_s from categoryView.h should be modified if the size of this list changes
@@ -15,21 +16,31 @@ const Category categoryList[categoryList_s] = {
 	GAMES,
 	PORTS,
 	EMULATORS,
-	UTILITIES
+	UTILITIES,
+	SEARCH
 };
 
+// set -1 to equally distribute the remaining width
+const int categoryList_widths[categoryList_s] = {
+	-1,
+	-1,
+	-1,
+	-1,
+	-1,
+	80
+};
 const char* categoryList_name[_countof(categoryList)] = {
 	"New",
 	"Games",
 	"Ports",
 	"Emulators",
-	"Utilities"
+	"Utilities",
+	nullptr
 };
 
 
 int CategoryView::touchToCat(const Input &input)
 {
-
 	for (unsigned int i=0; i < categoryTabs.size(); i++) {
 		if (input.TouchInRectangle(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)))) {
 			return i;
@@ -42,7 +53,8 @@ CategoryView::CategoryView() :
 	font_33(Font(std::string(FONT_DIR "segoeui.ttf"), 33)),
 	img_catbar(Texture(&_binary_assets_spr_img_catbar_png_start)),
 	img_catbar_highlight(Texture(&_binary_assets_spr_img_catbar_highlight_png_start)),
-	img_catbar_sep(Texture(&_binary_assets_spr_img_catbar_sep_png_start))
+	img_catbar_sep(Texture(&_binary_assets_spr_img_catbar_sep_png_start)),
+	img_magnifying_glass(Texture(&_binary_assets_spr_img_magnifying_glass_png_start))
 {
 	selectedCat = NEW;
 
@@ -67,32 +79,57 @@ CategoryView::CategoryView() :
 			case UTILITIES:
 				hbs = db->Filter(IsCategory("4"));
 				break;
+			case SEARCH:
+				hbs = db->Filter(SearchQuery("SnAke"));
+				break;
 			}
 			categoryTabs.push_back(CategoryTab(ListView(hbs)));
 		} catch (const std::exception& ex) {
 			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));
-            log_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
+			log_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
 		}
 
 	}
 
+	log_printf(DBG_DEBUG, "Done tabs creation");
+
 
 	int remainingWidth = SCREEN_WIDTH;
-	double categoryWidth = SCREEN_WIDTH / _countof(categoryList);
+	unsigned int countAutoWidth = 0;
+	for (unsigned int i=0; i < _countof(categoryList); i++) {
+		if (categoryList_widths[i] >= 0) {
+			remainingWidth -= categoryList_widths[i];
+		} else {
+			countAutoWidth += 1;
+		}
+	}
 
-	categoryTabs[0].minX = 0;
-	categoryTabs[0].maxX = (int)categoryWidth;
-    log_printf(DBG_DEBUG, "0->maxX=%d", categoryTabs[0].maxX);
-	remainingWidth -= (int)categoryWidth;
-    log_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
+	log_printf(DBG_DEBUG, "countAutoWidth %d", countAutoWidth);
 
-	for (unsigned int i=1; i < _countof(categoryList); i++) {
-		categoryTabs[i].minX = categoryTabs[i-1].maxX;
-		categoryTabs[i].maxX = categoryTabs[i].minX + (int)remainingWidth / (_countof(categoryList) - i);
-		remainingWidth -= (int)categoryTabs[i].maxX + 1 - categoryTabs[i].minX;
-        log_printf(DBG_DEBUG, "%d->minX=%d", i, categoryTabs[i].minX);
-        log_printf(DBG_DEBUG, "%d->maxX=%d", i, categoryTabs[i].maxX);
-        log_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
+	unsigned int categoryAutoWidth = 0;
+	if (remainingWidth > 0 && countAutoWidth > 0) {
+		categoryAutoWidth = remainingWidth / countAutoWidth;
+		remainingWidth -= categoryAutoWidth * countAutoWidth;
+	}
+
+	for (unsigned int i=0; i < _countof(categoryList); i++) {
+		if (i == 0) {
+			categoryTabs[i].minX = 0;
+		} else {
+			categoryTabs[i].minX = categoryTabs[i-1].maxX;
+		}
+		if (categoryList_widths[i] >= 0) {
+			categoryTabs[i].maxX = categoryTabs[i].minX + categoryList_widths[i];
+		} else {
+			categoryTabs[i].maxX = categoryTabs[i].minX + categoryAutoWidth;
+			if (remainingWidth > 0) {
+				categoryTabs[i].maxX += 1;
+				remainingWidth -= 1;
+			}
+		}
+		log_printf(DBG_DEBUG, "%d->minX=%d", i, categoryTabs[i].minX);
+		log_printf(DBG_DEBUG, "%d->maxX=%d", i, categoryTabs[i].maxX);
+		log_printf(DBG_DEBUG, "remainingWidth=%d", remainingWidth);
 	}
 
 
@@ -113,13 +150,27 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		}
 	} else {
 		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
-			selectedCat--;
-            log_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
+			if (categoryList[selectedCat-1] != SEARCH) {
+				selectedCat--;
+			} else {
+				if (selectedCat - 1 > 0) {
+					// skip search tab if its not the first one
+					selectedCat -= 2;
+				}
+			}
+			log_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
 		}
 
 		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < _countof(categoryList) - 1) {
-			selectedCat++;
-            log_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
+			if (categoryList[selectedCat+1] != SEARCH) {
+				selectedCat++;
+			} else {
+				if (selectedCat + 1 < _countof(categoryList) - 1) {
+					// skip search tab if its not the last one
+					selectedCat += 2;
+				}
+			}
+			log_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
 		}
 	}
 
@@ -148,7 +199,10 @@ int CategoryView::Display()
 	img_catbar.Draw(Point(CAT_X, CAT_Y));
 
 	for (unsigned int i=0; i < _countof(categoryList); i++) {
-		font_33.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
+		if (categoryList_name[i])
+			font_33.DrawCentered(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)), categoryList_name[i]);
+		if (categoryList[i] == SEARCH)
+			img_magnifying_glass.DrawCentered(Point((categoryTabs[i].minX + categoryTabs[i].maxX)/2.0, CAT_Y + CAT_HEIGHT / 2.0));
 		if (i > 0)
 			img_catbar_sep.Draw(Point(categoryTabs[i].minX - 1, CAT_Y));
 	}
