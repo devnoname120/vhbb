@@ -158,7 +158,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 			}
 		}
 	} else {
-		if (input.KeyNewPressedNoRepeat(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
+		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
 			if (categoryList[selectedCat-1] != SEARCH) {
 				selectedCat--;
 			} else {
@@ -170,7 +170,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 			log_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
 		}
 
-		if (input.KeyNewPressedNoRepeat(SCE_CTRL_RTRIGGER) && selectedCat < _countof(categoryList) - 1) {
+		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < _countof(categoryList) - 1) {
 			if (categoryList[selectedCat+1] != SEARCH) {
 				selectedCat++;
 			} else {
@@ -182,7 +182,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 			log_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
 		}
 
-		if (input.KeyNewPressedNoRepeat(SCE_CTRL_TRIANGLE)) {
+		if (input.KeyNewPressed(SCE_CTRL_TRIANGLE)) {
 			log_printf(DBG_DEBUG, "TRIANGLE, start search");
 			startSearch();
 		}

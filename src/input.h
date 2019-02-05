@@ -31,7 +31,7 @@ class Input {
 
 		int KeyPressed(unsigned int buttons) const;
 		int KeyNewPressed(unsigned int buttons) const;
-		int KeyNewPressedNoRepeat(unsigned int buttons) const;
+		int KeyNewPressedRapidFire(unsigned int buttons) const;
 
 		int TouchPressed() const;
 		int TouchAlreadyPressed() const;

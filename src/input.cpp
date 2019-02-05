@@ -67,13 +67,11 @@ void Input::handleRepeatPress() {
 		if ((oldpad_mem & 1) == 1) {
 			*pad_mem = (oldpad_mem + 2) % (INPUT_REPEAT_DELAY << 2);
 			if (*pad_mem < oldpad_mem) {
-				oldpad.buttons &= ~SCE_CTRL;
 				repeatMask |= SCE_CTRL;
 			}
 		} else {
 			*pad_mem = (oldpad_mem + 2) % (INPUT_INIT_REPEAT_DELAY << 2);
 			if (*pad_mem < oldpad_mem) {
-				oldpad.buttons &= ~SCE_CTRL;
 				repeatMask |= SCE_CTRL;
 				*pad_mem |= 1;
 			}
@@ -116,7 +114,7 @@ int Input::KeyNewPressed(unsigned int buttons) const
 	return KeyPressed(buttons) && (oldpad.buttons & buttons) != buttons;
 }
 
-int Input::KeyNewPressedNoRepeat(unsigned int buttons) const {
+int Input::KeyNewPressedRapidFire(unsigned int buttons) const {
 	// unsigned int repeatMask =
 	// 	(pad.up & 1) << __builtin_ctz(SCE_CTRL_UP) |
 	// 	(pad.right & 1) << __builtin_ctz(SCE_CTRL_RIGHT) |
@@ -135,9 +133,8 @@ int Input::KeyNewPressedNoRepeat(unsigned int buttons) const {
 	// log_printf(DBG_DEBUG, "(pad.lt & 1) << __builtin_ctz(SCE_CTRL_LTRIGGER)=0x%08X\n", (pad.lt & 1) << __builtin_ctz(SCE_CTRL_LTRIGGER));
 	// log_printf(DBG_DEBUG, "buttons=0x%08X\n", buttons);
 	// log_printf(DBG_DEBUG, "buttons & ~repeatMask=0x%08X\n", buttons & ~repeatMask);
-	return KeyNewPressed(buttons & ~repeatMask);
+	return KeyNewPressed(buttons) || (repeatMask & buttons) == buttons;
 }
-
 
 int Input::TouchPressed() const
 {

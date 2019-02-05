@@ -95,7 +95,7 @@ ListView::ListView(std::vector<Homebrew> homebrews):
 int ListView::HandleInput(int focus, const Input& input)
 {
 
-	if (input.KeyNewPressedNoRepeat(SCE_CTRL_SELECT)) {
+	if (input.KeyNewPressed(SCE_CTRL_SELECT)) {
         log_printf(DBG_DEBUG, "posY: %d", posY);
         log_printf(DBG_DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
         log_printf(DBG_DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
@@ -164,7 +164,7 @@ int ListView::HandleInput(int focus, const Input& input)
 		// There is a selected item
 		} else if (selectedItem != -1) {
 			// TODO: timer instead so that the user can stay clicked
-			if (input.KeyNewPressed(SCE_CTRL_UP) && selectedItem > 0) {
+			if (input.KeyNewPressedRapidFire(SCE_CTRL_UP) && selectedItem > 0) {
 				selectedItem--;
 				resetHeighlight();
 				// Scroll up if the selected item is outside of view
@@ -172,7 +172,7 @@ int ListView::HandleInput(int focus, const Input& input)
 					posY = std::max<int>(0, posY - ITEM_HEIGHT);
 				}
 
-			} else if (input.KeyNewPressed(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {
+			} else if (input.KeyNewPressedRapidFire(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {
 				selectedItem++;
 				resetHeighlight();
                 log_printf(DBG_DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
@@ -180,7 +180,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				if (selectedItem > lastFullyDisplayedItem()) {
 					posY += ITEM_HEIGHT;
 				}
-			} else if (input.KeyNewPressedNoRepeat(SCE_CTRL_CROSS)) {
+			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
                 log_printf(DBG_DEBUG, "Pressed, adding view...");
 				try {
 					Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
@@ -190,9 +190,9 @@ int ListView::HandleInput(int focus, const Input& input)
 			}
 		// No item is selected
 		} else {
-			if (input.KeyNewPressed(SCE_CTRL_UP)) {
+			if (input.KeyNewPressedRapidFire(SCE_CTRL_UP)) {
 				selectedItem = lastFullyDisplayedItem();
-			} else if (input.KeyNewPressed(SCE_CTRL_DOWN)) {
+			} else if (input.KeyNewPressedRapidFire(SCE_CTRL_DOWN)) {
 				selectedItem = firstFullyDisplayedItem();
 			}
 		}
