@@ -5,6 +5,13 @@
 #include "View.h"
 #include <texture.h>
 
+#define SPLASH_FADING_STEP_SIZE 4
+#ifdef DEBUG
+	#define SPLASH_SHOW_FRAMES 2*60
+#else
+	#define SPLASH_SHOW_FRAMES 5*60
+#endif
+
 typedef enum {
 	STEP_FADING_IN,
 	STEP_STATIC,
