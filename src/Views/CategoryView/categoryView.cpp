@@ -136,8 +136,8 @@ CategoryView::CategoryView() :
 }
 
 void CategoryView::startSearch() {
-	IMEView::openIMEView(&_ime_search_view_result, "Search", "Enter a query", _ime_search_view_result.userText);
-	log_printf(DBG_DEBUG, "Opening search dialog");
+	IMEView::openIMEView(&_ime_search_view_result, "Search", _ime_search_view_result.userText);
+	log_printf(DBG_DEBUG, "Opened search dialog");
 }
 
 int CategoryView::HandleInput(int focus, const Input& input)

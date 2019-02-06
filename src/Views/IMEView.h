@@ -1,11 +1,15 @@
 #pragma once
 
-#include <global_include.h>
+#include <iostream>
+#include <string>
+#include <locale>
+#include <codecvt>
+#include <sys/socket.h>
 
+#include <global_include.h>
 #include <singleton.h>
 #include <Views/View.h>
 #include <activity.h>
-#include <sys/socket.h>
 
 
 enum IMEViewStatus {
@@ -15,42 +19,34 @@ enum IMEViewStatus {
 	IMEVIEW_STATUS_CANCELED
 };
 
-
 struct IMEViewResult {
 	IMEViewStatus status = IMEVIEW_STATUS_NONE;
-	std::string userText;
+	std::string userText = "";
 };
 
 
-class IMEView : Singleton<IMEView>,public View {
+class IMEView : Singleton<IMEView>, public View {
 public:
 	IMEView();
-//	static void openIMEView(IMEViewResult *result, const std::string *title , const std::string *showText,
-//	                        SceUInt32 maxInputLength);
-//	static void openIMEView(IMEViewResult *result, const std::string *title , const std::string *showText,
-//	                        const std::string *initialText=nullptr, SceUInt32 maxInputLength=SCE_IME_DIALOG_MAX_TEXT_LENGTH);
-	static void openIMEView(IMEViewResult *result, std::string title , std::string showText,
+	static void openIMEView(IMEViewResult *result, std::string title,
 	                        SceUInt32 maxInputLength);
-	static void openIMEView(IMEViewResult *result, std::string title , std::string showText,
+	static void openIMEView(IMEViewResult *result, std::string title,
 	                        std::string initialText="", SceUInt32 maxInputLength=SCE_IME_DIALOG_MAX_TEXT_LENGTH);
 	~IMEView() override;
 
 	int Display() override;
 
 private:
-//	void prepare(IMEViewResult *result, const std::string *title , const std::string *showText, const std::string *initialText, SceUInt32 maxInputLength);
-	void prepare(IMEViewResult *result, std::string title , std::string showText, std::string initialText, SceUInt32 maxInputLength);
+	std::shared_ptr<IMEView> me_ptr;
 
-	uint16_t _title[SCE_IME_DIALOG_MAX_TITLE_LENGTH];
-	uint16_t _showText[SCE_IME_DIALOG_MAX_TEXT_LENGTH];
+	void prepare(IMEViewResult *result, std::string title, std::string initialText, SceUInt32 maxInputLength);
+
+	std::basic_string<char16_t> _title;
+	std::basic_string<char16_t> _initialText;
 	SceUInt32 _maxTextLength;
-	uint16_t _initialText[SCE_IME_DIALOG_MAX_TEXT_LENGTH];
-	uint16_t *_input_text_buffer_utf16 = nullptr;
-	uint8_t *_input_text_buffer_utf8 = nullptr;
+	SceWChar16 *_input_text_buffer_utf16 = nullptr;
+	std::string _input_text_buffer_utf8;
 	IMEViewStatus _status = IMEVIEW_STATUS_NONE;
 	IMEViewResult *_result;
 	bool shown_dialog = false;
-
-	void utf8_to_utf16(uint8_t *src, uint16_t *dst);
-	void utf16_to_utf8(uint16_t *src, uint8_t *dst);
 };
