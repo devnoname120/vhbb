@@ -32,7 +32,7 @@ private:
 	int itemHighlightAlpha = 255;
 	int itemHighlightSpeed = 7;
 	int itemHighlightDirection = 1;
-	int resetHeighlight();
+	int resetHighlight();
 	
 	double scrollSpeed = 0;
 
