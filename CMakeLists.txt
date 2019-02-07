@@ -92,10 +92,10 @@ add_executable(${SHORT_NAME}
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
-  message("debug mode")
+  message("Debug mode")
   add_definitions(-DDEBUG)
   if(DEBUGNET)
-    message("debugnet turned on")
+    message("Debugnet turned on")
     add_definitions(-DDEBUGNET)
     target_link_libraries(${SHORT_NAME} debugnet)
     file(STRINGS "debugnetip.txt" DEBUGNETIP)
