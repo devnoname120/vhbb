@@ -32,6 +32,7 @@ public:
 	                        SceUInt32 maxInputLength);
 	static void openIMEView(IMEViewResult *result, std::string title,
 	                        std::string initialText="", SceUInt32 maxInputLength=SCE_IME_DIALOG_MAX_TEXT_LENGTH);
+	static void closeIMEView();
 	~IMEView() override;
 
 	int Display() override;

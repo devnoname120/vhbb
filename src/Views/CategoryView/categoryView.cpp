@@ -57,41 +57,42 @@ CategoryView::CategoryView() :
 	img_catbar_sep(Texture(&_binary_assets_spr_img_catbar_sep_png_start)),
 	img_magnifying_glass(Texture(&_binary_assets_spr_img_magnifying_glass_png_start))
 {
-	selectedCat = NEW;
-
 	categoryTabs.reserve(_countof(categoryList));
 	for (unsigned int i=0; i < _countof(categoryList); i++) {
 		try {
 			auto db = Database::get_instance();
 			std::vector<Homebrew> hbs;
+			ListView *lv;
 			switch (categoryList[i]) {
 			case NEW:
-				hbs = db->Sort(IsNewer(true));
+				lv = new ListView(db->Sort(IsNewer(true)));
 				break;
 			case GAMES:
-				hbs = db->Filter(IsCategory("1"));
+				lv = new ListView(db->Filter(IsCategory("1")));
 				break;
 			case PORTS:
-				hbs = db->Filter(IsCategory("2"));
+				lv = new ListView(db->Filter(IsCategory("2")));
 				break;
 			case EMULATORS:
-				hbs = db->Filter(IsCategory("5"));
+				lv = new ListView(db->Filter(IsCategory("5")));
 				break;
 			case UTILITIES:
-				hbs = db->Filter(IsCategory("4"));
+				lv = new ListView(db->Filter(IsCategory("4")));
 				break;
 			case SEARCH:
+				lv = new  SearchView();
 				break;
 			}
-			categoryTabs.push_back(CategoryTab(ListView(hbs)));
+			categoryTabs.emplace_back(lv);
 		} catch (const std::exception& ex) {
-			categoryTabs.push_back(CategoryTab(ListView(std::vector<Homebrew>())));
-			log_printf(DBG_ERROR, "Couldn't create listViews: %s", ex.what());
+			categoryTabs.emplace_back(new ListView(std::vector<Homebrew>()));
+			log_printf(DBG_ERROR, "Couldn't create listViews %i: %s", i, ex.what());
 		}
 
 	}
-
 	log_printf(DBG_DEBUG, "Done tabs creation");
+
+	selectCat(NEW);
 
 
 	int remainingWidth = SCREEN_WIDTH;
@@ -135,10 +136,32 @@ CategoryView::CategoryView() :
 
 }
 
-void CategoryView::startSearch() {
-	IMEView::openIMEView(&_ime_search_view_result, "Search", _ime_search_view_result.userText);
-	log_printf(DBG_DEBUG, "Opened search dialog");
+CategoryView::~CategoryView() {
+	for (CategoryTab const &tab: categoryTabs) {
+		delete tab.listView;
+	}
 }
+
+void CategoryView::selectCat(unsigned int cat) {
+	log_printf(DBG_DEBUG, "selectCat(unsigned %i)", cat);
+	if (cat != selectedCat) {
+		log_printf(DBG_DEBUG, "selectCat(unsigned) %i->SignalDeselected()", selectedCat);
+		categoryTabs[selectedCat].listView->SignalDeselected();
+	}
+	selectedCat = cat;
+	log_printf(DBG_DEBUG, "selectCat(unsigned) %i->SignalSelected()", selectedCat);
+	categoryTabs[selectedCat].listView->SignalSelected();
+}
+
+
+void CategoryView::selectCat(Category cat) {
+	for(unsigned int i=0; i < categoryList_s; i++) {
+		if (categoryList[i] == cat) {
+			selectCat(i);
+		}
+	}
+}
+
 
 int CategoryView::HandleInput(int focus, const Input& input)
 {
@@ -151,32 +174,28 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		if (ind < 0) {
 			log_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
 		} else {
-			if (categoryList[ind] == SEARCH) {
-				startSearch();
-			} else {
-				selectedCat = ind;
-			}
+			selectCat((unsigned) ind);
 		}
 	} else {
-		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && selectedCat > 0) {
-			if (categoryList[selectedCat-1] != SEARCH) {
-				selectedCat--;
+		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && activeCat > 0) {
+			if (categoryList[activeCat-1] != SEARCH) {
+				selectCat(activeCat - 1);
 			} else {
-				if (selectedCat - 1 > 0) {
+				if ((int) activeCat - 2 >= 0) {
 					// skip search tab if its not the first one
-					selectedCat -= 2;
+					selectCat(activeCat - 2);
 				}
 			}
 			log_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
 		}
 
-		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && selectedCat < _countof(categoryList) - 1) {
-			if (categoryList[selectedCat+1] != SEARCH) {
-				selectedCat++;
+		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && activeCat < categoryList_s - 1) {
+			if (categoryList[activeCat+1] != SEARCH) {
+				selectCat(activeCat + 1);;
 			} else {
-				if (selectedCat + 1 < _countof(categoryList) - 1) {
+				if (activeCat + 2 < categoryList_s) {
 					// skip search tab if its not the last one
-					selectedCat += 2;
+					selectCat(activeCat + 2);
 				}
 			}
 			log_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
@@ -184,7 +203,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 
 		if (input.KeyNewPressed(SCE_CTRL_TRIANGLE)) {
 			log_printf(DBG_DEBUG, "TRIANGLE, start search");
-			startSearch();
+			selectCat(SEARCH);
 		}
 	}
 
@@ -199,30 +218,21 @@ int CategoryView::HandleInput(int focus, const Input& input)
 		focus = 0;
 	}
 
-	if (_ime_search_view_result.status == IMEVIEW_STATUS_FINISHED) {
-		log_printf(DBG_DEBUG, "Processing finished search dialog: \"%s\"", _ime_search_view_result.userText.c_str());
-		auto db = Database::get_instance();
-		std::vector<Homebrew> hbs;
-		hbs = db->Search(SearchQuery(_ime_search_view_result.userText));
-		for (unsigned int i=0; i < _countof(categoryList); i++) {
-			if (categoryList[i] == SEARCH) {
-				categoryTabs[i].listView = ListView(hbs);
-				selectedCat = i;
-			}
-		}
-		_ime_search_view_result.status = IMEVIEW_STATUS_NONE;
+	if (selectedCat != activeCat && categoryTabs[selectedCat].listView->IsReadyToShow()) {
+		log_printf(DBG_DEBUG, "New active tab: %d", activeCat);
+		activeCat = selectedCat;
 	}
 
 
 	// FIXME focus is not a good solution
-	categoryTabs.at(selectedCat).listView.HandleInput(focus, input);
+	categoryTabs[activeCat].listView->HandleInput(focus, input);
 
 	return 0;
 }
 
 int CategoryView::Display()
 {
-	categoryTabs[selectedCat].listView.Display();
+	categoryTabs[activeCat].listView->Display();
 
 	img_catbar.Draw(Point(CAT_X, CAT_Y));
 
@@ -235,7 +245,7 @@ int CategoryView::Display()
 			img_catbar_sep.Draw(Point(categoryTabs[i].minX - 1, CAT_Y));
 	}
 
-	img_catbar_highlight.DrawResize(Point(CAT_X + categoryTabs[selectedCat].minX, CAT_Y), Point(categoryTabs[selectedCat].maxX - categoryTabs[selectedCat].minX, CAT_HEIGHT));
+	img_catbar_highlight.DrawResize(Point(CAT_X + categoryTabs[activeCat].minX, CAT_Y), Point(categoryTabs[activeCat].maxX - categoryTabs[activeCat].minX, CAT_HEIGHT));
 
 	return 0;
 }

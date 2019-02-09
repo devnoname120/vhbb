@@ -6,6 +6,7 @@
 
 
 IMEView::IMEView() {
+	log_printf(DBG_DEBUG, "IMEView::IMEView()");
 	auto sce_common_dialog_config_param = SceCommonDialogConfigParam{};
 	sceCommonDialogSetConfigParam(&sce_common_dialog_config_param);
 	me_ptr = std::shared_ptr<IMEView>(this);
@@ -20,6 +21,10 @@ void IMEView::openIMEView(IMEViewResult *result, std::string title, std::string 
 	IMEView *imeView = IMEView::create_instance();
 	imeView->prepare(result, std::move(title), std::move(initialText), maxInputLength);
 	Activity::get_instance()->AddView(imeView->me_ptr);
+}
+
+void IMEView::closeIMEView() {
+	sceImeDialogTerm();
 }
 
 void IMEView::prepare(IMEViewResult *result, std::string title, std::string initialText, SceUInt32 maxInputLength) {
@@ -43,11 +48,13 @@ IMEView::~IMEView() {
 
 
 int IMEView::Display() {
-	if (request_destroy) // done here!
+	if (request_destroy) { // done here!
+		sceImeDialogTerm();
 		return 0;
+	}
 
 	if (!shown_dialog) {
-		log_printf(DBG_DEBUG, "Initializing IMEView");
+		log_printf(DBG_DEBUG, "IMEView: Initializing dialog");
 		delete _input_text_buffer_utf16;
 		_input_text_buffer_utf16 = new SceWChar16[_maxTextLength + 1];
 
@@ -112,8 +119,8 @@ int IMEView::Display() {
 				_result->userText = std::string(_input_text_buffer_utf8);
 		}
 
-		sceImeDialogTerm();
 		request_destroy = true;
+		sceImeDialogTerm();
 	}
 
 	if (_result)

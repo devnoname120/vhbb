@@ -5,6 +5,7 @@
 #include <Views/View.h>
 #include <Views/IMEView.h>
 #include <Views/ListView/listView.h>
+#include <Views/ListView/searchView.h>
 
 #define CAT_X 0
 #define CAT_Y 30
@@ -23,9 +24,9 @@ typedef enum {
 struct CategoryTab {
 	int minX;
 	int maxX;
-	ListView listView;
+	ListView *listView;
 
-    explicit CategoryTab(ListView aListView) : listView(std::move(aListView)) {};
+	explicit CategoryTab(ListView *aListView) : listView(aListView) {};
 };
 
 #define categoryList_s 6
@@ -33,6 +34,7 @@ struct CategoryTab {
 class CategoryView: public View {
 public:
 	CategoryView();
+	~CategoryView();
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
@@ -46,12 +48,14 @@ private:
 	Texture img_catbar_sep;
 	Texture img_magnifying_glass;
 
-	unsigned int selectedCat;
 	std::vector<CategoryTab> categoryTabs;
 
-	int touchToCat(const Input &input);
+	unsigned int selectedCat = 0;
+	unsigned int activeCat = 0;
 
-	IMEViewResult _ime_search_view_result = {};
-	void startSearch();
+	void selectCat(unsigned int cat);
+	void selectCat(Category cat);
+
+	int touchToCat(const Input &input);
 };
 
