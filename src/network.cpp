@@ -157,6 +157,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 
     if(progress) progress->percent(100);
 
+    log_printf(DBG_DEBUG, "Done downloading %s", url.c_str());
     return 0;
 }
 

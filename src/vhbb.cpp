@@ -10,6 +10,7 @@
 #include "nosleep_thread.h"
 #include "fetch_load_icons_thread.h"
 #include "vitasdk_quirks.h"
+#include "updater.h"
 
 
 void debug_start() {
@@ -63,6 +64,8 @@ int main() {
   StartNoSleepThread();
   network_test();
   StartFetchLoadIconsThread();
+
+  Updater::startUpdateCheckThread();
 
   vita2d_init();
   vita2d_set_clear_color(COLOR_BLACK);

@@ -154,6 +154,19 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE assets/fonts/segoeui.ttf resources/fonts/segoeui.ttf
 )
 
+set(RELEASE_DIR ${CMAKE_SOURCE_DIR}/release)
+add_custom_target(release
+  COMMAND cp ${CMAKE_BINARY_DIR}/${SHORT_NAME}.vpk ${RELEASE_DIR}/
+  COMMAND cp ${CMAKE_BINARY_DIR}/${SHORT_NAME}.self ${RELEASE_DIR}/raw/eboot.bin
+  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/icon0.png ${RELEASE_DIR}/raw/
+  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/livearea/contents/bg.png ${RELEASE_DIR}/raw/
+  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/livearea/contents/startup.png ${RELEASE_DIR}/raw/
+  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/livearea/contents/template.xml ${RELEASE_DIR}/raw/
+  COMMAND ${CMAKE_SOURCE_DIR}/tools/version_bin_creator.sh ${VITA_VERSION} ${RELEASE_DIR}/raw/version.bin
+
+  DEPENDS ${SHORT_NAME}.vpk
+)
+
 get_filename_component(psvitaipFilePath psvitaip.txt REALPATH)
 if(EXISTS "${psvitaipFilePath}")
   file(STRINGS "${psvitaipFilePath}" PSVITAIP)

@@ -49,3 +49,14 @@ int removePath(std::string path) {
 
 	return 1;
 }
+
+int readFile(const std::string fn, void *buffer, SceSize size) {
+	SceUID fd = sceIoOpen(fn.c_str(), SCE_O_RDONLY, 0);
+	if (fd < 0)
+		return fd;
+
+	int read = sceIoRead(fd, buffer, size);
+
+	sceIoClose(fd);
+	return read;
+}
