@@ -24,9 +24,10 @@ typedef enum {
 struct CategoryTab {
 	int minX;
 	int maxX;
-	ListView *listView;
+	std::unique_ptr<ListView> listView;
 
-	explicit CategoryTab(ListView *aListView) : listView(aListView) {};
+	explicit CategoryTab(std::unique_ptr<ListView> aListView, int minX, int maxX) : minX(minX), maxX(maxX), listView(std::move(aListView)) {};
+	explicit CategoryTab(ListView *aListView, int minX = -1, int maxX = -1) : minX(minX), maxX(maxX), listView(aListView) {};
 };
 
 #define categoryList_s 6
