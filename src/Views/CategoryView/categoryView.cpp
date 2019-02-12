@@ -80,7 +80,7 @@ CategoryView::CategoryView() :
 				lv = new ListView(db->Filter(IsCategory("4")));
 				break;
 			case SEARCH:
-				lv = new  SearchView();
+				lv = new SearchView();
 				break;
 			}
 			categoryTabs.emplace_back(lv);
@@ -94,12 +94,12 @@ CategoryView::CategoryView() :
 
 	selectCat(NEW);
 
-
+	// TODO Create a new container for a list of CategoryTab and move all this logic into it
 	int remainingWidth = SCREEN_WIDTH;
 	unsigned int countAutoWidth = 0;
-	for (unsigned int i=0; i < _countof(categoryList); i++) {
-		if (categoryList_widths[i] != CAT_AUTO_WIDTH) {
-			remainingWidth -= categoryList_widths[i];
+	for (const int &categoryList_width : categoryList_widths) {
+		if (categoryList_width != CAT_AUTO_WIDTH) {
+			remainingWidth -= categoryList_width;
 		} else {
 			countAutoWidth += 1;
 		}
@@ -136,11 +136,7 @@ CategoryView::CategoryView() :
 
 }
 
-CategoryView::~CategoryView() {
-	for (CategoryTab const &tab: categoryTabs) {
-		delete tab.listView;
-	}
-}
+CategoryView::~CategoryView() = default;
 
 void CategoryView::selectCat(unsigned int cat) {
 	log_printf(DBG_DEBUG, "selectCat(unsigned %i)", cat);
@@ -177,27 +173,13 @@ int CategoryView::HandleInput(int focus, const Input& input)
 			selectCat((unsigned) ind);
 		}
 	} else {
-		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER) && activeCat > 0) {
-			if (categoryList[activeCat-1] != SEARCH) {
-				selectCat(activeCat - 1);
-			} else {
-				if ((int) activeCat - 2 >= 0) {
-					// skip search tab if its not the first one
-					selectCat(activeCat - 2);
-				}
-			}
+		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER)) {
+			selectPreviousCat();
 			log_printf(DBG_DEBUG, "LTRIG, selectedCat: %d", selectedCat);
 		}
 
-		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER) && activeCat < categoryList_s - 1) {
-			if (categoryList[activeCat+1] != SEARCH) {
-				selectCat(activeCat + 1);;
-			} else {
-				if (activeCat + 2 < categoryList_s) {
-					// skip search tab if its not the last one
-					selectCat(activeCat + 2);
-				}
-			}
+		if (input.KeyNewPressed(SCE_CTRL_RTRIGGER)) {
+			selectNextCat();
 			log_printf(DBG_DEBUG, "RTRIG, selectedCat: %d", selectedCat);
 		}
 
@@ -228,6 +210,36 @@ int CategoryView::HandleInput(int focus, const Input& input)
 	categoryTabs[activeCat].listView->HandleInput(focus, input);
 
 	return 0;
+}
+
+void CategoryView::selectNextCat() {
+	int maxIndex = categoryList_s - 1;
+	
+	// Already at right-most
+	if (activeCat >= maxIndex)
+		return;
+	
+	if (categoryList[activeCat + 1] != SEARCH) {
+		selectCat(activeCat + 1);
+	// Jump to next next tab if it's next is search and search is not right-most
+	} else if (activeCat + 2 <= maxIndex) {
+		selectCat(activeCat + 2);
+	}
+}
+
+void CategoryView::selectPreviousCat() {
+	// Already at left-most
+	if (activeCat == 0)
+		return;
+	
+	if (categoryList[activeCat - 1] != SEARCH) {
+		selectCat(activeCat - 1);
+	// Jump to next previous tab if it's search and search is not left-most
+	} else if (activeCat >= 2) {
+		selectCat(activeCat - 2);
+	} else {
+		log_printf(DBG_DEBUG, "Ignored category selection from activeCat=%u", activeCat);
+	}
 }
 
 int CategoryView::Display()

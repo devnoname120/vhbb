@@ -53,7 +53,10 @@ private:
 
 	unsigned int selectedCat = 0;
 	unsigned int activeCat = 0;
-
+	
+	void selectPreviousCat();
+	void selectNextCat();
+	
 	void selectCat(unsigned int cat);
 	void selectCat(Category cat);
 
