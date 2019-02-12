@@ -86,7 +86,9 @@ file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/head.bin assets/
 add_resources(PROJECT_RESOURCES ${res_files})
 
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
-add_executable(${SHORT_NAME}
+
+set(VITA_ELF_NAME ${SHORT_NAME}.elf)
+add_executable(${VITA_ELF_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
 )
@@ -97,13 +99,13 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
   if(DEBUGNET)
     message("Debugnet turned on")
     add_definitions(-DDEBUGNET)
-    target_link_libraries(${SHORT_NAME} debugnet)
+    target_link_libraries(${VITA_ELF_NAME} debugnet)
     file(STRINGS "debugnetip.txt" DEBUGNETIP)
     add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
   endif()
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
-target_link_libraries(${SHORT_NAME}
+target_link_libraries(${VITA_ELF_NAME}
   yaml-cpp
   m
   vita2d
@@ -139,7 +141,7 @@ target_link_libraries(${SHORT_NAME}
   pthread
 )
 
-vita_create_self(${SHORT_NAME}.self ${SHORT_NAME} UNSAFE UNCOMPRESSED)
+vita_create_self(${SHORT_NAME}.self ${VITA_ELF_NAME} UNSAFE UNCOMPRESSED)
 vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
