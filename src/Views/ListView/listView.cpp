@@ -213,7 +213,7 @@ int ListView::resetHighlight()
 int ListView::Display()
 {
 	if (listItems.empty()) {
-		font_43.DrawCentered(Rectangle(Point(0, LIST_MIN_Y), Point(SCREEN_WIDTH, LIST_MAX_Y)), "NO RESULTS");
+		font_43.DrawCentered(Rectangle(Point(0, LIST_MIN_Y), Point(SCREEN_WIDTH, LIST_MAX_Y)), "No results");
 		return 0;
 	}
 	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) {
