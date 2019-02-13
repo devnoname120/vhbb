@@ -9,6 +9,8 @@ IMEView::IMEView() {
 	log_printf(DBG_DEBUG, "IMEView::IMEView()");
 	auto sce_common_dialog_config_param = SceCommonDialogConfigParam{};
 	sceCommonDialogSetConfigParam(&sce_common_dialog_config_param);
+	// FIXME HACK: when IMEView is passed to Activity::AddView() it's destroyed once the activity is crashed
+	// Keeping an internal shared_ptr of itself makes sure that it's never destroyed
 	me_ptr = std::shared_ptr<IMEView>(this);
 }
 
