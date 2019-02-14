@@ -27,5 +27,6 @@ public:
     InternetStatus TestConnection();
 private:
     int templateId_;
+	SceMutex mtx_ = SceMutex("network_mtx");
 };
 

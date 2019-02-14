@@ -37,9 +37,9 @@ public:
     size_t WriterFileClassCallback(char* ptr, size_t size, size_t nmemb)
     {
         int ret = sceIoWrite(m_fd, ptr, size*nmemb);
-        if (ret < 0)
+        if (ret < 0) {
             cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
-
+        }
         return ret;
     }
 
@@ -54,8 +54,9 @@ private:
 WriterFileClass::WriterFileClass(std::string dest) {
     m_fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 
-    if (m_fd < 0)
+    if (m_fd < 0) {
         cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
+    }
 }
 
 Network::Network()
@@ -105,7 +106,6 @@ Network::~Network()
 int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 {
     log_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
-
     try {
         curlpp::Easy request;
 
@@ -137,6 +137,7 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 
         for (unsigned int retries=1; retries <= 3; retries++) {
             try {
+                std::lock_guard<SceMutex> lock(mtx_);
                 request.perform();
                 break;
             } catch (curlpp::RuntimeError &e) {
@@ -191,7 +192,7 @@ InternetStatus Network::TestConnection()
 
     sendRes = sceHttpSendRequest(req, nullptr, 0);
 
-    
+
     res = sceHttpGetStatusCode(req, &statusCode);
 
     if (sendRes < 0 || res < 0 || statusCode != 200) {
