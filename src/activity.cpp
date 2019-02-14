@@ -5,7 +5,7 @@ Activity::~Activity() = default;
 
 int Activity::HandleInput(int focus, const Input& input)
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<SceMutex> lock(mtx_);
 
     if (views_.size() > 1) {
         for (auto it = begin(views_), it_last = --end(views_); it != it_last; ) {
@@ -34,7 +34,7 @@ int Activity::HandleInput(int focus, const Input& input)
 
 int Activity::Display()
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<SceMutex> lock(mtx_);
 
     if (views_.empty()) return 0;
 
@@ -48,14 +48,14 @@ int Activity::Display()
 
 void Activity::AddView(std::shared_ptr<View> view)
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<SceMutex> lock(mtx_);
 
     views_queue.push_back(view);
 }
 
 void Activity::FlushQueue()
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<SceMutex> lock(mtx_);
 
     std::move(views_queue.begin(), views_queue.end(), std::back_inserter(views_));
     views_queue.erase(views_queue.begin(),views_queue.end());
@@ -66,7 +66,7 @@ void Activity::FlushQueue()
 
 bool Activity::HasActivity()
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<SceMutex> lock(mtx_);
 
     return !views_.empty();
 }
