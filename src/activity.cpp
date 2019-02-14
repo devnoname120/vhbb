@@ -5,28 +5,33 @@ Activity::~Activity() = default;
 
 int Activity::HandleInput(int focus, const Input& input)
 {
-    std::lock_guard<SceMutex> lock(mtx_);
+    {
+        std::lock_guard<SceMutex> lock(mtx_);
 
-    if (views_.size() > 1) {
-        for (auto it = begin(views_), it_last = --end(views_); it != it_last; ) {
-            (*it)->HandleInput(0, input);
-            if ((*it)->request_destroy) {
-                it = views_.erase(it);
-            } else {
-                ++it;
+        if (views_.size() > 1) {
+            for (auto it = begin(views_), it_last = --end(views_); it != it_last;) {
+                (*it)->HandleInput(0, input);
+                if ((*it)->request_destroy) {
+                    it = views_.erase(it);
+                } else {
+                    ++it;
+                }
+
             }
-
+        } else if (views_.empty()) {
+            return 0;
         }
-    } else if (views_.empty()) {
-        return 0;
     }
 
     views_.back()->HandleInput(focus, input);
 
-    views_.erase(
-        std::remove_if(views_.begin(), views_.end(),
-            [](const std::shared_ptr<View> &view) { return view->request_destroy; }),
-    views_.end());
+    {
+        std::lock_guard<SceMutex> lock(mtx_);
+        views_.erase(
+            std::remove_if(views_.begin(), views_.end(),
+                           [](const std::shared_ptr<View> &view) { return view->request_destroy; }),
+            views_.end());
+    }
 
     return 0;
 }
