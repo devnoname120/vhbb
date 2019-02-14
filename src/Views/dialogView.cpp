@@ -1,14 +1,27 @@
 #include "dialogView.h"
 
-DialogView::DialogView() {
+extern unsigned char _binary_assets_spr_img_dialog_msg_bg_png_start;
+extern unsigned char _binary_assets_spr_img_dialog_msg_btn_png_start;
+extern unsigned char _binary_assets_spr_img_dialog_msg_btn_active_png_start;
+extern unsigned char _binary_assets_spr_img_dialog_msg_btn_focus_png_start;
+
+DialogView::DialogView() :
+	msg_font(Font(std::string(FONT_DIR "segoeui.ttf"), 28)),
+	btn_font(Font(std::string(FONT_DIR "segoeui.ttf"), 25)),
+	img_dialog_msg_bg(Texture(&_binary_assets_spr_img_dialog_msg_bg_png_start)),
+	img_dialog_msg_btn(Texture(&_binary_assets_spr_img_dialog_msg_btn_png_start)),
+	img_dialog_msg_btn_active(Texture(&_binary_assets_spr_img_dialog_msg_btn_active_png_start)),
+	img_dialog_msg_btn_focus(Texture(&_binary_assets_spr_img_dialog_msg_btn_focus_png_start))
+{
+	priority = 550;
 	log_printf(DBG_DEBUG, "DialogView::DialogView()");
-	commonDialogSetConfig();
+	// FIXME HACK: when DialogView is passed to Activity::AddView() it's destroyed once the activity is crashed
+	// Keeping an internal shared_ptr of itself makes sure that it's never destroyed
 	me_ptr = std::shared_ptr<DialogView>(this);
 }
 
 DialogView::~DialogView() {
 	log_printf(DBG_WARNING, "DialogView destructor called");
-	sceMsgDialogTerm();
 }
 
 void DialogView::openDialogView(DialogViewResult *result, std::string message, DialogType type) {
@@ -21,101 +34,184 @@ void DialogView::prepare(DialogViewResult *result, std::string message, DialogTy
 	log_printf(DBG_DEBUG, "Created DialogView \"%s\"", message.c_str());
 	if (_status == COMMON_DIALOG_STATUS_RUNNING) {
 		log_printf(DBG_WARNING, "Canceling current DialogView");
-		sceMsgDialogTerm();
+		request_destroy = true;
+		_status = COMMON_DIALOG_STATUS_CANCELED;
 		if (_result)
 			_result->status = COMMON_DIALOG_STATUS_CANCELED;
 	}
 	_result = result;
-	shown_dialog = false;
+	_message = msg_font.FitString(message, DIALOG_WIDTH - DIALOG_PADDING_X * 2);
 	request_destroy = false;
+	_accepted = false;
+	_status = COMMON_DIALOG_STATUS_RUNNING;
+	_btnTouched = _btnFocus = -1;
+	if (_result) {
+		_result->status = COMMON_DIALOG_STATUS_RUNNING;
+	}
+	_type = type;
+}
 
-	SceMsgDialogButtonType buttonType;
-	switch(type)
-	{
-		default:
-		case DIALOG_TYPE_OK:
-			buttonType = SCE_MSG_DIALOG_BUTTON_TYPE_OK;
+int DialogView::GetGlowCycleAlpha() {
+	float alphaCount;
+	if (_focusGlowCycle <= DIALOG_FOCUS_GLOW_HALF_CYCLE_FRAMES) {
+		alphaCount = _focusGlowCycle;
+	} else {
+		alphaCount = DIALOG_FOCUS_GLOW_HALF_CYCLE_FRAMES * 2 - _focusGlowCycle;
+	}
+	return int(alphaCount / DIALOG_FOCUS_GLOW_HALF_CYCLE_FRAMES * 255);
+}
+
+void DialogView::HandleBtnFocus(const Input& input) {
+	auto btnFocusBefore = _btnFocus;
+	if (input.KeyNewPressed(SCE_CTRL_RIGHT)) {
+		switch (_type) {
+			case DIALOG_TYPE_OK:
+				_btnFocus = 0;
+				break;
+			case DIALOG_TYPE_YESNO:
+				_btnFocus = 1;
+				break;
+		}
+		log_printf(DBG_DEBUG, "SCE_CTRL_RIGHT, _btnFocus %i", _btnFocus);
+	}
+	if (input.KeyNewPressed(SCE_CTRL_LEFT)) {
+		_btnFocus = 0;
+		log_printf(DBG_DEBUG, "SCE_CTRL_LEFT, _btnFocus %i", _btnFocus);
+	}
+	if (input.TouchPressed()) {
+		_btnFocus = -1;
+	}
+	if (_btnFocus >= 0) {
+		if (btnFocusBefore < 0 ||  // focus button after none was focused
+		    (btnFocusBefore != _btnFocus && GetGlowCycleAlpha() < 200)) {  // change focused button and highlight was nearly gone
+			log_printf(DBG_DEBUG, "Resetting glow cycle");
+			_focusGlowCycle = 0;
+		}
+	}
+	if (input.KeyNewPressed(SCE_CTRL_CROSS) && _btnFocus > 0) {
+		log_printf(DBG_DEBUG, "SCE_CTRL_CROSS, choosing button %i", _btnFocus);
+		_status = COMMON_DIALOG_STATUS_FINISHED;
+		if (_type == DIALOG_TYPE_YESNO && _btnFocus == 1) {
+			_accepted = true;
+		}
+	}
+}
+
+int DialogView::GetTouchedBtnIdx(const Input &input) {
+	if (!input.TouchPressed()) return -1;
+	switch (_type) {
+		case DIALOG_TYPE_OK: {
+			auto btn_tl = Point(DIALOG_BTN_1_OF_1_INNER_LEFT_X, DIALOG_BTN_INNER_TOP_Y);
+			auto btn_br = Point(DIALOG_BTN_1_OF_1_INNER_RIGHT_X, DIALOG_BTN_INNER_BOT_Y);
+			if (input.TouchInRectangle(Rectangle(btn_tl, btn_br))) {
+				return 0;
+			}
 			break;
-		case DIALOG_TYPE_YESNO: buttonType = SCE_MSG_DIALOG_BUTTON_TYPE_YESNO;
+		}
+		case DIALOG_TYPE_YESNO:
+			// NO button
+			auto btn_tl = Point(DIALOG_BTN_1_OF_2_INNER_LEFT_X, DIALOG_BTN_INNER_TOP_Y);
+			auto btn_br = Point(DIALOG_BTN_1_OF_2_INNER_RIGHT_X, DIALOG_BTN_INNER_BOT_Y);
+			if (input.TouchInRectangle(Rectangle(btn_tl, btn_br))) {
+				return 0;
+			}
+			// YES button
+			btn_tl = Point(DIALOG_BTN_2_OF_2_INNER_LEFT_X, DIALOG_BTN_INNER_TOP_Y);
+			btn_br = Point(DIALOG_BTN_2_OF_2_INNER_RIGHT_X, DIALOG_BTN_INNER_BOT_Y);
+			if (input.TouchInRectangle(Rectangle(btn_tl, btn_br))) {
+				return 1;
+			}
 			break;
-	};
+	}
+	return -1;
+}
 
-	SceMsgDialogUserMessageParam userMsgParam;
-	sceMsgDialogParamInit(&msgParam);
-	msgParam.mode = SCE_MSG_DIALOG_MODE_USER_MSG;
-	memset(&userMsgParam, 0, sizeof(SceMsgDialogUserMessageParam));
-	msgParam.userMsgParam = &userMsgParam;
-	msgParam.userMsgParam->msg = reinterpret_cast<const SceChar8 *>(message.c_str());
-	msgParam.userMsgParam->buttonType = buttonType;
+void DialogView::HandleBtnTouch(const Input& input) {
+	if (input.TouchPressed()) {
+		if (input.TouchNewPressed()) {
+			_btnTouched = GetTouchedBtnIdx(input);
+		} else if (_btnTouched >= 0){
+			if (_btnTouched != GetTouchedBtnIdx(input)) {
+				_btnTouched = -1;
+			}
+		}
+	} else {
+		if (_btnTouched >= 0) {
+			_status = COMMON_DIALOG_STATUS_FINISHED;
+			if (_type == DIALOG_TYPE_YESNO && _btnTouched == 1) {
+				_accepted = true;
+			}
+			_btnTouched = -1;
+		}
+	}
+}
 
-	msgParam.commonParam.infobarParam = nullptr;
-	msgParam.commonParam.dimmerColor = nullptr;
-	msgParam.commonParam.bgColor = nullptr;
+int DialogView::HandleInput(int focus, const Input& input) {
+	if(!focus) return 0;
+	auto oldStatus = _status;
+	HandleBtnFocus(input);
+	HandleBtnTouch(input);
+
+	if (oldStatus != _status) {
+		if (_result) {
+			_result->status = _status;
+			_result->accepted = _accepted;
+		}
+		if (_status == COMMON_DIALOG_STATUS_FINISHED || _status == COMMON_DIALOG_STATUS_CANCELED) {
+			request_destroy = true;
+			_status = COMMON_DIALOG_STATUS_NONE;
+		}
+	}
+
+	return 0;
+}
+
+void DialogView::DrawBtn(const std::string &text, const Point &sprPt, const Rectangle &textRect, int idx) {
+	if (_btnTouched == idx) {
+		img_dialog_msg_btn_active.Draw(sprPt);
+	} else {
+		img_dialog_msg_btn.Draw(sprPt);
+	}
+	btn_font.DrawCentered(textRect, text, COLOR_WHITE, true);
+	if(_btnFocus == idx) {
+		img_dialog_msg_btn_focus.DrawExt(sprPt, GetGlowCycleAlpha());
+	}
 }
 
 int DialogView::Display() {
 	if (request_destroy) { // done here!
-		sceMsgDialogTerm();
 		return 0;
 	}
 
-	if (!shown_dialog) {
-		log_printf(DBG_DEBUG, "DialogView: Initializing dialog");
-		SceInt32 res = sceMsgDialogInit(&msgParam);
-		shown_dialog = res == 0;
-		if (!shown_dialog) {
-			log_printf(DBG_ERROR,
-			           "Couldn't open IMEView DialogView: 0x%lx\nFind the status codes at "
-			           "https://github.com/vitasdk/vita-headers/blob/master/include/psp2/common_dialog.h",
-			           res);
-			if (_result)
-				_result->status = COMMON_DIALOG_STATUS_CANCELED;
-			request_destroy = true;
-			sceMsgDialogTerm();
-		}
-		return 0;
+	// backdrop
+	vita2d_draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, RGBA8(0, 0, 0, 190));
+
+	img_dialog_msg_bg.Draw(Point(DIALOG_X, DIALOG_Y));
+
+	msg_font.DrawCenteredVertical(Rectangle(Point(DIALOG_X + DIALOG_PADDING_X, DIALOG_Y + DIALOG_PADDING_Y),
+	                                        Point(DIALOG_X + DIALOG_WIDTH - DIALOG_PADDING_X, DIALOG_Y + DIALOG_PADDING_Y + DIALOG_MSG_HEIGHT)),
+	                              _message, COLOR_WHITE, true);
+
+	switch (_type) {
+		case DIALOG_TYPE_OK:
+			DrawBtn("Ok", Point(DIALOG_BTN_1_OF_1_X, DIALOG_BTN_Y),
+			        Rectangle(Point(DIALOG_BTN_1_OF_1_INNER_LEFT_X, DIALOG_BTN_INNER_TOP_Y),
+			                  Point(DIALOG_BTN_1_OF_1_INNER_RIGHT_X, DIALOG_BTN_INNER_BOT_Y)),
+			        0);
+			break;
+		case DIALOG_TYPE_YESNO:
+			DrawBtn("No", Point(DIALOG_BTN_1_OF_2_X, DIALOG_BTN_Y),
+			        Rectangle(Point(DIALOG_BTN_1_OF_2_INNER_LEFT_X, DIALOG_BTN_INNER_TOP_Y),
+			                  Point(DIALOG_BTN_1_OF_2_INNER_RIGHT_X, DIALOG_BTN_INNER_BOT_Y)),
+			        0);
+			DrawBtn("Yes", Point(DIALOG_BTN_2_OF_2_X, DIALOG_BTN_Y),
+			        Rectangle(Point(DIALOG_BTN_2_OF_2_INNER_LEFT_X, DIALOG_BTN_INNER_TOP_Y),
+			                  Point(DIALOG_BTN_2_OF_2_INNER_RIGHT_X, DIALOG_BTN_INNER_BOT_Y)),
+			        1);
+			break;
 	}
 
-	auto new_status = (CommonDialogStatus)sceMsgDialogGetStatus();
-	if (_status != new_status)
-		switch (new_status) {
-			case COMMON_DIALOG_STATUS_NONE:
-				log_printf(DBG_DEBUG, "DialogView status \"COMMON_DIALOG_STATUS_NONE\"");
-				break;
-			case COMMON_DIALOG_STATUS_RUNNING:
-				log_printf(DBG_DEBUG, "DialogView status \"COMMON_DIALOG_STATUS_RUNNING\"");
-				break;
-			case COMMON_DIALOG_STATUS_FINISHED:
-				log_printf(DBG_DEBUG, "DialogView status \"COMMON_DIALOG_STATUS_FINISHED\"");
-				break;
-			case COMMON_DIALOG_STATUS_CANCELED:
-				log_printf(DBG_DEBUG, "DialogView status \"COMMON_DIALOG_STATUS_CANCELED\"");
-				break;
-		}
-	_status = new_status;
-
-	if (_status == COMMON_DIALOG_STATUS_FINISHED) {
-		SceMsgDialogResult result{};
-		sceMsgDialogGetResult(&result);
-
-		switch (result.buttonId) {
-			case SCE_MSG_DIALOG_BUTTON_ID_YES:
-				if(_result)
-					_result->accepted = true;
-				break;
-			case SCE_MSG_DIALOG_BUTTON_ID_NO:
-			default:
-				if (_result)
-					_result->accepted = false;
-				break;
-		}
-
-		request_destroy = true;
-		sceMsgDialogTerm();
-	}
-
-	if (_result)
-		_result->status = _status;
+	_focusGlowCycle = (_focusGlowCycle + 1) % (DIALOG_FOCUS_GLOW_HALF_CYCLE_FRAMES * 2);
 
 	return 0;
 }

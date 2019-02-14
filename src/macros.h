@@ -10,6 +10,8 @@
 #define ICONS_FOLDER std::string("ux0:/data/VitaHbBrowser/icons")
 #define ICON_URL_PREFIX std::string("https://rinnegatamante.it/vitadb/icons/")
 
+#define UPDATE_FOLDER "ux0:/temp/vhbb/update"
+
 #define SERVER_BASE_URL std::string("https://rinnegatamante.it/vitadb/")
 #define SCREENSHOTS_FOLDER std::string("ux0:/data/VitaHbBrowser/screenshots")
 
