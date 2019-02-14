@@ -15,4 +15,5 @@ public:
 	SceUID GetId();
 private:
 	SceUID id;
+	std::string name;
 };
