@@ -139,21 +139,21 @@ int HomebrewView::Display()
 
 	img_preview_infobg.Draw(Point(HB_X, HB_Y + 300));
 
-	font_40.Draw(Point(HB_X + 225, HB_Y + 88), hb_.name, COLOR_WHITE);
-	font_25.Draw(Point(HB_X + 225, HB_Y + 115), hb_.author, COLOR_AQUA);
-	font_25.Draw(Point(HB_X + 225, HB_Y + 144), hb_.version, COLOR_WHITE);
-	//font_20.Draw(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
-	//font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
+	font_40.DrawFromBaseline(Point(HB_X + 225, HB_Y + 88), hb_.name, COLOR_WHITE);
+	font_25.DrawFromBaseline(Point(HB_X + 225, HB_Y + 115), hb_.author, COLOR_AQUA);
+	font_25.DrawFromBaseline(Point(HB_X + 225, HB_Y + 144), hb_.version, COLOR_WHITE);
+	//font_20.DrawFromBaseline(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
+	//font_20.DrawFromBaseline(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
 	/*
 	if (!hb_.long_description.empty()) {
 		font_25.Draw(Point(HB_X + 40, HB_Y + 362), long_description_cut1);
 		if (!long_description_cut2.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 40), long_description_cut2);
 		if (!long_description_cut3.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 80), long_description_cut3);
-		if (!long_description_cut4.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 120), long_description_cut4);
+		if (!long_description_cut4.empty()) font_25.DrawFromBaseline(Point(HB_X + 40, HB_Y + 362 + 120), long_description_cut4);
 	}
 	*/
-	
-	font_25.Draw(Point(HB_X + 40, HB_Y + 362), description);
+
+	font_25.DrawFromBaseline(Point(HB_X + 40, HB_Y + 362), description);
 
 	img_preview_btn_download.Draw(Point(HB_X + 218, HB_Y + 168));
 

@@ -37,11 +37,11 @@ int ListItem::display(int posY)
 {
 	img_itm_panel.Draw(Point(ITEM_POSX, posY));
 	//log_printf(DBG_DEBUG, "Drawing title: %s", homebrew.title.c_str());
-	font_32.Draw(Point(ITEM_POSX + 120, posY + 30), homebrew.name);
-	font_22.Draw(Point(ITEM_POSX + 122, posY + 76), homebrew.author);
-	font_22.Draw(Point(ITEM_POSX + 776, posY + 76), homebrew.date.str);
-	// font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.version);
-	//font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.release);
+	font_32.DrawFromBaseline(Point(ITEM_POSX + 120, posY + 30), homebrew.name);
+	font_22.DrawFromBaseline(Point(ITEM_POSX + 122, posY + 76), homebrew.author);
+	font_22.DrawFromBaseline(Point(ITEM_POSX + 776, posY + 76), homebrew.date.str);
+	// font_35.DrawFromBaseline(Point(ITEM_POSX + 120, posY + 33), homebrew.version);
+	//font_35.DrawFromBaseline(Point(ITEM_POSX + 120, posY + 33), homebrew.release);
 
 	img_icon_.DrawResize(Point(ITEM_POSX, posY), Point(90, 90));
 	

@@ -28,14 +28,14 @@ int StatusBar::Display()
 {
 	// Background
 	vita2d_draw_rectangle(0, 0, SCREEN_WIDTH, STATUSBAR_HEIGHT, COLOR_BLACK);
-	
-	font_22.Draw(Point(15, 22), "Vita HomeBrew Browser", COLOR_WHITE);
+
+	font_22.DrawFromBaseline(Point(15, 22), "Vita HomeBrew Browser", COLOR_WHITE);
 
 	displayBattery();
 	displayDate();
 
 	#ifdef _DEBUG
-	font_22.Draw(Point(400, 22), vitaip, COLOR_WHITE);
+	font_22.DrawFromBaseline(Point(400, 22), vitaip, COLOR_WHITE);
 	#endif
 	return 0;
 }
@@ -119,7 +119,7 @@ int StatusBar::displayDate()
 	char string[64];
 	sprintf(string, "%s  %s", date_string, time_string);
 
-	font_22.Draw(Point(700, 22), string, COLOR_WHITE);
+	font_22.DrawFromBaseline(Point(700, 22), string, COLOR_WHITE);
 
 	return 0;
 }
