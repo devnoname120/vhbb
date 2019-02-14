@@ -16,7 +16,8 @@ for i in 0 1; do
     if [[ -z ${VERSION_PART} ]]; then
         VERSION_PART=0
     fi
-    VERSION_PART_HEX=$(printf "%.8x" "${VERSION_PART}")
+    # sed is used to turn hex representation around (into little-endian as VITA's ARM will read it)
+    VERSION_PART_HEX=$(printf "%.8x" "${VERSION_PART}" | sed -E 's/(..)(..)(..)(..)/\4\3\2\1/')
     VERSION_HEX="${VERSION_HEX}${VERSION_PART_HEX}"
     echo "version part ${i}: ${VERSION_PART} -> ${VERSION_PART_HEX}"
 done
