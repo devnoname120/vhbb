@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include <global_include.h>
 
 #include <database.h>
@@ -18,7 +20,12 @@ public:
 	int Display() override;
 
 private:
-	IMEViewResult _ime_search_view_result = {};
+	bool listViewOutdated = true;
+	
+	std::optional<IMEViewResult> _ime_search_view_result = std::nullopt;
+	std::future<IMEViewResult> _ime_search_view_result_future;
 	void startSearch();
 	std::string lastQuery = "";
+	
+	void UpdateFutureStatus();
 };

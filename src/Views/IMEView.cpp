@@ -1,7 +1,5 @@
 #include <utility>
 
-#include <utility>
-
 #include "IMEView.h"
 
 
@@ -13,31 +11,39 @@ IMEView::IMEView() {
 }
 
 
-void IMEView::openIMEView(IMEViewResult *result, std::string title, SceUInt32 maxInputLength) {
-	openIMEView(result, std::move(title), "", maxInputLength);
+std::future<IMEViewResult> IMEView::openIMEView(std::string title, SceUInt32 maxInputLength) {
+	return openIMEView(std::move(title), "", maxInputLength);
 }
 
-void IMEView::openIMEView(IMEViewResult *result, std::string title, std::string initialText, SceUInt32 maxInputLength) {
+std::future<IMEViewResult> IMEView::openIMEView(std::string title, std::string initialText, SceUInt32 maxInputLength) {
 	IMEView *imeView = IMEView::create_instance();
-	imeView->prepare(result, std::move(title), std::move(initialText), maxInputLength);
+	
+	if (imeView->_status == IMEVIEW_STATUS_RUNNING) {
+		throw IMEViewAlreadyRunningException();
+	}
+	
+	auto future = imeView->prepare(std::move(title), std::move(initialText), maxInputLength);
 	Activity::get_instance()->AddView(imeView->me_ptr);
+	return future;
 }
 
 void IMEView::closeIMEView() {
 	sceImeDialogTerm();
 }
 
-void IMEView::prepare(IMEViewResult *result, std::string title, std::string initialText, SceUInt32 maxInputLength) {
+std::future<IMEViewResult> IMEView::prepare(std::string title, std::string initialText, SceUInt32 maxInputLength) {
 	log_printf(DBG_DEBUG, "Created IMEView \"%s\"", title.c_str());
 	std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
 	_title = converter.from_bytes(title);
-	_result = result;
 	if (!initialText.empty())
 		log_printf(DBG_DEBUG, "initialText set \"%s\"", initialText.c_str());
 	_initialText = converter.from_bytes(initialText);
 	_maxTextLength = maxInputLength;
 	shown_dialog = false;
 	request_destroy = false;
+	
+	_result = std::promise<IMEViewResult>();
+	return _result.get_future();
 }
 
 IMEView::~IMEView() {
@@ -80,8 +86,9 @@ int IMEView::Display() {
 			           "Couldn't open IMEView dialog: 0x%lx\nFind the status codes at "
 			           "https://github.com/vitasdk/vita-headers/blob/master/include/psp2/common_dialog.h",
 			           res);
-			if (_result)
-				_result->status = IMEVIEW_STATUS_CANCELED;
+			
+			_result.set_value(IMEViewResult(IMEVIEW_STATUS_CANCELED));
+			
 			request_destroy = true;
 			sceImeDialogTerm();
 		}
@@ -115,16 +122,13 @@ int IMEView::Display() {
 		else {
 			std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
 			_input_text_buffer_utf8 = converter.to_bytes((char16_t*)_input_text_buffer_utf16);
-			if (_result)
-				_result->userText = std::string(_input_text_buffer_utf8);
+			
+			_result.set_value(IMEViewResult(_status, _input_text_buffer_utf8));
 		}
 
 		request_destroy = true;
 		sceImeDialogTerm();
 	}
-
-	if (_result)
-		_result->status = _status;
 
 	return 0;
 }
