@@ -28,10 +28,10 @@ struct IMEViewResult {
 class IMEView : Singleton<IMEView>, public View {
 public:
 	IMEView();
-	static void openIMEView(IMEViewResult *result, std::string title,
+	static void openIMEView(std::shared_ptr<IMEViewResult> result, std::string title,
 	                        SceUInt32 maxInputLength);
-	static void openIMEView(IMEViewResult *result, std::string title,
-	                        std::string initialText="", SceUInt32 maxInputLength=SCE_IME_DIALOG_MAX_TEXT_LENGTH);
+	static void openIMEView(std::shared_ptr<IMEViewResult> result, std::string title,
+	                        std::string initialText = "", SceUInt32 maxInputLength = SCE_IME_DIALOG_MAX_TEXT_LENGTH);
 	static void closeIMEView();
 	~IMEView() override;
 
@@ -40,7 +40,8 @@ public:
 private:
 	std::shared_ptr<IMEView> me_ptr;
 
-	void prepare(IMEViewResult *result, std::string title, std::string initialText, SceUInt32 maxInputLength);
+	void prepare(std::shared_ptr<IMEViewResult> result, std::string title, std::string initialText,
+	             SceUInt32 maxInputLength);
 
 	std::basic_string<char16_t> _title;
 	std::basic_string<char16_t> _initialText;
@@ -48,6 +49,6 @@ private:
 	SceWChar16 *_input_text_buffer_utf16 = nullptr;
 	std::string _input_text_buffer_utf8;
 	IMEViewStatus _status = IMEVIEW_STATUS_NONE;
-	IMEViewResult *_result;
+	std::shared_ptr<IMEViewResult> _result;
 	bool shown_dialog = false;
 };

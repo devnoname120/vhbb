@@ -2,6 +2,10 @@
 
 #include <utility>
 
+#include <utility>
+
+#include <utility>
+
 #include "IMEView.h"
 
 
@@ -9,19 +13,20 @@ IMEView::IMEView() {
 	log_printf(DBG_DEBUG, "IMEView::IMEView()");
 	auto sce_common_dialog_config_param = SceCommonDialogConfigParam{};
 	sceCommonDialogSetConfigParam(&sce_common_dialog_config_param);
-	// FIXME HACK: when IMEView is passed to Activity::AddView() it's destroyed once the activity is crashed
+	// FIXME HACK: when IMEView is passed to Activity::AddView() it's destroyed once the activity is closed
 	// Keeping an internal shared_ptr of itself makes sure that it's never destroyed
 	me_ptr = std::shared_ptr<IMEView>(this);
 }
 
 
-void IMEView::openIMEView(IMEViewResult *result, std::string title, SceUInt32 maxInputLength) {
-	openIMEView(result, std::move(title), "", maxInputLength);
+void IMEView::openIMEView(std::shared_ptr<IMEViewResult> result, std::string title, SceUInt32 maxInputLength) {
+	openIMEView(std::move(result), std::move(title), "", maxInputLength);
 }
 
-void IMEView::openIMEView(IMEViewResult *result, std::string title, std::string initialText, SceUInt32 maxInputLength) {
+void IMEView::openIMEView(std::shared_ptr<IMEViewResult> result, std::string title, std::string initialText,
+                          SceUInt32 maxInputLength) {
 	IMEView *imeView = IMEView::create_instance();
-	imeView->prepare(result, std::move(title), std::move(initialText), maxInputLength);
+	imeView->prepare(std::move(result), std::move(title), std::move(initialText), maxInputLength);
 	Activity::get_instance()->AddView(imeView->me_ptr);
 }
 
@@ -29,7 +34,8 @@ void IMEView::closeIMEView() {
 	sceImeDialogTerm();
 }
 
-void IMEView::prepare(IMEViewResult *result, std::string title, std::string initialText, SceUInt32 maxInputLength) {
+void IMEView::prepare(std::shared_ptr<IMEViewResult> result, std::string title, std::string initialText,
+                      SceUInt32 maxInputLength) {
 	log_printf(DBG_DEBUG, "Created IMEView \"%s\"", title.c_str());
 	std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
 	_title = converter.from_bytes(title);

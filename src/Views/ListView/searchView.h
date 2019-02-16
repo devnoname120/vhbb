@@ -18,7 +18,7 @@ public:
 	int Display() override;
 
 private:
-	IMEViewResult _ime_search_view_result = {};
+	std::shared_ptr<IMEViewResult> _ime_search_view_result = std::make_shared<IMEViewResult>();
 	void startSearch();
 	std::string lastQuery = "";
 };

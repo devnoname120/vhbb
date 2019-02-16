@@ -2,14 +2,14 @@
 
 
 void SearchView::startSearch() {
-	IMEView::openIMEView(&_ime_search_view_result, "Search", _ime_search_view_result.userText);
+	IMEView::openIMEView(_ime_search_view_result, "Search", _ime_search_view_result->userText);
 	log_printf(DBG_DEBUG, "Opened search dialog");
 }
 
 
 void SearchView::SignalSelected() {
 	log_printf(DBG_DEBUG, "SearchView::SignalSelected");
-	if (_ime_search_view_result.status != IMEVIEW_STATUS_RUNNING)
+	if (_ime_search_view_result->status != IMEVIEW_STATUS_RUNNING)
 		startSearch();
 }
 
@@ -19,25 +19,25 @@ void SearchView::SignalDeselected() {
 }
 
 bool SearchView::IsReadyToShow() {
-	return _ime_search_view_result.status == IMEVIEW_STATUS_FINISHED;
+	return _ime_search_view_result->status == IMEVIEW_STATUS_FINISHED;
 }
 
 int SearchView::Display() {
-	if (_ime_search_view_result.status == IMEVIEW_STATUS_FINISHED) {
-		log_printf(DBG_DEBUG, "Processing finished search dialog: \"%s\"", _ime_search_view_result.userText.c_str());
-		if (lastQuery != _ime_search_view_result.userText) {
+	if (_ime_search_view_result->status == IMEVIEW_STATUS_FINISHED) {
+		log_printf(DBG_DEBUG, "Processing finished search dialog: \"%s\"", _ime_search_view_result->userText.c_str());
+		if (lastQuery != _ime_search_view_result->userText) {
 			auto db = Database::get_instance();
 			std::vector<Homebrew> hbs;
-			hbs = db->Search(SearchQuery(_ime_search_view_result.userText));
+			hbs = db->Search(SearchQuery(_ime_search_view_result->userText));
 			listItems.clear();
 			for (Homebrew hb : hbs) {
 				listItems.emplace_back(hb);
 			}
-			lastQuery = _ime_search_view_result.userText;
+			lastQuery = _ime_search_view_result->userText;
 		} else {
 			log_printf(DBG_DEBUG, "Ignore search: same filter as before");
 		}
-		_ime_search_view_result.status = IMEVIEW_STATUS_NONE;
+		_ime_search_view_result->status = IMEVIEW_STATUS_NONE;
 	}
 	return ListView::Display();
 }
