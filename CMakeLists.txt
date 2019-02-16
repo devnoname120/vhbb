@@ -86,19 +86,26 @@ file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/head.bin assets/
 add_resources(PROJECT_RESOURCES ${res_files})
 
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
-add_executable(${SHORT_NAME}
+
+set(VITA_ELF_NAME ${SHORT_NAME}.elf)
+add_executable(${VITA_ELF_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
 )
 
-if(DEBUGNET)
-  add_definitions(-DDEBUGNET)
-  target_link_libraries(${SHORT_NAME} debugnet)
-  file(STRINGS "debugnetip.txt" DEBUGNETIP)
-  add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
-endif()
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+  message("Debug mode")
+  add_definitions(-DDEBUG)
+  if(DEBUGNET)
+    message("Debugnet turned on")
+    add_definitions(-DDEBUGNET)
+    target_link_libraries(${VITA_ELF_NAME} debugnet)
+    file(STRINGS "debugnetip.txt" DEBUGNETIP)
+    add_definitions(-DDEBUGNETIP="${DEBUGNETIP}")
+  endif()
+endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
-target_link_libraries(${SHORT_NAME}
+target_link_libraries(${VITA_ELF_NAME}
   yaml-cpp
   m
   vita2d
@@ -134,7 +141,7 @@ target_link_libraries(${SHORT_NAME}
   pthread
 )
 
-vita_create_self(${SHORT_NAME}.self ${SHORT_NAME} UNSAFE UNCOMPRESSED)
+vita_create_self(${SHORT_NAME}.self ${VITA_ELF_NAME} UNSAFE UNCOMPRESSED)
 vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
@@ -147,19 +154,24 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE assets/fonts/segoeui.ttf resources/fonts/segoeui.ttf
 )
 
-file(STRINGS "psvitaip.txt" PSVITAIP)
+get_filename_component(psvitaipFilePath psvitaip.txt REALPATH)
+if(EXISTS "${psvitaipFilePath}")
+  file(STRINGS "${psvitaipFilePath}" PSVITAIP)
 
-add_custom_target(send
-  COMMAND curl -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
-  DEPENDS ${SHORT_NAME}.self
-)
+  add_custom_target(send
+    COMMAND curl -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
+    DEPENDS ${SHORT_NAME}.self
+  )
 
-add_custom_target(shellsend
-  COMMAND psp2shell_cli ${PSVITAIP} 3333 load ${VITA_TITLEID} ${SHORT_NAME}.self
-  DEPENDS ${SHORT_NAME}.self
-)
+  add_custom_target(shellsend
+    COMMAND psp2shell_cli ${PSVITAIP} 3333 load ${VITA_TITLEID} ${SHORT_NAME}.self
+    DEPENDS ${SHORT_NAME}.self
+  )
 
-add_custom_target(vpksend
-  COMMAND curl -T ${SHORT_NAME}.vpk ftp://${PSVITAIP}:1337/ux0:/
-  DEPENDS ${SHORT_NAME}.vpk
-)
+  add_custom_target(vpksend
+    COMMAND curl -T ${SHORT_NAME}.vpk ftp://${PSVITAIP}:1337/ux0:/
+    DEPENDS ${SHORT_NAME}.vpk
+  )
+else()
+  message("Couldn't find psvitaip.txt. Put the IP-address of you vita there to get new build targets.")
+endif()

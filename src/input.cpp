@@ -8,6 +8,7 @@ Input::Input()
 {
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_BACK, SCE_TOUCH_SAMPLING_STATE_START);
+	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
 }
 
 int Input::Get()
@@ -23,9 +24,60 @@ int Input::Get()
 
 	ret = sceTouchPeek(SCE_TOUCH_PORT_FRONT, &(touch), 1);
 	if (ret < 0)
-        log_printf(DBG_ERROR, "sceTouchPeek() = 0x%08X", ret);
+		log_printf(DBG_ERROR, "sceTouchPeek() = 0x%08X", ret);
+
+	handleAnalogSticks();
+	handleRepeatPress();
 
 	return 0;
+}
+
+void Input::handleAnalogSticks() {
+	if (pad.ly < 127 - INPUT_ANALOG_DEAD_ZONE)
+		pad.buttons |= SCE_CTRL_UP;
+	if (pad.ly > 127 + INPUT_ANALOG_DEAD_ZONE)
+		pad.buttons |= SCE_CTRL_DOWN;
+	if (pad.lx < 127 - INPUT_ANALOG_DEAD_ZONE)
+		pad.buttons |= SCE_CTRL_LEFT;
+	if (pad.lx > 127 + INPUT_ANALOG_DEAD_ZONE)
+		pad.buttons |= SCE_CTRL_RIGHT;
+}
+
+void Input::handleRepeatPress() {
+	repeatMask = 0;
+	std::tuple<unsigned int, uint8_t*, uint8_t>  buttons[] = {
+		std::make_tuple(SCE_CTRL_UP, &pad.up, oldpad.up),
+		std::make_tuple(SCE_CTRL_RIGHT, &pad.right, oldpad.right),
+		std::make_tuple(SCE_CTRL_DOWN, &pad.down, oldpad.down),
+		std::make_tuple(SCE_CTRL_LEFT, &pad.left, oldpad.left),
+		std::make_tuple(SCE_CTRL_LEFT, &pad.left, oldpad.left),
+		std::make_tuple(SCE_CTRL_LTRIGGER, &pad.lt, oldpad.lt),
+		std::make_tuple(SCE_CTRL_RTRIGGER, &pad.rt, oldpad.rt),
+		std::make_tuple(SCE_CTRL_TRIANGLE, &pad.triangle, oldpad.triangle),
+		std::make_tuple(SCE_CTRL_CIRCLE, &pad.circle, oldpad.circle),
+		std::make_tuple(SCE_CTRL_CROSS, &pad.cross, oldpad.cross),
+		std::make_tuple(SCE_CTRL_SQUARE, &pad.square, oldpad.square)
+	};
+	for (const auto &b : buttons) {
+		unsigned int SCE_CTRL = std::get<0>(b);
+		if(!KeyPressed(SCE_CTRL)) continue;
+		uint8_t *pad_mem = std::get<1>(b);
+		uint8_t oldpad_mem = std::get<2>(b);
+		// log_printf(DBG_DEBUG, "oldmem 0x%02X    mem 0x%02X    btn 0x%08X", oldpad_mem, *pad_mem, SCE_CTRL);
+		if ((oldpad_mem & 1) == 1) {
+			*pad_mem = (oldpad_mem + 2) % (INPUT_REPEAT_DELAY << 2);
+			if (*pad_mem < oldpad_mem) {
+				repeatMask |= SCE_CTRL;
+			}
+		} else {
+			*pad_mem = (oldpad_mem + 2) % (INPUT_INIT_REPEAT_DELAY << 2);
+			if (*pad_mem < oldpad_mem) {
+				repeatMask |= SCE_CTRL;
+				*pad_mem |= 1;
+			}
+		}
+		// log_printf(DBG_DEBUG, "oldmem 0x%02X    mem 0x%02X    btn 0x%08X\n", oldpad_mem, *pad_mem, SCE_CTRL);
+	}
 }
 
 int Input::Propagate()
@@ -60,6 +112,28 @@ int Input::KeyPressed(unsigned int buttons) const
 int Input::KeyNewPressed(unsigned int buttons) const
 {
 	return KeyPressed(buttons) && (oldpad.buttons & buttons) != buttons;
+}
+
+int Input::KeyNewPressedRapidFire(unsigned int buttons) const {
+	// unsigned int repeatMask =
+	// 	(pad.up & 1) << __builtin_ctz(SCE_CTRL_UP) |
+	// 	(pad.right & 1) << __builtin_ctz(SCE_CTRL_RIGHT) |
+	// 	(pad.down & 1) << __builtin_ctz(SCE_CTRL_DOWN) |
+	// 	(pad.left & 1) << __builtin_ctz(SCE_CTRL_LEFT) |
+	// 	(pad.lt & 1) << __builtin_ctz(SCE_CTRL_LTRIGGER) |
+	// 	(pad.rt & 1) << __builtin_ctz(SCE_CTRL_RTRIGGER) |
+	// 	(pad.triangle & 1) << __builtin_ctz(SCE_CTRL_TRIANGLE) |
+	// 	(pad.circle & 1) << __builtin_ctz(SCE_CTRL_CIRCLE) |
+	// 	(pad.cross & 1) << __builtin_ctz(SCE_CTRL_CROSS) |
+	// 	(pad.square & 1) << __builtin_ctz(SCE_CTRL_SQUARE);
+	// log_printf(DBG_DEBUG, "pad.lt=0x%02X    repeatMast=0x%08X", pad.lt, repeatMask);
+	// log_printf(DBG_DEBUG, "pad.lt & 1=0x%02X", pad.lt & 1);
+	// log_printf(DBG_DEBUG, __builtin_ctz(SCE_CTRL_LTRIGGER=%i",__builtin_ctz(SCE_CTRL_LTRIGGER);
+	// log_printf(DBG_DEBUG, "1 <<__builtin_ctz(SCE_CTRL_LTRIGGER=0x%08X", 1 << __builtin_ctz(SCE_CTRL_LTRIGGER));
+	// log_printf(DBG_DEBUG, "(pad.lt & 1) << __builtin_ctz(SCE_CTRL_LTRIGGER)=0x%08X\n", (pad.lt & 1) << __builtin_ctz(SCE_CTRL_LTRIGGER));
+	// log_printf(DBG_DEBUG, "buttons=0x%08X\n", buttons);
+	// log_printf(DBG_DEBUG, "buttons & ~repeatMask=0x%08X\n", buttons & ~repeatMask);
+	return KeyNewPressed(buttons) || (repeatMask & buttons) == buttons;
 }
 
 int Input::TouchPressed() const

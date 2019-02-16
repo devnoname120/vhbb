@@ -82,7 +82,8 @@ int ListView::updateScrollSpeed(double &scrollSpeed, unsigned long timeDif)
 	return 0;
 }
 
-ListView::ListView(std::vector<Homebrew> homebrews)
+ListView::ListView(std::vector<Homebrew> homebrews):
+	font_43(Font(std::string(FONT_DIR "segoeui.ttf"), 43))
 {
     log_printf(DBG_DEBUG, "posY: %d", posY);
     log_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
@@ -163,17 +164,17 @@ int ListView::HandleInput(int focus, const Input& input)
 		// There is a selected item
 		} else if (selectedItem != -1) {
 			// TODO: timer instead so that the user can stay clicked
-			if (input.KeyNewPressed(SCE_CTRL_UP) && selectedItem > 0) {
+			if (input.KeyNewPressedRapidFire(SCE_CTRL_UP) && selectedItem > 0) {
 				selectedItem--;
-				resetHeighlight();
+				resetHighlight();
 				// Scroll up if the selected item is outside of view
 				if (selectedItem < firstFullyDisplayedItem()) {
 					posY = std::max<int>(0, posY - ITEM_HEIGHT);
 				}
 
-			} else if (input.KeyNewPressed(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {
+			} else if (input.KeyNewPressedRapidFire(SCE_CTRL_DOWN) && selectedItem < listItems.size() - 1) {
 				selectedItem++;
-				resetHeighlight();
+				resetHighlight();
                 log_printf(DBG_DEBUG, "lastFullyDisplayedItem(): %d", lastFullyDisplayedItem());
 				// Scroll down if the selected item is outside of view
 				if (selectedItem > lastFullyDisplayedItem()) {
@@ -189,9 +190,9 @@ int ListView::HandleInput(int focus, const Input& input)
 			}
 		// No item is selected
 		} else {
-			if (input.KeyNewPressed(SCE_CTRL_UP)) {
+			if (input.KeyNewPressedRapidFire(SCE_CTRL_UP)) {
 				selectedItem = lastFullyDisplayedItem();
-			} else if (input.KeyNewPressed(SCE_CTRL_DOWN)) {
+			} else if (input.KeyNewPressedRapidFire(SCE_CTRL_DOWN)) {
 				selectedItem = firstFullyDisplayedItem();
 			}
 		}
@@ -201,7 +202,7 @@ int ListView::HandleInput(int focus, const Input& input)
 }
 
 
-int ListView::resetHeighlight()
+int ListView::resetHighlight()
 {
 	itemHighlightAlpha = 255;
 	itemHighlightDirection = 0;
@@ -211,10 +212,13 @@ int ListView::resetHeighlight()
 
 int ListView::Display()
 {
+	if (listItems.empty()) {
+		font_43.DrawCentered(Rectangle(Point(0, LIST_MIN_Y), Point(SCREEN_WIDTH, LIST_MAX_Y)), "No results");
+		return 0;
+	}
 	for (int i=firstDisplayedItem(); i <= lastDisplayedItem(); i++) {
 		listItems[i].Display(itemPosY(i), i == selectedItem, itemHighlightAlpha);
 	}
-	
 	if (itemHighlightDirection) {
 		if (itemHighlightAlpha < 255 - itemHighlightSpeed)
 			itemHighlightAlpha += itemHighlightSpeed;

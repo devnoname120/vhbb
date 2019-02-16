@@ -85,6 +85,7 @@ int main() {
     activity.Display();
 
     vita2d_end_drawing();
+    vita2d_common_dialog_update();
     vita2d_swap_buffers();
     sceDisplayWaitVblankStart();
   }

@@ -19,11 +19,17 @@ public:
 	explicit ListView(std::vector<Homebrew> homebrews);
 
 	int HandleInput(int focus, const Input& input) override;
-	int Display() override;
+	virtual int Display() override;
 
+	virtual void SignalSelected() { log_printf(DBG_DEBUG, "ListView::SignalSelected"); };
+	virtual void SignalDeselected() { log_printf(DBG_DEBUG, "ListView::SignalDeselected"); };
+	virtual bool IsReadyToShow() { return true; };
+
+protected:
+	std::vector<ListItem> listItems;
 
 private:
-	std::vector<ListItem> listItems;
+	Font font_43;
 
 	int posY = 0; //!< Position in the list of homebrews if we consider it as a texture
 	int preSelectedItem = -1;
@@ -31,7 +37,7 @@ private:
 	int itemHighlightAlpha = 255;
 	int itemHighlightSpeed = 7;
 	int itemHighlightDirection = 1;
-	int resetHeighlight();
+	int resetHighlight();
 	
 	double scrollSpeed = 0;
 

@@ -28,7 +28,7 @@ int Splash::Display()
 
 	switch(step) {
 		case STEP_FADING_IN:
-			alpha = std::min<unsigned int>(255, alpha+4);
+			alpha = std::min<unsigned int>(255, alpha + SPLASH_FADING_STEP_SIZE);
 			if (alpha >= 255) {
 				step = STEP_STATIC;
 				alpha = 255;
@@ -36,13 +36,13 @@ int Splash::Display()
 			}
 			break;
 		case STEP_STATIC:
-			if (frame_count >= 5*60) {
+			if (frame_count >= SPLASH_STATIC_DURATION_IN_FRAMES) {
 				step = STEP_FADING_OUT;
 			}
 			frame_count += 1;
 			break;
 		case STEP_FADING_OUT:
-			alpha = (unsigned int) std::max<int>(0, ((int)alpha) - 4);
+			alpha = (unsigned int) std::max<int>(0, ((int)alpha) - SPLASH_FADING_STEP_SIZE);
 			if (alpha <= 0) {
 				alpha = 0;
 				splash_index += 1;
