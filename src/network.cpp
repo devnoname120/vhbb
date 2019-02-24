@@ -16,6 +16,7 @@ public:
     }
 
     int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow) {
+        if (dltotal == 0) return CURLE_OK;
         m_progress.percent((float)(dlnow / dltotal) * 100);
         return CURLE_OK;
     }
