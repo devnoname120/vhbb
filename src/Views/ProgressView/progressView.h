@@ -19,16 +19,19 @@
 class ProgressView: public View {
 public:
 	ProgressView(InfoProgress progress, Homebrew hb);
+	ProgressView(InfoProgress progress, std::string hb_name, std::string icon_path);
+	ProgressView(InfoProgress progress, std::string hb_name, Texture icon_texture);
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
 	// Wait in millisecond
 	void Finish(unsigned int wait = 300);
+
+	std::string hb_name;
 private:
 	uint32_t finish_tick = 0;
 
 	InfoProgress progress_;
-	Homebrew hb_;
 
 	Font font_24;
 	Texture img_icon;

@@ -18,8 +18,31 @@ include(FindPkgConfig)
 
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID  "VHBB00001")
+set(UPDATER_TITLEID  "VHBB00002")
 set(VITA_VERSION "00.83")
-add_definitions(-DVITA_VERSION="${VITA_VERSION}")
+
+
+set(PACKAGE_TEMP_FOLDER "ux0:/temp/pkg/")
+
+add_subdirectory(src_updater)
+create_updater("${SHORT_NAME}" "${VITA_TITLEID}" ${UPDATER_TITLEID} "${PACKAGE_TEMP_FOLDER}")
+
+add_custom_command(
+  OUTPUT ${PROJECT_SOURCE_DIR}/assets/updater/eboot.bin
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/assets/updater
+  COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME} ${PROJECT_SOURCE_DIR}/assets/updater/eboot.bin
+  COMMENT "Copying built updater bin to assets"
+  DEPENDS ${${SHORT_NAME}_UPDATER_EBOOT_NAME}
+  DEPENDS ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME}
+)
+add_custom_command(
+  OUTPUT ${PROJECT_SOURCE_DIR}/assets/updater/param.sfo
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/assets/updater/
+  COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME} ${PROJECT_SOURCE_DIR}/assets/updater/param.sfo
+  COMMENT "Copying built updater sfo to assets"
+  DEPENDS ${${SHORT_NAME}_UPDATER_SFO_NAME}
+  DEPENDS ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME}
+)
 
 option(DEBUGNET "Enable debugnet for logging" ON)
 
@@ -82,7 +105,16 @@ FUNCTION(ADD_RESOURCES out_var)
   SET(${out_var} "${result}" PARENT_SCOPE)
 ENDFUNCTION()
 
-file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/head.bin assets/*.png assets/*.jpeg assets/*.yml assets/*.ttf assets/*.wav assets/*.ogg)
+file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR}
+  assets/head.bin
+  assets/*.png
+  assets/*.jpeg
+  assets/*.yml
+  assets/*.ttf
+  assets/*.wav
+  assets/*.ogg)
+set(res_files ${res_files} assets/updater/eboot.bin assets/updater/param.sfo)
+
 add_resources(PROJECT_RESOURCES ${res_files})
 
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
@@ -91,6 +123,14 @@ set(VITA_ELF_NAME ${SHORT_NAME}.elf)
 add_executable(${VITA_ELF_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
+)
+
+target_compile_definitions(${VITA_ELF_NAME}
+  PRIVATE
+  VITA_VERSION="${VITA_VERSION}"
+  VHBB_SHORT_NAME="${SHORT_NAME}"
+  PACKAGE_TEMP_FOLDER=std::string\(\"${PACKAGE_TEMP_FOLDER}\"\)
+  UPDATER_TITLEID="${UPDATER_TITLEID}"
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -156,13 +196,8 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
 
 set(RELEASE_DIR ${CMAKE_SOURCE_DIR}/release)
 add_custom_target(release
-  COMMAND cp ${CMAKE_BINARY_DIR}/${SHORT_NAME}.vpk ${RELEASE_DIR}/
-  COMMAND cp ${CMAKE_BINARY_DIR}/${SHORT_NAME}.self ${RELEASE_DIR}/raw/eboot.bin
-  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/icon0.png ${RELEASE_DIR}/raw/
-  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/livearea/contents/bg.png ${RELEASE_DIR}/raw/
-  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/livearea/contents/startup.png ${RELEASE_DIR}/raw/
-  COMMAND cp ${CMAKE_SOURCE_DIR}/sce_sys/livearea/contents/template.xml ${RELEASE_DIR}/raw/
-  COMMAND ${CMAKE_SOURCE_DIR}/tools/version_bin_creator.sh ${VITA_VERSION} ${RELEASE_DIR}/raw/version.bin
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${SHORT_NAME}.vpk ${RELEASE_DIR}/
+  COMMAND ${CMAKE_SOURCE_DIR}/tools/version_bin_creator.sh ${VITA_VERSION} ${RELEASE_DIR}/version.bin
 
   DEPENDS ${SHORT_NAME}.vpk
 )

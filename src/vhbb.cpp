@@ -11,6 +11,7 @@
 #include "fetch_load_icons_thread.h"
 #include "vitasdk_quirks.h"
 #include "updater.h"
+#include "vitaPackage.h"
 
 
 void debug_start() {
@@ -62,10 +63,22 @@ int main() {
 
   // Sleep invalidates file descriptors
   StartNoSleepThread();
+
+  // remove updater app if installed
+  {  // extra scope needed to cause VitaPackage cleanup procedure
+    auto updaterPkg = InstalledVitaPackage(UPDATER_TITLEID);
+    if(updaterPkg.IsInstalled()) {
+      log_printf(DBG_DEBUG, "Found updater installed -> removing");
+      int ret = updaterPkg.Uninstall();
+      if (ret < 0)
+        log_printf(DBG_ERROR, "updaterPkg.Uninstall() = 0x%08x", ret);
+    }
+  }
+
   network_test();
   StartFetchLoadIconsThread();
 
-  Updater::startUpdateCheckThread();
+  Updater::startUpdateThread();
 
   vita2d_init();
   vita2d_set_clear_color(COLOR_BLACK);

@@ -53,9 +53,9 @@
 
 #include <yaml-cpp/yaml.h>
 
+#include "concurrency.h"
 #include "debug.h"
 #include "macros.h"
 #include "screen.h"
-#include "concurrency.h"
 
 #include "unordered_map_pair_hash.h"

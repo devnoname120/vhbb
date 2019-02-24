@@ -22,5 +22,7 @@ T align_left(T a, V b)
     return a - b;
 }
 
-std::string join_strings(const std::vector<std::string>& v, char c);
+std::string join_strings(const std::vector<std::string> &v, char c);
 std::vector<std::string> split_string(const std::string &s, char delim=' ');
+
+std::string std_string_format (const char *fmt, ...);

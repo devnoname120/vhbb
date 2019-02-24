@@ -12,7 +12,6 @@ public:
 	void lock();
 	void unlock();
 
-	SceUID GetId();
 private:
 	SceUID id;
 	std::string name;

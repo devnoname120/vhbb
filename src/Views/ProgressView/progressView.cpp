@@ -11,12 +11,21 @@ extern unsigned char _binary_assets_spr_img_dialog_btn_png_start;
 
 
 ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
-    progress_(std::move(progress)),
-	hb_(std::move(hb)),
+	ProgressView(std::move(progress), hb.name, ICONS_FOLDER + "/" + hb.icon)
+{
+}
+
+ProgressView::ProgressView(InfoProgress progress, std::string hb_name, std::string icon_path) :
+	ProgressView(std::move(progress), std::move(hb_name), Texture(icon_path))
+{
+}
+ProgressView::ProgressView(InfoProgress progress, std::string hb_name, Texture icon_texture) :
+	hb_name(std::move(hb_name)),
+	progress_(std::move(progress)),
 	font_24(Font(std::string(FONT_DIR "segoeui.ttf"), 24)),
 	//thid_(thid),
-	img_icon(Texture(ICONS_FOLDER + "/" + hb_.icon)),
-    img_dialog_progress_bg(Texture(&_binary_assets_spr_img_dialog_progress_bg_png_start)),
+	img_icon(icon_texture),
+	img_dialog_progress_bg(Texture(&_binary_assets_spr_img_dialog_progress_bg_png_start)),
 	img_dialog_progress_bar(Texture(&_binary_assets_spr_img_dialog_progress_bar_png_start)),
 	img_dialog_progress_bar_glow(Texture(&_binary_assets_spr_img_dialog_progress_bar_glow_png_start)),
 	img_dialog_btn(Texture(&_binary_assets_spr_img_dialog_btn_png_start))
@@ -40,7 +49,7 @@ int ProgressView::Display()
 	// Background
 	img_dialog_progress_bg.Draw(Point(PROGRESS_VIEW_X, PROGRESS_VIEW_Y));
 	// Name
-	font_24.DrawFromBaseline(Point(PROGRESS_VIEW_X + 197, PROGRESS_VIEW_Y + 53), hb_.name);
+	font_24.DrawFromBaseline(Point(PROGRESS_VIEW_X + 197, PROGRESS_VIEW_Y + 53), hb_name);
 	// Message
 	font_24.DrawFromBaseline(Point(PROGRESS_VIEW_X + 197, PROGRESS_VIEW_Y + 117), progress_.message());
     // Progress bar

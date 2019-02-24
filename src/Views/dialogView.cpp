@@ -88,7 +88,7 @@ void DialogView::HandleBtnFocus(const Input& input) {
 			_focusGlowCycle = 0;
 		}
 	}
-	if (input.KeyNewPressed(SCE_CTRL_CROSS) && _btnFocus > 0) {
+	if (input.KeyNewPressed(SCE_CTRL_CROSS) && _btnFocus >= 0) {
 		log_printf(DBG_DEBUG, "SCE_CTRL_CROSS, choosing button %i", _btnFocus);
 		_status = COMMON_DIALOG_STATUS_FINISHED;
 		if (_type == DIALOG_TYPE_YESNO && _btnFocus == 1) {
