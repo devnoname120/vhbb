@@ -4,13 +4,12 @@
 
 #define VHBB_LOG_DIR std::string("ux0:/log")
 
-inline std::string methodName(const std::string& prettyFunction)
-{
-    size_t colons = prettyFunction.find("::");
-    size_t begin = prettyFunction.substr(0,colons).rfind(' ') + 1;
-    size_t end = prettyFunction.rfind('(') - begin;
+inline std::string methodName(const std::string &prettyFunction) {
+	size_t args_start = prettyFunction.find('(');
+	size_t begin = prettyFunction.substr(0, args_start).rfind(' ') + 1;
+	size_t end = args_start - begin;
 
-    return prettyFunction.substr(begin,end) + "()";
+	return prettyFunction.substr(begin, end) + "()";
 }
 
 
