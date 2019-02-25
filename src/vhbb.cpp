@@ -10,7 +10,7 @@
 #include "nosleep_thread.h"
 #include "fetch_load_icons_thread.h"
 #include "vitasdk_quirks.h"
-#include "updater.h"
+#include "update.h"
 #include "vitaPackage.h"
 
 
