@@ -39,7 +39,7 @@ function(create_updater MAIN_SHORT_NAME MAIN_TITLEID UPDATER_TITLEID PKG_FOLDER)
     debugnet
     SceNetCtl_stub
     SceNet_stub
-
+    SceShellSvc_stub
     SceAppMgr_stub
     ScePromoterUtil_stub
     SceSysmodule_stub

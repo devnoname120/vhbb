@@ -30,6 +30,7 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/sysmodule.h>
 #include <psp2/promoterutil.h>
+#include <psp2/shellutil.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -203,8 +204,18 @@ int main() {
 	log_init();
 	log_printf(DBG_INFO, "Hi from Updater App");
 
+	int ret;
+	ret = sceShellUtilInitEvents(0);
+	if (ret < 0) log_printf(DBG_ERROR, "sceShellUtilInitEvents(0)=0x%08X", ret);
+	ret = sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_PS_BTN);
+	if (ret < 0) log_printf(DBG_ERROR, "sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_PS_BTN)=0x%08X", ret);
+	ret = sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_POWEROFF_MENU);
+	if (ret < 0) log_printf(DBG_ERROR, "sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_POWEROFF_MENU)=0x%08X", ret);
+
+	log_printf(DBG_DEBUG, "All button locks done");
+
 	sceAppMgrDestroyOtherApp();
-	log_printf(DBG_INFO, "Killed pther apps");
+	log_printf(DBG_INFO, "Killed other apps");
 
 	char *titleid = get_title_id(PACKAGE_DIR "/sce_sys/param.sfo");
 	log_printf(DBG_DEBUG, "Found staged app: %s; looking for: %s", titleid, UPDATE_TITLEID);
