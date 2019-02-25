@@ -91,6 +91,8 @@ int main() {
   activity.AddView(splash);
 
   while (true) {
+    Update::tick();
+
     vita2d_start_drawing();
     vita2d_clear_screen();
 

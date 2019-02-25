@@ -1,5 +1,7 @@
 #include "update.h"
 
+#include <atomic>
+
 #include "network.h"
 #include "filesystem.h"
 #include "vitaPackage.h"
@@ -11,6 +13,14 @@
 #define VERSION_URL BASE_ADDRESS "release/version.bin"
 #define UPDATE_URL BASE_ADDRESS "release/" VHBB_SHORT_NAME ".vpk"
 #define VERSION_PATH std::string(VHBB_DATA + "/latest_version.bin")
+
+enum UpdateState {
+	UPDATE_STATE_RUNNING,
+	UPDATE_STATE_DONE,
+	UPDATE_STATE_READY_TO_LAUNCH_UPDATER
+};
+
+typedef std::atomic<UpdateState> AtomicUpdateState;
 
 constexpr int matchDigit(const char *text) {
 	return *text == '0' || *text == '1' || *text == '2' || *text == '3' || *text == '4' ||
@@ -76,7 +86,9 @@ std::shared_ptr<ProgressView> Update::startProgressView(InfoProgress progress, s
 	return progressView;
 }
 
-void Update::updateThread(unsigned int arglen, void *args) {
+void Update::updateThread(unsigned int arglen, void* argv[]) {
+	auto updateState_ptr = (AtomicUpdateState*)argv[0];
+	log_printf(DBG_INFO, "2 %p->%i", updateState_ptr, updateState_ptr->load());
 	if (Update::updateExists()) {
 		DialogViewResult res{};
 		DialogView::openDialogView(&res, "A new version of VHBB is available.\nDo you want to update?", DIALOG_TYPE_YESNO);
@@ -94,7 +106,8 @@ void Update::updateThread(unsigned int arglen, void *args) {
 				progress.message("Finished");
 				progressView->Finish(700);
 				sceKernelDelayThread(700000);
-				runUpdater();
+				updateState_ptr->store(UPDATE_STATE_READY_TO_LAUNCH_UPDATER);
+				return;
 			} catch (std::exception &ex) {
 				progress.message(std_string_format("Update failed: %s", ex.what()));
 				progressView->Finish(4000);
@@ -103,12 +116,22 @@ void Update::updateThread(unsigned int arglen, void *args) {
 			log_printf(DBG_INFO, "User refused to update VHBB");
 		}
 	}
+	updateState_ptr->store(UPDATE_STATE_DONE);
 }
+
+AtomicUpdateState updateState{UPDATE_STATE_RUNNING};
 
 void Update::startUpdateThread() {
 	SceUID thid = sceKernelCreateThread("update_check_thread", (SceKernelThreadEntry)Update::updateThread,
-	                                       0x40, 0x20000, 0, 0, nullptr);
-	sceKernelStartThread(thid_db, 0, nullptr);
+	                                    0x40, 0x20000, 0, 0, nullptr);
+	auto updateState_ptr = &updateState;
+	log_printf(DBG_INFO, "%p->%i", updateState_ptr, updateState_ptr->load());
+	sceKernelStartThread(thid, sizeof(updateState_ptr), &updateState_ptr);
+}
+
+void Update::tick() {
+	if (updateState.load() == UPDATE_STATE_READY_TO_LAUNCH_UPDATER)
+		Update::startUpdaterApp();
 }
 
 void Update::installUpdater(InfoProgress progress) {
