@@ -17,8 +17,8 @@ set(ENV{PKG_CONFIG_PATH} "$ENV{VITASDK}/arm-vita-eabi/lib/pkgconfig")
 include(FindPkgConfig)
 
 set(VITA_APP_NAME "Vita Homebrew Browser")
-set(VITA_TITLEID  "VHBB00001")
-set(UPDATER_TITLEID  "VHBB00002")
+set(VITA_TITLEID "VHBB00001")
+set(UPDATER_TITLEID "VHBB00002")
 set(VITA_VERSION "00.83")
 
 
@@ -198,7 +198,7 @@ set(RELEASE_DIR ${CMAKE_SOURCE_DIR}/release)
 add_custom_target(release
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${SHORT_NAME}.vpk ${RELEASE_DIR}/
   COMMAND ${CMAKE_SOURCE_DIR}/tools/version_bin_creator.sh ${VITA_VERSION} ${RELEASE_DIR}/version.bin
-
+  COMMENT "Creating new release files"
   DEPENDS ${SHORT_NAME}.vpk
 )
 
