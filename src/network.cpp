@@ -153,8 +153,8 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
         }
 
     } catch (curlpp::RuntimeError &e) {
-        log_printf(DBG_ERROR, "cURLpp exception: %s", e.what());
-        throw std::runtime_error("Network: Cannot send request");
+        log_printf(DBG_ERROR, "cURLpp exception: %s %s ", e.what(), url.c_str());
+        throw std::runtime_error(std_string_format("NetworkError: %s", e.what()).c_str());
     }
 
     if(progress) progress->percent(100);

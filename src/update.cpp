@@ -29,8 +29,14 @@ bool Updater::updateExists() {
 	int res;
 	res = sceIoRemove(VERSION_PATH.c_str());
 	log_printf(DBG_ERROR, "sceIoRemove(%s) = 0x%08x", VERSION_PATH.c_str(), res);
-
-	res = Network::get_instance()->Download(std::string(VERSION_URL), VERSION_PATH);
+	try {
+		res = Network::get_instance()->Download(std::string(VERSION_URL), VERSION_PATH);
+	} catch (const std::runtime_error &err) {
+		log_printf(DBG_ERROR, "Couldn't download version.bin: %s", err.what());
+		DialogView::openDialogView(nullptr, std_string_format("Couldn't check for update\n\n%s", err.what()),
+		                           DIALOG_TYPE_OK);
+		return false;
+	}
 	if (res) {
 		log_printf(DBG_ERROR, "Couldn't download version.bin 0x%08x", res);
 		return false;
