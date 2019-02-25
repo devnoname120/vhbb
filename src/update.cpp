@@ -25,7 +25,7 @@ constexpr int matchVersionString(const char *text) {
 	       *(text+5) == '\0';
 }
 
-bool Updater::updateExists() {
+bool Update::updateExists() {
 	int res;
 	res = sceIoRemove(VERSION_PATH.c_str());
 	log_printf(DBG_ERROR, "sceIoRemove(%s) = 0x%08x", VERSION_PATH.c_str(), res);
@@ -69,15 +69,15 @@ bool Updater::updateExists() {
 
 extern unsigned char _binary_assets_spr_img_updater_icon_png_start;
 
-std::shared_ptr<ProgressView> Updater::startProgressView(InfoProgress progress, std::string title) {
+std::shared_ptr<ProgressView> Update::startProgressView(InfoProgress progress, std::string title) {
 	auto progressView = std::make_shared<ProgressView>(progress, std::move(title), Texture(&_binary_assets_spr_img_updater_icon_png_start));
 	progressView->priority = 750;
 	Activity::get_instance()->AddView(progressView);
 	return progressView;
 }
 
-void Updater::updateThread(unsigned int arglen, void *args) {
-	if (Updater::updateExists()) {
+void Update::updateThread(unsigned int arglen, void *args) {
+	if (Update::updateExists()) {
 		DialogViewResult res{};
 		DialogView::openDialogView(&res, "A new version of VHBB is available.\nDo you want to update?", DIALOG_TYPE_YESNO);
 		while (res.status == COMMON_DIALOG_STATUS_RUNNING || res.status == COMMON_DIALOG_STATUS_NONE) {
@@ -105,13 +105,13 @@ void Updater::updateThread(unsigned int arglen, void *args) {
 	}
 }
 
-void Updater::startUpdateThread() {
-	SceUID thid_db = sceKernelCreateThread("update_check_thread", (SceKernelThreadEntry) Updater::updateThread,
+void Update::startUpdateThread() {
+	SceUID thid = sceKernelCreateThread("update_check_thread", (SceKernelThreadEntry)Update::updateThread,
 	                                       0x40, 0x20000, 0, 0, nullptr);
 	sceKernelStartThread(thid_db, 0, nullptr);
 }
 
-void Updater::installUpdater(InfoProgress progress) {
+void Update::installUpdater(InfoProgress progress) {
 	log_printf(DBG_DEBUG, "Installing updater");
 	int ret = UpdaterPackage().InstallUpdater(std::move(progress));
 	if (ret >= 0) {
@@ -122,7 +122,7 @@ void Updater::installUpdater(InfoProgress progress) {
 	}
 }
 
-void Updater::prepareUpdateFiles(InfoProgress progress) {
+void Update::prepareUpdateFiles(InfoProgress progress) {
 	log_printf(DBG_DEBUG, "Downloading update vpk");
 	progress.message("Downloading update...");
 
@@ -138,7 +138,7 @@ void Updater::prepareUpdateFiles(InfoProgress progress) {
 	log_printf(DBG_DEBUG, "Made update head.bin");
 }
 
-void Updater::runUpdater() {
+void Update::startUpdaterApp() {
 	log_printf(DBG_DEBUG, "Starting updater " UPDATER_TITLEID);
 	char uri[32];
 	sprintf(uri, "psgm:play?titleid=%s", UPDATER_TITLEID);
