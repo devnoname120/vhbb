@@ -1,5 +1,30 @@
 #include "dialogView.h"
 
+#define DIALOG_WIDTH 760
+#define DIALOG_HEIGHT 440
+#define DIALOG_PADDING_X 79
+#define DIALOG_PADDING_Y 30
+#define DIALOG_BTN_WIDTH 322
+#define DIALOG_BTN_HEIGHT 56
+#define DIALOG_BTN_PADDING 5
+#define DIALOG_MSG_HEIGHT 315
+#define DIALOG_X ((SCREEN_WIDTH-DIALOG_WIDTH)/2)
+#define DIALOG_Y ((SCREEN_HEIGHT-DIALOG_HEIGHT)/2)
+#define DIALOG_BTN_Y (DIALOG_Y+365)
+#define DIALOG_BTN_INNER_TOP_Y (DIALOG_BTN_Y+DIALOG_BTN_PADDING)
+#define DIALOG_BTN_INNER_BOT_Y (DIALOG_BTN_Y+DIALOG_BTN_HEIGHT-DIALOG_BTN_PADDING)
+#define DIALOG_BTN_1_OF_1_X (DIALOG_X+DIALOG_WIDTH/2-DIALOG_BTN_WIDTH/2)
+#define DIALOG_BTN_1_OF_1_INNER_LEFT_X (DIALOG_BTN_1_OF_1_X+DIALOG_BTN_PADDING)
+#define DIALOG_BTN_1_OF_1_INNER_RIGHT_X (DIALOG_BTN_1_OF_1_X+DIALOG_BTN_WIDTH-DIALOG_BTN_PADDING)
+#define DIALOG_BTN_1_OF_2_X (DIALOG_X+44)
+#define DIALOG_BTN_1_OF_2_INNER_LEFT_X (DIALOG_BTN_1_OF_2_X+DIALOG_BTN_PADDING)
+#define DIALOG_BTN_1_OF_2_INNER_RIGHT_X (DIALOG_BTN_1_OF_2_X+DIALOG_BTN_WIDTH-DIALOG_BTN_PADDING)
+#define DIALOG_BTN_2_OF_2_X (DIALOG_X+394)
+#define DIALOG_BTN_2_OF_2_INNER_LEFT_X (DIALOG_BTN_2_OF_2_X+DIALOG_BTN_PADDING)
+#define DIALOG_BTN_2_OF_2_INNER_RIGHT_X (DIALOG_BTN_2_OF_2_X+DIALOG_BTN_WIDTH-DIALOG_BTN_PADDING)
+#define DIALOG_FOCUS_GLOW_HALF_CYCLE_FRAMES 45
+
+
 extern unsigned char _binary_assets_spr_img_dialog_msg_bg_png_start;
 extern unsigned char _binary_assets_spr_img_dialog_msg_btn_png_start;
 extern unsigned char _binary_assets_spr_img_dialog_msg_btn_active_png_start;
@@ -74,9 +99,9 @@ void DialogView::HandleBtnFocus(const Input& input) {
 		}
 		log_printf(DBG_DEBUG, "SCE_CTRL_RIGHT, _btnFocus %i", _btnFocus);
 	}
-	if (input.KeyNewPressed(SCE_CTRL_LEFT)) {
+	if (input.KeyNewPressed(SCE_CTRL_LEFT) || input.KeyNewPressed(SCE_CTRL_UP) || input.KeyNewPressed(SCE_CTRL_DOWN)) {
 		_btnFocus = 0;
-		log_printf(DBG_DEBUG, "SCE_CTRL_LEFT, _btnFocus %i", _btnFocus);
+		log_printf(DBG_DEBUG, "SCE_CTRL_LEFT||SCE_CTRL_UP||SCE_CTRL_DOWN , _btnFocus %i", _btnFocus);
 	}
 	if (input.TouchPressed()) {
 		_btnFocus = -1;
