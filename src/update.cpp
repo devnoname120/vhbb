@@ -94,7 +94,6 @@ std::shared_ptr<ProgressView> Update::startProgressView(InfoProgress progress, s
 
 void Update::updateThread(unsigned int arglen, void* argv[]) {
 	auto updateState_ptr = (AtomicUpdateState*)argv[0];
-	log_printf(DBG_INFO, "2 %p->%i", updateState_ptr, updateState_ptr->load());
 	if (Update::updateExists()) {
 		DialogViewResult res{};
 		DialogView::openDialogView(&res, "A new version of VHBB is available.\nDo you want to update?", DIALOG_TYPE_YESNO);
@@ -135,7 +134,6 @@ void Update::startUpdateThread() {
 	SceUID thid = sceKernelCreateThread("update_check_thread", (SceKernelThreadEntry)Update::updateThread,
 	                                    0x40, 0x20000, 0, 0, nullptr);
 	auto updateState_ptr = &updateState;
-	log_printf(DBG_INFO, "%p->%i", updateState_ptr, updateState_ptr->load());
 	sceKernelStartThread(thid, sizeof(updateState_ptr), &updateState_ptr);
 }
 
