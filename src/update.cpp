@@ -1,6 +1,7 @@
 #include "update.h"
 
 #include <atomic>
+#include <array>
 
 #include "network.h"
 #include "filesystem.h"
@@ -51,8 +52,8 @@ bool Update::updateExists() {
 		log_printf(DBG_ERROR, "Couldn't download version.bin 0x%08x", res);
 		return false;
 	}
-	uint32_t latestVersion[2], currentVersion[2];
-	res = readFile(VERSION_PATH, latestVersion, sizeof(uint32_t)*2);
+	std::array<uint32_t, 2> latestVersion, currentVersion;
+	res = readFile(VERSION_PATH, latestVersion.data(), sizeof(uint32_t)*2);
 	if (res < 0) {
 		log_printf(DBG_ERROR, "Couldn't read \"%s\": 0x%08x", VERSION_PATH.c_str(), res);
 		return false;
@@ -67,9 +68,7 @@ bool Update::updateExists() {
 	              "VITA_VERSION=" VITA_VERSION " but must match \\d\\d\\.\\d\\d");
 	currentVersion[0] = std::stoi(currentVersionStr.substr(0, 2));
 	currentVersion[1] = std::stoi(currentVersionStr.substr(3, 2));
-	auto lvptr = (uint64_t*) &latestVersion;
-	auto cvptr = (uint64_t*) &currentVersion;
-	if (*lvptr > *cvptr) {
+	if (latestVersion > currentVersion) {
 		log_printf(DBG_INFO, "Current version " VITA_VERSION " is outdated.");
 		return true;
 	}
