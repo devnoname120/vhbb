@@ -23,7 +23,7 @@ public:
 	DialogView();
 	~DialogView();
 
-	static void openDialogView(DialogViewResult *result, std::string message, DialogType type);
+	static void openDialogView(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type);
 
 	int Display() override;
 	int HandleInput(int focus, const Input& input) override;
@@ -39,7 +39,7 @@ private:
 	Texture img_dialog_msg_btn_active;
 	Texture img_dialog_msg_btn_focus;
 
-	void prepare(DialogViewResult *result, std::string message, DialogType type);
+	void prepare(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type);
 	void DrawBtn(const std::string &text, const Point &sprPt, const Rectangle &textRect, int idx);
 	int GetGlowCycleAlpha();
 	void HandleBtnFocus(const Input& input);
@@ -48,7 +48,7 @@ private:
 
 	CommonDialogStatus _status = COMMON_DIALOG_STATUS_NONE;
 	bool _accepted = false;
-	DialogViewResult *_result;
+	std::shared_ptr<DialogViewResult> _result;
 	std::string _message;
 	DialogType _type;
 	int _btnFocus, _btnTouched = -1;

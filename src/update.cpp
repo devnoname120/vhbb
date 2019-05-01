@@ -95,12 +95,12 @@ std::shared_ptr<ProgressView> Update::startProgressView(InfoProgress progress, s
 void Update::updateThread(unsigned int arglen, void* argv[]) {
 	auto updateState_ptr = (AtomicUpdateState*)argv[0];
 	if (Update::updateExists()) {
-		DialogViewResult res{};
-		DialogView::openDialogView(&res, "A new version of VHBB is available.\nDo you want to update?", DIALOG_TYPE_YESNO);
-		while (res.status == COMMON_DIALOG_STATUS_RUNNING || res.status == COMMON_DIALOG_STATUS_NONE) {
+		auto res = std::make_shared<DialogViewResult>();
+		DialogView::openDialogView(res, "A new version of VHBB is available.\nDo you want to update?", DIALOG_TYPE_YESNO);
+		while (res->status == COMMON_DIALOG_STATUS_RUNNING || res->status == COMMON_DIALOG_STATUS_NONE) {
 			sceKernelDelayThread(16666);  // roughly 1/60 second
 		}
-		if (res.accepted) {
+		if (res->accepted) {
 			log_printf(DBG_INFO, "User chose to update VHBB");
 			InfoProgress progress;
 			auto progressView = startProgressView(progress, "Update Helper (1/2)");

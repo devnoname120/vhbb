@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "dialogView.h"
 
 #define DIALOG_WIDTH 760
@@ -49,13 +51,13 @@ DialogView::~DialogView() {
 	log_printf(DBG_WARNING, "DialogView destructor called");
 }
 
-void DialogView::openDialogView(DialogViewResult *result, std::string message, DialogType type) {
+void DialogView::openDialogView(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type) {
 	DialogView *dialogView = DialogView::create_instance();
-	dialogView->prepare(result, std::move(message), type);
+	dialogView->prepare(std::move(result), std::move(message), type);
 	Activity::get_instance()->AddView(dialogView->me_ptr);
 }
 
-void DialogView::prepare(DialogViewResult *result, std::string message, DialogType type) {
+void DialogView::prepare(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type) {
 	log_printf(DBG_DEBUG, "Created DialogView \"%s\"", message.c_str());
 	if (_status == COMMON_DIALOG_STATUS_RUNNING) {
 		log_printf(DBG_WARNING, "Canceling current DialogView");
@@ -155,10 +157,8 @@ void DialogView::HandleBtnTouch(const Input& input) {
 	if (input.TouchPressed()) {
 		if (input.TouchNewPressed()) {
 			_btnTouched = GetTouchedBtnIdx(input);
-		} else if (_btnTouched >= 0){
-			if (_btnTouched != GetTouchedBtnIdx(input)) {
-				_btnTouched = -1;
-			}
+		} else if (_btnTouched >= 0 && _btnTouched != GetTouchedBtnIdx(input)){
+			_btnTouched = -1;
 		}
 	} else {
 		if (_btnTouched >= 0) {
