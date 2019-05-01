@@ -55,6 +55,22 @@ void network_test() {
     // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
 }
 
+void mainLoopTick(Input input, Activity &activity) {
+  vita2d_start_drawing();
+  vita2d_clear_screen();
+
+  input.Get();
+
+  activity.FlushQueue();
+  activity.HandleInput(1, input);
+  activity.Display();
+
+  vita2d_end_drawing();
+  vita2d_common_dialog_update();
+  vita2d_swap_buffers();
+  sceDisplayWaitVblankStart();
+}
+
 int main() {
   sceIoMkdir(VHBB_DATA.c_str(), 0777);
 
@@ -76,9 +92,9 @@ int main() {
   }
 
   network_test();
-  StartFetchLoadIconsThread();
-
   Update::startUpdateThread();
+
+  StartFetchLoadIconsThread();
 
   vita2d_init();
   vita2d_set_clear_color(COLOR_BLACK);
@@ -90,22 +106,15 @@ int main() {
   splash->priority = 200;
   activity.AddView(splash);
 
-  while (true) {
+  while (!Update::checkIsDone()) {
     Update::tick();
+    mainLoopTick(input, activity);
+  }
 
-    vita2d_start_drawing();
-    vita2d_clear_screen();
+  StartFetchLoadIconsThread();
 
-    input.Get();
-
-    activity.FlushQueue();
-    activity.HandleInput(1, input);
-    activity.Display();
-
-    vita2d_end_drawing();
-    vita2d_common_dialog_update();
-    vita2d_swap_buffers();
-    sceDisplayWaitVblankStart();
+  while (true) {
+    mainLoopTick(input, activity);
   }
 
   return 0;

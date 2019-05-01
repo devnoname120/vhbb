@@ -9,6 +9,7 @@ class Update {
 public:
 	static void startUpdateThread();
 	static void tick();  // needs to be called frequently from main thread
+	static bool checkIsDone();
 
 private:
 	static void updateThread(unsigned int arglen, void* argv[]);

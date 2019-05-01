@@ -142,6 +142,10 @@ void Update::tick() {
 		Update::startUpdaterApp();
 }
 
+bool Update::checkIsDone() {
+	return updateState.load() == UPDATE_STATE_DONE;
+}
+
 void Update::installUpdater(InfoProgress progress) {
 	log_printf(DBG_DEBUG, "Installing updater");
 	int ret = UpdaterPackage().InstallUpdater(std::move(progress));
