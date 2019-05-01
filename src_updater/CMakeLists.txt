@@ -34,9 +34,12 @@ function(create_updater MAIN_SHORT_NAME MAIN_TITLEID UPDATER_TITLEID PKG_FOLDER)
     ${PROJECT_SOURCE_FILES}
   )
 
+  if(CMAKE_BUILD_TYPE MATCHES Debug AND DEBUGNET)
+    target_link_libraries(${UPDATER_ELF_NAME} debugnet)
+  endif()
+
   target_compile_definitions(${UPDATER_ELF_NAME} PRIVATE UPDATE_TITLEID="${MAIN_TITLEID}" PACKAGE_DIR="${PKG_FOLDER}")
   target_link_libraries(${UPDATER_ELF_NAME}
-    debugnet
     SceNetCtl_stub
     SceNet_stub
     SceShellSvc_stub
