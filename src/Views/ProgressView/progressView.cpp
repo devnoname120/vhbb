@@ -11,7 +11,7 @@ extern unsigned char _binary_assets_spr_img_dialog_btn_png_start;
 
 
 ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
-	ProgressView(std::move(progress), hb.name, ICONS_FOLDER + "/" + hb.icon)
+	ProgressView(std::move(progress), hb.name, std::string(ICONS_FOLDER "/") + hb.icon)
 {
 }
 

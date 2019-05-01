@@ -4,7 +4,7 @@
 #include "infoProgress.h"
 
 #ifndef PACKAGE_TEMP_FOLDER
-	#define PACKAGE_TEMP_FOLDER std::string("ux0:/temp/pkg/")
+	#define PACKAGE_TEMP_FOLDER "ux0:/temp/pkg/"
 #endif
 
 class VitaPackage{

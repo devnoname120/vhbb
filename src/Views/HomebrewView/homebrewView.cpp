@@ -39,7 +39,7 @@ HomebrewView::HomebrewView(Homebrew hb) :
 	img_preview_btn_download(Texture(&_binary_assets_spr_img_preview_btn_download_png_start)),
 	img_preview_btn_open(Texture(&_binary_assets_spr_img_preview_btn_open_png_start)),
 	hb_(hb),
-	img_icon(Texture(ICONS_FOLDER + "/" + hb.icon))
+	img_icon(Texture(std::string(ICONS_FOLDER "/") + hb.icon))
 {
 	// FIXME Support more than 1 screenshot
 	if (!hb_.screenshots.empty()) {
@@ -47,13 +47,13 @@ HomebrewView::HomebrewView(Homebrew hb) :
 		std::size_t found = path.find_last_of('/');
 		std::string filename = path.substr(found+1);
 
-		sceIoMkdir(SCREENSHOTS_FOLDER.c_str(), 0777);
+		sceIoMkdir(SCREENSHOTS_FOLDER, 0777);
 
 		try {
-			Network::get_instance()->Download(SERVER_BASE_URL + path, SCREENSHOTS_FOLDER + "/" + filename);
+			Network::get_instance()->Download(std::string(SERVER_BASE_URL) + path, std::string(SCREENSHOTS_FOLDER "/") + filename);
 			// FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the vita2d resource is freed (cf ~Texture())
-			screenshots.emplace_back(SCREENSHOTS_FOLDER + "/" + filename, false);
-			sceIoRemove((SCREENSHOTS_FOLDER + "/" + filename).c_str());
+			screenshots.emplace_back(std::string(SCREENSHOTS_FOLDER "/") + filename, false);
+			sceIoRemove((std::string(SCREENSHOTS_FOLDER "/") + filename).c_str());
 		} catch (const std::exception &ex) {
             log_printf(DBG_ERROR, "Cannot download screenshot %s", path.c_str());
 		}

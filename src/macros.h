@@ -2,16 +2,16 @@
 
 #include <global_include.h>
 
-#define VHBB_DATA std::string("ux0:/data/VitaHbBrowser")
+#define VHBB_DATA "ux0:/data/VitaHbBrowser"
 
-#define API_ENDPOINT std::string("https://rinnegatamante.it/vitadb/list_hbs_yaml.php")
-#define API_LOCAL std::string("ux0:/data/VitaHbBrowser/homebrews.yaml")
+#define API_ENDPOINT "https://rinnegatamante.it/vitadb/list_hbs_yaml.php"
+#define API_LOCAL "ux0:/data/VitaHbBrowser/homebrews.yaml"
 
-#define ICONS_FOLDER std::string("ux0:/data/VitaHbBrowser/icons")
-#define ICON_URL_PREFIX std::string("https://rinnegatamante.it/vitadb/icons/")
+#define ICONS_FOLDER "ux0:/data/VitaHbBrowser/icons"
+#define ICON_URL_PREFIX "https://rinnegatamante.it/vitadb/icons/"
 
-#define SERVER_BASE_URL std::string("https://rinnegatamante.it/vitadb/")
-#define SCREENSHOTS_FOLDER std::string("ux0:/data/VitaHbBrowser/screenshots")
+#define SERVER_BASE_URL "https://rinnegatamante.it/vitadb/"
+#define SCREENSHOTS_FOLDER "ux0:/data/VitaHbBrowser/screenshots"
 
 enum {
 	COLOR_WHITE = RGBA8(255, 255, 255, 255),

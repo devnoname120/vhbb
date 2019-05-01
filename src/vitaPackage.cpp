@@ -121,12 +121,12 @@ int makeHeadBin()
 	uint32_t len;
 	uint32_t out;
 
-	if (checkFileExist((PACKAGE_TEMP_FOLDER + "sce_sys/package/head.bin").c_str()))
+	if (checkFileExist(PACKAGE_TEMP_FOLDER "sce_sys/package/head.bin"))
 		return 0;
 
 	// Read param.sfo
 	char *sfo_buffer = nullptr;
-	int res = allocateReadFile((PACKAGE_TEMP_FOLDER + "sce_sys/param.sfo").c_str(), &sfo_buffer);
+	int res = allocateReadFile(PACKAGE_TEMP_FOLDER "sce_sys/param.sfo", &sfo_buffer);
 	if (res < 0)
 		return res;
 
@@ -174,10 +174,10 @@ int makeHeadBin()
 	memcpy(&head_bin[len], hmac, 16);
 
 	// Make dir
-	sceIoMkdir((PACKAGE_TEMP_FOLDER + "sce_sys/package").c_str(), 0777);
+	sceIoMkdir(PACKAGE_TEMP_FOLDER "sce_sys/package", 0777);
 
 	// Write head.bin
-	WriteFile((PACKAGE_TEMP_FOLDER + "sce_sys/package/head.bin").c_str(), head_bin, (unsigned int)&_binary_assets_head_bin_size);
+	WriteFile(PACKAGE_TEMP_FOLDER "sce_sys/package/head.bin", head_bin, (unsigned int)&_binary_assets_head_bin_size);
 
 	free(head_bin);
 
@@ -211,17 +211,17 @@ VitaPackage::~VitaPackage()
 }
 
 void VitaPackage::Extract(InfoProgress *progress) {
-	int ret = removePath(PACKAGE_TEMP_FOLDER);
+	int ret = removePath(std::string(PACKAGE_TEMP_FOLDER));
 
 	if (ret < 0) {
-		log_printf(DBG_ERROR, "removePath(%s) = 0x%08X", PACKAGE_TEMP_FOLDER.c_str(), ret);
+		log_printf(DBG_ERROR, "removePath(%s) = 0x%08X", PACKAGE_TEMP_FOLDER, ret);
 	}
 
-	sceIoMkdir(PACKAGE_TEMP_FOLDER.c_str(), 0777);
+	sceIoMkdir(PACKAGE_TEMP_FOLDER, 0777);
 
 	Zipfile vpk_file = Zipfile(vpk_);
 
-	vpk_file.Unzip(PACKAGE_TEMP_FOLDER, progress);
+	vpk_file.Unzip(std::string(PACKAGE_TEMP_FOLDER), progress);
 	sceIoRemove(vpk_.c_str());
 }
 
@@ -235,10 +235,10 @@ int VitaPackage::InstallExtracted(InfoProgress *progress) {
 	}
 	log_printf(DBG_DEBUG, "head.bin created");
 
-	ret = scePromoterUtilityPromotePkg(PACKAGE_TEMP_FOLDER.c_str(), 0);
+	ret = scePromoterUtilityPromotePkg(PACKAGE_TEMP_FOLDER, 0);
 	if (ret < 0) {
 		log_printf(DBG_ERROR, "Can't Promote %s: scePromoterUtilityPromotePkg(%s, 0) = 0x%08X",
-		           vpk_.c_str(), PACKAGE_TEMP_FOLDER.c_str(), ret);
+		           vpk_.c_str(), PACKAGE_TEMP_FOLDER, ret);
 		throw std::runtime_error("Error installing app");
 	}
 	log_printf(DBG_DEBUG, "Package promotion started");
@@ -266,7 +266,7 @@ int VitaPackage::InstallExtracted(InfoProgress *progress) {
 	}
 	log_printf(DBG_DEBUG, "Package promotion ended: success");
 
-	removePath(PACKAGE_TEMP_FOLDER);
+	removePath(std::string(PACKAGE_TEMP_FOLDER));
 
 	if(progress) progress->percent(100);
 	return 0;
@@ -296,9 +296,9 @@ int VitaPackage::Install(InfoProgress *progress)
 }
 
 
-#define UPDATER_EBOOT_PATH (PACKAGE_TEMP_FOLDER + "eboot.bin")
-#define UPDATER_SFO_DIR (PACKAGE_TEMP_FOLDER + "sce_sys/")
-#define UPDATER_SFO_PATH (PACKAGE_TEMP_FOLDER + "sce_sys/param.sfo")
+#define UPDATER_EBOOT_PATH (PACKAGE_TEMP_FOLDER "eboot.bin")
+#define UPDATER_SFO_DIR (PACKAGE_TEMP_FOLDER "sce_sys/")
+#define UPDATER_SFO_PATH (PACKAGE_TEMP_FOLDER "sce_sys/param.sfo")
 
 extern unsigned char _binary_assets_updater_eboot_bin_start;
 extern unsigned char _binary_assets_updater_eboot_bin_size;
@@ -310,17 +310,17 @@ int UpdaterPackage::InstallUpdater(InfoProgress progress) {
 }
 
 int UpdaterPackage::InstallUpdater(InfoProgress *progress) {
-	int ret = removePath(PACKAGE_TEMP_FOLDER);
+	int ret = removePath(std::string(PACKAGE_TEMP_FOLDER));
 	if (ret < 0) {
-		log_printf(DBG_ERROR, "removePath(%s) = 0x%08X", PACKAGE_TEMP_FOLDER.c_str(), ret);
+		log_printf(DBG_ERROR, "removePath(%s) = 0x%08X", PACKAGE_TEMP_FOLDER, ret);
 	}
 
-	ret = sceIoMkdir(PACKAGE_TEMP_FOLDER.c_str(), 0777);
-	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", PACKAGE_TEMP_FOLDER.c_str(), ret);
-	ret = sceIoMkdir(UPDATER_SFO_DIR.c_str(), 0777);
-	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", UPDATER_SFO_DIR.c_str(), ret);
-	log_printf(DBG_DEBUG, "Writing %s", UPDATER_EBOOT_PATH.c_str());
-	ret = WriteFile(UPDATER_EBOOT_PATH.c_str(),
+	ret = sceIoMkdir(PACKAGE_TEMP_FOLDER, 0777);
+	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", PACKAGE_TEMP_FOLDER, ret);
+	ret = sceIoMkdir(UPDATER_SFO_DIR, 0777);
+	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", UPDATER_SFO_DIR, ret);
+	log_printf(DBG_DEBUG, "Writing %s", UPDATER_EBOOT_PATH);
+	ret = WriteFile(UPDATER_EBOOT_PATH,
 	                (void *)&_binary_assets_updater_eboot_bin_start,
 	                (unsigned int)&_binary_assets_updater_eboot_bin_size);
 	if(progress) progress->percent(0);
@@ -328,9 +328,9 @@ int UpdaterPackage::InstallUpdater(InfoProgress *progress) {
 		log_printf(DBG_ERROR, "Update failed: Couldn't write eboot.bin");
 		return ret;
 	}
-	log_printf(DBG_DEBUG, "Writing %s", UPDATER_SFO_PATH.c_str());
+	log_printf(DBG_DEBUG, "Writing %s", UPDATER_SFO_PATH);
 	if(progress) progress->percent(10);
-	ret = WriteFile(UPDATER_SFO_PATH.c_str(),
+	ret = WriteFile(UPDATER_SFO_PATH,
 	                (void *)&_binary_assets_updater_param_sfo_start,
 	                (unsigned int)&_binary_assets_updater_param_sfo_size);
 	if (ret < 0) {

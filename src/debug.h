@@ -2,7 +2,7 @@
 
 #include <global_include.h>
 
-#define VHBB_LOG_DIR std::string("ux0:/log")
+#define VHBB_LOG_DIR "ux0:/log"
 
 inline std::string methodName(const std::string &prettyFunction) {
 	size_t args_start = prettyFunction.find('(');

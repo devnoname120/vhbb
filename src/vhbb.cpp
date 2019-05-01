@@ -72,7 +72,7 @@ void mainLoopTick(Input input, Activity &activity) {
 }
 
 int main() {
-  sceIoMkdir(VHBB_DATA.c_str(), 0777);
+  sceIoMkdir(VHBB_DATA, 0777);
 
   std::set_terminate(terminate_logger);
   debug_start();

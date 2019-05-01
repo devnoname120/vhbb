@@ -13,7 +13,7 @@
 #define BASE_ADDRESS "https://raw.githubusercontent.com/robsdedude/vhbb/autoUpdate/"
 #define VERSION_URL BASE_ADDRESS "release/version.bin"
 #define UPDATE_URL BASE_ADDRESS "release/" VHBB_SHORT_NAME ".vpk"
-#define VERSION_PATH std::string(VHBB_DATA + "/latest_version.bin")
+#define VERSION_PATH (VHBB_DATA "/latest_version.bin")
 
 enum UpdateState {
 	UPDATE_STATE_RUNNING,
@@ -38,10 +38,10 @@ constexpr int matchVersionString(const char *text) {
 
 bool Update::updateExists() {
 	int res;
-	res = sceIoRemove(VERSION_PATH.c_str());
-	log_printf(DBG_ERROR, "sceIoRemove(%s) = 0x%08x", VERSION_PATH.c_str(), res);
+	res = sceIoRemove(VERSION_PATH);
+	log_printf(DBG_ERROR, "sceIoRemove(%s) = 0x%08x", VERSION_PATH, res);
 	try {
-		res = Network::get_instance()->Download(std::string(VERSION_URL), VERSION_PATH);
+		res = Network::get_instance()->Download(std::string(VERSION_URL), std::string(VERSION_PATH));
 	} catch (const std::runtime_error &err) {
 		log_printf(DBG_ERROR, "Couldn't download version.bin: %s", err.what());
 		DialogView::openDialogView(nullptr, std_string_format("Couldn't check for update\n\n%s", err.what()),
@@ -53,15 +53,15 @@ bool Update::updateExists() {
 		return false;
 	}
 	std::array<uint32_t, 2> latestVersion, currentVersion;
-	res = readFile(VERSION_PATH, latestVersion.data(), sizeof(uint32_t)*2);
+	res = readFile(std::string(VERSION_PATH), latestVersion.data(), sizeof(uint32_t)*2);
 	if (res < 0) {
-		log_printf(DBG_ERROR, "Couldn't read \"%s\": 0x%08x", VERSION_PATH.c_str(), res);
+		log_printf(DBG_ERROR, "Couldn't read \"%s\": 0x%08x", VERSION_PATH, res);
 		return false;
 	}
 	log_printf(DBG_INFO, "Latest online version: %02i.%02i", latestVersion[0], latestVersion[1]);
-	res = sceIoRemove(VERSION_PATH.c_str());
+	res = sceIoRemove(VERSION_PATH);
 	if (res) {
-		log_printf(DBG_ERROR, "Couldn't delete %s: 0x%08x", VERSION_PATH.c_str(), res);
+		log_printf(DBG_ERROR, "Couldn't delete %s: 0x%08x", VERSION_PATH, res);
 	}
 	auto currentVersionStr = std::string(VITA_VERSION);
 	static_assert(matchVersionString(VITA_VERSION),
