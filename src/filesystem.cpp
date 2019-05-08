@@ -81,6 +81,8 @@ int readFile(const std::string &fn, std::string &content) {
 
 	sceIoClose(fd);
 
+	buf[read] = 0; // add null char terminator
+
 	content.reserve((uint) size);
 	content.assign(buf);
 

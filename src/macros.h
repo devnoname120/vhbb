@@ -3,6 +3,7 @@
 #include <global_include.h>
 
 #define VHBB_DATA "ux0:/data/VitaHbBrowser"
+#define VHBB_RESOURCES "ux0:/app/" VITA_TITLEID "/resources"
 
 #define API_ENDPOINT "https://rinnegatamante.it/vitadb/list_hbs_yaml.php"
 #define API_LOCAL "ux0:/data/VitaHbBrowser/homebrews.yaml"

@@ -41,7 +41,7 @@ int log_init(bool log_to_file)
 		snprintf(formattedTime, sizeof(formattedTime), "%04d-%02d-%02d_%02d-%02d-%02d",
 		         logTime.year, logTime.month, logTime.day, logTime.hour, logTime.minute, logTime.second);
 
-		std::string log_file = std::string(LOG_DIR "/" LOG_FILE) + formattedTime + ".log";
+		std::string log_file = std::string(LOG_DIR "/" LOG_FILE "_") + formattedTime + ".log";
 
 		g_log_fd = sceIoOpen(log_file.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 	}

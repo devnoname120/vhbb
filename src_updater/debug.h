@@ -8,13 +8,14 @@
 inline std::string methodName(const std::string &prettyFunction) {
 	size_t args_start = prettyFunction.find('(');
 	size_t begin = prettyFunction.substr(0, args_start).rfind(' ') + 1;
-	size_t end = args_start - begin;
+	size_t length = args_start - begin;
 
-	return prettyFunction.substr(begin, end) + "()";
+	return prettyFunction.substr(begin, length) + "()";
 }
 
 
 #define __METHOD_NAME__ methodName(__PRETTY_FUNCTION__)
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 
 #define DBG_NONE 0
@@ -24,8 +25,6 @@ inline std::string methodName(const std::string &prettyFunction) {
 #define DBG_DEBUG 4
 
 int log_init(bool log_to_file = false);
-int log_printf(int level, const char *format, ...);
 int _log_printf(int level, const char *format, ...);
 
-#define log_printf(level,format,...) _log_printf(level,(std::string("[") + std::string(__FILE__) + ":" + std::to_string(__LINE__) + " " +__METHOD_NAME__ + "]  " + format + "\n").c_str(),##__VA_ARGS__)
-#define log_assert(expr) if(expr){log_printf(DBG_ERROR, (std::string("Assertion error ==> ") + #expr).c_str()); return true;}else{return false;}
+#define log_printf(level,format,...) _log_printf(level,(std::string("[") + std::string(__FILENAME__) + ":" + std::to_string(__LINE__) + " " +__METHOD_NAME__ + "]  " + format + "\n").c_str(),##__VA_ARGS__)

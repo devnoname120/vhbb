@@ -94,8 +94,6 @@ int main() {
   network_test();
   Update::startUpdateThread();
 
-  StartFetchLoadIconsThread();
-
   vita2d_init();
   vita2d_set_clear_color(COLOR_BLACK);
 

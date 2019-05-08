@@ -296,14 +296,12 @@ int VitaPackage::Install(InfoProgress *progress)
 }
 
 
-#define UPDATER_EBOOT_PATH (PACKAGE_TEMP_FOLDER "eboot.bin")
-#define UPDATER_SFO_DIR (PACKAGE_TEMP_FOLDER "sce_sys/")
-#define UPDATER_SFO_PATH (PACKAGE_TEMP_FOLDER "sce_sys/param.sfo")
+#define UPDATER_SRC_EBOOT_PATH VHBB_RESOURCES "/updater/eboot.bin"
+#define UPDATER_SRC_SFO_PATH VHBB_RESOURCES "/updater/param.sfo"
 
-extern unsigned char _binary_assets_updater_eboot_bin_start;
-extern unsigned char _binary_assets_updater_eboot_bin_size;
-extern unsigned char _binary_assets_updater_param_sfo_start;
-extern unsigned char _binary_assets_updater_param_sfo_size;
+#define UPDATER_DST_EBOOT_PATH PACKAGE_TEMP_FOLDER "eboot.bin"
+#define UPDATER_DST_SFO_DIR PACKAGE_TEMP_FOLDER "sce_sys/"
+#define UPDATER_DST_SFO_PATH PACKAGE_TEMP_FOLDER "sce_sys/param.sfo"
 
 int UpdaterPackage::InstallUpdater(InfoProgress progress) {
 	return InstallUpdater(&progress);
@@ -317,22 +315,18 @@ int UpdaterPackage::InstallUpdater(InfoProgress *progress) {
 
 	ret = sceIoMkdir(PACKAGE_TEMP_FOLDER, 0777);
 	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", PACKAGE_TEMP_FOLDER, ret);
-	ret = sceIoMkdir(UPDATER_SFO_DIR, 0777);
-	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", UPDATER_SFO_DIR, ret);
-	log_printf(DBG_DEBUG, "Writing %s", UPDATER_EBOOT_PATH);
-	ret = WriteFile(UPDATER_EBOOT_PATH,
-	                (void *)&_binary_assets_updater_eboot_bin_start,
-	                (unsigned int)&_binary_assets_updater_eboot_bin_size);
+	ret = sceIoMkdir(UPDATER_DST_SFO_DIR, 0777);
+	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", UPDATER_DST_SFO_DIR, ret);
+	log_printf(DBG_DEBUG, "Copying %s -> %s", UPDATER_SRC_EBOOT_PATH, UPDATER_DST_EBOOT_PATH);
+	ret = copyFile(UPDATER_SRC_EBOOT_PATH, UPDATER_DST_EBOOT_PATH);
 	if(progress) progress->percent(0);
 	if (ret < 0) {
 		log_printf(DBG_ERROR, "Update failed: Couldn't write eboot.bin");
 		return ret;
 	}
-	log_printf(DBG_DEBUG, "Writing %s", UPDATER_SFO_PATH);
+	log_printf(DBG_DEBUG, "Copying %s -> %s", UPDATER_SRC_SFO_PATH, UPDATER_DST_SFO_PATH);
+	ret = copyFile(UPDATER_SRC_SFO_PATH, UPDATER_DST_SFO_PATH);
 	if(progress) progress->percent(10);
-	ret = WriteFile(UPDATER_SFO_PATH,
-	                (void *)&_binary_assets_updater_param_sfo_start,
-	                (unsigned int)&_binary_assets_updater_param_sfo_size);
 	if (ret < 0) {
 		log_printf(DBG_ERROR, "Update failed: Couldn't write param.sfo");
 		return ret;

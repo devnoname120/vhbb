@@ -56,7 +56,7 @@ struct SfoEntry {
 	uint32_t dataofs;
 } __attribute__((packed));
 
-int launchAppByUriExit(char *titleid) {
+int launchAppByUriExit(const char *titleid) {
 	char uri[32];
 	sprintf(uri, "psgm:play?titleid=%s", titleid);
 
@@ -224,7 +224,10 @@ int main() {
 		log_printf(DBG_WARNING, "Staged app %s didn't match expected app %s", titleid, UPDATE_TITLEID);
 	};
 
-	log_printf(DBG_INFO, "All done. Starting main app: %s", UPDATE_TITLEID);
+	log_printf(DBG_INFO, "All done. Starting updated app: %s", UPDATE_TITLEID);
+
+	sceKernelDelayThread(250000);
+
 	launchAppByUriExit(UPDATE_TITLEID);
 
 	return 0;

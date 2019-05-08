@@ -4,7 +4,8 @@
 
 #include "shapes.h"
 
-#define FONT_DIR "ux0:/app/VHBB00001/resources/fonts/"
+//#define FONT_DIR VHBB_RESOURCES "/resources/fonts/"
+#define FONT_DIR VHBB_RESOURCES "/fonts/"
 
 class Font {
 public:

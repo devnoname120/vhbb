@@ -102,7 +102,6 @@ file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR}
   assets/*.ttf
   assets/*.wav
   assets/*.ogg)
-set(res_files ${res_files} assets/updater/eboot.bin assets/updater/param.sfo)
 
 add_resources(PROJECT_RESOURCES ${res_files})
 
@@ -117,6 +116,7 @@ add_executable(${VITA_ELF_NAME}
 target_compile_definitions(${VITA_ELF_NAME}
   PRIVATE
   VITA_VERSION="${VITA_VERSION}"
+  VITA_TITLEID="${VITA_TITLEID}"
   VHBB_SHORT_NAME="${SHORT_NAME}"
   PACKAGE_TEMP_FOLDER="${PACKAGE_TEMP_FOLDER}"
   UPDATER_TITLEID="${UPDATER_TITLEID}"
@@ -183,8 +183,13 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE assets/icons.zip resources/icons.zip
   FILE assets/fonts/segoeui.ttf resources/fonts/segoeui.ttf
 
-  FILE ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME} resources/updater/eboot.bin
-  FILE ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME} resources/updater/param.sfo
+  FILE ${CMAKE_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME} resources/updater/eboot.bin
+  FILE ${CMAKE_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME} resources/updater/param.sfo
+)
+
+add_dependencies(${SHORT_NAME}.vpk_
+  ${${SHORT_NAME}_UPDATER_EBOOT_NAME}
+  ${${SHORT_NAME}_UPDATER_SFO_NAME}
 )
 
 set(RELEASE_DIR ${CMAKE_SOURCE_DIR}/release)

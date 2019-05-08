@@ -27,8 +27,6 @@ function(create_updater MAIN_SHORT_NAME MAIN_TITLEID UPDATER_TITLEID PKG_FOLDER)
   set_exported(UPDATER_SFO_NAME ${UPDATER_SHORT_NAME}_param.sfo "${MAIN_SHORT_NAME}_")
 
   file(GLOB_RECURSE PROJECT_SOURCE_FILES ${UPDATER_SRC_DIR}/*.h ${UPDATER_SRC_DIR}/*.hpp ${UPDATER_SRC_DIR}/*.cpp ${UPDATER_SRC_DIR}/*.c)
-#    file(GLOB_RECURSE PROJECT_SOURCE_FILES ${UPDATER_SRC_DIR}/*.h ${UPDATER_SRC_DIR}/*.c)
-#  file(GLOB_RECURSE)
 
   add_executable(${UPDATER_ELF_NAME}
     ${PROJECT_SOURCE_FILES}
@@ -38,7 +36,11 @@ function(create_updater MAIN_SHORT_NAME MAIN_TITLEID UPDATER_TITLEID PKG_FOLDER)
     target_link_libraries(${UPDATER_ELF_NAME} debugnet)
   endif()
 
-  target_compile_definitions(${UPDATER_ELF_NAME} PRIVATE UPDATE_TITLEID="${MAIN_TITLEID}" PACKAGE_DIR="${PKG_FOLDER}" UPDATER_VERSION="${UPDATER_VERSION}")
+  target_compile_definitions(${UPDATER_ELF_NAME}
+    PRIVATE UPDATE_TITLEID="${MAIN_TITLEID}"
+    PACKAGE_DIR="${PKG_FOLDER}"
+    UPDATER_VERSION="${UPDATER_VERSION}"
+  )
   target_link_libraries(${UPDATER_ELF_NAME}
     SceNetCtl_stub
     SceNet_stub
@@ -46,6 +48,7 @@ function(create_updater MAIN_SHORT_NAME MAIN_TITLEID UPDATER_TITLEID PKG_FOLDER)
     SceAppMgr_stub
     ScePromoterUtil_stub
     SceSysmodule_stub
+    SceVshBridge_stub
   )
 
   add_custom_command(OUTPUT ${UPDATER_VELF_NAME}

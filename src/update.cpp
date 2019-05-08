@@ -36,7 +36,7 @@ namespace YAML {
 };
 
 struct VersionInfo {
-	std::array<uint32_t, 2> latestVersion, currentVersion;
+	std::array<int, 2> latestVersion, currentVersion;
 	std::string url;
 };
 
@@ -73,10 +73,11 @@ int readVersionYAML(const std::string &fn, VersionInfo &vInfo) {
 	YAML::Node node = YAML::Load(versionYamlContent);
 	VersionYAML v = node.as<VersionYAML>();
 
-	std::string v0 = v.version.substr(0, 2), v1 = v.version.substr(3, 2);
-	std::istringstream issV0(v0), issV1(v1);
-
-	if (!issV0 >> vInfo.latestVersion[0] || !issV1 >> vInfo.latestVersion[1]) {
+	try {
+		vInfo.latestVersion[0] = std::stoi(v.version.substr(0, 2));
+		vInfo.latestVersion[1] = std::stoi(v.version.substr(3, 2));
+		log_printf(DBG_DEBUG, "Version field successfully parsed %i %i", vInfo.latestVersion[0], vInfo.latestVersion[1]);
+	} catch (const std::invalid_argument& e) {
 		log_printf(DBG_ERROR, "Couldn't parse content of version field %s: %s", fn.c_str(), v.version.c_str());
 		return -1;
 	}
@@ -89,7 +90,7 @@ int readVersionYAML(const std::string &fn, VersionInfo &vInfo) {
 int Update::getVersionInfo(bool &available, std::string &url) {
 	int res;
 	res = sceIoRemove(VERSION_YAML_PATH);
-	log_printf(DBG_ERROR, "sceIoRemove(%s) = 0x%08x", VERSION_YAML_PATH, res);
+	log_printf(DBG_DEBUG, "sceIoRemove(%s) = 0x%08x", VERSION_YAML_PATH, res);
 	try {
 		res = Network::get_instance()->Download(std::string(VERSION_YAML_URL), std::string(VERSION_YAML_PATH));
 	} catch (const std::runtime_error &err) {
