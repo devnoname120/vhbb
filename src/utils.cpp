@@ -1,6 +1,16 @@
 #include "utils.h"
 
 #include <cstdarg>
+#include <cctype>
+#include <algorithm>
+
+
+bool std_string_iequals(const std::string &a, const std::string &b) {
+	return std::equal(a.begin(), a.end(), b.begin(),
+	                  [](const char &a, const char &b) {
+		                  return std::tolower(a) == std::tolower(b);
+	                  });
+}
 
 
 std::string join_strings(const std::vector<std::string>& v, char c) {

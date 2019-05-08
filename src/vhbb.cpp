@@ -55,7 +55,7 @@ void network_test() {
     // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
 }
 
-void mainLoopTick(Input input, Activity &activity) {
+void mainLoopTick(Input &input, Activity &activity) {
   vita2d_start_drawing();
   vita2d_clear_screen();
 

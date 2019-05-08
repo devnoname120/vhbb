@@ -21,28 +21,17 @@ set(VITA_TITLEID "VHBB00001")
 set(UPDATER_TITLEID "VHBBUPDT1")
 set(VITA_VERSION "00.83")
 
+#set(VERSION_YAML_URL "https://vhbb.download/version.yml")
+#set(UPDATE_URL "https://github.com/devnoname120/vhbb/releases/download/${VITA_VERSION}/VitaHBBrowser.vpk")
+## FIXME: tmp for testing auto update
+set(VERSION_YAML_URL "https://github.com/robsdedude/vhbb/raw/updateTestBranch/release/version.yml")
+set(UPDATE_URL "https://github.com/robsdedude/vhbb/raw/updateTestBranch/release/VitaHBBrowser.vpk")
+
 
 set(PACKAGE_TEMP_FOLDER "ux0:/temp/pkg/")
 
 add_subdirectory(src_updater)
 create_updater("${SHORT_NAME}" "${VITA_TITLEID}" ${UPDATER_TITLEID} "${PACKAGE_TEMP_FOLDER}")
-
-add_custom_command(
-  OUTPUT ${PROJECT_SOURCE_DIR}/assets/updater/eboot.bin
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/assets/updater
-  COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME} ${PROJECT_SOURCE_DIR}/assets/updater/eboot.bin
-  COMMENT "Copying built updater bin to assets"
-  DEPENDS ${${SHORT_NAME}_UPDATER_EBOOT_NAME}
-  DEPENDS ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME}
-)
-add_custom_command(
-  OUTPUT ${PROJECT_SOURCE_DIR}/assets/updater/param.sfo
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/assets/updater/
-  COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME} ${PROJECT_SOURCE_DIR}/assets/updater/param.sfo
-  COMMENT "Copying built updater sfo to assets"
-  DEPENDS ${${SHORT_NAME}_UPDATER_SFO_NAME}
-  DEPENDS ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME}
-)
 
 option(DEBUGNET "Enable debugnet for logging" ON)
 
@@ -131,6 +120,7 @@ target_compile_definitions(${VITA_ELF_NAME}
   VHBB_SHORT_NAME="${SHORT_NAME}"
   PACKAGE_TEMP_FOLDER="${PACKAGE_TEMP_FOLDER}"
   UPDATER_TITLEID="${UPDATER_TITLEID}"
+  VERSION_YAML_URL="${VERSION_YAML_URL}"
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -192,12 +182,17 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
 
   FILE assets/icons.zip resources/icons.zip
   FILE assets/fonts/segoeui.ttf resources/fonts/segoeui.ttf
+
+  FILE ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME} resources/updater/eboot.bin
+  FILE ${PROJECT_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME} resources/updater/param.sfo
 )
 
 set(RELEASE_DIR ${CMAKE_SOURCE_DIR}/release)
 add_custom_target(release
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${SHORT_NAME}.vpk ${RELEASE_DIR}/
-  COMMAND ${CMAKE_SOURCE_DIR}/tools/version_bin_creator.sh ${VITA_VERSION} ${RELEASE_DIR}/version.bin
+  COMMAND ${CMAKE_COMMAND} -E echo "version: \"${VITA_VERSION}\"" > "${RELEASE_DIR}/version.yml"
+  COMMAND ${CMAKE_COMMAND} -E echo "url: \"${UPDATE_URL}\"" >> "${RELEASE_DIR}/version.yml"
+  VERBATIM
   COMMENT "Creating new release files"
   DEPENDS ${SHORT_NAME}.vpk
 )

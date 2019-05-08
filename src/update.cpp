@@ -2,6 +2,8 @@
 
 #include <atomic>
 #include <array>
+#include <iostream>
+#include <fstream>
 
 #include "network.h"
 #include "filesystem.h"
@@ -10,10 +12,35 @@
 #include "Views/dialogView.h"
 
 // FIXME: tmp url for deving
-#define BASE_ADDRESS "https://raw.githubusercontent.com/robsdedude/vhbb/autoUpdate/"
-#define VERSION_URL BASE_ADDRESS "release/version.bin"
-#define UPDATE_URL BASE_ADDRESS "release/" VHBB_SHORT_NAME ".vpk"
-#define VERSION_PATH (VHBB_DATA "/latest_version.bin")
+#ifndef VERSION_YAML_URL
+#define VERSION_YAML_URL "https://vhbb.download/version.yml"
+#endif
+
+#define VERSION_YAML_PATH (VHBB_DATA "/latest_version.yml")
+
+
+struct VersionYAML {
+	std::string version;
+	std::string url;
+};
+
+namespace YAML {
+	template<>
+	struct convert<VersionYAML> {
+		static bool decode(const Node &node, VersionYAML &version) {
+			version.version = node["version"].as<std::string>();
+			version.url = node["url"].as<std::string>();
+			return true;
+		}
+	};
+};
+
+struct VersionInfo {
+	std::array<uint32_t, 2> latestVersion, currentVersion;
+	std::string url;
+};
+
+
 
 enum UpdateState {
 	UPDATE_STATE_RUNNING,
@@ -36,44 +63,74 @@ constexpr int matchVersionString(const char *text) {
 	       *(text+5) == '\0';
 }
 
-bool Update::updateExists() {
+int readVersionYAML(const std::string &fn, VersionInfo &vInfo) {
+	std::string versionYamlContent;
+	int res = readFile(std::string(VERSION_YAML_PATH), versionYamlContent);
+	if (res < 0) {
+		log_printf(DBG_ERROR, "Couldn't read version file %s: 0x%08x", fn.c_str(), res);
+		return res;
+	}
+	YAML::Node node = YAML::Load(versionYamlContent);
+	VersionYAML v = node.as<VersionYAML>();
+
+	std::string v0 = v.version.substr(0, 2), v1 = v.version.substr(3, 2);
+	std::istringstream issV0(v0), issV1(v1);
+
+	if (!issV0 >> vInfo.latestVersion[0] || !issV1 >> vInfo.latestVersion[1]) {
+		log_printf(DBG_ERROR, "Couldn't parse content of version field %s: %s", fn.c_str(), v.version.c_str());
+		return -1;
+	}
+
+	vInfo.url = v.url;
+
+	return 0;
+}
+
+int Update::getVersionInfo(bool &available, std::string &url) {
 	int res;
-	res = sceIoRemove(VERSION_PATH);
-	log_printf(DBG_ERROR, "sceIoRemove(%s) = 0x%08x", VERSION_PATH, res);
+	res = sceIoRemove(VERSION_YAML_PATH);
+	log_printf(DBG_ERROR, "sceIoRemove(%s) = 0x%08x", VERSION_YAML_PATH, res);
 	try {
-		res = Network::get_instance()->Download(std::string(VERSION_URL), std::string(VERSION_PATH));
+		res = Network::get_instance()->Download(std::string(VERSION_YAML_URL), std::string(VERSION_YAML_PATH));
 	} catch (const std::runtime_error &err) {
-		log_printf(DBG_ERROR, "Couldn't download version.bin: %s", err.what());
+		log_printf(DBG_ERROR, "Couldn't download version.yml: %s", err.what());
 		DialogView::openDialogView(nullptr, std_string_format("Couldn't check for update\n\n%s", err.what()),
 		                           DIALOG_TYPE_OK);
 		return false;
 	}
 	if (res) {
-		log_printf(DBG_ERROR, "Couldn't download version.bin 0x%08x", res);
-		return false;
+		log_printf(DBG_ERROR, "Couldn't download version.yml 0x%08x", res);
+		return res;
 	}
-	std::array<uint32_t, 2> latestVersion, currentVersion;
-	res = readFile(std::string(VERSION_PATH), latestVersion.data(), sizeof(uint32_t)*2);
+
+	VersionInfo vInfo;
+
+	res = readVersionYAML(std::string(VERSION_YAML_PATH), vInfo);
 	if (res < 0) {
-		log_printf(DBG_ERROR, "Couldn't read \"%s\": 0x%08x", VERSION_PATH, res);
-		return false;
+		return res;
 	}
-	log_printf(DBG_INFO, "Latest online version: %02i.%02i", latestVersion[0], latestVersion[1]);
-	res = sceIoRemove(VERSION_PATH);
+
+	log_printf(DBG_INFO, "Latest online version: %02i.%02i", vInfo.latestVersion[0], vInfo.latestVersion[1]);
+	res = sceIoRemove(VERSION_YAML_PATH);
 	if (res) {
-		log_printf(DBG_ERROR, "Couldn't delete %s: 0x%08x", VERSION_PATH, res);
+		log_printf(DBG_ERROR, "Couldn't delete %s: 0x%08x", VERSION_YAML_PATH, res);
 	}
 	auto currentVersionStr = std::string(VITA_VERSION);
 	static_assert(matchVersionString(VITA_VERSION),
 	              "VITA_VERSION=" VITA_VERSION " but must match \\d\\d\\.\\d\\d");
-	currentVersion[0] = std::stoi(currentVersionStr.substr(0, 2));
-	currentVersion[1] = std::stoi(currentVersionStr.substr(3, 2));
-	if (latestVersion > currentVersion) {
+	vInfo.currentVersion[0] = std::stoi(currentVersionStr.substr(0, 2));
+	vInfo.currentVersion[1] = std::stoi(currentVersionStr.substr(3, 2));
+
+	if (vInfo.latestVersion > vInfo.currentVersion) {
 		log_printf(DBG_INFO, "Current version " VITA_VERSION " is outdated.");
-		return true;
+		available = true;
+		url = vInfo.url;
+	} else {
+		available = false;
+		log_printf(DBG_DEBUG, "Current version " VITA_VERSION " is up-to-date");
 	}
-	log_printf(DBG_DEBUG, "Current version " VITA_VERSION " is up-to-date");
-	return false;
+
+	return 0;
 }
 
 extern unsigned char _binary_assets_spr_img_updater_icon_png_start;
@@ -94,7 +151,10 @@ std::shared_ptr<ProgressView> Update::startProgressView(InfoProgress progress, s
 
 void Update::updateThread(unsigned int arglen, void* argv[]) {
 	auto updateState_ptr = (AtomicUpdateState*)argv[0];
-	if (Update::updateExists()) {
+	bool updateExists = false;
+	std::string updateURL;
+	Update::getVersionInfo(updateExists, updateURL);
+	if (updateExists) {
 		auto res = std::make_shared<DialogViewResult>();
 		DialogView::openDialogView(res, "A new version of VHBB is available.\nDo you want to update?", DIALOG_TYPE_YESNO);
 		while (res->status == COMMON_DIALOG_STATUS_RUNNING || res->status == COMMON_DIALOG_STATUS_NONE) {
@@ -108,7 +168,7 @@ void Update::updateThread(unsigned int arglen, void* argv[]) {
 			try {
 				installUpdater(progress.Range(0, 20));
 				progressView->hb_name = "VHBB Update (2/2)";
-				prepareUpdateFiles(progress.Range(20, 100));
+				prepareUpdateFiles(updateURL, progress.Range(20, 100));
 				progress.message("Finished");
 				progressView->Finish(700);
 				sceKernelDelayThread(700000);
@@ -157,11 +217,11 @@ void Update::installUpdater(InfoProgress progress) {
 	}
 }
 
-void Update::prepareUpdateFiles(InfoProgress progress) {
+void Update::prepareUpdateFiles(const std::string &updateURL, InfoProgress progress) {
 	log_printf(DBG_DEBUG, "Downloading update vpk");
 	progress.message("Downloading update...");
 
-	Network::get_instance()->Download(UPDATE_URL, std::string("ux0:/temp/download.vpk"), progress.Range(0, 60));
+	Network::get_instance()->Download(updateURL, std::string("ux0:/temp/download.vpk"), progress.Range(0, 60));
 
 	log_printf(DBG_DEBUG, "Extracting update vpk");
 	auto pkg = UpdatePackage(std::string("ux0:/temp/download.vpk"));

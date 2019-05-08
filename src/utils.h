@@ -1,3 +1,5 @@
+#pragma once
+
 #define _countof(a) (sizeof(a)/sizeof(*(a)))
 
 #include <string>
@@ -21,6 +23,8 @@ T align_left(T a, V b)
 {
     return a - b;
 }
+
+bool std_string_iequals(const std::string &a, const std::string &b);
 
 std::string join_strings(const std::vector<std::string> &v, char c);
 std::vector<std::string> split_string(const std::string &s, char delim=' ');

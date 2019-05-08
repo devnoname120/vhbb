@@ -13,10 +13,10 @@ public:
 
 private:
 	static void updateThread(unsigned int arglen, void* argv[]);
-	static bool updateExists();
+	static int getVersionInfo(bool &available, std::string &url);
 	static std::shared_ptr<Background> startBackgroundView();
 	static std::shared_ptr<ProgressView> startProgressView(InfoProgress progress, std::string title);
 	static void installUpdater(InfoProgress progress);
-	static void prepareUpdateFiles(InfoProgress progress);
+	static void prepareUpdateFiles(const std::string &updateURL, InfoProgress progress);
 	static void startUpdaterApp();
 };
