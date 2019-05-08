@@ -1,12 +1,9 @@
 #pragma once
 
-#include <psp2/io/fcntl.h>
-#include <cstdarg>
 #include <string>
-#include <string.h>
-#include <debugnet.h>
 
-#define VHBB_LOG_DIR "ux0:/log"
+#define LOG_DIR "ux0:/log"
+#define LOG_FILE UPDATE_TITLEID "_updater"
 
 inline std::string methodName(const std::string &prettyFunction) {
 	size_t args_start = prettyFunction.find('(');
@@ -26,17 +23,9 @@ inline std::string methodName(const std::string &prettyFunction) {
 #define DBG_WARNING 3
 #define DBG_DEBUG 4
 
-int log_init();
-int _log_printf(int level, const char *format, ...);
+int log_init(bool log_to_file = false);
 int log_printf(int level, const char *format, ...);
-bool log_assert(bool expr);
+int _log_printf(int level, const char *format, ...);
 
-#ifdef DEBUGNET
-	#define log_printf(level,format,...) _log_printf(level,(std::string("[") + std::string(__FILE__) + ":" + std::to_string(__LINE__) + " " +__METHOD_NAME__ + "]  " + format + "\n").c_str(),##__VA_ARGS__)
-	#define log_assert(expr) if(expr){log_printf(DBG_ERROR, (std::string("Assertion error ==> ") + #expr).c_str()); return true;}else{return false;}
-#else
-	#define log_printf(level,format,...) ((void)0)
-	#define log_assert(expr) ((void)0)
-	#define log_init(...) ((void)0)
-	#define _log_printf(level,format,...) ((void)0)
-#endif
+#define log_printf(level,format,...) _log_printf(level,(std::string("[") + std::string(__FILE__) + ":" + std::to_string(__LINE__) + " " +__METHOD_NAME__ + "]  " + format + "\n").c_str(),##__VA_ARGS__)
+#define log_assert(expr) if(expr){log_printf(DBG_ERROR, (std::string("Assertion error ==> ") + #expr).c_str()); return true;}else{return false;}

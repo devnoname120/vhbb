@@ -38,7 +38,7 @@ function(create_updater MAIN_SHORT_NAME MAIN_TITLEID UPDATER_TITLEID PKG_FOLDER)
     target_link_libraries(${UPDATER_ELF_NAME} debugnet)
   endif()
 
-  target_compile_definitions(${UPDATER_ELF_NAME} PRIVATE UPDATE_TITLEID="${MAIN_TITLEID}" PACKAGE_DIR="${PKG_FOLDER}")
+  target_compile_definitions(${UPDATER_ELF_NAME} PRIVATE UPDATE_TITLEID="${MAIN_TITLEID}" PACKAGE_DIR="${PKG_FOLDER}" UPDATER_VERSION="${UPDATER_VERSION}")
   target_link_libraries(${UPDATER_ELF_NAME}
     SceNetCtl_stub
     SceNet_stub

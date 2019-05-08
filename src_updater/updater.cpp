@@ -200,9 +200,7 @@ char *get_title_id(const char *filename) {
 }
 
 int main() {
-	// Destroy other apps
-	log_init();
-	log_printf(DBG_INFO, "Hi from Updater App");
+	log_init(true);
 
 	int ret;
 	ret = sceShellUtilInitEvents(0);
