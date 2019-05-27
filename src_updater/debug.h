@@ -1,3 +1,5 @@
+// FIXME Merge with src/debug.h
+
 #pragma once
 
 #include <string>

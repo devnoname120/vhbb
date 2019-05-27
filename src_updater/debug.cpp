@@ -1,3 +1,5 @@
+// FIXME Merge with src/debug.cpp
+
 #include "debug.h"
 
 #include <cstring>
