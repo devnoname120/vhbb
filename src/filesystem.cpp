@@ -1,6 +1,9 @@
 #include "filesystem.h"
 #include <psp2/io/dirent.h>
 
+// TODO: Encapsulate these functions into a Filesystem class
+
+
 // Path must end with '/'
 int removePath(std::string path) {
 	// sceIoDopen doesn't work if there is a '/' at the end
@@ -50,8 +53,8 @@ int removePath(std::string path) {
 	return 1;
 }
 
-int readFile(const std::string &fn, void *buffer, SceSize size) {
-	SceUID fd = sceIoOpen(fn.c_str(), SCE_O_RDONLY, 0);
+int readFile(const std::string &path, void *buffer, SceSize size) {
+	SceUID fd = sceIoOpen(path.c_str(), SCE_O_RDONLY, 0);
 	if (fd < 0)
 		return fd;
 
@@ -61,8 +64,8 @@ int readFile(const std::string &fn, void *buffer, SceSize size) {
 	return read;
 }
 
-int readFile(const std::string &fn, std::string &content) {
-	SceUID fd = sceIoOpen(fn.c_str(), SCE_O_RDONLY, 0);
+int readFile(const std::string &path, std::string &content) {
+	SceUID fd = sceIoOpen(path.c_str(), SCE_O_RDONLY, 0);
 	if (fd < 0)
 		return fd;
 
@@ -92,30 +95,30 @@ int readFile(const std::string &fn, std::string &content) {
 
 #define CP_BUF_SIZE (128 * 1024)
 
-int copyFile(const std::string &fn_src, const std::string &fn_dst) {
+int copyFile(const std::string &path_source, const std::string &path_dest) {
 	// The source and destination paths are identical
-	if (std_string_iequals(fn_src, fn_dst)) {
-		log_printf(DBG_ERROR, "source equals destination: %s", fn_src.c_str());
+	if (std_string_iequals(path_source, path_dest)) {
+		log_printf(DBG_ERROR, "source equals destination: %s", path_source.c_str());
 		return -1;
 	}
 
 	// The destination is a subfolder of the source folder
-	unsigned int len = fn_src.length();
-	if (std_string_iequals(fn_src.substr(0, len), fn_dst.substr(0, len)) && (fn_dst[len] == '/' || fn_dst[len - 1] == '/')) {
-		log_printf(DBG_ERROR, "source (%s) is sub-dir of dst (%s)", fn_src.c_str(), fn_dst.c_str());
+	unsigned int len = path_source.length();
+	if (std_string_iequals(path_source.substr(0, len), path_dest.substr(0, len)) && (path_dest[len] == '/' || path_dest[len - 1] == '/')) {
+		log_printf(DBG_ERROR, "source (%s) is sub-dir of dst (%s)", path_source.c_str(), path_dest.c_str());
 		return -2;
 	}
 
-	SceUID fdsrc = sceIoOpen(fn_src.c_str(), SCE_O_RDONLY, 0);
+	SceUID fdsrc = sceIoOpen(path_source.c_str(), SCE_O_RDONLY, 0);
 	if (fdsrc < 0) {
-		log_printf(DBG_ERROR, "couldn't open source %s: 0x%08x", fn_src.c_str(), fdsrc);
+		log_printf(DBG_ERROR, "couldn't open source %s: 0x%08x", path_source.c_str(), fdsrc);
 		return fdsrc;
 	}
 
-	SceUID fddst = sceIoOpen(fn_dst.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
+	SceUID fddst = sceIoOpen(path_dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 	if (fddst < 0) {
 		sceIoClose(fdsrc);
-		log_printf(DBG_ERROR, "couldn't read destination %s: 0x%08x", fn_dst.c_str(), fddst);
+		log_printf(DBG_ERROR, "couldn't read destination %s: 0x%08x", path_dest.c_str(), fddst);
 		return fddst;
 	}
 
@@ -125,10 +128,10 @@ int copyFile(const std::string &fn_src, const std::string &fn_dst) {
 		int read = sceIoRead(fdsrc, buf.data(), CP_BUF_SIZE);
 
 		if (read < 0) {
-			log_printf(DBG_ERROR, "source read error %s: 0x%08x", fn_src.c_str(), read);
+			log_printf(DBG_ERROR, "source read error %s: 0x%08x", path_source.c_str(), read);
 			sceIoClose(fddst);
 			sceIoClose(fdsrc);
-			sceIoRemove(fn_dst.c_str());
+			sceIoRemove(path_dest.c_str());
 			return read;
 		}
 
@@ -138,10 +141,10 @@ int copyFile(const std::string &fn_src, const std::string &fn_dst) {
 		int written = sceIoWrite(fddst, buf.data(), (SceSize) read);
 
 		if (written < 0) {
-			log_printf(DBG_ERROR, "destination write error %s: 0x%08x", fn_dst.c_str(), written);
+			log_printf(DBG_ERROR, "destination write error %s: 0x%08x", path_dest.c_str(), written);
 			sceIoClose(fddst);
 			sceIoClose(fdsrc);
-			sceIoRemove(fn_dst.c_str());
+			sceIoRemove(path_dest.c_str());
 			return written;
 		}
 

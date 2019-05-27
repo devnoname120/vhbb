@@ -7,6 +7,13 @@
 
 #define ntohl __builtin_bswap32
 
+#define UPDATER_SRC_EBOOT_PATH VHBB_RESOURCES "/updater/eboot.bin"
+#define UPDATER_SRC_SFO_PATH VHBB_RESOURCES "/updater/param.sfo"
+
+#define UPDATER_DST_EBOOT_PATH PACKAGE_TEMP_FOLDER "eboot.bin"
+#define UPDATER_DST_SFO_DIR PACKAGE_TEMP_FOLDER "sce_sys/"
+#define UPDATER_DST_SFO_PATH PACKAGE_TEMP_FOLDER "sce_sys/param.sfo"
+
 extern unsigned char _binary_assets_head_bin_start;
 extern unsigned char _binary_assets_head_bin_size;
 
@@ -185,8 +192,6 @@ int makeHeadBin()
 	return 0;
 }
 
-#define ntohl __builtin_bswap32
-
 VitaPackage::VitaPackage(const std::string vpk) :
 	vpk_(vpk)
 {
@@ -296,13 +301,6 @@ int VitaPackage::Install(InfoProgress *progress)
 }
 
 
-#define UPDATER_SRC_EBOOT_PATH VHBB_RESOURCES "/updater/eboot.bin"
-#define UPDATER_SRC_SFO_PATH VHBB_RESOURCES "/updater/param.sfo"
-
-#define UPDATER_DST_EBOOT_PATH PACKAGE_TEMP_FOLDER "eboot.bin"
-#define UPDATER_DST_SFO_DIR PACKAGE_TEMP_FOLDER "sce_sys/"
-#define UPDATER_DST_SFO_PATH PACKAGE_TEMP_FOLDER "sce_sys/param.sfo"
-
 int UpdaterPackage::InstallUpdater(InfoProgress progress) {
 	return InstallUpdater(&progress);
 }
@@ -314,25 +312,38 @@ int UpdaterPackage::InstallUpdater(InfoProgress *progress) {
 	}
 
 	ret = sceIoMkdir(PACKAGE_TEMP_FOLDER, 0777);
-	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", PACKAGE_TEMP_FOLDER, ret);
+	if (ret < 0)
+		log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", PACKAGE_TEMP_FOLDER, ret);
+	
 	ret = sceIoMkdir(UPDATER_DST_SFO_DIR, 0777);
-	if (ret < 0) log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", UPDATER_DST_SFO_DIR, ret);
+	if (ret < 0)
+		log_printf(DBG_ERROR, "sceIoMkdir(%s, 0777) = 0x%08X", UPDATER_DST_SFO_DIR, ret);
+	
 	log_printf(DBG_DEBUG, "Copying %s -> %s", UPDATER_SRC_EBOOT_PATH, UPDATER_DST_EBOOT_PATH);
 	ret = copyFile(UPDATER_SRC_EBOOT_PATH, UPDATER_DST_EBOOT_PATH);
-	if(progress) progress->percent(0);
+	
+	if(progress)
+		progress->percent(0);
+	
 	if (ret < 0) {
 		log_printf(DBG_ERROR, "Update failed: Couldn't write eboot.bin");
 		return ret;
 	}
+	
 	log_printf(DBG_DEBUG, "Copying %s -> %s", UPDATER_SRC_SFO_PATH, UPDATER_DST_SFO_PATH);
 	ret = copyFile(UPDATER_SRC_SFO_PATH, UPDATER_DST_SFO_PATH);
-	if(progress) progress->percent(10);
+	if(progress)
+		progress->percent(10);
+	
 	if (ret < 0) {
 		log_printf(DBG_ERROR, "Update failed: Couldn't write param.sfo");
 		return ret;
 	}
+	
 	log_printf(DBG_DEBUG, "Installing extracted updater");
-	if(progress) progress->percent(20);
+	if(progress)
+		progress->percent(20);
+	
 	if(progress) {
 		InfoProgress progress2 = progress->Range(20, 100);
 		return InstallExtracted(&progress2);

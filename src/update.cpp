@@ -18,7 +18,6 @@
 
 #define VERSION_YAML_PATH (VHBB_DATA "/latest_version.yml")
 
-
 struct VersionYAML {
 	std::string version;
 	std::string url;
@@ -50,6 +49,10 @@ enum UpdateState {
 
 typedef std::atomic<UpdateState> AtomicUpdateState;
 
+extern unsigned char _binary_assets_spr_img_updater_icon_png_start;
+AtomicUpdateState updateState{UPDATE_STATE_RUNNING};
+
+// Note: std::isdigit is not a constexpr so cannot be used to replace this function
 constexpr int matchDigit(const char *text) {
 	return *text == '0' || *text == '1' || *text == '2' || *text == '3' || *text == '4' ||
 	       *text == '5' || *text == '6' || *text == '7' || *text == '8' || *text == '9';
@@ -63,11 +66,11 @@ constexpr int matchVersionString(const char *text) {
 	       *(text+5) == '\0';
 }
 
-int readVersionYAML(const std::string &fn, VersionInfo &vInfo) {
+int readVersionYAML(const std::string &filePath, VersionInfo &vInfo) {
 	std::string versionYamlContent;
 	int res = readFile(std::string(VERSION_YAML_PATH), versionYamlContent);
 	if (res < 0) {
-		log_printf(DBG_ERROR, "Couldn't read version file %s: 0x%08x", fn.c_str(), res);
+		log_printf(DBG_ERROR, "Couldn't read version file %s: 0x%08x", filePath.c_str(), res);
 		return res;
 	}
 	YAML::Node node = YAML::Load(versionYamlContent);
@@ -78,7 +81,7 @@ int readVersionYAML(const std::string &fn, VersionInfo &vInfo) {
 		vInfo.latestVersion[1] = std::stoi(v.version.substr(3, 2));
 		log_printf(DBG_DEBUG, "Version field successfully parsed %i %i", vInfo.latestVersion[0], vInfo.latestVersion[1]);
 	} catch (const std::invalid_argument& e) {
-		log_printf(DBG_ERROR, "Couldn't parse content of version field %s: %s", fn.c_str(), v.version.c_str());
+		log_printf(DBG_ERROR, "Couldn't parse content of version field %s: %s", filePath.c_str(), v.version.c_str());
 		return -1;
 	}
 
@@ -134,8 +137,6 @@ int Update::getVersionInfo(bool &available, std::string &url) {
 	return 0;
 }
 
-extern unsigned char _binary_assets_spr_img_updater_icon_png_start;
-
 std::shared_ptr<Background> Update::startBackgroundView() {
 	auto bgView = std::make_shared<Background>();
 	bgView->priority = 749;
@@ -177,7 +178,9 @@ void Update::updateThread(unsigned int arglen, void* argv[]) {
 				updateState_ptr->store(UPDATE_STATE_READY_TO_LAUNCH_UPDATER);
 				return;
 			} catch (std::exception &ex) {
-				progress.message(std_string_format("Update failed: %s", ex.what()));
+				const std::string &update_failed = std_string_format("Update failed: %s", ex.what());
+				log_printf(DBG_ERROR, update_failed);
+				progress.message(update_failed);
 				progressView->Finish(4000);
 				sceKernelDelayThread(4000000);
 				bgView->request_destroy = true;
@@ -189,7 +192,6 @@ void Update::updateThread(unsigned int arglen, void* argv[]) {
 	updateState_ptr->store(UPDATE_STATE_DONE);
 }
 
-AtomicUpdateState updateState{UPDATE_STATE_RUNNING};
 
 void Update::startUpdateThread() {
 	SceUID thid = sceKernelCreateThread("update_check_thread", (SceKernelThreadEntry)Update::updateThread,

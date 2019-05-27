@@ -45,6 +45,8 @@ std::vector<std::string> split_string(const std::string &s, char delim) {
 }
 
 
+// FIXME Use a robust library instead such as fmtlib
+// https://github.com/fmtlib/fmt
 // From https://stackoverflow.com/a/69911/2376882
 std::string std_string_format_ap_list(const char *fmt, va_list ap) {
 	// Allocate a buffer on the stack that's big enough for us almost
