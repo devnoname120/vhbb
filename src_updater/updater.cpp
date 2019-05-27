@@ -131,26 +131,31 @@ char *get_title_id(const char *filename) {
 		log_printf(DBG_ERROR, "fopen(%s, \"rb\") = 0x%08X", filename, fin);
 		goto cleanup;
 	}
+	
 	ret = fseek(fin, 0, SEEK_END);
 	if (ret != 0) {
 		log_printf(DBG_ERROR, "fseek(fin, 0, SEEK_END) = 0x%08X", ret);
 		goto cleanup;
 	}
+	
 	size = ftell(fin);
 	if (size == -1) {
 		log_printf(DBG_ERROR, "ftell(fin) = 0x%08X", size);
 		goto cleanup;
 	}
+	
 	ret = fseek(fin, 0, SEEK_SET);
 	if (ret != 0) {
 		log_printf(DBG_ERROR, "fseek(fin, 0, SEEK_SET) = 0x%08X", ret);
 		goto cleanup;
 	}
+	
 	buf = (char *)calloc(1, size + 1);
 	if (!buf) {
 		log_printf(DBG_ERROR, "Couldn't allocate %i bytes of memory to read sfo file", size);
 		goto cleanup;
 	}
+	
 	ret = fread(buf, size, 1, fin);
 	if (ret != 1) {
 		log_printf(DBG_ERROR, "fread(buf, %i, 1, fin) = 0x%08X", size, ret);
@@ -160,11 +165,14 @@ char *get_title_id(const char *filename) {
 	header = (SfoHeader*)buf;
 	entry = (SfoEntry*)(buf + sizeof(SfoHeader));
 	log_printf(DBG_DEBUG, "SFO header announces %i entries.", header->count);
+	
 	for (i = 0; i < header->count; ++i, ++entry) {
 		const char *name = buf + header->keyofs + entry->nameofs;
 		const char *value = buf + header->valofs + entry->dataofs;
+		
 		if (name >= buf + size || value >= buf + size)
 			break;
+		
 		log_printf(DBG_DEBUG, "SFO body %s: %s", name, value);
 		if (strcmp(name, "TITLE_ID") == 0)
 			res = strdup(value);
@@ -186,11 +194,16 @@ int main() {
 
 	int ret;
 	ret = sceShellUtilInitEvents(0);
-	if (ret < 0) log_printf(DBG_ERROR, "sceShellUtilInitEvents(0)=0x%08X", ret);
+	if (ret < 0)
+		log_printf(DBG_ERROR, "sceShellUtilInitEvents(0)=0x%08X", ret);
+	
 	ret = sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_PS_BTN);
-	if (ret < 0) log_printf(DBG_ERROR, "sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_PS_BTN)=0x%08X", ret);
+	if (ret < 0)
+		log_printf(DBG_ERROR, "sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_PS_BTN)=0x%08X", ret);
+	
 	ret = sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_POWEROFF_MENU);
-	if (ret < 0) log_printf(DBG_ERROR, "sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_POWEROFF_MENU)=0x%08X", ret);
+	if (ret < 0)
+		log_printf(DBG_ERROR, "sceShellUtilLock(SCE_SHELL_UTIL_LOCK_TYPE_POWEROFF_MENU)=0x%08X", ret);
 
 	log_printf(DBG_DEBUG, "All button locks done");
 
@@ -199,6 +212,7 @@ int main() {
 
 	char *titleid = get_title_id(PACKAGE_DIR "/sce_sys/param.sfo");
 	log_printf(DBG_DEBUG, "Found staged app: %s; looking for: %s", titleid, UPDATE_TITLEID);
+	
 	if (titleid && strcmp(titleid, UPDATE_TITLEID) == 0) {
 		log_printf(DBG_INFO, "Staged update found -> Start promoting");
 		promoteApp(PACKAGE_DIR);
@@ -209,7 +223,6 @@ int main() {
 	log_printf(DBG_INFO, "All done. Starting updated app: %s", UPDATE_TITLEID);
 
 	sceKernelDelayThread(250000);
-
 	launchAppByUriExit(UPDATE_TITLEID);
 
 	return 0;
