@@ -11,11 +11,6 @@
 #include "zip.h"
 #include "Views/dialogView.h"
 
-// FIXME: tmp url for deving
-#ifndef VERSION_YAML_URL
-#define VERSION_YAML_URL "https://vhbb.download/version.yml"
-#endif
-
 #define VERSION_YAML_PATH (VHBB_DATA "/latest_version.yml")
 
 struct VersionYAML {
