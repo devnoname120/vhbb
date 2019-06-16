@@ -17,8 +17,8 @@ Font::Font(const std::string &path, unsigned int fSize) {
 	size = fSize;
 }
 
-int Font::DrawFromBaseline(const Point &pt, const std::string &text, unsigned int color,
-                           unsigned int maxWidth, unsigned int maxHeight) {
+int Font::Draw(const Point &pt, const std::string &text, unsigned int color,
+               unsigned int maxWidth, unsigned int maxHeight) {
 	if (maxWidth > 0 && maxHeight > 0) {
 		return DrawClip(pt, text, Rectangle(pt, Point(pt.x + maxWidth, pt.y + maxHeight)));
 	}
@@ -51,7 +51,7 @@ int Font::DrawCentered(const Rectangle &rect, const std::string &text, unsigned 
 
 	//log_printf(DBG_DEBUG, "Pos: %d, %d", posX, posY);
 	if (!clip) {
-		return DrawFromBaseline(Point(posX, posY), text, color);
+		return Draw(Point(posX, posY), text, color);
 	} else {
 		return DrawClip(Point(posX, posY), text, rect, color);
 	}
@@ -63,7 +63,7 @@ int Font::DrawCenteredVertical(const Rectangle &rect, const std::string &text, u
 
 	//log_printf(DBG_DEBUG, "Pos: %d, %d", posX, posY);
 	if (!clip) {
-		return DrawFromBaseline(Point(rect.topLeft.x, posY), text, color);
+		return Draw(Point(rect.topLeft.x, posY), text, color);
 	} else {
 		return DrawClip(Point(rect.topLeft.x, posY), text, rect, color);
 	}
