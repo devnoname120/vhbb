@@ -19,7 +19,7 @@ include(FindPkgConfig)
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID "VHBB00001")
 set(UPDATER_TITLEID "VHBBUPDT1")
-set(VITA_VERSION "00.83")
+set(VITA_VERSION "00.90")
 
 set(VERSION_YAML_URL "https://vhbb.download/version.php")
 set(UPDATE_URL "https://github.com/devnoname120/vhbb/releases/download/${VITA_VERSION}/VitaHBBrowser.vpk")
