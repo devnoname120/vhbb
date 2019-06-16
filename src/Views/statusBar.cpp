@@ -118,7 +118,7 @@ int StatusBar::displayDate()
 
 	char string[64];
 	sprintf(string, "%s  %s", date_string, time_string);
-
+	
 	font_22.Draw(Point(700, 22), string, COLOR_WHITE);
 
 	return 0;

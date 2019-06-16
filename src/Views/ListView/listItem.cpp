@@ -16,7 +16,7 @@ ListItem::ListItem(Homebrew hb) :
     font_32(Font(std::string(FONT_DIR "segoeui.ttf"), 32)),
     img_itm_panel(Texture(&_binary_assets_spr_img_itm_panel_png_start)),
     img_itm_panel_highlight(Texture(&_binary_assets_spr_img_itm_panel_highlight_png_start)),
-    img_icon_(Texture(ICONS_FOLDER + "/" + hb.icon)),
+    img_icon_(Texture(std::string(ICONS_FOLDER "/") + hb.icon)),
 	img_itm_label_game(Texture(&_binary_assets_spr_img_itm_label_game_png_start)),
 	img_itm_label_port(Texture(&_binary_assets_spr_img_itm_label_port_png_start)),
 	img_itm_label_emu(Texture(&_binary_assets_spr_img_itm_label_emu_png_start)),

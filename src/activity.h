@@ -20,7 +20,7 @@ public:
 
 
 private:
-    std::mutex mtx_; 
+    SceMutex mtx_ = SceMutex("activity_mtx");
     std::vector<std::shared_ptr<View>> views_;
     std::vector<std::shared_ptr<View>> views_queue;
 };

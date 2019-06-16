@@ -17,9 +17,21 @@ set(ENV{PKG_CONFIG_PATH} "$ENV{VITASDK}/arm-vita-eabi/lib/pkgconfig")
 include(FindPkgConfig)
 
 set(VITA_APP_NAME "Vita Homebrew Browser")
-set(VITA_TITLEID  "VHBB00001")
+set(VITA_TITLEID "VHBB00001")
+set(UPDATER_TITLEID "VHBBUPDT1")
 set(VITA_VERSION "00.83")
-add_definitions(-DVITA_VERSION="${VITA_VERSION}")
+
+set(VERSION_YAML_URL "https://vhbb.download/version.php")
+set(UPDATE_URL "https://github.com/devnoname120/vhbb/releases/download/${VITA_VERSION}/VitaHBBrowser.vpk")
+# Old test URL's
+#set(VERSION_YAML_URL "https://github.com/robsdedude/vhbb/raw/updateTestBranch/release/version.yml")
+#set(UPDATE_URL "https://github.com/robsdedude/vhbb/raw/updateTestBranch/release/VitaHBBrowser.vpk")
+
+
+set(PACKAGE_TEMP_FOLDER "ux0:/temp/pkg/")
+
+add_subdirectory(src_updater)
+create_updater("${SHORT_NAME}" "${VITA_TITLEID}" ${UPDATER_TITLEID} "${PACKAGE_TEMP_FOLDER}")
 
 option(DEBUGNET "Enable debugnet for logging" ON)
 
@@ -82,7 +94,15 @@ FUNCTION(ADD_RESOURCES out_var)
   SET(${out_var} "${result}" PARENT_SCOPE)
 ENDFUNCTION()
 
-file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR} assets/head.bin assets/*.png assets/*.jpeg assets/*.yml assets/*.ttf assets/*.wav assets/*.ogg)
+file(GLOB_RECURSE res_files RELATIVE ${CMAKE_SOURCE_DIR}
+  assets/head.bin
+  assets/*.png
+  assets/*.jpeg
+  assets/*.yml
+  assets/*.ttf
+  assets/*.wav
+  assets/*.ogg)
+
 add_resources(PROJECT_RESOURCES ${res_files})
 
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "src/*.h" "src/*.hpp" "src/*.cpp" "src/*.c")
@@ -91,6 +111,16 @@ set(VITA_ELF_NAME ${SHORT_NAME}.elf)
 add_executable(${VITA_ELF_NAME}
   ${PROJECT_RESOURCES}
   ${PROJECT_SOURCE_FILES}
+)
+
+target_compile_definitions(${VITA_ELF_NAME}
+  PRIVATE
+  VITA_VERSION="${VITA_VERSION}"
+  VITA_TITLEID="${VITA_TITLEID}"
+  VHBB_SHORT_NAME="${SHORT_NAME}"
+  PACKAGE_TEMP_FOLDER="${PACKAGE_TEMP_FOLDER}"
+  UPDATER_TITLEID="${UPDATER_TITLEID}"
+  VERSION_YAML_URL="${VERSION_YAML_URL}"
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -152,6 +182,24 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
 
   FILE assets/icons.zip resources/icons.zip
   FILE assets/fonts/segoeui.ttf resources/fonts/segoeui.ttf
+
+  FILE ${CMAKE_BINARY_DIR}/${${SHORT_NAME}_UPDATER_EBOOT_NAME} resources/updater/eboot.bin
+  FILE ${CMAKE_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME} resources/updater/param.sfo
+)
+
+add_dependencies(${SHORT_NAME}.vpk_
+  ${${SHORT_NAME}_UPDATER_EBOOT_NAME}
+  ${${SHORT_NAME}_UPDATER_SFO_NAME}
+)
+
+set(RELEASE_DIR ${CMAKE_SOURCE_DIR}/release)
+add_custom_target(release
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${SHORT_NAME}.vpk ${RELEASE_DIR}/
+  COMMAND ${CMAKE_COMMAND} -E echo "version: \"${VITA_VERSION}\"" > "${RELEASE_DIR}/version.yml"
+  COMMAND ${CMAKE_COMMAND} -E echo "url: \"${UPDATE_URL}\"" >> "${RELEASE_DIR}/version.yml"
+  VERBATIM
+  COMMENT "Creating new release files"
+  DEPENDS ${SHORT_NAME}.vpk
 )
 
 get_filename_component(psvitaipFilePath psvitaip.txt REALPATH)

@@ -17,8 +17,8 @@ void FetchLoadIcons(unsigned int arglen, std::atomic<bool> *db_done)
   try {
     // TODO check if fails
     auto dl = Network::get_instance();
-    dl->Download(API_ENDPOINT, API_LOCAL);
-    auto db = Database::create_instance(API_LOCAL);
+    dl->Download(std::string(API_ENDPOINT), std::string(API_LOCAL));
+    auto db = Database::create_instance(std::string(API_LOCAL));
     db->DownloadIcons();
     if (db_done)
       *db_done = true;

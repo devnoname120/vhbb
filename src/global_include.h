@@ -53,6 +53,7 @@
 
 #include <yaml-cpp/yaml.h>
 
+#include "concurrency.h"
 #include "debug.h"
 #include "macros.h"
 #include "screen.h"

@@ -17,7 +17,7 @@ int log_init(bool log_to_file)
     #endif
 
 	if (log_to_file) {
-		sceIoMkdir(VHBB_LOG_DIR.c_str(), 0777);
+		sceIoMkdir(VHBB_LOG_DIR, 0777);
 
 		SceDateTime logTime;
 		memset(&logTime, 0, sizeof(logTime));
@@ -28,7 +28,7 @@ int log_init(bool log_to_file)
 		snprintf(formattedTime, sizeof(formattedTime), "%04d-%02d-%02d_%02d-%02d-%02d",
 				 logTime.year, logTime.month, logTime.day, logTime.hour, logTime.minute, logTime.second);
 
-		std::string log_file = VHBB_LOG_DIR + "/VHBB_" + formattedTime + ".log";
+		std::string log_file = std::string(VHBB_LOG_DIR "/VHBB_") + formattedTime + ".log";
 
         g_log_fd = sceIoOpen(log_file.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 

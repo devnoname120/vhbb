@@ -59,24 +59,24 @@ HomebrewSearchRating SearchQuery::operator()(const Homebrew &hb) const {
 
 int Database::DownloadIcons()
 {
-    sceIoMkdir(ICONS_FOLDER.c_str(), 0777);
+    sceIoMkdir(ICONS_FOLDER, 0777);
 
-	if (access((ICONS_FOLDER + "/init.txt").c_str(), F_OK) == -1) {
+	if (access(ICONS_FOLDER "/init.txt", F_OK) == -1) {
 		// TODO display progess to user
-		auto zip = Zipfile(ICON_ZIP);
+		auto zip = Zipfile(std::string(ICON_ZIP));
 
-		zip.Unzip(ICONS_FOLDER + "/");
+		zip.Unzip(std::string(ICONS_FOLDER "/"));
 
-		int fd = sceIoOpen((ICONS_FOLDER + "/init.txt").c_str(), SCE_O_WRONLY|SCE_O_CREAT, 0777);
+		int fd = sceIoOpen(ICONS_FOLDER "/init.txt", SCE_O_WRONLY|SCE_O_CREAT, 0777);
 		sceIoWrite(fd, "ok", 2);
 		sceIoClose(fd);
 	}
 
     for (auto hb : homebrews) {
-		std::string path = ICONS_FOLDER + "/" + hb.icon;
+		auto path = std::string(ICONS_FOLDER "/") + hb.icon;
 
 		if (access(path.c_str(), F_OK) == -1) {
-		    std::string url = ICON_URL_PREFIX + hb.icon;
+		    auto url = std::string(ICON_URL_PREFIX) + hb.icon;
 
 		    Network::get_instance()->Download(url, path);
 		}

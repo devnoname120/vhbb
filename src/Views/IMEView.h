@@ -6,21 +6,15 @@
 #include <codecvt>
 #include <sys/socket.h>
 
-#include <global_include.h>
-#include <singleton.h>
-#include <Views/View.h>
-#include <activity.h>
+#include "../global_include.h"
+#include "commonDialog.h"
+#include "../singleton.h"
+#include "View.h"
+#include "activity.h"
 
-
-enum IMEViewStatus {
-	IMEVIEW_STATUS_NONE     = SCE_COMMON_DIALOG_STATUS_NONE,
-	IMEVIEW_STATUS_RUNNING  = SCE_COMMON_DIALOG_STATUS_RUNNING,
-	IMEVIEW_STATUS_FINISHED = SCE_COMMON_DIALOG_STATUS_FINISHED,
-	IMEVIEW_STATUS_CANCELED
-};
 
 struct IMEViewResult {
-	IMEViewStatus status = IMEVIEW_STATUS_NONE;
+	CommonDialogStatus status = COMMON_DIALOG_STATUS_NONE;
 	std::string userText = "";
 };
 
@@ -48,7 +42,7 @@ private:
 	SceUInt32 _maxTextLength;
 	SceWChar16 *_input_text_buffer_utf16 = nullptr;
 	std::string _input_text_buffer_utf8;
-	IMEViewStatus _status = IMEVIEW_STATUS_NONE;
+	CommonDialogStatus _status = COMMON_DIALOG_STATUS_NONE;
 	std::shared_ptr<IMEViewResult> _result;
 	bool shown_dialog = false;
 };

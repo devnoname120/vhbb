@@ -2,17 +2,12 @@
 
 #include <utility>
 
-#include <utility>
-
-#include <utility>
-
 #include "IMEView.h"
 
 
 IMEView::IMEView() {
 	log_printf(DBG_DEBUG, "IMEView::IMEView()");
-	auto sce_common_dialog_config_param = SceCommonDialogConfigParam{};
-	sceCommonDialogSetConfigParam(&sce_common_dialog_config_param);
+	commonDialogSetConfig();
 	// FIXME HACK: when IMEView is passed to Activity::AddView() it's destroyed once the activity is closed
 	// Keeping an internal shared_ptr of itself makes sure that it's never destroyed
 	me_ptr = std::shared_ptr<IMEView>(this);
@@ -37,6 +32,12 @@ void IMEView::closeIMEView() {
 void IMEView::prepare(std::shared_ptr<IMEViewResult> result, std::string title, std::string initialText,
                       SceUInt32 maxInputLength) {
 	log_printf(DBG_DEBUG, "Created IMEView \"%s\"", title.c_str());
+	if (_status == COMMON_DIALOG_STATUS_RUNNING) {
+		log_printf(DBG_WARNING, "Canceling current IMEView");
+		sceImeDialogTerm();
+		if (_result)
+			_result->status = COMMON_DIALOG_STATUS_CANCELED;
+	}
 	std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
 	_title = converter.from_bytes(title);
 	_result = result;
@@ -89,37 +90,37 @@ int IMEView::Display() {
 			           "https://github.com/vitasdk/vita-headers/blob/master/include/psp2/common_dialog.h",
 			           res);
 			if (_result)
-				_result->status = IMEVIEW_STATUS_CANCELED;
+				_result->status = COMMON_DIALOG_STATUS_CANCELED;
 			request_destroy = true;
 			sceImeDialogTerm();
 		}
 		return 0;
 	}
 
-	auto new_status = (IMEViewStatus)sceImeDialogGetStatus();
+	auto new_status = (CommonDialogStatus)sceImeDialogGetStatus();
 	if (_status != new_status)
 		switch (new_status) {
-			case IMEVIEW_STATUS_NONE:
-				log_printf(DBG_DEBUG, "IMEView status \"IMEVIEW_STATUS_NONE\"");
+			case COMMON_DIALOG_STATUS_NONE:
+				log_printf(DBG_DEBUG, "IMEView status \"COMMON_DIALOG_STATUS_NONE\"");
 				break;
-			case IMEVIEW_STATUS_RUNNING:
-				log_printf(DBG_DEBUG, "IMEView status \"IMEVIEW_STATUS_RUNNING\"");
+			case COMMON_DIALOG_STATUS_RUNNING:
+				log_printf(DBG_DEBUG, "IMEView status \"COMMON_DIALOG_STATUS_RUNNING\"");
 				break;
-			case IMEVIEW_STATUS_FINISHED:
-				log_printf(DBG_DEBUG, "IMEView status \"IMEVIEW_STATUS_FINISHED\"");
+			case COMMON_DIALOG_STATUS_FINISHED:
+				log_printf(DBG_DEBUG, "IMEView status \"COMMON_DIALOG_STATUS_FINISHED\"");
 				break;
-			case IMEVIEW_STATUS_CANCELED:
-				log_printf(DBG_DEBUG, "IMEView status \"IMEVIEW_STATUS_CANCELED\"");
+			case COMMON_DIALOG_STATUS_CANCELED:
+				log_printf(DBG_DEBUG, "IMEView status \"COMMON_DIALOG_STATUS_CANCELED\"");
 				break;
 		}
 	_status = new_status;
 
-	if (_status == IMEVIEW_STATUS_FINISHED) {
+	if (_status == COMMON_DIALOG_STATUS_FINISHED) {
 		SceImeDialogResult result={};
 		sceImeDialogGetResult(&result);
 
 		if (result.button == SCE_IME_DIALOG_BUTTON_CLOSE)
-			_status = IMEVIEW_STATUS_CANCELED;
+			_status = COMMON_DIALOG_STATUS_CANCELED;
 		else {
 			std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
 			_input_text_buffer_utf8 = converter.to_bytes((char16_t*)_input_text_buffer_utf16);
