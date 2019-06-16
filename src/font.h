@@ -12,8 +12,7 @@ public:
 
 	int DrawFromBaseline(const Point &pt, const std::string &text, unsigned int color = COLOR_WHITE,
 	                     unsigned int maxWidth = 0, unsigned int maxHeight = 0);
-	inline int Draw(const Point &pt, const std::string &text, unsigned int color = COLOR_WHITE,
-	                unsigned int maxWidth = 0, unsigned int maxHeight = 0);
+	
 	int DrawClip(const Point &pt, const std::string &text, const Rectangle &clipRect, unsigned int color=COLOR_WHITE);
 	int DrawCentered(const Rectangle &rect, const std::string &text, unsigned int color=COLOR_WHITE, bool clip=false);
 	int DrawCenteredVertical(const Rectangle &rect, const std::string &text,

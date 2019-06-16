@@ -25,11 +25,6 @@ int Font::DrawFromBaseline(const Point &pt, const std::string &text, unsigned in
 	return vita2d_font_draw_text(font, pt.x, pt.y, color, size, text.c_str());
 }
 
-int Font::Draw(const Point &pt, const std::string &text, unsigned int color,
-                         unsigned int maxWidth, unsigned int maxHeight) {
-	return DrawFromBaseline(Point(pt.x, pt.y + size*2.0/3), text, color, maxWidth, maxHeight);
-}
-
 int Font::DrawClip(const Point &pt, const std::string &text, const Rectangle &clipRect, unsigned int color) {
 	bool enabledClipping = false;
 	if (!vita2d_get_clipping_enabled()) {
