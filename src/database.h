@@ -6,7 +6,7 @@
 #include "homebrew.h"
 #include "singleton.h"
 
-#define ICON_ZIP VHBB_RESOURCES "/resources/icons.zip"
+#define ICON_ZIP VHBB_RESOURCES "/icons.zip"
 
 class Database: public Singleton<Database> {
 friend class Singleton<Database>;
