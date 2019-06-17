@@ -6,7 +6,9 @@
 #include "debug.h"
 #include "utils.h"
 
-My_unordered_map Font::fontCache;
+#include "unordered_map_pair_hash.h"
+
+std::unordered_map<std::pair<std::string, unsigned int>, vita2d_font*> Font::fontCache;
 
 Font::Font(const std::string &path, unsigned int fSize) {
 	//log_printf(DBG_DEBUG, "Looking for size %d, path: %s", fSize, path.c_str());
