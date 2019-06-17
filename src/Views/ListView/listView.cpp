@@ -72,7 +72,7 @@ int ListView::updateScrollSpeed(double &scrollSpeed, unsigned long timeDif)
 {
 	const double acceleration = 0.0000000010;
 
-	if (abs(scrollSpeed) <= acceleration * (double)timeDif) {
+	if (std::abs(scrollSpeed) <= acceleration * (double)timeDif) {
 		scrollSpeed = 0;
 		return 0;
 	}
