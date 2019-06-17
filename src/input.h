@@ -1,9 +1,11 @@
 #pragma once
 
-#include <global_include.h>
+
 #include "vhbb.h"
 #include "texture.h"
 #include <shapes.h>
+#include <psp2/ctrl.h>
+#include <psp2/touch.h>
 
 #define INPUT_INIT_REPEAT_DELAY 20  // max 127
 #define INPUT_REPEAT_DELAY 3  // max 127

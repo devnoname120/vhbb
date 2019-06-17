@@ -1,7 +1,7 @@
 #pragma once
 
-#include <global_include.h>
 
+#include <memory>
 
 class InfoProgress {
 public:

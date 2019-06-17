@@ -1,7 +1,5 @@
 #include "date.h"
 
-#include <global_include.h>
-
 Date::Date() = default;
 
 bool IsNewer::operator()(const Homebrew &hb1, const Homebrew &hb2) const {

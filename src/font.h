@@ -1,10 +1,20 @@
 #pragma once
 
-#include <global_include.h>
 
+#include <unordered_map>
 #include "shapes.h"
+#include "macros.h"
 
 #define FONT_DIR VHBB_RESOURCES "/fonts/"
+
+using StringUIntPair = std::pair<std::string, unsigned int>;
+
+// Required because there is not default implementation for hashing std::pair<std::string, unsigned int>
+auto pair_hash = [](const StringUIntPair& v){
+	return std::hash<std::string>()(v.first) * 31 + std::hash<unsigned int>()(v.second);
+};
+
+using My_unordered_map = std::unordered_map<StringUIntPair, vita2d_font*, decltype(pair_hash)>;
 
 class Font {
 public:
@@ -19,7 +29,7 @@ public:
 	                         unsigned int color=COLOR_WHITE, bool clip=false);
 	std::string FitString(const std::string &text, int maxWidth);
 
-	static std::unordered_map<std::pair<std::string, unsigned int>, vita2d_font*> fontCache;
+	static My_unordered_map fontCache;
 private:
 	vita2d_font *font;
 	unsigned int size;

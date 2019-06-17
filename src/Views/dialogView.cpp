@@ -1,4 +1,6 @@
 #include <utility>
+#include <psp2/ctrl.h>
+#include <screen.h>
 
 #include "dialogView.h"
 

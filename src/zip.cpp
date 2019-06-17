@@ -1,11 +1,7 @@
 #include "zip.h"
+#include "debug.h"
 
-#include <stdio.h>
-#include <string.h>
-
-#include <global_include.h>
-
-#include <minizip/unzip.h>
+#include <psp2/io/stat.h>
 
 #define dir_delimter '/'
 #define MAX_FILENAME 512

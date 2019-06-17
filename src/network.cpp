@@ -1,14 +1,20 @@
 #include <utility>
 
-#include <utility>
-
 #include "network.h"
+#include "utils.h"
 
 
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Easy.hpp>
 #include <curlpp/Options.hpp>
-#include <curlpp/Exception.hpp>
+#include <psp2/io/fcntl.h>
+#include <psp2/sysmodule.h>
+#include <psp2/net/net.h>
+#include <psp2/net/netctl.h>
+#include <psp2/libssl.h>
+#include <psp2/net/http.h>
+#include <mutex>
+#include <cstring>
 
 class ProgressClass {
 public:

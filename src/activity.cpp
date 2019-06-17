@@ -1,3 +1,5 @@
+#include <mutex>
+#include <algorithm>
 #include "activity.h"
 
 Activity::~Activity() = default;

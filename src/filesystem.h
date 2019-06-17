@@ -1,6 +1,8 @@
 #pragma once
 
-#include <global_include.h>
+
+#include <string>
+#include <psp2/types.h>
 
 int removePath(std::string path);
 

@@ -1,7 +1,16 @@
+#include <psp2/touch.h>
+#include <psp2/ctrl.h>
+#include <cstring>
+#include <string>
+#include <tuple>
+#include <cmath>
+#include <vita2d.h>
 #include "input.h"
 
 #include "screen.h"
 #include "touch.h"
+#include "debug.h"
+#include "utils.h"
 
 
 Input::Input()

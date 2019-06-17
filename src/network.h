@@ -1,9 +1,10 @@
 #pragma once
 
-#include <global_include.h>
+
 
 #include "singleton.h"
 #include "infoProgress.h"
+#include "concurrency.h"
 
 #define PORTAL_DETECT_URL "http://detectportal.firefox.com/success.txt" // Note : similar portal detector http://www.apple.com/library/test/success.html
 #define PORTAL_DETECT_STR "success"

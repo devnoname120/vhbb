@@ -1,15 +1,17 @@
 #include "update.h"
 
 #include <atomic>
-#include <array>
 #include <iostream>
 #include <fstream>
+#include <psp2/kernel/processmgr.h>
+#include <psp2/appmgr.h>
+#include <psp2/io/fcntl.h>
 
 #include "network.h"
 #include "filesystem.h"
 #include "vitaPackage.h"
-#include "zip.h"
 #include "Views/dialogView.h"
+#include "utils.h"
 
 #define VERSION_YAML_PATH (VHBB_DATA "/latest_version.yml")
 

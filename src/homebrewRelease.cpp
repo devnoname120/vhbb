@@ -1,6 +1,5 @@
 #include "homebrewRelease.h"
 
-
 // Add type to yaml-cpp
 namespace YAML {
 bool convert<HomebrewRelease>::decode(const Node& node, HomebrewRelease& hbrel) {

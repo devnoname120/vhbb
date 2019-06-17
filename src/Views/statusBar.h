@@ -1,11 +1,12 @@
 #pragma once
 
-#include <global_include.h>
+
 
 #include <font.h>
 #include <screen.h>
 #include "View.h"
 #include <texture.h>
+#include <psp2/types.h>
 
 
 #define STATUSBAR_HEIGHT 30

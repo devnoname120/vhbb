@@ -1,6 +1,7 @@
 #pragma once
 
-#include <global_include.h>
+#include <string>
+
 
 #define VHBB_LOG_DIR "ux0:/log"
 

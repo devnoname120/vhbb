@@ -1,8 +1,9 @@
 #include "homebrew.h"
 
 #include <psp2/promoterutil.h>
+#include <psp2/sysmodule.h>
 
-#include "date.h"
+#include "debug.h"
 
 bool Homebrew::IsInstalled()
 {

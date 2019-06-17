@@ -1,3 +1,4 @@
+#include <string>
 #include "infoProgress.h"
 
 InfoProgress::InfoProgress() :

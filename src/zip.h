@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <global_include.h>
+
 
 #include <minizip/unzip.h>
 #include "infoProgress.h"

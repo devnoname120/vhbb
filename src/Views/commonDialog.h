@@ -1,6 +1,7 @@
 # pragma once
 
-#include "../global_include.h"
+#include <debug.h>
+#include <psp2/common_dialog.h>
 
 enum CommonDialogStatus {
 	COMMON_DIALOG_STATUS_NONE     = SCE_COMMON_DIALOG_STATUS_NONE,

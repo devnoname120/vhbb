@@ -2,6 +2,7 @@
 
 #include <activity.h>
 #include <Views/HomebrewView/homebrewView.h>
+#include <cmath>
 
 
 // Ordinate of where the item should be displayed on the screen

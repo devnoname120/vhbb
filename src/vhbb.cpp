@@ -1,11 +1,12 @@
-#include "vhbb.h"
+#include <psp2/apputil.h>
+#include <psp2/appmgr.h>
+#include <psp2/kernel/processmgr.h>
+#include <psp2/io/stat.h>
+#include <psp2/display.h>
 
 
 #include "Views/mainView.h"
 #include "Views/splash.h"
-#include "activity.h"
-#include "input.h"
-#include "debug.h"
 #include "network.h"
 #include "nosleep_thread.h"
 #include "fetch_load_icons_thread.h"

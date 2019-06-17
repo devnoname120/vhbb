@@ -1,7 +1,12 @@
 #include "statusBar.h"
-#include <global_include.h>
 
-#include <texture.h>
+#include <psp2/system_param.h>
+#include <psp2/power.h>
+#include <debug.h>
+#include <utils.h>
+#include <psp2/net/netctl.h>
+#include <cstring>
+#include <psp2/rtc.h>
 
 extern unsigned char _binary_assets_spr_img_statsbar_battery_png_start;
 extern unsigned char _binary_assets_spr_img_statsbar_battery_charge_png_start;

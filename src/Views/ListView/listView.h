@@ -1,8 +1,9 @@
 #pragma once
 
-#include <global_include.h>
+
 
 #include <Views/View.h>
+#include <debug.h>
 #include "listItem.h"
 
 #define LIST_MIN_Y 79

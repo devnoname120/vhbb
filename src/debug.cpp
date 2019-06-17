@@ -1,5 +1,11 @@
-#include <global_include.h>
-
+#include <psp2/kernel/modulemgr.h>
+#include <debugnet.h>
+#include <psp2/io/stat.h>
+#include <cstring>
+#include <psp2/rtc.h>
+#include <psp2/io/fcntl.h>
+#include <cstdarg>
+#include "debug.h"
 
 int g_log_fd = -1;
 bool g_log_to_file = false;

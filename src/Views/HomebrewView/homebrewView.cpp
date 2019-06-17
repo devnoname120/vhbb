@@ -2,11 +2,13 @@
 
 #include <vitaPackage.h>
 #include <activity.h>
-#include <Views/ProgressView/progressView.h>
 #include <install_thread.h>
 
-#include <texture.h>
 #include <network.h>
+#include <psp2/io/stat.h>
+#include <psp2/io/fcntl.h>
+#include <algorithm>
+#include <psp2/appmgr.h>
 
 extern unsigned char _binary_assets_spr_img_preview_infobg_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_download_png_start;

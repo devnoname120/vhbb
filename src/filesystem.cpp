@@ -1,5 +1,9 @@
 #include "filesystem.h"
+#include "utils.h"
+#include "debug.h"
 #include <psp2/io/dirent.h>
+#include <cstring>
+#include <psp2/io/fcntl.h>
 
 // TODO: Encapsulate these functions into a Filesystem class
 

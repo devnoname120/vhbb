@@ -1,9 +1,10 @@
 #include "database.h"
-#include <global_include.h>
+#include <psp2/io/stat.h>
+#include <psp2/io/fcntl.h>
 
 #include "zip.h"
 #include "network.h"
-#include "homebrew.h"
+#include "macros.h"
 
 bool IsVHBB(const Homebrew &hb)
 {

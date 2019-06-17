@@ -1,7 +1,8 @@
 #pragma once
 
-#include <global_include.h>
-
+#include <memory>
+#include <unordered_map>
+#include <vita2d.h>
 #include "shapes.h"
 
 void DeleteTexture(vita2d_texture* tex);

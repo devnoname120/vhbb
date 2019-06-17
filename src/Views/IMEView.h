@@ -5,8 +5,8 @@
 #include <locale>
 #include <codecvt>
 #include <sys/socket.h>
+#include <psp2/ime_dialog.h>
 
-#include "../global_include.h"
 #include "commonDialog.h"
 #include "../singleton.h"
 #include "View.h"

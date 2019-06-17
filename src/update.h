@@ -1,7 +1,5 @@
 #pragma once
 
-#include "global_include.h"
-
 #include "Views/background.h"
 #include "Views/ProgressView/progressView.h"
 

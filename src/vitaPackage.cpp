@@ -2,8 +2,15 @@
 #include "zip.h"
 #include "sha1.h"
 #include "filesystem.h"
+#include "debug.h"
+#include "macros.h"
 
 #include <psp2/promoterutil.h>
+#include <psp2/io/fcntl.h>
+#include <psp2/io/stat.h>
+#include <psp2/sysmodule.h>
+#include <psp2/kernel/threadmgr.h>
+#include <psp2/appmgr.h>
 
 #define ntohl __builtin_bswap32
 

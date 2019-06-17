@@ -1,7 +1,7 @@
 #pragma once
 
-#include <global_include.h>
 
+#include <psp2/types.h>
 #include "homebrew.h"
 #include "infoProgress.h"
 

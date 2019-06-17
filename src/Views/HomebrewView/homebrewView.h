@@ -1,6 +1,6 @@
 #pragma once
 
-#include <global_include.h>
+
 
 #include "texture.h"
 #include <Views/View.h>

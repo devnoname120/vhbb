@@ -1,6 +1,5 @@
 #include <utility>
-
-#include <utility>
+#include <psp2/ime_dialog.h>
 
 #include "IMEView.h"
 

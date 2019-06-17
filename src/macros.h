@@ -1,6 +1,6 @@
 #pragma once
 
-#include <global_include.h>
+#include <vita2d.h>
 
 #define VHBB_DATA "ux0:/data/VitaHbBrowser"
 #define VHBB_RESOURCES "ux0:/app/" VITA_TITLEID "/resources"

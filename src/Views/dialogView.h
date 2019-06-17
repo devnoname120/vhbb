@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../global_include.h"
 #include "../singleton.h"
 #include "../font.h"
 #include "commonDialog.h"

@@ -1,4 +1,9 @@
+#include <string>
+#include <vita2d.h>
+#include <memory>
+#include <unordered_map>
 #include "texture.h"
+#include "debug.h"
 
 // TODO Use polymorphism instead of duplicated class
 

@@ -1,9 +1,10 @@
 #pragma once
 
-#include <global_include.h>
-
+#include <memory>
+#include <vector>
 #include "singleton.h"
 #include "Views/View.h"
+#include "concurrency.h"
 
 
 class Activity: public Singleton<Activity>, public View {

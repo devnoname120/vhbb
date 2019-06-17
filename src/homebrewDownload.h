@@ -1,11 +1,12 @@
 #pragma once
 
-#include <global_include.h>
+#include "yaml-cpp/yaml.h"
+#include <string>
 
 class HomebrewDownload {
 public:
   std::string hash;
-	std::string url;
+  std::string url;
 };
 
 namespace YAML {
