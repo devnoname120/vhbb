@@ -196,7 +196,7 @@ vita_create_vpk(${SHORT_NAME}.vpk ${VITA_TITLEID} ${SHORT_NAME}.self
   FILE ${CMAKE_BINARY_DIR}/${${SHORT_NAME}_UPDATER_SFO_NAME} resources/updater/param.sfo
 )
 
-add_dependencies(${SHORT_NAME}.vpk_
+add_dependencies(${SHORT_NAME}.vpk
   ${${SHORT_NAME}_UPDATER_EBOOT_NAME}
   ${${SHORT_NAME}_UPDATER_SFO_NAME}
 )
