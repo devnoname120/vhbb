@@ -18,6 +18,7 @@ public:
 	Date date;
 	std::string titleid;
 	std::string long_description;
+	std::string trailer;
 	std::vector<std::string> screenshots;
 	std::string url;
 	std::string data;

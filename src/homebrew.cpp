@@ -47,6 +47,8 @@ namespace YAML
         hb.titleid = node["titleid"].as<std::string>();
         if (node["long_description"])
             hb.long_description = node["long_description"].as<std::string>();
+        if (node["trailer"])
+            hb.trailer = node["trailer"].as<std::string>();
         if (node["screenshots"])
             hb.screenshots = node["screenshots"].as<std::vector<std::string>>();
 

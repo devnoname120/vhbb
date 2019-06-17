@@ -15,7 +15,6 @@ extern unsigned char _binary_assets_spr_img_preview_btn_open_png_start;
 extern unsigned char _binary_assets_spr_img_btn_back_png_start;
 extern unsigned char _binary_assets_spr_img_btn_back_pressed_png_start;
 
-
 std::string wrapDescription(std::string str, size_t width)
 {
     // TODO: give ability to specify the number of lines to process.
@@ -39,7 +38,6 @@ HomebrewView::HomebrewView(Homebrew hb)
     : font_20(Font(std::string(FONT_DIR "segoeui.ttf"), 20))
     , font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
     , font_40(Font(std::string(FONT_DIR "segoeui.ttf"), 40))
-
 
     , img_preview_infobg(Texture(&_binary_assets_spr_img_preview_infobg_png_start))
     , img_preview_btn_download(Texture(&_binary_assets_spr_img_preview_btn_download_png_start))
@@ -138,9 +136,14 @@ int HomebrewView::HandleInput(int focus, const Input& input)
         {
             btn_back_pressed = true;
         }
-    } else if (input.TouchPressed() && !input.TouchInTexture(Point(HB_X, SCREEN_HEIGHT - img_btn_back_pressed.Height()), img_btn_back)) {
+    }
+    else if (
+        input.TouchPressed() && !input.TouchInTexture(Point(HB_X, SCREEN_HEIGHT - img_btn_back_pressed.Height()), img_btn_back))
+    {
         btn_back_pressed = false;
-    } else if (!input.TouchPressed() && btn_back_pressed) {
+    }
+    else if (!input.TouchPressed() && btn_back_pressed)
+    {
         request_destroy = true;
     }
     else if (input.KeyNewPressed(SCE_CTRL_CANCEL))
@@ -150,6 +153,14 @@ int HomebrewView::HandleInput(int focus, const Input& input)
     else if (input.KeyNewPressed(SCE_CTRL_ENTER))
     {
         homebrewInstall();
+    }
+    else if (input.KeyNewPressed(SCE_CTRL_SQUARE))
+    {
+        if (!hb_.trailer.empty())
+        {
+            sceAppMgrLaunchAppByUri(
+                0x20000, (std::string("webmodal: https://www.youtube.com/embed/") + hb_.trailer + "?autoplay=1").c_str());
+        }
     }
 
     return 0;
