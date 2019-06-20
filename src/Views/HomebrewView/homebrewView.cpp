@@ -79,24 +79,6 @@ HomebrewView::HomebrewView(Homebrew hb)
     std::string descriptionRaw = hb_.long_description;
     std::replace(descriptionRaw.begin(), descriptionRaw.end(), '\n', ' ');
     description = wrapDescription(descriptionRaw, 77);
-
-    /*
-    std::string long_description_cut_draft = hb_.long_description;
-    std::replace(long_description_cut_draft.begin(), long_description_cut_draft.end(), '\n', ' ');
-
-    long_description_cut1 = long_description_cut_draft.substr(0, 77);
-    try {
-            long_description_cut2 = long_description_cut_draft.substr(77, 77);
-            long_description_cut3 = long_description_cut_draft.substr(155, 77);
-            long_description_cut4 = long_description_cut_draft.substr(232, 73);
-            if (long_description_cut_draft.length() >= 305) long_description_cut4 += "...";
-
-    } catch (const std::out_of_range &ex) {
-            // No problem
-    } catch (const std::exception &ex) {
-            log_printf(DBG_WARNING, "Error when cutting description: %s", ex.what());
-    }
-*/
 }
 
 void HomebrewView::homebrewInstall()
@@ -185,14 +167,6 @@ int HomebrewView::Display()
     font_25.Draw(Point(HB_X + 225, HB_Y + 144), hb_.version, COLOR_WHITE);
     // font_20.Draw(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
     // font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
-    /*
-    if (!hb_.long_description.empty()) {
-            font_25.Draw(Point(HB_X + 40, HB_Y + 362), long_description_cut1);
-            if (!long_description_cut2.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 40), long_description_cut2);
-            if (!long_description_cut3.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 80), long_description_cut3);
-            if (!long_description_cut4.empty()) font_25.Draw(Point(HB_X + 40, HB_Y + 362 + 120), long_description_cut4);
-    }
-    */
 
     font_25.Draw(Point(HB_X + 40, HB_Y + 362), description);
 
