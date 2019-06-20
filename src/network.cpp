@@ -137,6 +137,24 @@ int Network::Download(std::string url, std::string dest, InfoProgress* progress)
         request.setOpt(new curlpp::options::MaxRedirs(8L));
         request.setOpt(new curlpp::options::FailOnError(true));
 
+        SceNetCtlInfo netInfo;
+        int ret = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_CONFIG, &netInfo);
+        int ret2 = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_SERVER, &netInfo);
+        int ret3 = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_PORT, &netInfo);
+
+        if (ret < 0 || (netInfo.http_proxy_config == 1 && (ret2 < 0 || ret3 < 0)))
+        {
+            log_printf(DBG_ERROR, "Cannot load proxy settings, ignoring...");
+        }
+        else if (netInfo.http_proxy_config == 1)
+        {
+            log_printf(DBG_INFO, "Proxy enabled for this download: %s:%d", netInfo.http_proxy_server, netInfo.http_proxy_port);
+
+            std::string proxy = std::string("http://") + netInfo.http_proxy_server + ":"
+                + std::to_string(netInfo.http_proxy_port);
+            request.setOpt(new curlpp::options::Proxy(proxy));
+        }
+
         using namespace std::placeholders;
 
         if (progress)
