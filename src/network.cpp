@@ -1,33 +1,38 @@
-#include <utility>
-
 #include "network.h"
+
 #include "utils.h"
 
-
-#include <curlpp/cURLpp.hpp>
+#include <cstring>
 #include <curlpp/Easy.hpp>
 #include <curlpp/Options.hpp>
+#include <curlpp/cURLpp.hpp>
+#include <mutex>
 #include <psp2/io/fcntl.h>
-#include <psp2/sysmodule.h>
-#include <psp2/net/net.h>
-#include <psp2/net/netctl.h>
 #include <psp2/libssl.h>
 #include <psp2/net/http.h>
-#include <mutex>
-#include <cstring>
+#include <psp2/net/net.h>
+#include <psp2/net/netctl.h>
+#include <psp2/sysmodule.h>
+#include <utility>
 
-class ProgressClass {
+class ProgressClass
+{
 public:
-    explicit ProgressClass(InfoProgress &progress) : m_progress(progress) {
+    explicit ProgressClass(InfoProgress& progress)
+        : m_progress(progress)
+    {
     }
 
-    int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow) {
-        if (dltotal == 0) return CURLE_OK;
+    int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow)
+    {
+        if (dltotal == 0)
+            return CURLE_OK;
         m_progress.percent((float)(dlnow / dltotal) * 100);
         return CURLE_OK;
     }
+
 private:
-    InfoProgress &m_progress;
+    InfoProgress& m_progress;
 };
 
 class WriterFileClass
@@ -35,22 +40,26 @@ class WriterFileClass
 public:
     explicit WriterFileClass(std::string dest);
 
-    ~WriterFileClass() {
-        if(m_fd >= 0) {
+    ~WriterFileClass()
+    {
+        if (m_fd >= 0)
+        {
             sceIoClose(m_fd);
         }
     }
 
     size_t WriterFileClassCallback(char* ptr, size_t size, size_t nmemb)
     {
-        int ret = sceIoWrite(m_fd, ptr, size*nmemb);
-        if (ret < 0) {
+        int ret = sceIoWrite(m_fd, ptr, size * nmemb);
+        if (ret < 0)
+        {
             cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
         }
         return ret;
     }
 
-    int rewind() {
+    int rewind()
+    {
         return sceIoLseek(m_fd, 0, SCE_SEEK_SET);
     }
 
@@ -58,10 +67,12 @@ private:
     int m_fd = -1;
 };
 
-WriterFileClass::WriterFileClass(std::string dest) {
+WriterFileClass::WriterFileClass(std::string dest)
+{
     m_fd = sceIoOpen(dest.c_str(), SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
 
-    if (m_fd < 0) {
+    if (m_fd < 0)
+    {
         cURLpp::raiseException(std::runtime_error("Network: Couldn't write data"));
     }
 }
@@ -107,13 +118,13 @@ Network::~Network()
 
     sceSslEnd();
     sceSysmoduleUnloadModule(SCE_SYSMODULE_SSL);
-
 }
 
-int Network::Download(std::string url, std::string dest, InfoProgress *progress)
+int Network::Download(std::string url, std::string dest, InfoProgress* progress)
 {
     log_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
-    try {
+    try
+    {
         curlpp::Easy request;
 
         request.setOpt(new curlpp::options::Url(url));
@@ -128,42 +139,52 @@ int Network::Download(std::string url, std::string dest, InfoProgress *progress)
 
         using namespace std::placeholders;
 
-        if (progress) {
+        if (progress)
+        {
             request.setOpt(new curlpp::options::NoProgress(false));
 
             ProgressClass mProgressClass(*progress);
-            curlpp::types::ProgressFunctionFunctor progressFunctor = std::bind(&ProgressClass::ProgressClassCallback, &mProgressClass, _1, _2, _3, _4);
+            curlpp::types::ProgressFunctionFunctor progressFunctor = std::bind(
+                &ProgressClass::ProgressClassCallback, &mProgressClass, _1, _2, _3, _4);
 
             request.setOpt(new curlpp::options::ProgressFunction(progressFunctor));
         }
 
         WriterFileClass mWriterChunk(dest);
 
-        curlpp::types::WriteFunctionFunctor writeFunctor = std::bind(&WriterFileClass::WriterFileClassCallback, &mWriterChunk, _1, _2, _3);
+        curlpp::types::WriteFunctionFunctor writeFunctor = std::bind(
+            &WriterFileClass::WriterFileClassCallback, &mWriterChunk, _1, _2, _3);
         request.setOpt(new curlpp::options::WriteFunction(writeFunctor));
 
-        for (unsigned int retries=1; retries <= 3; retries++) {
-            try {
+        for (unsigned int retries = 1; retries <= 3; retries++)
+        {
+            try
+            {
                 std::lock_guard<SceMutex> lock(mtx_);
                 request.perform();
                 break;
-            } catch (curlpp::RuntimeError &e) {
+            }
+            catch (curlpp::RuntimeError& e)
+            {
                 if (retries == 3)
                     throw;
 
                 mWriterChunk.rewind();
-                if(progress) progress->message("Retrying the download... (" + std::to_string(retries) + ")");
-                sceKernelDelayThread(retries*500 * 1000);
+                if (progress)
+                    progress->message("Retrying the download... (" + std::to_string(retries) + ")");
+                sceKernelDelayThread(retries * 500 * 1000);
                 continue;
             }
         }
-
-    } catch (curlpp::RuntimeError &e) {
+    }
+    catch (curlpp::RuntimeError& e)
+    {
         log_printf(DBG_ERROR, "cURLpp exception: %s %s ", e.what(), url.c_str());
         throw std::runtime_error(std_string_format("NetworkError: %s", e.what()).c_str());
     }
 
-    if(progress) progress->percent(100);
+    if (progress)
+        progress->percent(100);
 
     log_printf(DBG_DEBUG, "Done downloading %s", url.c_str());
     return 0;
@@ -183,26 +204,28 @@ InternetStatus Network::TestConnection()
     int res = -1;
     int statusCode = 0;
     uint64_t contentLength;
-    char buf[32] = {0};
+    char buf[32] = { 0 };
 
     int conn = sceHttpCreateConnectionWithURL(templateId_, PORTAL_DETECT_URL, SCE_TRUE);
-    if (conn < 0) {
+    if (conn < 0)
+    {
         ret = INTERNET_STATUS_NO_INTERNET;
         goto clean;
     }
 
     req = sceHttpCreateRequestWithURL(conn, SCE_HTTP_METHOD_GET, PORTAL_DETECT_URL, 0);
-    if (req < 0) {
+    if (req < 0)
+    {
         ret = INTERNET_STATUS_NO_INTERNET;
         goto clean;
     }
 
     sendRes = sceHttpSendRequest(req, nullptr, 0);
 
-
     res = sceHttpGetStatusCode(req, &statusCode);
 
-    if (sendRes < 0 || res < 0 || statusCode != 200) {
+    if (sendRes < 0 || res < 0 || statusCode != 200)
+    {
         log_printf(DBG_DEBUG, "Request failed. sendRes=0x%08X, res=0x%08X, statusCode=%d", sendRes, res, statusCode);
         ret = INTERNET_STATUS_NO_INTERNET;
         goto clean;
@@ -213,9 +236,9 @@ InternetStatus Network::TestConnection()
     if (res >= 0)
         log_printf(DBG_DEBUG, "Content length: %lu", contentLength);
 
-
     read = sceHttpReadData(req, buf, sizeof(buf));
-    if (read < 0) {
+    if (read < 0)
+    {
         log_printf(DBG_DEBUG, "Cannot read response, error: 0x%08X\n", read);
         ret = INTERNET_STATUS_NO_INTERNET;
         goto clean;
@@ -223,18 +246,21 @@ InternetStatus Network::TestConnection()
 
     buf[read] = '\0';
 
-    if (strncmp(buf, PORTAL_DETECT_STR, strlen(PORTAL_DETECT_STR))) {
+    if (strncmp(buf, PORTAL_DETECT_STR, strlen(PORTAL_DETECT_STR)))
+    {
         log_printf(DBG_DEBUG, "Unexpected portal detection response. Expected: \"%s\", got: \"%s\"", PORTAL_DETECT_STR, buf);
         ret = INTERNET_STATUS_HOTSPOT_PAGE;
         goto clean;
     }
 
-    clean:
-    if (req >= 0) {
+clean:
+    if (req >= 0)
+    {
         sceHttpDeleteRequest(req);
         sceHttpAbortRequest(req);
     }
-    if (conn >= 0) sceHttpDeleteConnection(conn);
+    if (conn >= 0)
+        sceHttpDeleteConnection(conn);
 
     return ret;
 }

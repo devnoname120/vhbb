@@ -1,4 +1,5 @@
 #include "zip.h"
+
 #include "debug.h"
 
 #include <psp2/io/stat.h>
@@ -7,32 +8,31 @@
 #define MAX_FILENAME 512
 #define READ_SIZE 8192
 
-static void mkdir_rec(const char *dir) {
-        char tmp[256];
-        char *p = nullptr;
-        size_t len;
+static void mkdir_rec(const char* dir)
+{
+    char tmp[256];
+    char* p = nullptr;
+    size_t len;
 
-        snprintf(tmp, sizeof(tmp),"%s",dir);
-        len = strlen(tmp);
-        if(tmp[len - 1] == '/')
-                tmp[len - 1] = 0;
-        for(p = tmp + 1; *p; p++)
-                if(*p == '/') {
-                        *p = 0;
-                        sceIoMkdir(tmp, 0777);
-                        *p = '/';
-                }
-        sceIoMkdir(tmp, 0777);
+    snprintf(tmp, sizeof(tmp), "%s", dir);
+    len = strlen(tmp);
+    if (tmp[len - 1] == '/')
+        tmp[len - 1] = 0;
+    for (p = tmp + 1; *p; p++)
+        if (*p == '/')
+        {
+            *p = 0;
+            sceIoMkdir(tmp, 0777);
+            *p = '/';
+        }
+    sceIoMkdir(tmp, 0777);
 }
 
 std::string dirnameOf(const std::string& fname)
 {
-     size_t pos = fname.find_last_of("\\/");
-     return (std::string::npos == pos)
-         ? ""
-         : fname.substr(0, pos);
+    size_t pos = fname.find_last_of("\\/");
+    return (std::string::npos == pos) ? "" : fname.substr(0, pos);
 }
-
 
 Zipfile::Zipfile(const std::string zip_path)
 {
@@ -48,12 +48,12 @@ Zipfile::Zipfile(const std::string zip_path)
         log_printf(DBG_DEBUG, "Could not read file global info");
         throw std::runtime_error("Cannot read zip info");
     }
-
 }
 
 Zipfile::~Zipfile()
 {
-    if(zipfile_) unzClose(zipfile_);
+    if (zipfile_)
+        unzClose(zipfile_);
 }
 
 int Zipfile::Unzip(const std::string outpath, InfoProgress progress)
@@ -61,10 +61,12 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress progress)
     return Unzip(outpath, &progress);
 }
 
-int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
+int Zipfile::Unzip(const std::string outpath, InfoProgress* progress)
 {
-    if (uncompressed_size_ == 0) {
-        if (progress) {
+    if (uncompressed_size_ == 0)
+    {
+        if (progress)
+        {
             progress->percent(0);
             progress->message("Calculating zip size...");
             progress->speed(-1);
@@ -72,7 +74,8 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
         UncompressedSize();
     }
 
-    if (progress) {
+    if (progress)
+    {
         progress->percent(5);
         progress->message("Unzipping...");
         progress->speed(-1);
@@ -82,7 +85,8 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
 
     uLong i;
     uint64_t s_progress = 0;
-    if(unzGoToFirstFile(zipfile_) != UNZ_OK) {
+    if (unzGoToFirstFile(zipfile_) != UNZ_OK)
+    {
         log_printf(DBG_DEBUG, "Cannot go to first file");
         throw std::runtime_error("Error going to first file");
     }
@@ -92,12 +96,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
         unz_file_info file_info;
         char filename[MAX_FILENAME];
         char fullfilepath[MAX_FILENAME];
-        if (unzGetCurrentFileInfo(
-            zipfile_,
-            &file_info,
-            filename,
-            MAX_FILENAME,
-            nullptr, 0, nullptr, 0) != UNZ_OK)
+        if (unzGetCurrentFileInfo(zipfile_, &file_info, filename, MAX_FILENAME, nullptr, 0, nullptr, 0) != UNZ_OK)
         {
             log_printf(DBG_DEBUG, "Could not read file info");
             throw std::runtime_error("Error reading zip file info");
@@ -107,10 +106,10 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
 
         // Check if this entry is a directory or file.
         const size_t filename_length = strlen(fullfilepath);
-        if (fullfilepath[filename_length-1] == dir_delimter)
+        if (fullfilepath[filename_length - 1] == dir_delimter)
         {
             log_printf(DBG_DEBUG, "dir:%s", fullfilepath);
-            //sceIoMkdir(fullfilepath, 0777);
+            // sceIoMkdir(fullfilepath, 0777);
             mkdir_rec(fullfilepath);
         }
         else
@@ -128,7 +127,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
             }
 
             // Open a file to write out the data.
-            FILE *out = fopen(fullfilepath, "wb");
+            FILE* out = fopen(fullfilepath, "wb");
             if (out == nullptr)
             {
                 log_printf(DBG_DEBUG, "could not open destination file");
@@ -151,7 +150,8 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
                 {
                     fwrite(read_buffer, error, 1, out); // TODO check fwrite return
                     s_progress += error;
-                    if (progress) progress->percent(5 + 95*s_progress/uncompressed_size_);
+                    if (progress)
+                        progress->percent(5 + 95 * s_progress / uncompressed_size_);
                 }
             } while (error > 0);
 
@@ -161,7 +161,7 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
         unzCloseCurrentFile(zipfile_);
 
         // Go the the next entry listed in the zip file.
-        if ((i+1) < global_info_.number_entry)
+        if ((i + 1) < global_info_.number_entry)
         {
             if (unzGoToNextFile(zipfile_) != UNZ_OK)
             {
@@ -171,23 +171,25 @@ int Zipfile::Unzip(const std::string outpath, InfoProgress *progress)
         }
     }
 
-    if (progress) progress->percent(100);
+    if (progress)
+        progress->percent(100);
     return 0;
 }
-
 
 int Zipfile::UncompressedSize(InfoProgress progress)
 {
     return UncompressedSize(&progress);
 }
 
-int Zipfile::UncompressedSize(InfoProgress *progress)
+int Zipfile::UncompressedSize(InfoProgress* progress)
 {
     // Progress is not done yet in this function
-    if(progress) progress->message("Calculating zip content size...");
+    if (progress)
+        progress->message("Calculating zip content size...");
     uncompressed_size_ = 0;
 
-    if(unzGoToFirstFile(zipfile_) != UNZ_OK) {
+    if (unzGoToFirstFile(zipfile_) != UNZ_OK)
+    {
         log_printf(DBG_DEBUG, "Cannot go to first file");
         throw std::runtime_error("Error going to first file");
     }
@@ -197,12 +199,7 @@ int Zipfile::UncompressedSize(InfoProgress *progress)
     {
         unz_file_info file_info;
         char filename[MAX_FILENAME];
-        if (unzGetCurrentFileInfo(
-            zipfile_,
-            &file_info,
-            filename,
-            MAX_FILENAME,
-            nullptr, 0, nullptr, 0) != UNZ_OK)
+        if (unzGetCurrentFileInfo(zipfile_, &file_info, filename, MAX_FILENAME, nullptr, 0, nullptr, 0) != UNZ_OK)
         {
             log_printf(DBG_DEBUG, "could not read file info");
             throw std::runtime_error("Error reading zip file info");
@@ -210,9 +207,8 @@ int Zipfile::UncompressedSize(InfoProgress *progress)
 
         uncompressed_size_ += file_info.uncompressed_size;
 
-
         // Go the the next entry listed in the zip file.
-        if ((i+1) < global_info_.number_entry)
+        if ((i + 1) < global_info_.number_entry)
         {
             if (unzGoToNextFile(zipfile_) != UNZ_OK)
             {
