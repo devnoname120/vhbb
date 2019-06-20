@@ -11,6 +11,10 @@
 #define INPUT_REPEAT_DELAY 3  // max 127
 #define INPUT_ANALOG_DEAD_ZONE 64
 
+// Japanese Vita use O to confirm and X to cancel, other regions use the opposite.
+extern unsigned int SCE_CTRL_ENTER;
+extern unsigned int SCE_CTRL_CANCEL;
+
 class Input {
 	private:
 

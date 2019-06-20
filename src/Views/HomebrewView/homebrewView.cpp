@@ -125,9 +125,9 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 
 			sceAppMgrLaunchAppByUri(0x20000, uri);
 		}
-	} else if (input.KeyNewPressed(SCE_CTRL_CIRCLE)) {
+	} else if (input.KeyNewPressed(SCE_CTRL_CANCEL)) {
 		request_destroy = true;
-	} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
+	} else if (input.KeyNewPressed(SCE_CTRL_ENTER)) {
 		homebrewInstall();
 	}
 

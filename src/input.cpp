@@ -5,6 +5,8 @@
 #include <tuple>
 #include <cmath>
 #include <vita2d.h>
+#include <psp2/apputil.h>
+#include <psp2/system_param.h>
 #include "input.h"
 
 #include "screen.h"
@@ -12,12 +14,29 @@
 #include "debug.h"
 #include "utils.h"
 
+unsigned int SCE_CTRL_ENTER;
+unsigned int SCE_CTRL_CANCEL;
 
 Input::Input()
 {
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_FRONT, SCE_TOUCH_SAMPLING_STATE_START);
 	sceTouchSetSamplingState(SCE_TOUCH_PORT_BACK, SCE_TOUCH_SAMPLING_STATE_START);
 	sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
+
+	int enter_button = SCE_SYSTEM_PARAM_ENTER_BUTTON_CROSS;
+	int ret = sceAppUtilSystemParamGetInt(SCE_SYSTEM_PARAM_ID_ENTER_BUTTON, &enter_button);
+	if (ret < 0) {
+		log_printf(DBG_ERROR, "Cannot obtain enter button: 0x%08X", ret);
+	}
+
+	// Japanese region
+	if (enter_button == SCE_SYSTEM_PARAM_ENTER_BUTTON_CIRCLE) {
+		SCE_CTRL_ENTER = SCE_CTRL_CIRCLE;
+		SCE_CTRL_CANCEL = SCE_CTRL_CROSS;
+	} else {
+		SCE_CTRL_ENTER = SCE_CTRL_CROSS;
+		SCE_CTRL_CANCEL = SCE_CTRL_CIRCLE;
+	}
 }
 
 int Input::Get()

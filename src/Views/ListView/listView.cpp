@@ -181,7 +181,7 @@ int ListView::HandleInput(int focus, const Input& input)
 				if (selectedItem > lastFullyDisplayedItem()) {
 					posY += ITEM_HEIGHT;
 				}
-			} else if (input.KeyNewPressed(SCE_CTRL_CROSS)) {
+			} else if (input.KeyNewPressed(SCE_CTRL_ENTER)) {
                 log_printf(DBG_DEBUG, "Pressed, adding view...");
 				try {
 					Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
