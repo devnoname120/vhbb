@@ -159,3 +159,7 @@ int Texture::DrawTint(const Point& pt, unsigned int color)
     vita2d_draw_texture_tint(texture.get(), pt.x, pt.y, color);
     return 0;
 }
+unsigned int Texture::Height()
+{
+    return vita2d_texture_get_height(texture.get());
+}

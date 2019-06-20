@@ -28,6 +28,9 @@ private:
 	Texture img_preview_infobg;
 	Texture img_preview_btn_download;
 	Texture img_preview_btn_open;
+	Texture img_btn_back;
+	Texture img_btn_back_pressed;
+	bool btn_back_pressed = false;
 
 	// FIXME Hack otherwise we see the other views beneath
 	Background bg;

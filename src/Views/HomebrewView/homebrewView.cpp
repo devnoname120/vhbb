@@ -12,6 +12,9 @@
 extern unsigned char _binary_assets_spr_img_preview_infobg_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_download_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_open_png_start;
+extern unsigned char _binary_assets_spr_img_btn_back_png_start;
+extern unsigned char _binary_assets_spr_img_btn_back_pressed_png_start;
+
 
 std::string wrapDescription(std::string str, size_t width)
 {
@@ -36,11 +39,13 @@ HomebrewView::HomebrewView(Homebrew hb)
     : font_20(Font(std::string(FONT_DIR "segoeui.ttf"), 20))
     , font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
     , font_40(Font(std::string(FONT_DIR "segoeui.ttf"), 40))
-    ,
 
-    img_preview_infobg(Texture(&_binary_assets_spr_img_preview_infobg_png_start))
+
+    , img_preview_infobg(Texture(&_binary_assets_spr_img_preview_infobg_png_start))
     , img_preview_btn_download(Texture(&_binary_assets_spr_img_preview_btn_download_png_start))
     , img_preview_btn_open(Texture(&_binary_assets_spr_img_preview_btn_open_png_start))
+    , img_btn_back(Texture(&_binary_assets_spr_img_btn_back_png_start))
+    , img_btn_back_pressed(Texture(&_binary_assets_spr_img_btn_back_pressed_png_start))
     , hb_(hb)
     , img_icon(Texture(std::string(ICONS_FOLDER "/") + hb.icon))
 {
@@ -147,6 +152,14 @@ int HomebrewView::HandleInput(int focus, const Input& input)
 
             sceAppMgrLaunchAppByUri(0x20000, uri);
         }
+        else if (input.TouchInTexture(Point(HB_X, SCREEN_HEIGHT - img_btn_back_pressed.Height()), img_btn_back))
+        {
+            btn_back_pressed = true;
+        }
+    } else if (input.TouchPressed() && !input.TouchInTexture(Point(HB_X, SCREEN_HEIGHT - img_btn_back_pressed.Height()), img_btn_back)) {
+        btn_back_pressed = false;
+    } else if (!input.TouchPressed() && btn_back_pressed) {
+        request_destroy = true;
     }
     else if (input.KeyNewPressed(SCE_CTRL_CANCEL))
     {
@@ -198,6 +211,11 @@ int HomebrewView::Display()
         screenshots.at(0).DrawResize(Point(HB_X + 560, HB_Y + 110), Point(376, 210));
     }
     // else draw a grey rectangle
+
+    if (btn_back_pressed)
+        img_btn_back_pressed.Draw(Point(HB_X, SCREEN_HEIGHT - img_btn_back_pressed.Height()));
+    else
+        img_btn_back.Draw(Point(HB_X, SCREEN_HEIGHT - img_btn_back.Height()));
 
     return 0;
 }
