@@ -1,5 +1,6 @@
 # Vita HomeBrew Browser ![GitHub All Releases](https://img.shields.io/github/downloads/devnoname120/vhbb/total.svg)
 
+[![Build Status](https://dev.azure.com/devnoname120/devnoname120/_apis/build/status/devnoname120.vhbb?branchName=master)](https://dev.azure.com/devnoname120/devnoname120/_build/latest?definitionId=1&branchName=master)
 
 ![Alt text](https://cloud.githubusercontent.com/assets/21164502/24837255/3af41722-1d73-11e7-8aae-5664fec174f3.png "")
 
