@@ -1,0 +1,31 @@
+# https://aka.ms/yaml
+
+pool:
+  vmImage: 'ubuntu-16.04'
+
+container: gnuton/vitasdk-docker:latest
+
+steps:
+- script: sudo apt install -qq -y pkg-config
+  displayName: 'Install extra dependencies'
+
+- script: |
+    mkdir build
+    cd build
+    cmake .. -DDEBUGNET=OFF -DCMAKE_BUILD_TYPE=Debug
+  displayName: 'Configure CMake'
+
+- script: |
+    cd build
+    make -j4
+  displayName: 'Build'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    path: build/VitaHBBrowser.vpk
+    artifact: 'Vita Package (VPK)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    path: build/VitaHBBrowser.elf
+    artifact: 'Debug ELF'
