@@ -16,6 +16,7 @@ public:
 	int Display(int posY, int highlight, int highlightAlpha);
 
 	Homebrew homebrew;
+	bool isUpdateAvailable = false;
 private:
 	Font font_22;
 	Font font_32;
@@ -29,6 +30,8 @@ private:
 	Texture img_itm_label_port;
 	Texture img_itm_label_emu;
 	Texture img_itm_label_util;
+
+	Texture img_update_available_sticker;
 	
 	int display(int posY);
 	int displayHighlight(int posY, int alpha);

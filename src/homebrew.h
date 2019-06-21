@@ -23,6 +23,7 @@ public:
 	std::string data;
 
 	bool IsInstalled();
+        bool IsUpdateAvailable();
 };
 
 

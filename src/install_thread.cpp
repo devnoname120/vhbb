@@ -1,12 +1,13 @@
 #include "install_thread.h"
 
-#include <activity.h>
-#include <Views/ProgressView/progressView.h>
-#include <network.h>
-#include <vitaPackage.h>
-#include <psp2/io/fcntl.h>
+#include "homebrewInfo.h"
 #include "zip.h"
 
+#include <Views/ProgressView/progressView.h>
+#include <activity.h>
+#include <network.h>
+#include <psp2/io/fcntl.h>
+#include <vitaPackage.h>
 
 void install_thread(SceSize args_size, InstallArguments *installArgs) {
     
@@ -40,19 +41,17 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
         VitaPackage pkg = VitaPackage(std::string("ux0:/temp/download.vpk"));
         pkg.Install(progress.Range(40, 100));
 
-        YAML::Emitter info;
-        info << YAML::BeginMap;
-        info << YAML::Key << "name";
-        info << YAML::Value << installArgs->hb.name;
-        info << YAML::Key << "version";
-        info << YAML::Value << installArgs->hb.version;
-        info << YAML::Key << "date";
-        info << YAML::Value << installArgs->hb.date.str;
-        info << YAML::EndMap;
+        HomebrewInfo hbInfo = HomebrewInfo();
+        hbInfo.name = installArgs->hb.name;
+        hbInfo.version = installArgs->hb.version;
+        hbInfo.date = installArgs->hb.date;
 
-      	int fd = sceIoOpen((std::string("ux0:app/") + installArgs->hb.titleid + "/vitadb_info.yml").c_str(), SCE_O_WRONLY|SCE_O_CREAT, 0777);
-		sceIoWrite(fd, info.c_str(), strlen(info.c_str()));
-		sceIoClose(fd);
+        YAML::Node node = YAML::convert<HomebrewInfo>::encode(hbInfo);
+        std::string hbInfoStr = YAML::Dump(node);
+
+        int fd = sceIoOpen((std::string("ux0:app/") + installArgs->hb.titleid + "/vitadb_info.yml").c_str(), SCE_O_WRONLY|SCE_O_CREAT, 0777);
+        sceIoWrite(fd, hbInfoStr.c_str(), strlen(hbInfoStr.c_str()));
+        sceIoClose(fd);
 
         progress.percent(100);
         progress.message("Finished");

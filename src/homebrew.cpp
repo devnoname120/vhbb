@@ -1,6 +1,7 @@
 #include "homebrew.h"
 
 #include "debug.h"
+#include "homebrewInfo.h"
 
 #include <psp2/promoterutil.h>
 #include <psp2/sysmodule.h>
@@ -30,6 +31,45 @@ bool Homebrew::IsInstalled()
     scePromoterUtilityExit();
 
     return installed >= 0;
+}
+bool Homebrew::IsUpdateAvailable()
+{
+    if (!IsInstalled())
+    {
+        return false;
+    }
+
+    std::string homebrewInfoPath = std::string("ux0:app/") + titleid + "/" + "vitadb_info.yml";
+
+    YAML::Node node;
+    try
+    {
+        node = YAML::LoadFile(homebrewInfoPath);
+    }
+    catch (YAML::BadFile& e)
+    {
+        // Homebrew not installed with VHBB, assume that an update is available
+        return true;
+    }
+    catch (YAML::ParserException& e)
+    {
+        log_printf(DBG_ERROR, "Cannot parse [%s]: %s", homebrewInfoPath.c_str(), e.msg.c_str());
+        return true;
+    }
+
+    HomebrewInfo info;
+    try
+    {
+        info = node.as<HomebrewInfo>();
+    }
+    catch (YAML::InvalidNode& e)
+    {
+        log_printf(DBG_ERROR, "Cannot cast to HomebrewInfo [%s]: %s", homebrewInfoPath.c_str(), e.msg.c_str());
+
+        // In case HomebrewInfo is changed incorrectly, we don't want every homebrew to show that it has an update
+        return false;
+    }
+    return info.date > date;
 }
 
 // Add type to yaml-cpp

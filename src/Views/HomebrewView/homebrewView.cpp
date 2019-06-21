@@ -12,6 +12,7 @@
 extern unsigned char _binary_assets_spr_img_preview_infobg_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_download_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_open_png_start;
+extern unsigned char _binary_assets_spr_img_preview_btn_update_png_start;
 extern unsigned char _binary_assets_spr_img_btn_back_png_start;
 extern unsigned char _binary_assets_spr_img_btn_back_pressed_png_start;
 
@@ -44,6 +45,8 @@ HomebrewView::HomebrewView(Homebrew hb)
     , img_preview_infobg(Texture(&_binary_assets_spr_img_preview_infobg_png_start))
     , img_preview_btn_download(Texture(&_binary_assets_spr_img_preview_btn_download_png_start))
     , img_preview_btn_open(Texture(&_binary_assets_spr_img_preview_btn_open_png_start))
+    , img_preview_btn_update(Texture(&_binary_assets_spr_img_preview_btn_update_png_start))
+    , is_update_available(hb.IsUpdateAvailable())
     , img_btn_back(Texture(&_binary_assets_spr_img_btn_back_png_start))
     , img_btn_back_pressed(Texture(&_binary_assets_spr_img_btn_back_pressed_png_start))
     , hb_(hb)
@@ -170,7 +173,11 @@ int HomebrewView::Display()
 
     font_25.Draw(Point(HB_X + 40, HB_Y + 362), description);
 
-    img_preview_btn_download.Draw(Point(HB_X + 218, HB_Y + 168));
+    if (is_update_available) {
+        img_preview_btn_update.Draw(Point(HB_X + 218, HB_Y + 168));
+    } else {
+        img_preview_btn_download.Draw(Point(HB_X + 218, HB_Y + 168));
+    }
 
     if (installed_)
     {

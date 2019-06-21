@@ -9,9 +9,11 @@ extern unsigned char _binary_assets_spr_img_itm_label_game_png_start;
 extern unsigned char _binary_assets_spr_img_itm_label_port_png_start;
 extern unsigned char _binary_assets_spr_img_itm_label_emu_png_start;
 extern unsigned char _binary_assets_spr_img_itm_label_util_png_start;
+extern unsigned char _binary_assets_spr_img_update_available_sticker_png_start;
 
 ListItem::ListItem(Homebrew hb)
     : homebrew(hb)
+    , isUpdateAvailable(hb.IsUpdateAvailable())
     , font_22(Font(std::string(FONT_DIR "segoeui.ttf"), 22))
     , font_32(Font(std::string(FONT_DIR "segoeui.ttf"), 32))
     , img_itm_panel(Texture(&_binary_assets_spr_img_itm_panel_png_start))
@@ -21,6 +23,7 @@ ListItem::ListItem(Homebrew hb)
     , img_itm_label_port(Texture(&_binary_assets_spr_img_itm_label_port_png_start))
     , img_itm_label_emu(Texture(&_binary_assets_spr_img_itm_label_emu_png_start))
     , img_itm_label_util(Texture(&_binary_assets_spr_img_itm_label_util_png_start))
+    , img_update_available_sticker(Texture(&_binary_assets_spr_img_update_available_sticker_png_start))
 
 {
 }
@@ -44,6 +47,10 @@ int ListItem::display(int posY)
     // font_35.Draw(Point(ITEM_POSX + 120, posY + 33), homebrew.release);
 
     img_icon_.DrawResize(Point(ITEM_POSX, posY), Point(90, 90));
+
+    if (isUpdateAvailable)
+        img_update_available_sticker.Draw(Point(ITEM_POSX, posY));
+
 
     // TODO: Is there a better way of handling this? Yes i'm talking to You good sir :-)
     if (homebrew.category == "1")
