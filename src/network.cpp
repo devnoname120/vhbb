@@ -137,21 +137,25 @@ int Network::Download(std::string url, std::string dest, InfoProgress* progress)
         request.setOpt(new curlpp::options::MaxRedirs(8L));
         request.setOpt(new curlpp::options::FailOnError(true));
 
-        SceNetCtlInfo netInfo;
-        int ret = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_CONFIG, &netInfo);
-        int ret2 = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_SERVER, &netInfo);
-        int ret3 = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_PORT, &netInfo);
+        SceNetCtlInfo httpProxyConfig;
+        SceNetCtlInfo httpProxyServer;
+        SceNetCtlInfo httpProxyPort;
+        int ret = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_CONFIG, &httpProxyConfig);
+        int ret2 = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_SERVER, &httpProxyServer);
+        int ret3 = sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_HTTP_PROXY_PORT, &httpProxyPort);
 
-        if (ret < 0 || (netInfo.http_proxy_config == 1 && (ret2 < 0 || ret3 < 0)))
+        if (ret < 0 || (httpProxyConfig.http_proxy_config == 1 && (ret2 < 0 || ret3 < 0)))
         {
             log_printf(DBG_ERROR, "Cannot load proxy settings, ignoring...");
         }
-        else if (netInfo.http_proxy_config == 1)
+        else if (httpProxyConfig.http_proxy_config == 1)
         {
-            log_printf(DBG_INFO, "Proxy enabled for this download: %s:%d", netInfo.http_proxy_server, netInfo.http_proxy_port);
+            log_printf(
+                DBG_INFO, "Proxy enabled for this download: %s:%d", httpProxyServer.http_proxy_server,
+                httpProxyPort.http_proxy_port);
 
-            std::string proxy = std::string("http://") + netInfo.http_proxy_server + ":"
-                + std::to_string(netInfo.http_proxy_port);
+            std::string proxy = std::string("http://") + httpProxyServer.http_proxy_server + ":"
+                + std::to_string(httpProxyPort.http_proxy_port);
             request.setOpt(new curlpp::options::Proxy(proxy));
         }
 
