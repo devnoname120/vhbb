@@ -14,6 +14,7 @@ extern unsigned char _binary_assets_spr_img_preview_btn_download_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_open_png_start;
 extern unsigned char _binary_assets_spr_img_btn_back_png_start;
 extern unsigned char _binary_assets_spr_img_btn_back_pressed_png_start;
+extern unsigned char _binary_assets_spr_img_preview_btn_youtube_png_start;
 
 std::string wrapDescription(std::string str, size_t width)
 {
@@ -44,9 +45,31 @@ HomebrewView::HomebrewView(Homebrew hb)
     , img_preview_btn_open(Texture(&_binary_assets_spr_img_preview_btn_open_png_start))
     , img_btn_back(Texture(&_binary_assets_spr_img_btn_back_png_start))
     , img_btn_back_pressed(Texture(&_binary_assets_spr_img_btn_back_pressed_png_start))
+    , img_preview_btn_youtube(Texture(&_binary_assets_spr_img_preview_btn_youtube_png_start))
     , hb_(hb)
     , img_icon(Texture(std::string(ICONS_FOLDER "/") + hb.icon))
 {
+    if (!hb_.trailer.empty())
+    {
+        // https://stackoverflow.com/a/2068371/3634271
+        std::string thumbnail_url = std::string("https://img.youtube.com/vi/") + hb_.trailer + "/mqdefault.jpg";
+
+        try
+        {
+            std::string thumbnail_path = std::string(SCREENSHOTS_FOLDER "/") + hb_.trailer + ".jpg";
+
+            Network::get_instance()->Download(thumbnail_url, thumbnail_path);
+            // FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the
+            // vita2d resource is freed (cf ~Texture())
+            thumbnail = Texture(thumbnail_path);
+            sceIoRemove(thumbnail_path.c_str());
+        }
+        catch (const std::exception& ex)
+        {
+            log_printf(DBG_ERROR, "Cannot download thumbnail %s", thumbnail_url.c_str());
+        }
+    }
+
     // FIXME Support more than 1 screenshot
     if (!hb_.screenshots.empty())
     {
@@ -136,6 +159,20 @@ int HomebrewView::HandleInput(int focus, const Input& input)
         {
             btn_back_pressed = true;
         }
+        else if (thumbnail.has_value())
+        {
+            // FIXME Hack because thumbnail is displayed centered
+            float width = vita2d_texture_get_width(thumbnail->texture.get());
+            float height = vita2d_texture_get_height(thumbnail->texture.get());
+            auto pt = Point(HB_X + 560 + 376.f / 2, HB_Y + 110 + 210.f / 2);
+            Point top_left = Point(pt.x - width / 2, pt.y - height / 2);
+            Point bottom_right = Point(top_left.x + width, top_left.y + height);
+
+            if (input.TouchInRectangle(Rectangle(Point(HB_X + 560, HB_Y + 110), Point(HB_X + 560 + 376, HB_Y + 110 + 210))))
+            {
+                startYoutube();
+            }
+        }
     }
     else if (
         input.TouchPressed() && !input.TouchInTexture(Point(HB_X, SCREEN_HEIGHT - img_btn_back_pressed.Height()), img_btn_back))
@@ -158,12 +195,16 @@ int HomebrewView::HandleInput(int focus, const Input& input)
     {
         if (!hb_.trailer.empty())
         {
-            sceAppMgrLaunchAppByUri(
-                0x20000, (std::string("webmodal: https://www.youtube.com/embed/") + hb_.trailer + "?autoplay=1").c_str());
+            startYoutube();
         }
     }
 
     return 0;
+}
+void HomebrewView::startYoutube() const
+{
+    sceAppMgrLaunchAppByUri(
+        0x20000, (std::string("webmodal: https://www.youtube.com/embed/") + hb_.trailer + "?autoplay=1").c_str());
 }
 
 int HomebrewView::Display()
@@ -190,12 +231,21 @@ int HomebrewView::Display()
 
     img_icon.DrawResize(Point(HB_X + 122, HB_Y + 60), Point(90, 90));
 
-    if (!screenshots.empty())
+    if (thumbnail.has_value())
+    {
+        thumbnail->DrawResize(Point(HB_X + 560, HB_Y + 110), Point(376, 210));
+    }
+    else if (!screenshots.empty())
     {
         // FIXME Images aren't all fullscreen-sized
         screenshots.at(0).DrawResize(Point(HB_X + 560, HB_Y + 110), Point(376, 210));
     }
     // else draw a grey rectangle
+
+    if (!hb_.trailer.empty())
+    {
+        img_preview_btn_youtube.DrawCentered(Point(HB_X + 560 + 376.f / 2, HB_Y + 110 + 210.f / 2));
+    }
 
     if (btn_back_pressed)
         img_btn_back_pressed.Draw(Point(HB_X, SCREEN_HEIGHT - img_btn_back_pressed.Height()));
