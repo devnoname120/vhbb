@@ -49,5 +49,6 @@ public:
     int TouchDifference(double* touchDifX, double* touchDifY, unsigned long* timeDif) const;
     int TouchSpeed(double* touchSpeedX, double* touchSpeedY, double* touchSpeed) const;
     int TouchInRectangle(const Rectangle& rect) const;
-    int TouchInTexture(const Point& draw_pt, const Texture& tex) const;
+    template <typename TCachingPolicy>
+    int TouchInTexture(const Point& draw_pt, const Texture<TCachingPolicy>& tex) const;
 };

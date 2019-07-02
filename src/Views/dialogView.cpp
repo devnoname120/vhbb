@@ -36,10 +36,10 @@ extern unsigned char _binary_assets_spr_img_dialog_msg_btn_focus_png_start;
 DialogView::DialogView()
     : msg_font(Font(std::string(FONT_DIR "segoeui.ttf"), 28))
     , btn_font(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
-    , img_dialog_msg_bg(Texture(&_binary_assets_spr_img_dialog_msg_bg_png_start))
-    , img_dialog_msg_btn(Texture(&_binary_assets_spr_img_dialog_msg_btn_png_start))
-    , img_dialog_msg_btn_active(Texture(&_binary_assets_spr_img_dialog_msg_btn_active_png_start))
-    , img_dialog_msg_btn_focus(Texture(&_binary_assets_spr_img_dialog_msg_btn_focus_png_start))
+    , img_dialog_msg_bg(CachedTexture(&_binary_assets_spr_img_dialog_msg_bg_png_start))
+    , img_dialog_msg_btn(CachedTexture(&_binary_assets_spr_img_dialog_msg_btn_png_start))
+    , img_dialog_msg_btn_active(CachedTexture(&_binary_assets_spr_img_dialog_msg_btn_active_png_start))
+    , img_dialog_msg_btn_focus(CachedTexture(&_binary_assets_spr_img_dialog_msg_btn_focus_png_start))
 {
     priority = 550;
     log_printf(DBG_DEBUG, "DialogView::DialogView()");

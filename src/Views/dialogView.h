@@ -33,10 +33,10 @@ private:
 	Font msg_font;
 	Font btn_font;
 
-	Texture img_dialog_msg_bg;
-	Texture img_dialog_msg_btn;
-	Texture img_dialog_msg_btn_active;
-	Texture img_dialog_msg_btn_focus;
+	CachedTexture img_dialog_msg_bg;
+	CachedTexture img_dialog_msg_btn;
+	CachedTexture img_dialog_msg_btn_active;
+	CachedTexture img_dialog_msg_btn_focus;
 
 	void prepare(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type);
 	void DrawBtn(const std::string &text, const Point &sprPt, const Rectangle &textRect, int idx);

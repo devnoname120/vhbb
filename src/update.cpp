@@ -162,7 +162,7 @@ std::shared_ptr<Background> Update::startBackgroundView()
 std::shared_ptr<ProgressView> Update::startProgressView(InfoProgress progress, std::string title)
 {
     auto progressView = std::make_shared<ProgressView>(
-        progress, std::move(title), Texture(&_binary_assets_spr_img_updater_icon_png_start));
+        progress, std::move(title), CachedTexture(&_binary_assets_spr_img_updater_icon_png_start));
     progressView->priority = 750;
     Activity::get_instance()->AddView(progressView);
     return progressView;

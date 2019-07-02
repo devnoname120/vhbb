@@ -20,15 +20,15 @@ private:
 	Font font_22;
 	Font font_32;
 
-	Texture img_itm_panel;
-	Texture img_itm_panel_highlight;
+	CachedTexture img_itm_panel;
+  CachedTexture img_itm_panel_highlight;
 
-	Texture img_icon_;
-	
-	Texture img_itm_label_game;
-	Texture img_itm_label_port;
-	Texture img_itm_label_emu;
-	Texture img_itm_label_util;
+  CachedTexture img_icon_;
+
+  CachedTexture img_itm_label_game;
+  CachedTexture img_itm_label_port;
+  CachedTexture img_itm_label_emu;
+  CachedTexture img_itm_label_util;
 	
 	int display(int posY);
 	int displayHighlight(int posY, int alpha);

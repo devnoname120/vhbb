@@ -20,7 +20,9 @@ class ProgressView: public View {
 public:
 	ProgressView(InfoProgress progress, Homebrew hb);
 	ProgressView(InfoProgress progress, std::string hb_name, std::string icon_path);
-	ProgressView(InfoProgress progress, std::string hb_name, Texture icon_texture);
+
+	template <typename TCachingPolicy>
+	ProgressView(InfoProgress progress, std::string hb_name, Texture <TCachingPolicy> icon_texture);
 
 	int HandleInput(int focus, const Input& input) override;
 	int Display() override;
@@ -34,9 +36,9 @@ private:
 	InfoProgress progress_;
 
 	Font font_24;
-	Texture img_icon;
-	Texture img_dialog_progress_bg;
-	Texture img_dialog_progress_bar;
-	Texture img_dialog_progress_bar_glow;
-	Texture img_dialog_btn;
+	CachedTexture img_icon;
+	CachedTexture img_dialog_progress_bg;
+	CachedTexture img_dialog_progress_bar;
+	CachedTexture img_dialog_progress_bar_glow;
+	CachedTexture img_dialog_btn;
 };

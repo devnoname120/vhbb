@@ -5,7 +5,7 @@ extern unsigned char _binary_assets_spr_img_bg_png_start;
 
 
 Background::Background() :
-	img_bg(Texture(&_binary_assets_spr_img_bg_png_start))
+	img_bg(CachedTexture(&_binary_assets_spr_img_bg_png_start))
 {
 }
 

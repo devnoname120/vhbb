@@ -21,8 +21,8 @@ public:
 private:
 	Font font_22;
 	
-	Texture img_statsbar_battery;
-	Texture img_statsbar_battery_charge;
+	CachedTexture img_statsbar_battery;
+	CachedTexture img_statsbar_battery_charge;
 
 	#ifdef _DEBUG
 	char vitaip[16] = {0};

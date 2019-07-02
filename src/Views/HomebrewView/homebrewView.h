@@ -23,14 +23,14 @@ private:
     Font font_25;
     Font font_40;
 
-    Texture img_preview_infobg;
-    Texture img_preview_btn_download;
-    Texture img_preview_btn_open;
-    Texture img_btn_back;
-    Texture img_btn_back_pressed;
+    CachedTexture img_preview_infobg;
+    CachedTexture img_preview_btn_download;
+    CachedTexture img_preview_btn_open;
+    CachedTexture img_btn_back;
+    CachedTexture img_btn_back_pressed;
     bool btn_back_pressed = false;
 
-    Texture img_preview_btn_youtube;
+    CachedTexture img_preview_btn_youtube;
 
     // FIXME Hack otherwise we see the other views beneath
     Background bg;
@@ -38,10 +38,10 @@ private:
 
     Homebrew hb_;
     bool installed_ = false;
-    Texture img_icon;
+    CachedTexture img_icon;
 
-    std::vector<Texture> screenshots;
-    std::optional<Texture> thumbnail;
+    std::vector<UncachedTexture> screenshots;
+    std::optional<UncachedTexture> thumbnail;
 
     std::string description = "";
 

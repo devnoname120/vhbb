@@ -40,14 +40,14 @@ HomebrewView::HomebrewView(Homebrew hb)
     , font_25(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
     , font_40(Font(std::string(FONT_DIR "segoeui.ttf"), 40))
 
-    , img_preview_infobg(Texture(&_binary_assets_spr_img_preview_infobg_png_start))
-    , img_preview_btn_download(Texture(&_binary_assets_spr_img_preview_btn_download_png_start))
-    , img_preview_btn_open(Texture(&_binary_assets_spr_img_preview_btn_open_png_start))
-    , img_btn_back(Texture(&_binary_assets_spr_img_btn_back_png_start))
-    , img_btn_back_pressed(Texture(&_binary_assets_spr_img_btn_back_pressed_png_start))
-    , img_preview_btn_youtube(Texture(&_binary_assets_spr_img_preview_btn_youtube_png_start))
+    , img_preview_infobg(CachedTexture(&_binary_assets_spr_img_preview_infobg_png_start))
+    , img_preview_btn_download(CachedTexture(&_binary_assets_spr_img_preview_btn_download_png_start))
+    , img_preview_btn_open(CachedTexture(&_binary_assets_spr_img_preview_btn_open_png_start))
+    , img_btn_back(CachedTexture(&_binary_assets_spr_img_btn_back_png_start))
+    , img_btn_back_pressed(CachedTexture(&_binary_assets_spr_img_btn_back_pressed_png_start))
+    , img_preview_btn_youtube(CachedTexture(&_binary_assets_spr_img_preview_btn_youtube_png_start))
     , hb_(hb)
-    , img_icon(Texture(std::string(ICONS_FOLDER "/") + hb.icon))
+    , img_icon(CachedTexture(std::string(ICONS_FOLDER "/") + hb.icon))
 {
     if (!hb_.trailer.empty())
     {
@@ -61,7 +61,7 @@ HomebrewView::HomebrewView(Homebrew hb)
             Network::get_instance()->Download(thumbnail_url, thumbnail_path);
             // FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the
             // vita2d resource is freed (cf ~Texture())
-            thumbnail = Texture(thumbnail_path);
+            thumbnail = UncachedTexture(thumbnail_path);
             sceIoRemove(thumbnail_path.c_str());
         }
         catch (const std::exception& ex)
@@ -85,7 +85,7 @@ HomebrewView::HomebrewView(Homebrew hb)
                 std::string(SERVER_BASE_URL) + path, std::string(SCREENSHOTS_FOLDER "/") + filename);
             // FIXME Should give false to Texture() so as not to cache but for some reason the destructor is called and so the
             // vita2d resource is freed (cf ~Texture())
-            screenshots.emplace_back(std::string(SCREENSHOTS_FOLDER "/") + filename, false);
+            screenshots.emplace_back(std::string(SCREENSHOTS_FOLDER "/") + filename);
             sceIoRemove((std::string(SCREENSHOTS_FOLDER "/") + filename).c_str());
         }
         catch (const std::exception& ex)

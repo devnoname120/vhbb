@@ -11,8 +11,9 @@
 
 // <sternmull> you could create the key like this: std::ostringstream s;  s << "@" << static_cast<void*>(address); std::string
 // key = s.str(); <sternmull> and have a Texture::init(std::string key) that is used by both constructors.
-std::unordered_map<std::string, std::shared_ptr<vita2d_texture>> Texture::textureCache1;
-std::unordered_map<unsigned char*, std::shared_ptr<vita2d_texture>> Texture::textureCache2;
+
+std::unordered_map<std::string, std::shared_ptr<vita2d_texture>> FullCaching::textureCache1;
+std::unordered_map<unsigned char*, std::shared_ptr<vita2d_texture>> FullCaching::textureCache2;
 
 void DeleteTexture(vita2d_texture* tex)
 {
@@ -20,41 +21,43 @@ void DeleteTexture(vita2d_texture* tex)
     vita2d_free_texture(tex);
 }
 
-Texture::Texture(const Texture& that)
+template <typename TCachingPolicy>
+Texture<TCachingPolicy>::Texture(const Texture& that)
 {
     texture = that.texture;
-    caching_ = that.caching_;
     m_status = that.m_status;
 }
 
-Texture& Texture::operator=(const Texture& that)
+template <typename TCachingPolicy>
+Texture<TCachingPolicy>& Texture<TCachingPolicy>::operator=(const Texture& that)
 {
     if (this != &that)
     {
         texture = that.texture;
-        caching_ = that.caching_;
         m_status = that.m_status;
     }
     return *this;
 }
 
-Texture::Texture(const std::string& path, bool caching)
-    : caching_(caching)
+template <typename TCachingPolicy>
+Texture<TCachingPolicy>::Texture(const std::string& path)
 {
-    const auto& key = path;
-    if (caching_)
-    {
-        if (textureCache1.count(key) >= 1)
-        {
-            texture = textureCache1[key];
-            m_status = LOADED;
-            return;
-        }
+//    using TCachingPolicy::loadCache;
+//    using TCachingPolicy::saveCache;
+
+
+    std::optional<std::shared_ptr<vita2d_texture>> tex = TCachingPolicy::loadCache(path);
+    if (tex.has_value()) {
+        texture = tex.value();
+        m_status = LOADED;
+        return;
     }
 
     std::size_t found = path.find_last_of('.');
     std::string extension = path.substr(found + 1);
 
+
+    // FIXME Support Loading Policy
     texture = std::make_shared(vita2d_load_PNG_file(path.c_str()));
     if (!texture)
         texture = std::make_shared(vita2d_load_JPEG_file(path.c_str()));
@@ -68,36 +71,46 @@ Texture::Texture(const std::string& path, bool caching)
         return;
     }
 
-    if (caching_)
-        textureCache1[key] = texture;
+    TCachingPolicy::saveCache(path, texture);
     m_status = LOADED;
 }
 
-Texture::Texture(unsigned char* addr, bool caching)
-    : caching_(caching)
+template <typename TCachingPolicy>
+Texture<TCachingPolicy>::Texture(unsigned char* addr)
 {
-    // log_printf(DBG_DEBUG, "Looking for size %d, path: %s", fSize, path.c_str());
+//    using TCachingPolicy::loadCache;
+//    using TCachingPolicy::saveCache;
 
-    auto key = addr;
-    if (caching)
-    {
-        if (textureCache2.count(key) >= 1)
-        {
-            texture = textureCache2[key];
-            m_status = LOADED;
-            return;
-        }
+    std::optional<std::shared_ptr<vita2d_texture>> tex = TCachingPolicy::loadCache(addr);
+    if (tex.has_value()) {
+        texture = tex.value();
+        m_status = LOADED;
+        return;
     }
 
+    // log_printf(DBG_DEBUG, "Looking for size %d, path: %s", fSize, path.c_str());
+
+//    auto key = addr;
+//    if (caching)
+//    {
+//        if (textureCache2.count(key) >= 1)
+//        {
+//            texture = textureCache2[key];
+//            m_status = LOADED;
+//            return;
+//        }
+//    }
+
+    // FIXME Use loading policy
     // FIXME Support for other image formats, and Status
     texture = std::make_shared(vita2d_load_PNG_buffer(addr));
 
-    if (caching)
-        textureCache2[key] = texture;
+    TCachingPolicy::saveCache(addr, texture);
     m_status = LOADED;
 }
 
-int Texture::Draw(const Point& pt)
+template <typename TCachingPolicy>
+int Texture<TCachingPolicy>::Draw(const Point& pt)
 {
     // TODO Maybe display some kind of placeholder instead?
     if (m_status != LOADED)
@@ -107,7 +120,8 @@ int Texture::Draw(const Point& pt)
     return 0;
 }
 
-int Texture::DrawExt(const Point& pt, int alpha)
+template <typename TCachingPolicy>
+int Texture<TCachingPolicy>::DrawExt(const Point& pt, int alpha)
 {
     if (m_status != LOADED)
         return -1;
@@ -116,7 +130,8 @@ int Texture::DrawExt(const Point& pt, int alpha)
     return 0;
 }
 
-int Texture::DrawCentered(const Point& pt)
+template <typename TCachingPolicy>
+int Texture<TCachingPolicy>::DrawCentered(const Point& pt)
 {
     if (m_status != LOADED)
         return -1;
@@ -130,7 +145,8 @@ int Texture::DrawCentered(const Point& pt)
 }
 
 // vita2d doesn't have a draw resize function: https://github.com/xerpi/libvita2d/issues/42
-int Texture::DrawResize(const Point& pt1, const Point& dimensions)
+template <typename TCachingPolicy>
+int Texture<TCachingPolicy>::DrawResize(const Point& pt1, const Point& dimensions)
 {
     if (m_status != LOADED)
         return -1;
@@ -151,7 +167,8 @@ int Texture::DrawResize(const Point& pt1, const Point& dimensions)
     return 0;
 }
 
-int Texture::DrawTint(const Point& pt, unsigned int color)
+template <typename TCachingPolicy>
+int Texture<TCachingPolicy>::DrawTint(const Point& pt, unsigned int color)
 {
     if (m_status != LOADED)
         return -1;
@@ -159,7 +176,54 @@ int Texture::DrawTint(const Point& pt, unsigned int color)
     vita2d_draw_texture_tint(texture.get(), pt.x, pt.y, color);
     return 0;
 }
-unsigned int Texture::Height()
+
+template <typename TCachingPolicy>
+unsigned int Texture<TCachingPolicy>::Height()
 {
     return vita2d_texture_get_height(texture.get());
 }
+std::optional<std::shared_ptr<vita2d_texture>> NoCaching::loadCache(const std::string& path)
+{
+    return std::nullopt;
+}
+std::optional<std::shared_ptr<vita2d_texture>> NoCaching::loadCache(unsigned char* addr)
+{
+    return std::nullopt;
+}
+void NoCaching::saveCache(const std::string& path, std::shared_ptr<vita2d_texture> tex)
+{
+}
+void NoCaching::saveCache(unsigned char* addr, std::shared_ptr<vita2d_texture> tex)
+{
+}
+std::optional<std::shared_ptr<vita2d_texture>> FullCaching::loadCache(const std::string& path)
+{
+    const auto& key = path;
+    if (textureCache1.count(key) >= 1)
+    {
+        return textureCache1[key];
+    }
+
+    return std::nullopt;
+}
+std::optional<std::shared_ptr<vita2d_texture>> FullCaching::loadCache(unsigned char* addr)
+{
+    const auto& key = addr;
+    if (textureCache2.count(key) >= 1)
+    {
+        return textureCache2[key];
+    }
+
+    return std::nullopt;
+}
+void FullCaching::saveCache(const std::string& path, std::shared_ptr<vita2d_texture> tex)
+{
+    textureCache1[path] = tex;
+}
+void FullCaching::saveCache(unsigned char* addr, std::shared_ptr<vita2d_texture> tex)
+{
+    textureCache2[addr] = tex;
+}
+
+template class Texture<NoCaching>;
+template class Texture<FullCaching>;

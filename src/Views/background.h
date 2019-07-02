@@ -12,6 +12,6 @@ public:
 
 	int Display() override;
 private:
-	Texture img_bg;
+	CachedTexture img_bg;
 };
 

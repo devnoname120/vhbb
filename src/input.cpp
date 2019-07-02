@@ -268,7 +268,8 @@ int Input::TouchInRectangle(const Rectangle& rect) const
     return rect.Inside(Point(touchX, touchY));
 }
 
-int Input::TouchInTexture(const Point& draw_pt, const Texture& tex) const
+template <typename CachingPolicy>
+int Input::TouchInTexture(const Point& draw_pt, const Texture<CachingPolicy>& tex) const
 {
     return TouchInRectangle(Rectangle(
         draw_pt,
@@ -276,3 +277,7 @@ int Input::TouchInTexture(const Point& draw_pt, const Texture& tex) const
             draw_pt.x + vita2d_texture_get_width(tex.texture.get()),
             draw_pt.y + vita2d_texture_get_height(tex.texture.get()))));
 }
+
+
+template int Input::TouchInTexture<FullCaching>(const Point&, const CachedTexture&) const;
+template int Input::TouchInTexture<NoCaching>(const Point&, const UncachedTexture&) const;

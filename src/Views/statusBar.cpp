@@ -13,8 +13,8 @@ extern unsigned char _binary_assets_spr_img_statsbar_battery_charge_png_start;
 
 StatusBar::StatusBar() :
 	font_22(Font(std::string(FONT_DIR "segoeui.ttf"), 22)),
-	img_statsbar_battery(Texture(&_binary_assets_spr_img_statsbar_battery_png_start)),
-	img_statsbar_battery_charge(Texture(&_binary_assets_spr_img_statsbar_battery_charge_png_start))
+	img_statsbar_battery(CachedTexture(&_binary_assets_spr_img_statsbar_battery_png_start)),
+	img_statsbar_battery_charge(CachedTexture(&_binary_assets_spr_img_statsbar_battery_charge_png_start))
 {
 	#ifdef _DEBUG
 

@@ -7,14 +7,14 @@ extern unsigned char _binary_assets_spr_img_splash_png_start;
 extern unsigned char _binary_assets_spr_gekihen_splash_png_start;
 
 Splash::Splash()
-    : vhbb_splash(Texture(&_binary_assets_spr_img_splash_png_start))
-    , gekihen_splash(Texture(&_binary_assets_spr_gekihen_splash_png_start))
+    : vhbb_splash(CachedTexture(&_binary_assets_spr_img_splash_png_start))
+    , gekihen_splash(CachedTexture(&_binary_assets_spr_gekihen_splash_png_start))
 {
 }
 
 int Splash::Display()
 {
-    Texture splashes[] = { vhbb_splash, gekihen_splash };
+    CachedTexture splashes[] = { vhbb_splash, gekihen_splash };
 
     if (splash_index >= 2)
     {

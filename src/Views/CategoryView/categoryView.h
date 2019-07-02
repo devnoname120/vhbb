@@ -44,10 +44,10 @@ public:
 private:
 	Font font_33;
 
-	Texture img_catbar;
-	Texture img_catbar_highlight;
-	Texture img_catbar_sep;
-	Texture img_magnifying_glass;
+	CachedTexture img_catbar;
+  CachedTexture img_catbar_highlight;
+  CachedTexture img_catbar_sep;
+  CachedTexture img_magnifying_glass;
 
 	std::vector<CategoryTab> categoryTabs;
 

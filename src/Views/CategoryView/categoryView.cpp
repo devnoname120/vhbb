@@ -50,10 +50,10 @@ int CategoryView::touchToCat(const Input &input)
 
 CategoryView::CategoryView() :
 	font_33(Font(std::string(FONT_DIR "segoeui.ttf"), 33)),
-	img_catbar(Texture(&_binary_assets_spr_img_catbar_png_start)),
-	img_catbar_highlight(Texture(&_binary_assets_spr_img_catbar_highlight_png_start)),
-	img_catbar_sep(Texture(&_binary_assets_spr_img_catbar_sep_png_start)),
-	img_magnifying_glass(Texture(&_binary_assets_spr_img_magnifying_glass_png_start))
+	img_catbar(CachedTexture(&_binary_assets_spr_img_catbar_png_start)),
+	img_catbar_highlight(CachedTexture(&_binary_assets_spr_img_catbar_highlight_png_start)),
+	img_catbar_sep(CachedTexture(&_binary_assets_spr_img_catbar_sep_png_start)),
+	img_magnifying_glass(CachedTexture(&_binary_assets_spr_img_magnifying_glass_png_start))
 {
 	categoryTabs.reserve(_countof(categoryList));
 	for (unsigned int i=0; i < _countof(categoryList); i++) {

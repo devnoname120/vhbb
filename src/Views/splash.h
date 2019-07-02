@@ -30,6 +30,6 @@ private:
 	unsigned int alpha = 0;
 	unsigned int frame_count = 0;
 
-	Texture vhbb_splash;
-	Texture gekihen_splash;
+	CachedTexture vhbb_splash;
+	CachedTexture gekihen_splash;
 };

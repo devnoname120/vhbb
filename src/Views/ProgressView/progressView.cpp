@@ -17,19 +17,20 @@ ProgressView::ProgressView(InfoProgress progress, Homebrew hb) :
 }
 
 ProgressView::ProgressView(InfoProgress progress, std::string hb_name, std::string icon_path) :
-	ProgressView(std::move(progress), std::move(hb_name), Texture(icon_path))
+	ProgressView(std::move(progress), std::move(hb_name), CachedTexture(icon_path))
 {
 }
-ProgressView::ProgressView(InfoProgress progress, std::string hb_name, Texture icon_texture) :
+template <typename TCachingPolicy>
+ProgressView::ProgressView(InfoProgress progress, std::string hb_name, Texture<TCachingPolicy> icon_texture) :
 	hb_name(std::move(hb_name)),
 	progress_(std::move(progress)),
 	font_24(Font(std::string(FONT_DIR "segoeui.ttf"), 24)),
 	//thid_(thid),
 	img_icon(icon_texture),
-	img_dialog_progress_bg(Texture(&_binary_assets_spr_img_dialog_progress_bg_png_start)),
-	img_dialog_progress_bar(Texture(&_binary_assets_spr_img_dialog_progress_bar_png_start)),
-	img_dialog_progress_bar_glow(Texture(&_binary_assets_spr_img_dialog_progress_bar_glow_png_start)),
-	img_dialog_btn(Texture(&_binary_assets_spr_img_dialog_btn_png_start))
+	img_dialog_progress_bg(CachedTexture(&_binary_assets_spr_img_dialog_progress_bg_png_start)),
+	img_dialog_progress_bar(CachedTexture(&_binary_assets_spr_img_dialog_progress_bar_png_start)),
+	img_dialog_progress_bar_glow(CachedTexture(&_binary_assets_spr_img_dialog_progress_bar_glow_png_start)),
+	img_dialog_btn(CachedTexture(&_binary_assets_spr_img_dialog_btn_png_start))
 {
 }
 
