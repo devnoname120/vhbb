@@ -48,4 +48,5 @@ private:
     void checkInstalled();
     void homebrewInstall();
     void startYoutube() const;
+    std::string sizeRoundAndString(int);
 };
