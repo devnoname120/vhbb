@@ -170,6 +170,7 @@ target_link_libraries(${VITA_ELF_NAME}
         ${OPENSSL_LIBRARIES}
         ftpvita
         SceAppMgr_stub
+        SceDriverUser_stub
         SceAppUtil_stub
         ScePromoterUtil_stub
         SceIme_stub
