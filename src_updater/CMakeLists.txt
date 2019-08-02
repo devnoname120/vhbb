@@ -46,6 +46,7 @@ function(create_updater MAIN_SHORT_NAME MAIN_TITLEID UPDATER_TITLEID PKG_FOLDER)
             SceNet_stub
             SceShellSvc_stub
             SceAppMgr_stub
+            SceDriverUser_stub
             ScePromoterUtil_stub
             SceSysmodule_stub
             SceVshBridge_stub
