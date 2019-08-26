@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 #include <unordered_map>
 #include <vita2d.h>
 #include "shapes.h"
@@ -15,11 +16,10 @@ inline std::shared_ptr<vita2d_texture> make_shared(vita2d_texture* tex) {
 
 class CachingPolicy {
 public:
-    virtual std::optional<std::shared_ptr<vita2d_texture>> loadCache(const std::string& path) = 0;
-    virtual std::optional<std::shared_ptr<vita2d_texture>> loadCache(unsigned char* addr) = 0;
-
-    virtual void saveCache(const std::string& path, std::shared_ptr<vita2d_texture> tex) = 0;
-    virtual void saveCache(unsigned char* addr, std::shared_ptr<vita2d_texture> tex) = 0;
+    static std::optional<std::shared_ptr<vita2d_texture>> loadCache(const std::string& path);
+    static std::optional<std::shared_ptr<vita2d_texture>> loadCache(unsigned char* addr);
+    static void saveCache(const std::string& path, std::shared_ptr<vita2d_texture> tex);
+    static void saveCache(unsigned char* addr, std::shared_ptr<vita2d_texture> tex);
 };
 
 
@@ -31,6 +31,8 @@ public:
     static void saveCache(const std::string& path, std::shared_ptr<vita2d_texture> tex);
     static void saveCache(unsigned char* addr, std::shared_ptr<vita2d_texture> tex);
 };
+// Assert doesn't pass, not sure why
+//static_assert(std::is_base_of<CachingPolicy, NoCaching>::value);
 
 class FullCaching {
 public:
@@ -42,6 +44,28 @@ public:
     static std::unordered_map<std::string, std::shared_ptr<vita2d_texture>> textureCache1;
     static std::unordered_map<unsigned char *, std::shared_ptr<vita2d_texture>> textureCache2;
 };
+
+class LoadingPolicy {
+public:
+    static std::shared_ptr<vita2d_texture> loadTexture(const std::string& path);
+    static std::shared_ptr<vita2d_texture> loadTexture(unsigned char* addr);
+    static std::shared_ptr<vita2d_texture> getTexture();
+};
+
+class SynchronousLoading {
+public:
+    static std::shared_ptr<vita2d_texture> loadTexture(const std::string& path);
+    static std::shared_ptr<vita2d_texture> loadTexture(unsigned char* addr);
+    static std::shared_ptr<vita2d_texture> getTexture();
+};
+
+class AsynchronousLoading {
+public:
+    static std::shared_ptr<vita2d_texture> loadTexture(const std::string& path);
+    static std::shared_ptr<vita2d_texture> loadTexture(unsigned char* addr);
+    static std::shared_ptr<vita2d_texture> getTexture();
+};
+
 
 template <typename TCachingPolicy>
 class Texture {

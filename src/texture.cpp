@@ -225,5 +225,29 @@ void FullCaching::saveCache(unsigned char* addr, std::shared_ptr<vita2d_texture>
     textureCache2[addr] = tex;
 }
 
+std::shared_ptr<vita2d_texture> SynchronousLoading::loadTexture(const std::string& path)
+{
+    auto texture = std::make_shared(vita2d_load_PNG_file(path.c_str()));
+    if (!texture)
+        texture = std::make_shared(vita2d_load_JPEG_file(path.c_str()));
+    if (!texture)
+        texture = std::make_shared(vita2d_load_BMP_file(path.c_str()));
+
+    return texture;
+}
+std::shared_ptr<vita2d_texture> SynchronousLoading::loadTexture(unsigned char* addr)
+{
+    // FIXME Use loading policy
+    // FIXME Support for other image formats, and Status
+    auto texture = std::make_shared(vita2d_load_PNG_buffer(addr));
+    return texture;
+}
+std::shared_ptr<vita2d_texture> SynchronousLoading::getTexture()
+{
+    return std::shared_ptr<vita2d_texture>();
+}
+
+
 template class Texture<NoCaching>;
 template class Texture<FullCaching>;
+
