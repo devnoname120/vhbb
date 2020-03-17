@@ -217,7 +217,7 @@ if (EXISTS "${psvitaipFilePath}")
     file(STRINGS "${psvitaipFilePath}" PSVITAIP)
 
     add_custom_target(send
-            COMMAND curl -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
+            COMMAND curl --ftp-method nocwd  -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
             DEPENDS ${SHORT_NAME}.self
             )
 
@@ -227,7 +227,7 @@ if (EXISTS "${psvitaipFilePath}")
             )
 
     add_custom_target(vpksend
-            COMMAND curl -T ${SHORT_NAME}.vpk ftp://${PSVITAIP}:1337/ux0:/
+            COMMAND curl --ftp-method nocwd  -T ${SHORT_NAME}.vpk ftp://${PSVITAIP}:1337/ux0:/
             DEPENDS ${SHORT_NAME}.vpk
             )
 else ()
