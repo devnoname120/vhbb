@@ -34,11 +34,13 @@ int SearchView::Display()
             auto db = Database::get_instance();
             std::vector<Homebrew> hbs;
             hbs = db->Search(SearchQuery(_ime_search_view_result->userText));
-            listItems.clear();
-            for (Homebrew hb : hbs)
-            {
-                listItems.emplace_back(hb);
+            homebrews = hbs;
+            for (ListItem* item: listItems) {
+                delete item;
             }
+            listItems.clear();
+            listItems = std::vector<ListItem*>(homebrews.size(), nullptr);
+            LoadListItems();
             lastQuery = _ime_search_view_result->userText;
         }
         else
