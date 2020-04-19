@@ -1,6 +1,17 @@
+<p align="center"><img src="https://cloud.githubusercontent.com/assets/21164502/24837255/3af41722-1d73-11e7-8aae-5664fec174f3.png" width="200"></p>
+
 # Vita HomeBrew Browser [![Build Status](https://dev.azure.com/devnoname120/devnoname120/_apis/build/status/devnoname120.vhbb?branchName=master)](https://dev.azure.com/devnoname120/devnoname120/_build/latest?definitionId=1&branchName=master) ![GitHub All Releases](https://img.shields.io/github/downloads/devnoname120/vhbb/total.svg)
 
-![Alt text](https://cloud.githubusercontent.com/assets/21164502/24837255/3af41722-1d73-11e7-8aae-5664fec174f3.png "")
+VHBB is an app store for the PS Vita. With it, you can browse homebrews from [VitaDB](https://vitadb.rinnegatamante.it/#/), see screenshots, videos, and install them for free!
+
+In order to use VHBB, you can download [latest version](https://github.com/devnoname120/vhbb/releases/latest), transfer the VPK to your Vita, and install it with Vitashell. Note that you'll need to jailbreak your Vita in order to use this app: [here is a guide to jailbreak your PS Vita](https://vita.hacks.guide/). You can also click on the screenshots below to get a video tutorial.
+
+
+[![VHBB screenshots](https://user-images.githubusercontent.com/2824100/79699878-794ac200-8292-11ea-855e-f4ed96dbe61f.png)](https://www.youtube.com/watch?v=f9XRkWQyxfI)
+
+
+
+# Development instructions
 
 ## Prerequisites
 
