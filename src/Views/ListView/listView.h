@@ -30,7 +30,7 @@ public:
 
 protected:
 	std::vector<Homebrew> homebrews;
-	std::vector<ListItem*> listItems;
+	std::vector<std::unique_ptr<ListItem>> listItems;
 	void LoadListItems();
 
 private:

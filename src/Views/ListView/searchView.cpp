@@ -35,11 +35,8 @@ int SearchView::Display()
             std::vector<Homebrew> hbs;
             hbs = db->Search(SearchQuery(_ime_search_view_result->userText));
             homebrews = hbs;
-            for (ListItem* item: listItems) {
-                delete item;
-            }
-            listItems.clear();
-            listItems = std::vector<ListItem*>(homebrews.size(), nullptr);
+
+            std::fill(listItems.begin(), listItems.end(), nullptr);
             LoadListItems();
             lastQuery = _ime_search_view_result->userText;
         }

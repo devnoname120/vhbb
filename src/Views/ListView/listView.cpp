@@ -89,7 +89,7 @@ ListView::ListView(std::vector<Homebrew> homebrews)
     log_printf(DBG_DEBUG, "posY: %d", posY);
     log_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
     this->homebrews = homebrews;
-    listItems = std::vector<ListItem*>(homebrews.size(), nullptr);
+    listItems = std::vector<std::unique_ptr<ListItem>>(homebrews.size());
     LoadListItems();
 }
 
@@ -100,7 +100,7 @@ long ListView::_LoadPreviousListItems(long firstDisplayed, long firstToLoad, lon
     {
         if (!listItems[i])
         {
-            listItems[i] = new ListItem(homebrews[i]);
+            listItems[i] = std::make_unique<ListItem>(homebrews[i]);
             if (++loaded > maxLoad)
             {
                 break;
@@ -117,7 +117,7 @@ long ListView::_LoadShownListItems(long firstDisplayed, long lastDisplayed, long
     {
         if (!listItems[i])
         {
-            listItems[i] = new ListItem(homebrews[i]);
+            listItems[i] = std::make_unique<ListItem>(homebrews[i]);
             if (++loaded > maxLoad)
             {
                 break;
@@ -134,7 +134,7 @@ long ListView::_LoadNextListItems(long lastDisplayed, long lastToLoad, long maxL
     {
         if (!listItems[i])
         {
-            listItems[i] = new ListItem(homebrews[i]);
+            listItems[i] = std::make_unique<ListItem>(homebrews[i]);
             if (++loaded > maxLoad)
             {
                 break;
@@ -153,19 +153,11 @@ void ListView::LoadListItems()
     long loaded = 0;
     for (long i = 0; i < firstToLoad; i++)
     {
-        if (listItems[i])
-        {
-            delete listItems[i];
-            listItems[i] = nullptr;
-        }
+        listItems[i] = nullptr;
     }
     for (long i = lastToLoad; i < (long)listItems.size(); i++)
     {
-        if (listItems[i])
-        {
-            delete listItems[i];
-            listItems[i] = nullptr;
-        }
+        listItems[i] = nullptr;
     }
 
     loaded += _LoadShownListItems(first, last, MAX_LOAD_LIST_ITEMS_PER_CYCLE);
