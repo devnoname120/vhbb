@@ -19,7 +19,7 @@ include(FindPkgConfig)
 set(VITA_APP_NAME "Vita Homebrew Browser")
 set(VITA_TITLEID "VHBB00001")
 set(UPDATER_TITLEID "VHBBUPDT1")
-set(VITA_VERSION "00.91")
+set(VITA_VERSION "00.92")
 
 # Remove leading 0s from version
 string(REGEX REPLACE "0+0\\." "0." VITA_VERSION_HUMAN ${VITA_VERSION})
