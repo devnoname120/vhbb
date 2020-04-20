@@ -88,9 +88,99 @@ ListView::ListView(std::vector<Homebrew> homebrews)
 {
     log_printf(DBG_DEBUG, "posY: %d", posY);
     log_printf(DBG_DEBUG, "homebrews size: %d", homebrews.size());
-    for (Homebrew hb : homebrews)
+    this->homebrews = homebrews;
+    listItems = std::vector<std::unique_ptr<ListItem>>(homebrews.size());
+    LoadListItems();
+}
+
+long ListView::_LoadPreviousListItems(long firstDisplayed, long firstToLoad, long maxLoad)
+{
+    long loaded = 0;
+    for (long i = firstDisplayed; i >= firstToLoad; i--)
     {
-        listItems.emplace_back(hb);
+        if (!listItems[i])
+        {
+            listItems[i] = std::make_unique<ListItem>(homebrews[i]);
+            if (++loaded > maxLoad)
+            {
+                break;
+            }
+        }
+    }
+    return loaded;
+}
+
+long ListView::_LoadShownListItems(long firstDisplayed, long lastDisplayed, long maxLoad)
+{
+    long loaded = 0;
+    for (long i = firstDisplayed; i <= lastDisplayed; i++)
+    {
+        if (!listItems[i])
+        {
+            listItems[i] = std::make_unique<ListItem>(homebrews[i]);
+            if (++loaded > maxLoad)
+            {
+                break;
+            }
+        }
+    }
+    return loaded;
+}
+
+long ListView::_LoadNextListItems(long lastDisplayed, long lastToLoad, long maxLoad)
+{
+    long loaded = 0;
+    for (long i = lastDisplayed; i <= lastToLoad; i++)
+    {
+        if (!listItems[i])
+        {
+            listItems[i] = std::make_unique<ListItem>(homebrews[i]);
+            if (++loaded > maxLoad)
+            {
+                break;
+            }
+        }
+    }
+    return loaded;
+}
+
+void ListView::LoadListItems()
+{
+    auto first = (long)firstDisplayedItem();
+    auto last = (long)lastDisplayedItem();
+    long firstToLoad = std::max<long>(first - PRE_RENDER_EXTRA_LIST_ITEM, 0);
+    long lastToLoad = std::min<long>(last + PRE_RENDER_EXTRA_LIST_ITEM, listItems.size());
+    long loaded = 0;
+    for (long i = 0; i < firstToLoad; i++)
+    {
+        listItems[i] = nullptr;
+    }
+    for (long i = lastToLoad; i < (long)listItems.size(); i++)
+    {
+        listItems[i] = nullptr;
+    }
+
+    loaded += _LoadShownListItems(first, last, MAX_LOAD_LIST_ITEMS_PER_CYCLE);
+    if (loaded >= MAX_LOAD_LIST_ITEMS_PER_CYCLE)
+        return;
+
+    if (scrollSpeed >= 0)
+    {
+        // preferably pre-load further down the list
+        loaded += _LoadNextListItems(first, last, MAX_LOAD_LIST_ITEMS_PER_CYCLE);
+        if (loaded >= MAX_LOAD_LIST_ITEMS_PER_CYCLE)
+            return;
+        loaded += _LoadPreviousListItems(first, last, MAX_LOAD_LIST_ITEMS_PER_CYCLE);
+        if (loaded >= MAX_LOAD_LIST_ITEMS_PER_CYCLE)
+            return;
+    } else {
+        // preferably pre-load further up the list
+        loaded += _LoadPreviousListItems(first, last, MAX_LOAD_LIST_ITEMS_PER_CYCLE);
+        if (loaded >= MAX_LOAD_LIST_ITEMS_PER_CYCLE)
+            return;
+        loaded += _LoadNextListItems(first, last, MAX_LOAD_LIST_ITEMS_PER_CYCLE);
+        if (loaded >= MAX_LOAD_LIST_ITEMS_PER_CYCLE)
+            return;
     }
 }
 
@@ -127,7 +217,7 @@ int ListView::HandleInput(int focus, const Input& input)
                 log_printf(DBG_DEBUG, "Clicked, adding view...");
                 try
                 {
-                    Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+                    Activity::get_instance()->AddView(std::make_shared<HomebrewView>(homebrews.at(selectedItem)));
                 }
                 catch (const std::exception& ex)
                 {
@@ -205,7 +295,7 @@ int ListView::HandleInput(int focus, const Input& input)
                 log_printf(DBG_DEBUG, "Pressed, adding view...");
                 try
                 {
-                    Activity::get_instance()->AddView(std::make_shared<HomebrewView>(listItems.at(selectedItem).homebrew));
+                    Activity::get_instance()->AddView(std::make_shared<HomebrewView>(homebrews.at(selectedItem)));
                 }
                 catch (const std::exception& ex)
                 {
@@ -227,6 +317,8 @@ int ListView::HandleInput(int focus, const Input& input)
         }
     }
 
+    LoadListItems();
+
     return 0;
 }
 
@@ -246,7 +338,10 @@ int ListView::Display()
     }
     for (int i = firstDisplayedItem(); i <= lastDisplayedItem(); i++)
     {
-        listItems[i].Display(itemPosY(i), i == selectedItem, itemHighlightAlpha);
+        if(listItems[i])
+        {
+            listItems[i]->Display(itemPosY(i), i == selectedItem, itemHighlightAlpha);
+        }
     }
     if (itemHighlightDirection)
     {

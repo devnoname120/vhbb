@@ -26,7 +26,7 @@ string(REGEX REPLACE "0+0\\." "0." VITA_VERSION_HUMAN ${VITA_VERSION})
 
 set(VERSION_YAML_URL "https://vhbb.download/version.php")
 set(UPDATE_URL "https://github.com/devnoname120/vhbb/releases/download/${VITA_VERSION_HUMAN}/VitaHBBrowser.vpk")
-# Old test URL's
+# Old test URLs
 #set(VERSION_YAML_URL "https://github.com/robsdedude/vhbb/raw/updateTestBranch/release/version.yml")
 #set(UPDATE_URL "https://github.com/robsdedude/vhbb/raw/updateTestBranch/release/VitaHBBrowser.vpk")
 
@@ -217,7 +217,7 @@ if (EXISTS "${psvitaipFilePath}")
     file(STRINGS "${psvitaipFilePath}" PSVITAIP)
 
     add_custom_target(send
-            COMMAND curl -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
+            COMMAND curl --ftp-method nocwd  -T ${SHORT_NAME}.self ftp://${PSVITAIP}:1337/ux0:/app/${VITA_TITLEID}/eboot.bin
             DEPENDS ${SHORT_NAME}.self
             )
 
@@ -227,7 +227,7 @@ if (EXISTS "${psvitaipFilePath}")
             )
 
     add_custom_target(vpksend
-            COMMAND curl -T ${SHORT_NAME}.vpk ftp://${PSVITAIP}:1337/ux0:/
+            COMMAND curl --ftp-method nocwd  -T ${SHORT_NAME}.vpk ftp://${PSVITAIP}:1337/ux0:/
             DEPENDS ${SHORT_NAME}.vpk
             )
 else ()

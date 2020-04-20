@@ -34,11 +34,10 @@ int SearchView::Display()
             auto db = Database::get_instance();
             std::vector<Homebrew> hbs;
             hbs = db->Search(SearchQuery(_ime_search_view_result->userText));
-            listItems.clear();
-            for (Homebrew hb : hbs)
-            {
-                listItems.emplace_back(hb);
-            }
+            homebrews = hbs;
+
+            std::fill(listItems.begin(), listItems.end(), nullptr);
+            LoadListItems();
             lastQuery = _ime_search_view_result->userText;
         }
         else
