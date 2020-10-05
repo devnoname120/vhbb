@@ -146,16 +146,18 @@ long ListView::_LoadNextListItems(long lastDisplayed, long lastToLoad, long maxL
 
 void ListView::LoadListItems()
 {
+    if (listItems.empty())
+        return;
     auto first = (long)firstDisplayedItem();
     auto last = (long)lastDisplayedItem();
     long firstToLoad = std::max<long>(first - PRE_RENDER_EXTRA_LIST_ITEM, 0);
-    long lastToLoad = std::min<long>(last + PRE_RENDER_EXTRA_LIST_ITEM, listItems.size());
+    long lastToLoad = std::min<long>(last + PRE_RENDER_EXTRA_LIST_ITEM, listItems.size() - 1);
     long loaded = 0;
     for (long i = 0; i < firstToLoad; i++)
     {
         listItems[i] = nullptr;
     }
-    for (long i = lastToLoad; i < (long)listItems.size(); i++)
+    for (long i = lastToLoad + 1; i < (long)listItems.size(); i++)
     {
         listItems[i] = nullptr;
     }
