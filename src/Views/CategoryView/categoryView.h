@@ -60,6 +60,6 @@ private:
 	void selectCat(unsigned int cat);
 	void selectCat(Category cat);
 
-	int touchToCat(const Input &input);
+	unsigned int touchToCat(const Input &input, bool& notFound);
 };
 

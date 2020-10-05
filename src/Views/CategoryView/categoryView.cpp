@@ -38,13 +38,15 @@ const char* categoryList_name[_countof(categoryList)] = {
 };
 
 
-int CategoryView::touchToCat(const Input &input)
+unsigned int CategoryView::touchToCat(const Input &input, bool& notFound)
 {
 	for (unsigned int i=0; i < categoryTabs.size(); i++) {
 		if (input.TouchInRectangle(Rectangle(Point(categoryTabs[i].minX, CAT_Y), Point(categoryTabs[i].maxX, CAT_Y + CAT_HEIGHT)))) {
+			notFound = false;
 			return i;
 		}
 	}
+	notFound = true;
 	return -1;
 }
 
@@ -164,11 +166,12 @@ int CategoryView::HandleInput(int focus, const Input& input)
 
 	focus = 1;
 	if (input.TouchPressed() && input.TouchInRectangle(Rectangle(Point(CAT_X, CAT_Y), Point(SCREEN_WIDTH, CAT_Y + CAT_HEIGHT)))) {
-		int ind = touchToCat(input);
-		if (ind < 0) {
+		bool catNotFound;
+		unsigned int ind = touchToCat(input, catNotFound);
+		if (catNotFound) {
 			log_printf(DBG_WARNING, "Touch in cat bar but couldn't find a matching category");
 		} else {
-			selectCat((unsigned) ind);
+			selectCat(ind);
 		}
 	} else {
 		if (input.KeyNewPressed(SCE_CTRL_LTRIGGER)) {
