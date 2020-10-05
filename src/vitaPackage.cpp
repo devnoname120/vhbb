@@ -6,6 +6,7 @@
 #include "sha1.h"
 #include "zip.h"
 
+#include <stdexcept>
 #include <psp2/appmgr.h>
 #include <psp2/io/fcntl.h>
 #include <psp2/io/stat.h>

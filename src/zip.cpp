@@ -2,6 +2,7 @@
 
 #include "debug.h"
 
+#include <stdexcept>
 #include <psp2/io/stat.h>
 
 #define dir_delimter '/'

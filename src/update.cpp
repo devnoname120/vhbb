@@ -7,7 +7,6 @@
 #include "vitaPackage.h"
 
 #include <atomic>
-#include <fstream>
 #include <iostream>
 #include <psp2/appmgr.h>
 #include <psp2/io/fcntl.h>

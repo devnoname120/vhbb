@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <string>
 #include "infoProgress.h"
 
 #ifndef PACKAGE_TEMP_FOLDER
