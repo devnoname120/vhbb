@@ -202,7 +202,7 @@ int CategoryView::HandleInput(int focus, const Input& input)
 	}
 
 	if (selectedCat != activeCat && categoryTabs[selectedCat].listView->IsReadyToShow()) {
-		log_printf(DBG_DEBUG, "New active tab: %d", activeCat);
+		log_printf(DBG_DEBUG, "New active tab: %d -> %d", activeCat, selectedCat);
 		activeCat = selectedCat;
 	}
 
