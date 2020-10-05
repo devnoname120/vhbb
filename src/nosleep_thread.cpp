@@ -17,4 +17,5 @@ int nosleep_thread(SceSize args, void *argp) {
   }
 
   sceKernelExitDeleteThread(0);
+  return 0;
 }

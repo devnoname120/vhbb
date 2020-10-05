@@ -10,7 +10,7 @@ public:
 	static bool checkIsDone();
 
 private:
-	static void updateThread(unsigned int arglen, void* argv[]);
+	static int updateThread(unsigned int arglen, void* argv[]);
 	static int getVersionInfo(bool &available, std::string &url);
 	static std::shared_ptr<Background> startBackgroundView();
 	static std::shared_ptr<ProgressView> startProgressView(InfoProgress progress, std::string title);

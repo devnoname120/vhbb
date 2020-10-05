@@ -11,7 +11,7 @@ void StartFetchLoadIconsThread()
     sceKernelStartThread(thid_db, 0, nullptr);
 }
 
-void FetchLoadIcons(unsigned int arglen, std::atomic<bool>* db_done)
+int FetchLoadIcons(unsigned int arglen, std::atomic<bool>* db_done)
 {
     try
     {
@@ -34,4 +34,5 @@ void FetchLoadIcons(unsigned int arglen, std::atomic<bool>* db_done)
     }
 
     sceKernelExitDeleteThread(0);
+    return 0;
 }

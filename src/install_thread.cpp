@@ -8,7 +8,7 @@
 #include "zip.h"
 
 
-void install_thread(SceSize args_size, InstallArguments *installArgs) {
+int install_thread(SceSize args_size, InstallArguments *installArgs) {
     
     InfoProgress progressTotal;
 	Homebrew targetHb = installArgs->hb;
@@ -65,4 +65,5 @@ void install_thread(SceSize args_size, InstallArguments *installArgs) {
     }
 
     sceKernelExitDeleteThread(0);
+    return 0;
 }

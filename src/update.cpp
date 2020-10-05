@@ -167,7 +167,7 @@ std::shared_ptr<ProgressView> Update::startProgressView(InfoProgress progress, s
     return progressView;
 }
 
-void Update::updateThread(unsigned int arglen, void* argv[])
+int Update::updateThread(unsigned int arglen, void* argv[])
 {
     auto updateState_ptr = (AtomicUpdateState*)argv[0];
     bool updateExists = false;
@@ -197,7 +197,8 @@ void Update::updateThread(unsigned int arglen, void* argv[])
                 sceKernelDelayThread(700000);
                 bgView->request_destroy = true;
                 updateState_ptr->store(UPDATE_STATE_READY_TO_LAUNCH_UPDATER);
-                return;
+                sceKernelExitDeleteThread(0);
+                return 0;
             }
             catch (std::exception& ex)
             {
@@ -215,6 +216,8 @@ void Update::updateThread(unsigned int arglen, void* argv[])
         }
     }
     updateState_ptr->store(UPDATE_STATE_DONE);
+    sceKernelExitDeleteThread(0);
+    return 0;
 }
 
 void Update::startUpdateThread()
