@@ -331,6 +331,17 @@ int ListView::resetHighlight()
     return 0;
 }
 
+void ListView::SignalSelected()
+{
+    log_printf(DBG_DEBUG, "ListView::SignalSelected");
+}
+
+void ListView::SignalDeselected()
+{
+    log_printf(DBG_DEBUG, "ListView::SignalDeselected");
+    scrollSpeed = 0;
+}
+
 int ListView::Display()
 {
     if (listItems.empty())

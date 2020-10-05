@@ -24,8 +24,8 @@ public:
 	int HandleInput(int focus, const Input& input) override;
 	virtual int Display() override;
 
-	virtual void SignalSelected() { log_printf(DBG_DEBUG, "ListView::SignalSelected"); };
-	virtual void SignalDeselected() { log_printf(DBG_DEBUG, "ListView::SignalDeselected"); };
+	virtual void SignalSelected();
+	virtual void SignalDeselected();
 	virtual bool IsReadyToShow() { return true; };
 
 protected:

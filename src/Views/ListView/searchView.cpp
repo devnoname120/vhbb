@@ -11,12 +11,14 @@ void SearchView::SignalSelected()
     log_printf(DBG_DEBUG, "SearchView::SignalSelected");
     if (_ime_search_view_result->status != COMMON_DIALOG_STATUS_RUNNING)
         startSearch();
+    return ListView::SignalSelected();
 }
 
 void SearchView::SignalDeselected()
 {
     log_printf(DBG_DEBUG, "SearchView::SignalDeselected");
     IMEView::closeIMEView();
+    return ListView::SignalDeselected();
 }
 
 bool SearchView::IsReadyToShow()
