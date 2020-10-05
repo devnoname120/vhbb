@@ -1,5 +1,8 @@
 #include "splash.h"
 
+#include "macros.h"
+#include "screen.h"
+
 #include <algorithm>
 #include <texture.h>
 
@@ -22,6 +25,8 @@ int Splash::Display()
         return true;
     }
 
+    if (step != STEP_STATIC)
+        vita2d_draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, COLOR_BLACK);
     splashes[splash_index].DrawExt(Point(0, 0), alpha);
 
     switch (step)
