@@ -161,13 +161,6 @@ int HomebrewView::HandleInput(int focus, const Input& input)
         }
         else if (thumbnail.has_value())
         {
-            // FIXME Hack because thumbnail is displayed centered
-            float width = vita2d_texture_get_width(thumbnail->texture.get());
-            float height = vita2d_texture_get_height(thumbnail->texture.get());
-            auto pt = Point(HB_X + 560 + 376.f / 2, HB_Y + 110 + 210.f / 2);
-            Point top_left = Point(pt.x - width / 2, pt.y - height / 2);
-            Point bottom_right = Point(top_left.x + width, top_left.y + height);
-
             if (input.TouchInRectangle(Rectangle(Point(HB_X + 560, HB_Y + 110), Point(HB_X + 560 + 376, HB_Y + 110 + 210))))
             {
                 startYoutube();
