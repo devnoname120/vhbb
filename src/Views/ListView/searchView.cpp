@@ -38,6 +38,7 @@ int SearchView::Display()
             hbs = db->Search(SearchQuery(_ime_search_view_result->userText));
             homebrews = hbs;
 
+            listItems.resize(homebrews.size());
             std::fill(listItems.begin(), listItems.end(), nullptr);
             LoadListItems();
             lastQuery = _ime_search_view_result->userText;
