@@ -32,11 +32,11 @@ protected:
 	std::vector<Homebrew> homebrews;
 	std::vector<std::unique_ptr<ListItem>> listItems;
 	void LoadListItems();
+	int posY = 0; //!< Position in the list of homebrews if we consider it as a texture
 
 private:
 	Font font_43;
 
-	int posY = 0; //!< Position in the list of homebrews if we consider it as a texture
 	int preSelectedItem = -1;
 	int selectedItem = -1;
 	int itemHighlightAlpha = 255;
