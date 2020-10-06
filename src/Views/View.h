@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <input.h>
 
 class View
@@ -11,6 +12,6 @@ public:
 	virtual int Display();
 
 	// FIXME Not a good way to signal it needs to be destroyed
-	bool request_destroy = false;
-	unsigned int priority = 100;
+	std::atomic_bool request_destroy = false;
+	std::atomic_uint priority = 100;
 };

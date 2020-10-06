@@ -7,7 +7,8 @@
 
 class SceMutex {
 public:
-	SceMutex(std::string name="unnamed_mutex");
+	explicit SceMutex(const std::string& name="unnamed_mutex");
+	SceMutex(const SceMutex&) = delete;
 	~SceMutex();
 	void lock();
 	void unlock();

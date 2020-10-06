@@ -1,6 +1,6 @@
 #include "concurrency.h"
 
-SceMutex::SceMutex(std::string name) :
+SceMutex::SceMutex(const std::string& name) :
 	name(name)
 {
 	id = sceKernelCreateMutex(name.c_str(), 0, 0, nullptr);

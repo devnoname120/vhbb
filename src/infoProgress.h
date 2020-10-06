@@ -3,6 +3,16 @@
 
 #include <memory>
 
+#include "concurrency.h"
+
+template <typename T>
+struct MutexWrapper
+{
+    SceMutex mtx;
+    T value;
+    MutexWrapper(const std::string& name, T v) : mtx(name), value(v) {};
+};
+
 class InfoProgress {
 public:
     InfoProgress();
@@ -21,9 +31,9 @@ public:
 private:
     float range_min_ = 0;
     float range_max_ = 100;
-    std::shared_ptr<float> percent_;
-    std::shared_ptr<int> speed_;
-    std::shared_ptr<std::string> message_;
+    std::shared_ptr<MutexWrapper<float>> percent_;
+    std::shared_ptr<MutexWrapper<int>> speed_;
+    std::shared_ptr<MutexWrapper<std::string>> message_;
 
     InfoProgress& range(float min, float max);
 };

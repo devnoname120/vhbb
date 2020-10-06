@@ -6,6 +6,7 @@
 #include <homebrew.h>
 
 #include "infoProgress.h"
+#include "concurrency.h"
 
 #include <texture.h>
 #include <font.h>
@@ -29,7 +30,7 @@ public:
 
 	std::string hb_name;
 private:
-	uint32_t finish_tick = 0;
+	std::atomic<uint32_t> finish_tick = 0;
 
 	InfoProgress progress_;
 

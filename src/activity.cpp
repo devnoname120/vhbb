@@ -31,7 +31,7 @@ int Activity::HandleInput(int focus, const Input& input)
         std::lock_guard<SceMutex> lock(mtx_);
         views_.erase(
             std::remove_if(views_.begin(), views_.end(),
-                           [](const std::shared_ptr<View> &view) { return view->request_destroy; }),
+                           [](const std::shared_ptr<View> &view) { return view->request_destroy.load(); }),
             views_.end());
     }
 
