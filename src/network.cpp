@@ -25,9 +25,10 @@ public:
 
     int ProgressClassCallback(double dltotal, double dlnow, double ultotal, double ulnow)
     {
-        if (dltotal == 0)
-            return CURLE_OK;
-        m_progress.percent((float)(dlnow / dltotal) * 100);
+        if (dltotal != 0)
+        {
+            m_progress.percent((float)(dlnow / dltotal) * 100);
+        }
         return CURLE_OK;
     }
 
@@ -120,7 +121,7 @@ Network::~Network()
     sceSysmoduleUnloadModule(SCE_SYSMODULE_SSL);
 }
 
-int Network::Download(std::string url, std::string dest, InfoProgress* progress)
+int Network::Download(const std::string& url, const std::string& dest, InfoProgress* progress)
 {
     log_printf(DBG_DEBUG, "Downloading %s to %s", url.c_str(), dest.c_str());
     try
