@@ -53,14 +53,25 @@ DialogView::~DialogView()
     log_printf(DBG_WARNING, "DialogView destructor called");
 }
 
-void DialogView::openDialogView(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type)
+void DialogView::openDialogView(std::shared_ptr<DialogViewResult> result, const std::string& message, DialogType type)
 {
     DialogView* dialogView = DialogView::create_instance();
-    dialogView->prepare(std::move(result), std::move(message), type);
+    dialogView->prepare(std::move(result), message, type);
     Activity::get_instance()->AddView(dialogView->me_ptr);
 }
 
-void DialogView::prepare(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type)
+void DialogView::finalErrorDialog(const std::string& message)
+{
+    auto res = std::make_shared<DialogViewResult>();
+    log_printf(DBG_DEBUG, "finalErrorDialog: %s", message.c_str());
+    openDialogView(res, message, DIALOG_TYPE_OK);
+    while (res->status != COMMON_DIALOG_STATUS_FINISHED) {
+        sceKernelDelayThread(10000);
+    }
+    Activity::get_instance()->exitFlag = true;
+}
+
+void DialogView::prepare(std::shared_ptr<DialogViewResult> result, const std::string& message, DialogType type)
 {
     log_printf(DBG_DEBUG, "Created DialogView \"%s\"", message.c_str());
     if (_status == COMMON_DIALOG_STATUS_RUNNING)
@@ -218,8 +229,8 @@ int DialogView::HandleInput(int focus, const Input& input)
     {
         if (_result)
         {
-            _result->status = _status;
             _result->accepted = _accepted;
+            _result->status = _status;
         }
         if (_status == COMMON_DIALOG_STATUS_FINISHED || _status == COMMON_DIALOG_STATUS_CANCELED)
         {

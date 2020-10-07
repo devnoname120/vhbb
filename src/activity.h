@@ -19,6 +19,7 @@ public:
     void FlushQueue();
     bool HasActivity();
 
+    std::atomic_bool exitFlag = false;
 
 private:
     SceMutex mtx_ = SceMutex("activity_mtx");

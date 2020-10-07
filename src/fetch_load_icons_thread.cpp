@@ -1,5 +1,6 @@
 #include "fetch_load_icons_thread.h"
 
+#include "Views/dialogView.h"
 #include <Views/mainView.h>
 #include <activity.h>
 #include <database.h>
@@ -28,9 +29,9 @@ int FetchLoadIcons(unsigned int arglen, std::atomic<bool>* db_done)
     }
     catch (const std::exception& ex)
     {
-        // TODO: Add dialog box to let the user know about this issue
         log_printf(DBG_ERROR, "Couldn't load database: %s", ex.what());
-        throw;
+        DialogView::finalErrorDialog(std::string("Couldn't reach " API_ENDPOINT ":\n") + ex.what());
+        return 1;
     }
 
     sceKernelExitDeleteThread(0);
