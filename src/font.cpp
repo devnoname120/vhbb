@@ -101,23 +101,34 @@ std::string Font::FitString(const std::string& text, int maxWidth)
         return std::string(text);
     }
     std::vector<std::string> words = split_string(text);
+    if (words.empty())
+        return "";
 
-    std::string res = words[0];
+    std::string current_line = words[0];
+    std::string res;
     for (auto i = 1; i < words.size(); i++)
     {
-        std::string try_res = res + " " + words[i];
-        int lineWidth = vita2d_font_text_width(font, size, try_res.c_str());
+        std::string try_line = current_line + " " + words[i];
+        int lineWidth = vita2d_font_text_width(font, size, try_line.c_str());
         if (lineWidth <= maxWidth)
         {
             log_printf(DBG_DEBUG, "\"%s\" fits: %i", words[i].c_str(), lineWidth);
-            res = std::move(try_res);
+            current_line = std::move(try_line);
         }
         else
         {
             log_printf(DBG_DEBUG, "\"%s\" overflows: %i", words[i].c_str(), lineWidth);
-            res += "\n" + words[i];
+            if (res.empty())
+                res += current_line;
+            else
+                res += "\n" + current_line;
+            current_line = words[i];
         }
     }
+    if (res.empty())
+        res += current_line;
+    else
+        res += "\n" + current_line;
 
     log_printf(DBG_DEBUG, "Fitted string: \"%s\"", res.c_str());
     return res;
