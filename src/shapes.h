@@ -9,6 +9,11 @@ public:
 	Point(double _x, double _y);
 };
 
+struct Dimensions {
+    int width;
+    int height;
+};
+
 class Rectangle {
 public:
 	const Point &topLeft;

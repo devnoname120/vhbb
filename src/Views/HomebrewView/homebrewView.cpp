@@ -9,6 +9,8 @@
 #include <psp2/io/stat.h>
 #include <vitaPackage.h>
 
+#include "shapes.h"
+
 extern unsigned char _binary_assets_spr_img_preview_infobg_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_download_png_start;
 extern unsigned char _binary_assets_spr_img_preview_btn_open_png_start;
@@ -100,6 +102,14 @@ HomebrewView::HomebrewView(Homebrew hb)
     std::string descriptionRaw = hb_.long_description;
     std::replace(descriptionRaw.begin(), descriptionRaw.end(), '\n', ' ');
     description = wrapDescription(descriptionRaw, 77);
+    Dimensions descriptionDim = font_25.BoundingBox(description);
+    scrollManager.posYMin = 0;
+    scrollManager.posYMax = std::max<int>(
+        0, descriptionDim.height + static_cast<int>(img_btn_back_pressed.Height()) + 5 - SCREEN_HEIGHT + HB_Y + 362 - 25);
+    scrollManager.touchXMin = HB_X + 40;
+    scrollManager.touchYMin = HB_Y + 362 - 25;
+    scrollManager.touchXMax = SCREEN_WIDTH;
+    scrollManager.touchYMax = SCREEN_HEIGHT;
 }
 
 void HomebrewView::homebrewInstall()
@@ -135,6 +145,8 @@ void HomebrewView::checkInstalled()
 
 int HomebrewView::HandleInput(int focus, const Input& input)
 {
+    scrollManager.update(focus, input, nullptr, &description_scroll);
+
     if (!focus)
         return 0;
 
@@ -213,7 +225,8 @@ int HomebrewView::Display()
     // font_20.Draw(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
     // font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
 
-    font_25.Draw(Point(HB_X + 40, HB_Y + 362), description);
+    font_25.DrawClip(Point(HB_X + 40, HB_Y + 362 - description_scroll), description,
+        Rectangle{{HB_X + 40, HB_Y + 362 - 25}, {SCREEN_WIDTH, SCREEN_HEIGHT}});
 
     img_preview_btn_download.Draw(Point(HB_X + 218, HB_Y + 168));
 
