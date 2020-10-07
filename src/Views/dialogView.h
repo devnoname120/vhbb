@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include "../singleton.h"
 #include "../font.h"
 #include "commonDialog.h"
@@ -13,8 +15,8 @@ enum DialogType {
 };
 
 struct DialogViewResult {
-	CommonDialogStatus status = COMMON_DIALOG_STATUS_NONE;
-	bool accepted = false;
+	std::atomic<CommonDialogStatus> status = COMMON_DIALOG_STATUS_NONE;
+	std::atomic_bool accepted = false;
 };
 
 class DialogView : Singleton<DialogView>, public View {
@@ -22,7 +24,8 @@ public:
 	DialogView();
 	~DialogView();
 
-	static void openDialogView(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type);
+	static void openDialogView(std::shared_ptr<DialogViewResult> result, const std::string& message, DialogType type);
+	static void finalErrorDialog(const std::string& message);
 
 	int Display() override;
 	int HandleInput(int focus, const Input& input) override;
@@ -38,7 +41,7 @@ private:
 	Texture img_dialog_msg_btn_active;
 	Texture img_dialog_msg_btn_focus;
 
-	void prepare(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type);
+	void prepare(std::shared_ptr<DialogViewResult> result, const std::string& message, DialogType type);
 	void DrawBtn(const std::string &text, const Point &sprPt, const Rectangle &textRect, int idx);
 	int GetGlowCycleAlpha();
 	void HandleBtnFocus(const Input& input);

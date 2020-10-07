@@ -7,6 +7,7 @@
 #include "vitaPackage.h"
 #include "vitasdk_quirks.h"
 
+#include <Views/dialogView.h>
 #include <psp2/appmgr.h>
 #include <psp2/apputil.h>
 #include <psp2/display.h>
@@ -29,7 +30,7 @@ void debug_start()
     log_init(retInit < 0 || retReceive < 0 || eventParam.type == 0x05);
 }
 
-void network_test()
+std::shared_ptr<DialogViewResult> network_test(Activity& activity)
 {
     Network& network = *Network::create_instance();
 
@@ -51,10 +52,13 @@ void network_test()
                 }
                 sceKernelDelayThread(10000);
             }
-
+            auto dialogResult = std::make_shared<DialogViewResult>();
+            DialogView::openDialogView(dialogResult, "Couldn't connect to the internet.", DIALOG_TYPE_OK);
+            return dialogResult;
             sceKernelExitProcess(0);
             break;
     }
+    return nullptr;
     // FIXME Handle network issues more gracefully
     // https://bitbucket.org/xerpi/vita-ftploader/src/87ef1d13a8aaf092f376cbf2818a22cd0e481fd6/plugin/main.c?at=master&fileviewer=file-view-default#main.c-155
 }
@@ -83,6 +87,8 @@ int main()
     std::set_terminate(terminate_logger);
     debug_start();
 
+    log_printf(DBG_INFO, "VHBB starting");
+
     // Sleep invalidates file descriptors
     StartNoSleepThread();
 
@@ -98,19 +104,24 @@ int main()
         }
     }
 
-    network_test();
-    Update::startUpdateThread();
-
     vita2d_init();
     vita2d_set_clear_color(COLOR_BLACK);
 
     Input input;
     Activity& activity = *Activity::create_instance();
 
+    auto netFailDialog = network_test(activity);
+    if (netFailDialog)
+    {
+        while (netFailDialog->status != COMMON_DIALOG_STATUS_FINISHED)
+            mainLoopTick(input, activity);
+        return 0;
+    }
+
+    Update::startUpdateThread();
     auto splash = std::make_shared<Splash>();
     splash->priority = 200;
     activity.AddView(splash);
-
     while (!Update::checkIsDone())
     {
         Update::tick();
@@ -119,7 +130,7 @@ int main()
 
     StartFetchLoadIconsThread();
 
-    while (true)
+    while (!activity.exitFlag)
     {
         mainLoopTick(input, activity);
     }
