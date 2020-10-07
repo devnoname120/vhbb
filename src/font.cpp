@@ -122,3 +122,10 @@ std::string Font::FitString(const std::string& text, int maxWidth)
     log_printf(DBG_DEBUG, "Fitted string: \"%s\"", res.c_str());
     return res;
 }
+
+Dimensions Font::BoundingBox(const std::string& text)
+{
+    Dimensions dim;
+    vita2d_font_text_dimensions(font, size, text.c_str(), &dim.width, &dim.height);
+    return dim;
+}

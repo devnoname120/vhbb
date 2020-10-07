@@ -91,6 +91,7 @@ ListView::ListView(std::vector<Homebrew> homebrews)
     this->homebrews = homebrews;
     listItems = std::vector<std::unique_ptr<ListItem>>(homebrews.size());
     LoadListItems();
+    scrollManager.posYMin = 0;
 }
 
 long ListView::_LoadPreviousListItems(long firstDisplayed, long firstToLoad, long maxLoad)
@@ -166,7 +167,7 @@ void ListView::LoadListItems()
     if (loaded >= MAX_LOAD_LIST_ITEMS_PER_CYCLE)
         return;
 
-    if (scrollSpeed >= 0)
+    if (scrollManager.getScrollSpeedY() >= 0)
     {
         // preferably pre-load further down the list
         loaded += _LoadNextListItems(first, last, MAX_LOAD_LIST_ITEMS_PER_CYCLE);
@@ -188,26 +189,15 @@ void ListView::LoadListItems()
 
 int ListView::HandleInput(int focus, const Input& input)
 {
+    scrollManager.posYMax = std::max<int>(ITEM_HEIGHT * listItems.size() - LIST_HEIGHT, 0);
+    scrollManager.update(focus, input, nullptr, &posY);
+
     if (input.KeyNewPressed(SCE_CTRL_SELECT))
     {
         log_printf(DBG_DEBUG, "posY: %d", posY);
         log_printf(DBG_DEBUG, "firstDisplayedItem(): %d", firstDisplayedItem());
         log_printf(DBG_DEBUG, "lastDisplayedItem(): %d", lastDisplayedItem());
     }
-
-    // Calculate new posY from scrolling speed and time elapsed
-    unsigned long timeDif;
-    input.TouchDifference(nullptr, nullptr, &timeDif);
-    // log_printf(DBG_DEBUG, "timeDif: %u", timeDif);
-    // log_printf(DBG_DEBUG, "posY before: %d", posY);
-    if (!input.TouchPressed())
-        posY = std::min<unsigned int>(
-            std::max<int>(ITEM_HEIGHT * listItems.size() - LIST_HEIGHT, 0),
-            std::max<int>(posY + (int)(scrollSpeed * (double)timeDif), 0));
-
-    updateScrollSpeed(scrollSpeed, timeDif);
-
-    // log_printf(DBG_DEBUG, "posY after: %d", posY);
 
     if (focus)
     {
@@ -255,17 +245,7 @@ int ListView::HandleInput(int focus, const Input& input)
                     preSelectedItem = -1;
                     selectedItem = -1;
                 }
-
-                double touchDifY;
-                unsigned long timeDif;
-
-                input.TouchDifference(NULL, &touchDifY, &timeDif);
-                posY = std::min(
-                    std::max<int>(ITEM_HEIGHT * listItems.size() - LIST_HEIGHT, 0), std::max<int>(0, posY - touchDifY));
-                scrollSpeed = -touchSpeedY;
-                log_printf(DBG_DEBUG, "scrollSpeed: %f", scrollSpeed);
             }
-            // momentum
             // There is a selected item
         }
         else if (selectedItem != -1)
@@ -339,7 +319,7 @@ void ListView::SignalSelected()
 void ListView::SignalDeselected()
 {
     log_printf(DBG_DEBUG, "ListView::SignalDeselected");
-    scrollSpeed = 0;
+    scrollManager.stopScroll();
 }
 
 int ListView::Display()

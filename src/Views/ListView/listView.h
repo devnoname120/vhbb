@@ -5,6 +5,7 @@
 #include <Views/View.h>
 #include <debug.h>
 #include "listItem.h"
+#include "scrollManager.h"
 
 #define LIST_MIN_Y 79
 #define LIST_MAX_Y 543 // This ordinate is included too
@@ -32,6 +33,7 @@ protected:
 	std::vector<Homebrew> homebrews;
 	std::vector<std::unique_ptr<ListItem>> listItems;
 	void LoadListItems();
+	ScrollManager<false, true> scrollManager;
 
 private:
 	Font font_43;
@@ -43,8 +45,6 @@ private:
 	int itemHighlightSpeed = 7;
 	int itemHighlightDirection = 1;
 	int resetHighlight();
-	
-	double scrollSpeed = 0;
 
 	unsigned int itemPosY(unsigned int i);
 	unsigned int firstDisplayedItem();

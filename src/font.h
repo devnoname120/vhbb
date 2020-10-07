@@ -21,6 +21,8 @@ public:
 	                         unsigned int color=COLOR_WHITE, bool clip=false);
 	std::string FitString(const std::string &text, int maxWidth);
 
+	Dimensions BoundingBox(const std::string& text);
+
 	static std::unordered_map<std::pair<std::string, unsigned int>, vita2d_font*> fontCache;
 private:
 	vita2d_font *font;
