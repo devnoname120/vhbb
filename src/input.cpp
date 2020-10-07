@@ -202,6 +202,28 @@ int Input::TouchNewMovement() const
     return TouchAlreadyPressed() && !old2touch.reportNum;
 }
 
+int Input::TouchMovementStartedCoordinates(double* touchX, double* touchY) const
+{
+    if (touchX)
+        *touchX = lerpd(touch.report[0].x, TOUCH_WIDTH, SCREEN_WIDTH);
+    if (touchY)
+        *touchY = lerpd(touch.report[0].y, TOUCH_HEIGHT, SCREEN_HEIGHT);
+    return 0;
+}
+
+int Input::TouchMovementStaredInRectangle(const Rectangle& rect) const
+{
+    double touchX, touchY;
+    TouchMovementStartedCoordinates(&touchX, &touchY);
+
+    log_printf(
+        DBG_DEBUG, "TouchMovementStaredInRectangle rectangle: %f,%f:%f,%f", rect.topLeft.x, rect.topLeft.y, rect.bottomRight.x,
+        rect.bottomRight.y);
+    log_printf(DBG_DEBUG, "TouchMovementStaredInRectangle touch: %f,%f", touchX, touchY);
+
+    return rect.Inside(Point(touchX, touchY));
+}
+
 int Input::TouchAlreadyMovement() const
 {
     return TouchAlreadyPressed() && old2touch.reportNum;

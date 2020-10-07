@@ -1,6 +1,10 @@
 #pragma once
 
+#include <atomic>
+
 #include "../singleton.h"
+#include "../scrollManager.h"
+#include "shapes.h"
 #include "../font.h"
 #include "commonDialog.h"
 #include "activity.h"
@@ -13,8 +17,8 @@ enum DialogType {
 };
 
 struct DialogViewResult {
-	CommonDialogStatus status = COMMON_DIALOG_STATUS_NONE;
-	bool accepted = false;
+	std::atomic<CommonDialogStatus> status = COMMON_DIALOG_STATUS_NONE;
+	std::atomic_bool accepted = false;
 };
 
 class DialogView : Singleton<DialogView>, public View {
@@ -22,13 +26,18 @@ public:
 	DialogView();
 	~DialogView();
 
-	static void openDialogView(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type);
+	static void openDialogView(std::shared_ptr<DialogViewResult> result, const std::string& message, DialogType type);
+	static void finalErrorDialog(const std::string& message);
 
 	int Display() override;
 	int HandleInput(int focus, const Input& input) override;
 
 private:
 	std::shared_ptr<DialogView> me_ptr;
+
+	ScrollManager<true, true> scrollManager;
+	int scrollX = 0;
+	int scrollY = 0;
 
 	Font msg_font;
 	Font btn_font;
@@ -38,7 +47,7 @@ private:
 	Texture img_dialog_msg_btn_active;
 	Texture img_dialog_msg_btn_focus;
 
-	void prepare(std::shared_ptr<DialogViewResult> result, std::string message, DialogType type);
+	void prepare(std::shared_ptr<DialogViewResult> result, const std::string& message, DialogType type);
 	void DrawBtn(const std::string &text, const Point &sprPt, const Rectangle &textRect, int idx);
 	int GetGlowCycleAlpha();
 	void HandleBtnFocus(const Input& input);
@@ -49,6 +58,7 @@ private:
 	bool _accepted = false;
 	std::shared_ptr<DialogViewResult> _result;
 	std::string _message;
+	Dimensions _messageDim;
 	DialogType _type;
 	int _btnFocus, _btnTouched = -1;
 	unsigned int _focusGlowCycle = 0;

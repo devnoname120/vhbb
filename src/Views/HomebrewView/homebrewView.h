@@ -1,6 +1,7 @@
 #pragma once
 
 #include "texture.h"
+#include "scrollManager.h"
 
 #include <Views/ListView/listView.h>
 #include <Views/View.h>
@@ -44,6 +45,8 @@ private:
     std::optional<Texture> thumbnail;
 
     std::string description = "";
+    ScrollManager<false, true> scrollManager;
+    int description_scroll = 0;
 
     void checkInstalled();
     void homebrewInstall();

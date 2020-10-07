@@ -44,6 +44,8 @@ public:
     int TouchNewPressed() const;
     int TouchStopPressed() const;
     int TouchNewMovement() const;
+    int TouchMovementStartedCoordinates(double* touchX, double* touchY) const;
+    int TouchMovementStaredInRectangle(const Rectangle& rect) const;
     int TouchAlreadyMovement() const;
     int TouchCoordinates(double* touchX, double* touchY) const;
     int TouchDifference(double* touchDifX, double* touchDifY, unsigned long* timeDif) const;

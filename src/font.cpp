@@ -53,7 +53,7 @@ int Font::DrawClip(const Point& pt, const std::string& text, const Rectangle& cl
     return ret;
 }
 
-int Font::DrawCentered(const Rectangle& rect, const std::string& text, unsigned int color, bool clip)
+int Font::DrawCentered(const Rectangle& rect, const std::string& text, unsigned int color, bool clip, int offsetX, int offsetY)
 {
     // log_printf(DBG_DEBUG, "DrawCentered: %f,%f:%f,%f", rect.topLeft.x, rect.topLeft.y, rect.bottomRight.x,
     // rect.bottomRight.y);
@@ -61,9 +61,9 @@ int Font::DrawCentered(const Rectangle& rect, const std::string& text, unsigned 
     vita2d_font_text_dimensions(font, size, text.c_str(), &width, &height);
     // log_printf(DBG_DEBUG, "Dimensions: %d, %d", width, height);
 
-    double posX = rect.topLeft.x + (rect.Width() - width) / 2.0;
+    double posX = rect.topLeft.x + (rect.Width() - width) / 2.0 + offsetX;
     // +size/3 roughly aligns the font's median line with the middle of rect
-    double posY = rect.topLeft.y + rect.Height() / 2 + size / 3.0 - (height - size) / 2.0;
+    double posY = rect.topLeft.y + rect.Height() / 2 + BaselineOffsetF() - (height - size) / 2.0 + offsetY;
 
     // log_printf(DBG_DEBUG, "Pos: %d, %d", posX, posY);
     if (!clip)
@@ -76,19 +76,20 @@ int Font::DrawCentered(const Rectangle& rect, const std::string& text, unsigned 
     }
 }
 
-int Font::DrawCenteredVertical(const Rectangle& rect, const std::string& text, unsigned int color, bool clip)
+int Font::DrawCenteredVertical(
+    const Rectangle& rect, const std::string& text, unsigned int color, bool clip, int offsetX, int offsetY)
 {
     int height = vita2d_font_text_height(font, size, text.c_str());
-    double posY = rect.topLeft.y + rect.Height() / 2 + size / 3.0 - (height - size) / 2.0;
+    double posY = rect.topLeft.y + rect.Height() / 2 + BaselineOffsetF() - (height - size) / 2.0 + offsetY;
 
     // log_printf(DBG_DEBUG, "Pos: %d, %d", posX, posY);
     if (!clip)
     {
-        return Draw(Point(rect.topLeft.x, posY), text, color);
+        return Draw(Point(rect.topLeft.x + offsetX, posY), text, color);
     }
     else
     {
-        return DrawClip(Point(rect.topLeft.x, posY), text, rect, color);
+        return DrawClip(Point(rect.topLeft.x + offsetX, posY), text, rect, color);
     }
 }
 
@@ -101,24 +102,42 @@ std::string Font::FitString(const std::string& text, int maxWidth)
         return std::string(text);
     }
     std::vector<std::string> words = split_string(text);
+    if (words.empty())
+        return "";
 
-    std::string res = words[0];
+    std::string current_line = words[0];
+    std::string res;
     for (auto i = 1; i < words.size(); i++)
     {
-        std::string try_res = res + " " + words[i];
-        int lineWidth = vita2d_font_text_width(font, size, try_res.c_str());
+        std::string try_line = current_line + " " + words[i];
+        int lineWidth = vita2d_font_text_width(font, size, try_line.c_str());
         if (lineWidth <= maxWidth)
         {
             log_printf(DBG_DEBUG, "\"%s\" fits: %i", words[i].c_str(), lineWidth);
-            res = std::move(try_res);
+            current_line = std::move(try_line);
         }
         else
         {
             log_printf(DBG_DEBUG, "\"%s\" overflows: %i", words[i].c_str(), lineWidth);
-            res += "\n" + words[i];
+            if (res.empty())
+                res += current_line;
+            else
+                res += "\n" + current_line;
+            current_line = words[i];
         }
     }
+    if (res.empty())
+        res += current_line;
+    else
+        res += "\n" + current_line;
 
     log_printf(DBG_DEBUG, "Fitted string: \"%s\"", res.c_str());
     return res;
+}
+
+Dimensions Font::BoundingBox(const std::string& text)
+{
+    Dimensions dim;
+    vita2d_font_text_dimensions(font, size, text.c_str(), &dim.width, &dim.height);
+    return dim;
 }
