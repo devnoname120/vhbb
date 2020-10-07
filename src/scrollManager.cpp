@@ -13,8 +13,10 @@ void ScrollManager<xScroll, yScroll>::stopScroll()
 
 
 template <bool xScroll, bool yScroll>
-void ScrollManager<xScroll, yScroll>::update(int focus, const Input& input, int* posX, int* posY)
+void ScrollManager<xScroll, yScroll>::_update(int focus, const Input& input, int* posX, int* posY)
 {
+    if (disabled)
+        return;
     if (!input.TouchPressed())
     {
         movementStaredInBounds = false;

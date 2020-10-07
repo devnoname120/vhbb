@@ -110,6 +110,7 @@ HomebrewView::HomebrewView(Homebrew hb)
     scrollManager.touchYMin = HB_Y + 362 - 25;
     scrollManager.touchXMax = SCREEN_WIDTH;
     scrollManager.touchYMax = SCREEN_HEIGHT;
+    scrollManager.disabled = scrollManager.posYMax == 0;
 }
 
 void HomebrewView::homebrewInstall()
