@@ -3,6 +3,8 @@
 #include <atomic>
 
 #include "../singleton.h"
+#include "../scrollManager.h"
+#include "shapes.h"
 #include "../font.h"
 #include "commonDialog.h"
 #include "activity.h"
@@ -33,6 +35,10 @@ public:
 private:
 	std::shared_ptr<DialogView> me_ptr;
 
+	ScrollManager<true, true> scrollManager;
+	int scrollX = 0;
+	int scrollY = 0;
+
 	Font msg_font;
 	Font btn_font;
 
@@ -52,6 +58,7 @@ private:
 	bool _accepted = false;
 	std::shared_ptr<DialogViewResult> _result;
 	std::string _message;
+	Dimensions _messageDim;
 	DialogType _type;
 	int _btnFocus, _btnTouched = -1;
 	unsigned int _focusGlowCycle = 0;

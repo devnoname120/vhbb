@@ -34,7 +34,10 @@ extern unsigned char _binary_assets_spr_img_dialog_msg_btn_active_png_start;
 extern unsigned char _binary_assets_spr_img_dialog_msg_btn_focus_png_start;
 
 DialogView::DialogView()
-    : msg_font(Font(std::string(FONT_DIR "segoeui.ttf"), 28))
+    : scrollManager(DIALOG_X + DIALOG_PADDING_X, DIALOG_Y + DIALOG_PADDING_Y,
+        DIALOG_X + DIALOG_WIDTH - DIALOG_PADDING_X, DIALOG_Y + DIALOG_PADDING_Y + DIALOG_MSG_HEIGHT,
+        0)
+    , msg_font(Font(std::string(FONT_DIR "segoeui.ttf"), 28))
     , btn_font(Font(std::string(FONT_DIR "segoeui.ttf"), 25))
     , img_dialog_msg_bg(Texture(&_binary_assets_spr_img_dialog_msg_bg_png_start))
     , img_dialog_msg_btn(Texture(&_binary_assets_spr_img_dialog_msg_btn_png_start))
@@ -84,6 +87,19 @@ void DialogView::prepare(std::shared_ptr<DialogViewResult> result, const std::st
     }
     _result = result;
     _message = msg_font.FitString(message, DIALOG_WIDTH - DIALOG_PADDING_X * 2);
+    _messageDim = msg_font.BoundingBox(_message);
+    if (_messageDim.width > DIALOG_WIDTH - DIALOG_PADDING_X * 2 || _messageDim.height > DIALOG_MSG_HEIGHT)
+    {
+        scrollManager.disabled = false;
+        scrollManager.posXMax = std::max<int>(0, _messageDim.width - (DIALOG_WIDTH - DIALOG_PADDING_X * 2));
+        scrollManager.posYMax = std::max<int>(0, _messageDim.height - DIALOG_MSG_HEIGHT) / 2;
+        scrollManager.posYMin = -scrollManager.posYMax;
+        scrollY = scrollManager.posYMin;
+    }
+    else
+    {
+        scrollManager.disabled = true;
+    }
     request_destroy = false;
     _accepted = false;
     _status = COMMON_DIALOG_STATUS_RUNNING;
@@ -219,6 +235,8 @@ void DialogView::HandleBtnTouch(const Input& input)
 
 int DialogView::HandleInput(int focus, const Input& input)
 {
+    scrollManager.update(focus, input, &scrollX, &scrollY);
+
     if (!focus)
         return 0;
     auto oldStatus = _status;
@@ -275,7 +293,7 @@ int DialogView::Display()
         Rectangle(
             Point(DIALOG_X + DIALOG_PADDING_X, DIALOG_Y + DIALOG_PADDING_Y),
             Point(DIALOG_X + DIALOG_WIDTH - DIALOG_PADDING_X, DIALOG_Y + DIALOG_PADDING_Y + DIALOG_MSG_HEIGHT)),
-        _message, COLOR_WHITE, true);
+        _message, COLOR_WHITE, true, -scrollX, -scrollY);
 
     switch (_type)
     {

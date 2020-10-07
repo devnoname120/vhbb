@@ -32,7 +32,12 @@ public:
         if (speedY)
             *speedY = scrollSpeedY;
     }
-    void update(int focus, const Input& input, int* posX = nullptr, int* posY = nullptr);
+
+    bool disabled = false;
+    inline void update(int focus, const Input& input, int* posX = nullptr, int* posY = nullptr) {
+        if (!disabled)
+            _update(focus, input, posX, posY);
+    };
 
     int touchXMin;
     int touchYMin;
@@ -50,6 +55,7 @@ private:
     bool movementStared = false;
     bool movementStaredInBounds = false;
 
+    void _update(int focus, const Input& input, int* posX = nullptr, int* posY = nullptr);
     void updateScrollSpeed(const Input& input);
     void updatePosFreeScroll(const Input& input, int* posX = nullptr, int* posY = nullptr);
     void updatePosTouchScroll(const Input& input, int* posX = nullptr, int* posY = nullptr);
