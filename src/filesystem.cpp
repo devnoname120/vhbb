@@ -104,7 +104,7 @@ int readFile(const std::string& path, std::string& content)
 
     buf[read] = 0; // add null char terminator
 
-    content.reserve((uint)size);
+    content.reserve((unsigned int)size);
     content.assign(buf);
 
     return read;

@@ -19,6 +19,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+// strdup() mysteriously disappeared in a vitasdk update, so we use a drop-in implementation.
+char *mystrdup(const char *s)
+{
+    size_t len = strlen(s) + 1;
+    void *copy = malloc(len);
+    if (copy == nullptr)
+    {
+        return nullptr;
+    }
+
+    return (char *)memcpy(copy, s, len);
+}
+
 struct SfoHeader
 {
     uint32_t magic;
@@ -55,19 +69,19 @@ static int loadScePaf()
 
     int result = -1;
 
-    uint32_t buf[4];
-    buf[0] = sizeof(buf);
-    buf[1] = (uint32_t)&result;
-    buf[2] = -1;
-    buf[3] = -1;
+    SceSysmoduleOpt opt = { 0 };
+    opt.flags = sizeof(opt);
+    opt.result = &result;
+    opt.unused[0] = -1;
+    opt.unused[1] = -1;
 
-    return sceSysmoduleLoadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF, sizeof(argp), argp, buf);
+    return sceSysmoduleLoadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF, sizeof(argp), argp, &opt);
 }
 
 static int unloadScePaf()
 {
-    uint32_t buf = 0;
-    return sceSysmoduleUnloadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF, 0, nullptr, &buf);
+    SceSysmoduleOpt opt = { 0 };
+    return sceSysmoduleUnloadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF, 0, nullptr, &opt);
 }
 
 int promoteApp(const char* path)
@@ -194,7 +208,7 @@ char* get_title_id(const char* filename)
 
         log_printf(DBG_DEBUG, "SFO body %s: %s", name, value);
         if (strcmp(name, "TITLE_ID") == 0)
-            res = strdup(value);
+            res = mystrdup(value);
     }
 
     log_printf(DBG_DEBUG, "Found title id: %s", res);

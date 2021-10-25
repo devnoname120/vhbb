@@ -103,7 +103,7 @@ int _log_printf(int level, const char *format, ...) {
 
 	if (g_log_to_file) {
 		sceIoWrite(g_log_fd, buf, strlen(buf));
-		sceIoSyncByFd(g_log_fd); // TODO Is this actually required?
+		sceIoSyncByFd(g_log_fd, 0); // TODO Is this actually required?
 	}
 
 	return 0;
