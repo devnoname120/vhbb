@@ -22,6 +22,8 @@ public:
 	std::vector<std::string> screenshots;
 	std::string url;
 	std::string data;
+	int size;
+	int datasize;
 
 	bool IsInstalled();
 };

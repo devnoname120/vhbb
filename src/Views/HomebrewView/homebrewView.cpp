@@ -8,6 +8,10 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/io/stat.h>
 #include <vitaPackage.h>
+#include <sstream>
+#include <cmath> 
+
+
 
 #include "shapes.h"
 
@@ -213,6 +217,16 @@ void HomebrewView::startYoutube() const
         0x20000, (std::string("webmodal: https://www.youtube.com/embed/") + hb_.trailer + "?autoplay=1").c_str());
 }
 
+std::string HomebrewView::sizeRoundAndString(int sizeinbytes){
+    double i = 0.000001*sizeinbytes;
+i = round( i * 100.0 ) / 100.0;
+std::string sizevalueinmb;
+std::stringstream ss;
+ss << i;
+sizevalueinmb = ss.str() + "MB";
+return sizevalueinmb;
+}
+
 int HomebrewView::Display()
 {
     bg.Display();
@@ -223,7 +237,7 @@ int HomebrewView::Display()
     font_40.Draw(Point(HB_X + 225, HB_Y + 88), hb_.name, COLOR_WHITE);
     font_25.Draw(Point(HB_X + 225, HB_Y + 115), hb_.author, COLOR_AQUA);
     font_25.Draw(Point(HB_X + 225, HB_Y + 144), hb_.version, COLOR_WHITE);
-    // font_20.Draw(Point(HB_X + 100, HB_Y + 189), std::string("0 Kb"), COLOR_WHITE);
+    font_20.Draw(Point(HB_X + 100, HB_Y + 200), sizeRoundAndString(hb_.size+hb_.datasize), COLOR_WHITE);
     // font_20.Draw(Point(HB_X + 850, HB_Y + 503), hb_.date.str, COLOR_WHITE);
 
     font_25.DrawClip(Point(HB_X + 40, HB_Y + 362 - description_scroll), description,

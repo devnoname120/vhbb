@@ -54,7 +54,8 @@ namespace YAML
         hb.url = node["url"].as<std::string>();
         if (node["data"])
             hb.data = node["data"].as<std::string>();
-
+        hb.size = node["size"].as<int>();
+        hb.datasize = node["data_size"].as<int>();
         return true;
     }
 }; // namespace YAML
